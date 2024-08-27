@@ -1,0 +1,185 @@
+@layer components {
+    .typography-hero {
+      @apply text-5xl font-primary;
+    }
+    .typography-headline-1 {
+      @apply tablet:text-4xl font-primary text-2xl;
+    }
+    .typography-headline-2 {
+      @apply text-3xl font-primary;
+    }
+    .typography-headline-3 {
+      @apply text-2xl font-primary;
+    }
+    .typography-headline-4 {
+      @apply text-3xl leading-[64px] font-secondary font-semibold;
+    }
+    .typography-big-body-bold {
+      @apply text-xl font-secondary font-semibold;
+    }
+    .typography-modal-title {
+      @apply font-secondary text-lg font-semibold;
+    }
+    .typography-body-1 {
+      @apply text-md font-secondary font-semibold;
+    }
+    .typography-body-2 {
+      @apply text-base font-secondary leading-6;
+    }
+    .typography-caption {
+      @apply text-sm font-secondary leading-6;
+    }
+    .typography-caption-2 {
+      @apply text-xs font-secondary leading-5;
+    }
+    .typography-caption-3 {
+      @apply text-2xs font-secondary leading-4;
+    }
+    .typography-hairline-1 {
+      @apply text-base leading-4 font-secondary uppercase;
+    }
+    .typography-hairline-2 {
+      @apply text-xs leading-3 font-secondary uppercase font-semibold;
+    }
+    .typography-button-1 {
+      @apply text-sm leading-4 font-secondary;
+    }
+    .typography-button-2 {
+      @apply text-sm leading-4 font-secondary font-semibold;
+    }
+    .typography-button-3 {
+      @apply text-smd font-secondary font-semibold;
+    }
+    .typography-nav-menu-default {
+      @apply text-sm font-secondary leading-4 font-normal;
+    }
+    .typography-pill-label {
+      @apply text-2xs font-secondary leading-4 font-semibold uppercase;
+    }
+    .typography-dropdown-selection-label {
+      @apply text-[11px] font-secondary leading-4;
+    }
+    .typography-percentage-tab {
+      @apply text-sm font-secondary leading-4 font-bold;
+    }
+    .typography-portfolio-heading {
+      @apply text-smd font-secondary leading-7;
+    }
+    .typography-amount-large {
+      @apply text-[44px] font-secondary font-semibold leading-10;
+    }
+    .typography-desktop-display-xxl {
+      @apply font-primary text-26 leading-28;
+    }
+    .typography-desktop-display-xl {
+      @apply font-primary text-22 leading-24;
+    }
+    .typography-desktop-h-1 {
+      @apply font-secondary text-18 leading-20 tracking-tighter font-semibold;
+    }
+    .typography-desktop-h-2 {
+      @apply font-secondary text-16 leading-18 tracking-tighter font-semibold;
+    }
+    .typography-desktop-h-3 {
+      @apply font-secondary text-14 leading-16 tracking-tighter font-semibold;
+    }
+    .typography-desktop-h-4 {
+      @apply font-secondary text-12 leading-14 tracking-tighter font-semibold;
+    }
+    .typography-desktop-h-5 {
+      @apply font-secondary text-10 leading-12 tracking-tighter font-semibold;
+    }
+    .typography-desktop-h-6 {
+      @apply font-secondary text-8 leading-10 tracking-tight font-semibold;
+    }
+    .typography-desktop-sh-7 {
+      @apply font-secondary text-5.5 leading-8 tracking-tight font-semibold uppercase;
+    }
+    .typography-desktop-sh-8 {
+      @apply font-secondary text-4.5 leading-6 tracking-tight font-semibold uppercase;
+    }
+    .typography-desktop-sh-9 {
+      @apply font-secondary text-4 leading-6 tracking-tight font-semibold uppercase;
+    }
+    .typography-desktop-body-1 {
+      @apply font-secondary text-5.5 leading-8 tracking-tight;
+    }
+    .typography-desktop-body-2 {
+      @apply font-secondary text-4.5 leading-6 tracking-tight;
+    }
+    .typography-desktop-body-3 {
+      @apply font-secondary text-4 leading-6;
+    }
+    .typography-desktop-body-4 {
+      @apply font-secondary text-3.5 leading-5.5;
+    }
+    .typography-desktop-body-5 {
+      @apply font-secondary text-3 leading-5;
+    }
+    .typography-desktop-body-6 {
+      @apply font-secondary text-[11px] leading-[15px];
+    }
+    .typography-desktop-cta-1 {
+      @apply font-secondary text-4.5 leading-8 tracking-tight font-semibold;
+    }
+    .typography-desktop-cta-2 {
+      @apply font-secondary text-4 leading-6 tracking-tight font-semibold;
+    }
+    .typography-mobile-display-xxl {
+      @apply font-primary text-12 leading-16;
+    }
+    .typography-mobile-display-xl {
+      @apply font-primary text-11 leading-14;
+    }
+    .typography-mobile-h-1 {
+      @apply font-secondary text-10 leading-14 tracking-tighter font-semibold;
+    }
+    .typography-mobile-h-2 {
+      @apply font-secondary text-9 leading-11 tracking-tighter font-semibold;
+    }
+    .typography-mobile-h-3 {
+      @apply font-secondary text-8 leading-10 tracking-tighter font-semibold;
+    }
+    .typography-mobile-h-4 {
+      @apply font-secondary text-7 leading-9 tracking-tight font-semibold;
+    }
+    .typography-mobile-h-5 {
+      @apply font-secondary text-6 leading-8 tracking-tight font-semibold;
+    }
+    .typography-mobile-h-6 {
+      @apply font-secondary text-5 leading-7 tracking-tight font-semibold;
+    }
+    .typography-mobile-sh-7 {
+      @apply font-secondary text-5.5 leading-8 tracking-tight font-semibold uppercase;
+    }
+    .typography-mobile-sh-8 {
+      @apply font-secondary text-4.5 leading-6 tracking-tight font-semibold uppercase;
+    }
+    .typography-mobile-sh-9 {
+      @apply font-secondary text-4 leading-6 tracking-tight font-semibold uppercase;
+    }
+    .typography-mobile-body-1 {
+      @apply font-secondary text-5 leading-8 tracking-tight;
+    }
+    .typography-mobile-body-2 {
+      @apply font-secondary text-4.5 leading-7;
+    }
+    .typography-mobile-body-3 {
+      @apply font-secondary text-4 leading-6;
+    }
+    .typography-mobile-body-4 {
+      @apply font-secondary text-3.5 leading-5.5;
+    }
+    .typography-mobile-body-5 {
+      @apply font-secondary text-3 leading-5;
+    }
+    .typography-mobile-body-6 {
+      @apply font-secondary text-2.5 leading-4;
+    }
+    .typography-mobile-cta-1 {
+      @apply font-secondary text-4.5 leading-6 font-semibold;
+    }
+    .typography-mobile-cta-2 {
+      @apply font-secondary text-4 leading-6 font-semibold;
+    }
+  }

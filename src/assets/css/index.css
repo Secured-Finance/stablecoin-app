@@ -1,0 +1,165 @@
+@import "tailwindcss/components";
+@import "components.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'GT Super Display';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./../fonts/gt-super-display/GT-Super-Display-Regular.woff2') format('woff2'), url('./../fonts/gt-super-display/GT-Super-Display-Regular.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'GT Super Display';
+    font-style: italic;
+    font-weight: 400;
+    src: url('./../fonts/gt-super-display/GT-Super-Display-Regular-Italic.woff2') format('woff2'), url('./../fonts/gt-super-display/GT-Super-Display-Regular-Italic.woff') format('woff');
+  }
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./../fonts/suisse-intl/SuisseIntl-Regular-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-Regular-WebS.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: italic;
+    font-weight: 400;
+    src: url('./../fonts/suisse-intl/SuisseIntl-Regular-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-Regular-WebS.woff') format('woff');
+  }
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: normal;
+    font-weight: 600;
+    src: url('./../fonts/suisse-intl/SuisseIntl-SemiBold-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-SemiBold-WebS.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: italic;
+    font-weight: 600;
+    src: url('./../fonts/suisse-intl/SuisseIntl-SemiBoldItalic-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-SemiBoldItalic-WebS.woff') format('woff');
+  }
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./../fonts/suisse-intl/SuisseIntl-Bold-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-Bold-WebS.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'Suisse Intl';
+    font-style: italic;
+    font-weight: 700;
+    src: url('./../fonts/suisse-intl/SuisseIntl-BoldItalic-WebS.woff2') format('woff2'), url('./../fonts/suisse-intl/SuisseIntl-BoldItalic-WebS.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./../fonts/roboto-mono/RobotoMono-Regular.woff2') format('woff2'), url('./../fonts/roboto-mono/RobotoMono-Regular.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'Roboto Mono';
+    font-style: italic;
+    font-weight: 400;
+    src: url('./../fonts/roboto-mono/RobotoMono-Italic.woff2') format('woff2'), url('./../fonts/roboto-mono/RobotoMono-Italic.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./../fonts/ibm-plex-sans/IBMPlexSans-Regular.woff2') format('woff2'), url('./../fonts/ibm-plex-sans/IBMPlexSans-Regular.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: url('./../fonts/ibm-plex-sans/IBMPlexSans-Medium.woff2') format('woff2'), url('./../fonts/ibm-plex-sans/IBMPlexSans-Medium.woff') format('woff');
+  }
+
+  body {
+    @apply font-secondary;
+    background-image: url(../img/app-bg.jpg);
+    background-color: #002133;
+    background-size: cover;
+    background-attachment: fixed;
+
+    @media screen and (max-width: 767px) {
+      background-image: url(../img/app-bg-mobile.png);
+      background-color: #002133;
+      background-size: 100% 100%;
+    }
+  }
+}
+
+@layer utilities {
+  .bg-gradient-primary {
+    @apply bg-gradient-to-l from-horizonBlue to-starBlue;
+  }
+
+  .scrollbar-dropdown::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  .scrollbar-dropdown::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 100vh;
+    border: 6px solid #292D3F;
+  }
+
+  .scrollbar-table::-webkit-scrollbar {
+    height: 3px;
+    width: 3px;
+  }
+
+  .scrollbar-table::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .scrollbar-table::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 1);
+    border-radius: 50px;
+  }
+}
+
+@layer components {
+  .slider-markActive {
+      background-color: #5162FF !important;
+  }
+
+  .campaign {
+    background-image: url(../img/campaign.jpg);
+    background-color: #002133;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100dvh;
+    width: 100%;
+  }
+
+  .wormhole {
+    background-image: url(../img/wormhole.png);
+  }
+
+  .candlestick-bg-mobile {
+    background-image: url(../img/candlestick-bg-mobile.png);
+  }
+
+  .candlestick-bg {
+    background-image: url(../img/candlestick-bg.png);
+  }
+
+  .candlestick-bg-alt {
+    background-image: url(../img/candlestick-bg-alt.png);
+  }
+}

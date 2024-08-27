@@ -1,0 +1,58 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "*.tsx": "typescriptreact",
+    "*.css": "tailwindcss"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "[javascriptreact][javascript][typescriptreact][typescript][json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "prettier.prettierPath": "node_modules/prettier",
+  "cSpell.words": [
+    "arbiscan",
+    "arbitrum",
+    "attofil",
+    "Axelar",
+    "bigint",
+    "bignumber",
+    "chartjs",
+    "chromaui",
+    "CODECOV",
+    "COLORBAR",
+    "craco",
+    "Delisted",
+    "delisting",
+    "EFIL",
+    "FLEEK",
+    "graphclient",
+    "graphclients",
+    "headlessui",
+    "heroicons",
+    "Itayose",
+    "ledgerhq",
+    "Numberish",
+    "nvmrc",
+    "Orderbook",
+    "picofil",
+    "reduxjs",
+    "Scriptable",
+    "secp",
+    "Sepolia",
+    "snowtrace",
+    "Subcontainer",
+    "tanstack",
+    "testid",
+    "timemachine",
+    "viewports",
+    "Wagmi",
+    "walletconnect",
+    "zondax"
+  ],
+  "jest.jestCommandLine": "npm run test -- --watchAll"
+}
