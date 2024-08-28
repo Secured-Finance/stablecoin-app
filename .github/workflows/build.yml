@@ -14,9 +14,11 @@ on:
         required: false
         type: string
     secrets:
-      PAT:
+      NPM_AUTH_TOKEN:
         required: true
       ALCHEMY_API_KEY:
+        required: true
+      CODECOV_TOKEN:
         required: true
 
 jobs:
@@ -48,7 +50,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.PAT }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - run: |
           cat <<EOF > .env.local
@@ -63,6 +65,16 @@ jobs:
 
       - name: Check Style with ESLint
         run: npm run lint:check
+
+      - name: Run Tests
+        run: npm run test:cov
+
+      - name: Upload Code Coverage
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit-tests
+          files: './coverage/coverage-final.json'
 
       - name: Build Web App
         run: npm run build
