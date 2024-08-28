@@ -1,7 +1,9 @@
-import { ThemeSwitch } from 'src/components/atoms';
-
 function EntryPoint() {
-    return <ThemeSwitch />;
+    return (
+        <div className='flex h-full h-screen items-center justify-center text-white'>
+            Welcome to the Stable Coin Project!
+        </div>
+    );
 }
 
 export default EntryPoint;
