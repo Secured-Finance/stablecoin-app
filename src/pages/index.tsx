@@ -1,5 +1,7 @@
+import { ThemeSwitch } from 'src/components/atoms';
+
 function EntryPoint() {
-    return <div className='bg-red text-white'>Arpit</div>;
+    return <ThemeSwitch />;
 }
 
 export default EntryPoint;
