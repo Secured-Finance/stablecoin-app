@@ -1,11 +1,25 @@
+import { useEffect, useState } from 'react';
+import { Page } from 'src/components/templates';
+
 function EntryPoint() {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null;
+    }
+
     return (
-        <div className='flex h-screen flex-col items-center justify-center gap-2'>
-            <span className='text-16 text-white'>
-                Welcome to the Stable Coin Project!
-            </span>
-            <span className='text-10 text-teal-300'>Stay Tuned!</span>
-        </div>
+        <Page name='lending-page'>
+            <div className='flex h-full flex-col items-center justify-center gap-2'>
+                <span className='text-16 text-white'>
+                    Welcome to the Stable Coin Project!
+                </span>
+            </div>
+        </Page>
     );
 }
 

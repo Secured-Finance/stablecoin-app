@@ -5,7 +5,7 @@ export const Layout = ({
 }: {
     navBar: React.ReactNode;
     children: React.ReactNode;
-    footer: React.ReactNode;
+    footer?: React.ReactNode;
 }) => {
     return (
         <div

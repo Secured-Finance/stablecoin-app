@@ -2,11 +2,14 @@ import * as amplitude from '@amplitude/analytics-browser';
 import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
+import { Layout } from 'src/components/templates';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
@@ -21,6 +24,10 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import '../assets/css/index.css';
+
+const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
+    ssr: false,
+});
 
 const projectId = getWalletConnectId();
 
@@ -92,7 +99,16 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             <Provider store={store}>
                 <Providers>
-                    <Component {...pageProps} />
+                    <ThemeProvider
+                        attribute='class'
+                        defaultTheme='light'
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <Layout navBar={<Header />}>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ThemeProvider>
                 </Providers>
             </Provider>
         </>

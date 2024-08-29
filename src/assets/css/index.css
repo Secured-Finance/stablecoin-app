@@ -89,6 +89,5 @@
 
   body {
     @apply font-secondary;
-    background-color: #000;
   }
 }

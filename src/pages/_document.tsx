@@ -1,5 +1,4 @@
 import { Head, Html, Main, NextScript } from 'next/document';
-import { ThemeProvider } from 'src/contexts';
 
 export default function Document() {
     return (
@@ -38,15 +37,8 @@ export default function Document() {
                 />
             </Head>
             <body>
-                <ThemeProvider
-                    attribute='class'
-                    defaultTheme='system'
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    <Main />
-                    <NextScript />
-                </ThemeProvider>
+                <Main />
+                <NextScript />
             </body>
         </Html>
     );
