@@ -13,7 +13,7 @@ function EntryPoint() {
     }
 
     return (
-        <Page name='vaults'>
+        <Page name='earn'>
             <div className='flex h-full flex-col items-center justify-center gap-2'>
                 <span className='text-16 text-white'>
                     Welcome to the Stable Coin Project!
