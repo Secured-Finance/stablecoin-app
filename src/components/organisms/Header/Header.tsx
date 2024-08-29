@@ -1,27 +1,16 @@
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
 import SFLogo from 'src/assets/img/logo.svg';
-import { Tab, ThemeSwitch } from 'src/components/atoms';
-import { setTheme } from 'src/store/interactions';
-import { RootState } from 'src/store/types';
+import { Tab } from 'src/components/atoms';
+import { Button, Switch } from 'src/components/ui';
 import { LINKS } from './constants';
 
 const Header = () => {
-    const theme = useSelector((state: RootState) => state.interactions.theme);
-
-    const { setTheme: setAppTheme } = useTheme();
-    const dispatch = useDispatch();
+    const { setTheme: setAppTheme, theme } = useTheme();
 
     const handleChecked = (checked: boolean) => {
-        if (checked) {
-            setAppTheme('dark');
-            dispatch(setTheme('dark'));
-        } else {
-            setAppTheme('light');
-            dispatch(setTheme('light'));
-        }
+        checked ? setAppTheme('dark') : setAppTheme('light');
     };
 
     return (
@@ -45,8 +34,9 @@ const Header = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className='pr-4'>
-                            <ThemeSwitch
+                        <div className='flex items-center gap-2 pr-4'>
+                            <Button size='sm'>Connect Wallet</Button>
+                            <Switch
                                 checked={theme === 'dark'}
                                 onCheckedChange={handleChecked}
                             />

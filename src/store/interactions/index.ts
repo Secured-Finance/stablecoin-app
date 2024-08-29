@@ -1,3 +1,3 @@
 import { interactionsSlice } from './reducer';
-export const { setWalletDialogOpen, setTheme } = interactionsSlice.actions;
+export const { setWalletDialogOpen } = interactionsSlice.actions;
 export default interactionsSlice.reducer;
