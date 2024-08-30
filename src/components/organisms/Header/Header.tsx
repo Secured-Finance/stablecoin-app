@@ -4,12 +4,23 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SFLogo from 'src/assets/img/logo.svg';
 import { Tab } from 'src/components/atoms';
-import { Button, Switch } from 'src/components/ui';
+import {
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    Switch,
+} from 'src/components/ui';
+import { AddressUtils } from 'src/utils';
+import { useAccount, useDisconnect } from 'wagmi';
 import { LINKS } from './constants';
 
 const Header = () => {
     const { setTheme: setAppTheme, theme } = useTheme();
     const { open } = useWeb3Modal();
+    const { disconnect } = useDisconnect();
+    const { address } = useAccount();
 
     const handleChecked = (checked: boolean) => {
         checked ? setAppTheme('dark') : setAppTheme('light');
@@ -37,9 +48,30 @@ const Header = () => {
                             ))}
                         </div>
                         <div className='flex items-center gap-2 pr-4'>
-                            <Button size='sm' onClick={() => open()}>
-                                Connect Wallet
-                            </Button>
+                            {address ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            variant='default'
+                                            size='sm'
+                                            className='px-4'
+                                        >
+                                            {AddressUtils.format(address, 6)}
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align='end'>
+                                        <DropdownMenuItem
+                                            onSelect={() => disconnect()}
+                                        >
+                                            Disconnect Wallet
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : (
+                                <Button size='sm' onClick={() => open()}>
+                                    Connect Wallet
+                                </Button>
+                            )}
                             <Switch
                                 checked={theme === 'dark'}
                                 onCheckedChange={handleChecked}
