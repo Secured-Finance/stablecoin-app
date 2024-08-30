@@ -1,12 +1,16 @@
 // import { GraphClientProvider } from '@secured-finance/sf-graph-client';
 import type { StoryContext, StoryFn } from '@storybook/react';
+import React from 'react';
 import 'src/bigIntPatch';
+import { config } from './../src/stories/mocks/mockWallet';
 // import { Footer } from 'src/components/atoms';
 // import Header from 'src/components/organisms/Header/Header';
 // import { updateChainError } from 'src/store/blockchain';
 // import { connectWallet, updateBalance } from 'src/store/wallet';
 // import { account, connector, publicClient } from 'src/stories/mocks/mockWallet';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
 import timemachine from 'timemachine';
+import { WagmiProvider } from 'wagmi';
 
 // export const withAppLayout = (Story: StoryFn) => {
 //     return (
@@ -16,28 +20,19 @@ import timemachine from 'timemachine';
 //     );
 // };
 
-// export const withWalletProvider = (Story: StoryFn, Context: StoryContext) => {
-//     const dispatch = useDispatch();
-//     const config = createConfig({
-//         autoConnect: Context.parameters && Context.parameters.connected,
-//         publicClient: publicClient,
-//         connectors: [connector],
-//     });
+export const withWalletProvider = (Story: StoryFn, Context: StoryContext) => {
+    createWeb3Modal({
+        wagmiConfig: config,
+        projectId: '',
+        enableAnalytics: false,
+    });
 
-//     useEffect(() => {
-//         const timeoutId = setTimeout(() => {
-//             dispatch(connectWallet(account.address));
-//         }, 300);
-
-//         return () => clearTimeout(timeoutId);
-//     }, [dispatch]);
-
-//     return (
-//         <WagmiConfig config={config}>
-//             <Story />
-//         </WagmiConfig>
-//     );
-// };
+    return (
+        <WagmiProvider config={config}>
+            <Story />
+        </WagmiProvider>
+    );
+};
 
 // export const WithGraphClient = (Story: StoryFn) => (
 //     <GraphClientProvider network='sepolia'>
