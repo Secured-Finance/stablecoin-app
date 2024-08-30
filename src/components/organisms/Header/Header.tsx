@@ -1,3 +1,4 @@
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,6 +9,7 @@ import { LINKS } from './constants';
 
 const Header = () => {
     const { setTheme: setAppTheme, theme } = useTheme();
+    const { open } = useWeb3Modal();
 
     const handleChecked = (checked: boolean) => {
         checked ? setAppTheme('dark') : setAppTheme('light');
@@ -35,7 +37,9 @@ const Header = () => {
                             ))}
                         </div>
                         <div className='flex items-center gap-2 pr-4'>
-                            <Button size='sm'>Connect Wallet</Button>
+                            <Button size='sm' onClick={() => open()}>
+                                Connect Wallet
+                            </Button>
                             <Switch
                                 checked={theme === 'dark'}
                                 onCheckedChange={handleChecked}

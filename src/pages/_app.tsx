@@ -2,6 +2,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -11,18 +12,10 @@ import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
 import { Layout } from 'src/components/templates';
 import store from 'src/store';
-import {
-    getAmplitudeApiKey,
-    getSupportedChainIds,
-    getSupportedNetworks,
-    getWalletConnectId,
-} from 'src/utils';
-import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+import { getAmplitudeApiKey, getWalletConnectId } from 'src/utils';
+import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
+import { createConfig, http, WagmiProvider } from 'wagmi';
+import { injected, metaMask, walletConnect } from 'wagmi/connectors';
 import '../assets/css/index.css';
 
 const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
@@ -46,45 +39,35 @@ if (typeof window !== 'undefined') {
     });
 }
 
-const chainIds = getSupportedChainIds();
-const networks = getSupportedNetworks().filter(chain =>
-    chainIds.includes(chain.id)
-);
-
-const { chains, publicClient } = configureChains(networks, [
-    alchemyProvider({
-        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '',
-    }),
-    publicProvider(),
-]);
-
 const config = createConfig({
-    autoConnect: false,
-    publicClient: publicClient,
+    chains: [mainnet, filecoin, sepolia, filecoinCalibration],
+    transports: {
+        [mainnet.id]: http(),
+        [filecoin.id]: http(),
+        [sepolia.id]: http(),
+        [filecoinCalibration.id]: http(),
+    },
     connectors: [
-        new MetaMaskConnector({ chains }),
-        new WalletConnectConnector({
-            chains,
-            options: {
-                projectId: projectId,
-                qrModalOptions: {
-                    themeVariables: {
-                        '--wcm-font-family':
-                            "'Suisse International', sans-serif",
-                        '--wcm-accent-color': '#002133',
-                        '--wcm-background-color': '#5162FF',
-                    },
+        metaMask(),
+        walletConnect({
+            projectId: projectId,
+            qrModalOptions: {
+                themeVariables: {
+                    '--wcm-font-family': "'Suisse International', sans-serif",
+                    '--wcm-accent-color': '#002133',
+                    '--wcm-background-color': '#5162FF',
                 },
             },
+            showQrModal: false,
         }),
-        new InjectedConnector({
-            chains,
-            options: {
-                name: 'Injected',
-                shimDisconnect: true,
-            },
-        }),
+        injected(),
     ],
+});
+
+createWeb3Modal({
+    wagmiConfig: config,
+    projectId,
+    enableAnalytics: false,
 });
 
 function App({ Component, pageProps }: AppProps) {
@@ -119,7 +102,7 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <CookiesProvider>
             <QueryClientProvider client={queryClient}>
-                <WagmiConfig config={config}>{children}</WagmiConfig>
+                <WagmiProvider config={config}>{children}</WagmiProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </CookiesProvider>

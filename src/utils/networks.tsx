@@ -24,22 +24,11 @@ type ChainInformation = {
 
 // it is important to keep sepolia as first chain in this list
 // arbitrumSepolia used as a temporary first chain
-const testnetNetworks: Chain[] = [
-    arbitrumSepolia,
-    sepolia,
-    avalancheFuji,
-    filecoinCalibration,
-];
+const testnetNetworks: Chain[] = [sepolia, filecoinCalibration];
 
 // it is important to keep mainnet as first chain in this list
 // arbitrum used as a temporary first chain
-const mainnetNetworks: Chain[] = [
-    arbitrum,
-    mainnet,
-    avalanche,
-    polygonZkEvm,
-    filecoin,
-];
+const mainnetNetworks: Chain[] = [mainnet, filecoin];
 
 export const getSupportedNetworks = () => {
     return isProdEnv()

@@ -7,8 +7,8 @@ import {
 } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { rootReducers } from 'src/store';
-import { connector, publicClient } from 'src/stories/mocks/mockWallet';
-import { WagmiConfig, createConfig } from 'wagmi';
+import { config } from 'src/stories/mocks/mockWallet';
+import { WagmiProvider } from 'wagmi';
 import { initialStore } from './stories/mocks/mockStore';
 
 const defaultOptions = { defaultOptions: { queries: { retry: false } } };
@@ -83,14 +83,9 @@ function renderHook(
             <Provider store={store}>
                 <MockedProvider mocks={apolloMocks}>
                     <QueryClientProvider client={queryClient}>
-                        <WagmiConfig
-                            config={createConfig({
-                                publicClient: publicClient,
-                                connectors: [connector],
-                            })}
-                        >
+                        <WagmiProvider config={config}>
                             {children}
-                        </WagmiConfig>
+                        </WagmiProvider>
                     </QueryClientProvider>
                 </MockedProvider>
             </Provider>
