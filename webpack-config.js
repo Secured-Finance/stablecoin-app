@@ -46,5 +46,7 @@ function webpackOverride(config) {
         '.storybook': path.resolve(__dirname, './.storybook/'),
     };
 
+    config.externals.push('pino-pretty', 'lokijs', 'encoding');
+
     return config;
 }

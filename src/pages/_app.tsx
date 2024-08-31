@@ -2,7 +2,7 @@ import * as amplitude from '@amplitude/analytics-browser';
 import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createWeb3Modal } from '@web3modal/wagmi/react';
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -14,8 +14,7 @@ import { Layout } from 'src/components/templates';
 import store from 'src/store';
 import { getAmplitudeApiKey, getWalletConnectId } from 'src/utils';
 import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
-import { createConfig, http, WagmiProvider } from 'wagmi';
-import { injected, metaMask, walletConnect } from 'wagmi/connectors';
+import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 
 const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
@@ -23,6 +22,8 @@ const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
 });
 
 const projectId = getWalletConnectId();
+
+const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
 
 const queryClient = new QueryClient();
 
@@ -39,35 +40,42 @@ if (typeof window !== 'undefined') {
     });
 }
 
-const config = createConfig({
+const metadata = {
+    name: 'Stablecoin',
+    description: 'AppKit Example',
+    url: 'https://web3modal.com', // origin must match your domain & subdomain
+    icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
+
+const config = defaultWagmiConfig({
     chains: [mainnet, filecoin, sepolia, filecoinCalibration],
+    projectId: projectId,
+    metadata,
+    ssr: true,
+    auth: {
+        email: false,
+        socials: undefined,
+        showWallets: true,
+        walletFeatures: false,
+    },
     transports: {
-        [mainnet.id]: http(),
+        [mainnet.id]: http(
+            `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`
+        ),
+        [sepolia.id]: http(
+            `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`
+        ),
         [filecoin.id]: http(),
-        [sepolia.id]: http(),
         [filecoinCalibration.id]: http(),
     },
-    connectors: [
-        metaMask(),
-        walletConnect({
-            projectId: projectId,
-            qrModalOptions: {
-                themeVariables: {
-                    '--wcm-font-family': "'Suisse International', sans-serif",
-                    '--wcm-accent-color': '#002133',
-                    '--wcm-background-color': '#5162FF',
-                },
-            },
-            showQrModal: false,
-        }),
-        injected(),
-    ],
 });
 
 createWeb3Modal({
     wagmiConfig: config,
     projectId,
-    enableAnalytics: false,
+    enableAnalytics: true,
+    enableSwaps: false,
+    enableOnramp: false,
 });
 
 function App({ Component, pageProps }: AppProps) {
