@@ -1,24 +1,24 @@
-// import { GraphClientProvider } from '@secured-finance/sf-graph-client';
 import type { StoryContext, StoryFn } from '@storybook/react';
-import React from 'react';
+import { useEffect } from 'react';
 import 'src/bigIntPatch';
 import { config } from './../src/stories/mocks/mockWallet';
-// import { Footer } from 'src/components/atoms';
-// import Header from 'src/components/organisms/Header/Header';
-// import { updateChainError } from 'src/store/blockchain';
 // import { connectWallet, updateBalance } from 'src/store/wallet';
 // import { account, connector, publicClient } from 'src/stories/mocks/mockWallet';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
+import { useDispatch } from 'react-redux';
+import Header from 'src/components/organisms/Header/Header';
+import { Layout } from 'src/components/templates';
+import { updateChainError } from 'src/store/blockchain';
 import timemachine from 'timemachine';
 import { WagmiProvider } from 'wagmi';
 
-// export const withAppLayout = (Story: StoryFn) => {
-//     return (
-//         <Layout navBar={<Header showNavigation />} footer={<Footer />}>
-//             <Story />
-//         </Layout>
-//     );
-// };
+export const withAppLayout = (Story: StoryFn) => {
+    return (
+        <Layout navBar={<Header  />}>
+            <Story />
+        </Layout>
+    );
+};
 
 export const withWalletProvider = (Story: StoryFn, Context: StoryContext) => {
     createWeb3Modal({
@@ -33,12 +33,6 @@ export const withWalletProvider = (Story: StoryFn, Context: StoryContext) => {
         </WagmiProvider>
     );
 };
-
-// export const WithGraphClient = (Story: StoryFn) => (
-//     <GraphClientProvider network='sepolia'>
-//         <Story />
-//     </GraphClientProvider>
-// );
 
 export const withMockDate = (Story: StoryFn, context: StoryContext) => {
     if (context?.parameters?.date?.value instanceof Date) {
@@ -64,15 +58,15 @@ export const withMockDate = (Story: StoryFn, context: StoryContext) => {
 //     return <Story />;
 // };
 
-// export const withChainErrorEnabled = (Story: StoryFn) => {
-//     const dispatch = useDispatch();
-//     useEffect(() => {
-//         const timeoutId = setTimeout(() => {
-//             dispatch(updateChainError(true));
-//         }, 300);
+export const withChainErrorEnabled = (Story: StoryFn) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            dispatch(updateChainError(true));
+        }, 300);
 
-//         return () => clearTimeout(timeoutId);
-//     }, [dispatch]);
+        return () => clearTimeout(timeoutId);
+    }, [dispatch]);
 
-//     return <Story />;
-// };
+    return <Story />;
+};

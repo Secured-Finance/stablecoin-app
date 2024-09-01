@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Page } from 'src/components/templates';
+import { Earn } from 'src/components/pages';
 
 function EntryPoint() {
     const [isMounted, setIsMounted] = useState(false);
@@ -12,15 +12,7 @@ function EntryPoint() {
         return null;
     }
 
-    return (
-        <Page name='earn'>
-            <div className='flex h-full flex-col items-center justify-center gap-2'>
-                <span className='text-16 text-black dark:text-white'>
-                    Welcome to the Stable Coin Project!
-                </span>
-            </div>
-        </Page>
-    );
+    return <Earn />;
 }
 
 export default EntryPoint;

@@ -1,5 +1,6 @@
-import { createContext, useCallback, useEffect } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ProtocolConfigMap, SatoshiClient } from 'satoshi-sdk';
 import {
     updateChainError,
     updateChainId,
@@ -8,8 +9,8 @@ import {
 } from 'src/store/blockchain';
 import { RootState } from 'src/store/types';
 import { getSupportedChainIds } from 'src/utils';
-import { hexToNumber } from 'viem';
-import { useAccount, usePublicClient } from 'wagmi';
+import { hexToNumber, WalletClient } from 'viem';
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 
 export const CACHED_PROVIDER_KEY = 'CACHED_PROVIDER_KEY';
 
@@ -21,7 +22,7 @@ declare global {
 }
 
 export interface SFContext {
-    satoshiClient?: string;
+    satoshiClient?: SatoshiClient;
 }
 
 export const Context = createContext<SFContext>({
@@ -32,17 +33,16 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const dispatch = useDispatch();
-    const { chain } = useAccount();
-    // const protocolConfig = ProtocolConfigMap.BEVM_MAINNET;
+    const { chain, isConnected } = useAccount();
+    const protocolConfig = ProtocolConfigMap.BEVM_MAINNET;
     const chainId = useSelector((state: RootState) => state.blockchain.chainId);
     const publicClient = usePublicClient({
         chainId: chainId,
     });
 
-    // const queryClient = useQueryClient();
-    // const client = useWalletClient();
+    const { data: client } = useWalletClient();
 
-    // const [satoshiClient, setSatoshiClient] = useState<SatoshiClient>();
+    const [satoshiClient, setSatoshiClient] = useState<SatoshiClient>();
 
     const dispatchChainError = useCallback(
         (chainId: number) => {
@@ -85,30 +85,30 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
         }
     }, [chain, dispatchChainError]);
 
-    // useEffect(() => {
-    //     const connectSatoshiClient = (walletClient: WalletClient) => {
-    //         const satoshiClient = new SatoshiClient(
-    //             protocolConfig,
-    //             walletClient as unknown as WalletClient
-    //         );
+    useEffect(() => {
+        const connectSatoshiClient = (walletClient: WalletClient) => {
+            const satoshiClient = new SatoshiClient(
+                protocolConfig,
+                walletClient
+            );
 
-    //         setSatoshiClient(previous => {
-    //             if (!previous) {
-    //                 return satoshiClient;
-    //             }
+            setSatoshiClient(previous => {
+                if (!previous) {
+                    return satoshiClient;
+                }
 
-    //             if (isConnected) {
-    //                 return satoshiClient;
-    //             }
+                if (isConnected) {
+                    return satoshiClient;
+                }
 
-    //             return previous;
-    //         });
-    //     };
+                return previous;
+            });
+        };
 
-    //     if (isConnected && client?.chain && client?.transport) {
-    //         connectSatoshiClient(client);
-    //     }
-    // }, [client?.transport, client, isConnected, protocolConfig]);
+        if (isConnected && client?.chain && client?.transport) {
+            connectSatoshiClient(client);
+        }
+    }, [client?.transport, client, isConnected, protocolConfig]);
 
     useEffect(() => {
         if (!publicClient) return;
@@ -128,7 +128,7 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [dispatch, handleChainChanged, publicClient]);
 
     return (
-        <Context.Provider value={{ satoshiClient: 'arpit' }}>
+        <Context.Provider value={{ satoshiClient }}>
             {children}
         </Context.Provider>
     );

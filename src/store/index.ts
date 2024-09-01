@@ -1,13 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import blockchain from './blockchain';
 import interactions from './interactions';
-import lastError from './lastError';
 import wallet from './wallet';
 
 export const rootReducers = {
     blockchain,
     interactions,
-    lastError,
     wallet,
 };
 
