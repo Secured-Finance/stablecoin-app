@@ -11,6 +11,7 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
 import { Layout } from 'src/components/templates';
+import SecuredFinanceProvider from 'src/contexts';
 import store from 'src/store';
 import { getAmplitudeApiKey, getWalletConnectId } from 'src/utils';
 import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
@@ -110,7 +111,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <CookiesProvider>
             <QueryClientProvider client={queryClient}>
-                <WagmiProvider config={config}>{children}</WagmiProvider>
+                <WagmiProvider config={config}>
+                    <SecuredFinanceProvider>{children}</SecuredFinanceProvider>
+                </WagmiProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </CookiesProvider>
