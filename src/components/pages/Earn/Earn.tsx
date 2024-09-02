@@ -1,29 +1,26 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { DepositWithdrawBox } from 'src/components/molecules';
 import { Page } from 'src/components/templates';
 import { useSPDeposit, useSPWithdraw } from 'src/hooks';
-import { amountFormatterToBase, CurrencySymbol, ZERO_BI } from 'src/utils';
+import { amountFormatterToBase, CurrencySymbol } from 'src/utils';
 
 export const Earn = () => {
-    const [depositAmount, setDepositAmount] = useState<bigint>(ZERO_BI);
-    const [withdrawAmount, setWithdrawAmount] = useState<bigint>(ZERO_BI);
-
     const currency = CurrencySymbol.BTCb;
-    const { onSPDeposit } = useSPDeposit(depositAmount);
-    const { onSPWithdraw } = useSPWithdraw(withdrawAmount);
+    const { onSPDeposit } = useSPDeposit();
+    const { onSPWithdraw } = useSPWithdraw();
 
     const handleSPDeposit = useCallback(
         async (value: string) => {
-            setDepositAmount(amountFormatterToBase[currency](value));
-            await onSPDeposit();
+            const depositAmount = amountFormatterToBase[currency](value);
+            await onSPDeposit(depositAmount);
         },
         [currency, onSPDeposit]
     );
 
     const handleSPWithdraw = useCallback(
         async (value: string) => {
-            setWithdrawAmount(amountFormatterToBase[currency](value));
-            await onSPWithdraw();
+            const withdrawAmount = amountFormatterToBase[currency](value);
+            await onSPWithdraw(withdrawAmount);
         },
         [currency, onSPWithdraw]
     );

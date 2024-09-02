@@ -7,6 +7,7 @@ import {
     currencyMap,
     CurrencySymbol,
     ordinaryFormat,
+    ZERO_BI,
 } from 'src/utils';
 import { useAccount } from 'wagmi';
 
@@ -32,7 +33,7 @@ export const DepositWithdrawBox = ({
     const isButtonDisabled = useMemo(
         () =>
             !amount ||
-            amount === '0' ||
+            amountFormatterToBase[currency](amount) === ZERO_BI ||
             amountFormatterToBase[currency](amount) > balance,
         [amount, balance, currency]
     );
