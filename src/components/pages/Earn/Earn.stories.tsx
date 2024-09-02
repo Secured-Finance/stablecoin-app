@@ -1,9 +1,6 @@
+import { withAppLayout, withWalletProvider } from '.storybook/decorators';
 import type { Meta, StoryFn } from '@storybook/react';
 import { RESPONSIVE_PARAMETERS } from 'src/../.storybook/constants';
-import {
-    withAppLayout,
-    withWalletProvider,
-} from 'src/../.storybook/decorators';
 import { Earn } from './Earn';
 
 export default {
