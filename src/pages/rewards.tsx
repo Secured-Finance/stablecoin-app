@@ -1,17 +1,6 @@
-import { useEffect, useState } from 'react';
 import { Page } from 'src/components/templates';
 
-function EntryPoint() {
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) {
-        return null;
-    }
-
+function Rewards() {
     return (
         <Page name='rewards'>
             <div className='flex h-full flex-col items-center justify-center gap-2'>
@@ -23,4 +12,4 @@ function EntryPoint() {
     );
 }
 
-export default EntryPoint;
+export default Rewards;

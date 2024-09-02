@@ -1,18 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Earn } from 'src/components/pages';
+import { Earn as EarnComponent } from 'src/components/pages';
 
-function EntryPoint() {
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) {
-        return null;
-    }
-
-    return <Earn />;
+function Earn() {
+    return <EarnComponent />;
 }
 
-export default EntryPoint;
+export default Earn;
