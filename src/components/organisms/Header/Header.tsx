@@ -62,6 +62,7 @@ const Header = () => {
                                     <DropdownMenuContent align='end'>
                                         <DropdownMenuItem
                                             onSelect={() => disconnect()}
+                                            className='cursor-pointer'
                                         >
                                             Disconnect Wallet
                                         </DropdownMenuItem>
