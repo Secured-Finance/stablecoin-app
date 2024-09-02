@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 
 export default {
     title: 'Design System/Colors',
@@ -7,7 +7,7 @@ export default {
     },
 } as Meta;
 
-export const Colors: Story = () => (
+export const Colors: StoryFn = () => (
     <div className='inline-grid w-full grid-cols-1 gap-4 bg-[#010316] p-10'>
         <div className='flex-col items-start justify-start'>
             <div className='flex flex-col items-start justify-start space-y-4'>

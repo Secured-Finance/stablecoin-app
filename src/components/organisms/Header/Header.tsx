@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SFLogo from 'src/assets/img/logo.svg';
-import { Tab } from 'src/components/atoms';
+import { NavTab } from 'src/components/atoms';
 import {
     Button,
     DropdownMenu,
@@ -92,7 +92,7 @@ const ItemLink = ({ text, link }: { text: string; link: string }) => {
 
     return (
         <Link href={link} className='h-full'>
-            <Tab text={text} active={useCheckActive()} />
+            <NavTab text={text} active={useCheckActive()} />
         </Link>
     );
 };

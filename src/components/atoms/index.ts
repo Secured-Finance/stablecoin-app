@@ -1,3 +1,3 @@
 export * from './InputBase';
-export * from './Tab';
+export * from './NavTab';
 export * from './ThemeSwitch';

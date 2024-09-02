@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 
 export default {
     title: 'Design System/Typography',
@@ -10,7 +10,7 @@ export default {
     },
 } as Meta;
 
-export const Typography: Story = () => (
+export const Typography: StoryFn = () => (
     <div className='grid grid-cols-2 place-items-stretch gap-y-4 text-white'>
         <div className='border-b'>Desktop</div>
         <div className='border-b'>Mobile</div>

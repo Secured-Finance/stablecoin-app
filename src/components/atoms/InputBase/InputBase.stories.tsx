@@ -7,8 +7,7 @@ export default {
     title: 'Atoms/InputBase',
     component: InputBase,
     args: {
-        className:
-            'typography-headline-4 h-14 w-full text-center text-neutral-8',
+        className: 'h-14 w-full text-center',
         onValueChange: () => {},
     },
 } as Meta<typeof InputBase>;

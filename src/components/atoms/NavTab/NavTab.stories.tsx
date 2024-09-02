@@ -1,9 +1,9 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import { Tab } from '.';
+import { NavTab } from '.';
 
 export default {
-    title: 'Atoms/Tab',
-    component: Tab,
+    title: 'Atoms/NavTab',
+    component: NavTab,
     args: {
         text: 'Tab',
         active: true,
@@ -13,11 +13,11 @@ export default {
             disable: true,
         },
     },
-} as Meta<typeof Tab>;
+} as Meta<typeof NavTab>;
 
-const Template: StoryFn<typeof Tab> = args => (
+const Template: StoryFn<typeof NavTab> = args => (
     <div className='max-w-[175px]'>
-        <Tab {...args} />
+        <NavTab {...args} />
     </div>
 );
 
