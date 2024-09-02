@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { DepositWithdrawBox } from 'src/components/molecules';
 import { Page } from 'src/components/templates';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'src/components/ui';
 import { useSPDeposit, useSPWithdraw } from 'src/hooks';
 import { amountFormatterToBase, CurrencySymbol } from 'src/utils';
 
@@ -28,23 +29,28 @@ export const Earn = () => {
     return (
         <Page name='earn'>
             <div className='flex h-full flex-col items-center justify-center gap-4'>
-                <span className='text-16 text-black dark:text-white'>
-                    Welcome to the Stable Coin Project!
-                </span>
-                <div className='flex flex-col gap-10'>
-                    <DepositWithdrawBox
-                        type='Deposit'
-                        currency={currency}
-                        onClick={handleSPDeposit}
-                        balance={BigInt('141214214')}
-                    />
-                    <DepositWithdrawBox
-                        type='Withdraw'
-                        currency={currency}
-                        onClick={handleSPWithdraw}
-                        balance={BigInt('110000000')}
-                    />
-                </div>
+                <Tabs defaultValue='deposit' className='w-[560px]'>
+                    <TabsList className='grid w-full grid-cols-2'>
+                        <TabsTrigger value='deposit'>Deposit</TabsTrigger>
+                        <TabsTrigger value='withdraw'>Withdraw</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value='deposit' className='pt-4'>
+                        <DepositWithdrawBox
+                            type='Deposit'
+                            currency={currency}
+                            onClick={handleSPDeposit}
+                            balance={BigInt('141214214')}
+                        />
+                    </TabsContent>
+                    <TabsContent value='withdraw' className='pt-4'>
+                        <DepositWithdrawBox
+                            type='Withdraw'
+                            currency={currency}
+                            onClick={handleSPWithdraw}
+                            balance={BigInt('110000000')}
+                        />
+                    </TabsContent>
+                </Tabs>
             </div>
         </Page>
     );
