@@ -39,7 +39,7 @@ export const DepositWithdrawBox = ({
     );
 
     return (
-        <div className='flex w-[560px] flex-col gap-2'>
+        <div className='flex w-full flex-col gap-2'>
             <div className='flex flex-col gap-1'>
                 <div className='flex items-center justify-between'>
                     <span>{`${type} ${currency}`}</span>
