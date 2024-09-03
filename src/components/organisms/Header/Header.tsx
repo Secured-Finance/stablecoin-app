@@ -9,6 +9,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
     Switch,
 } from 'src/components/ui';
@@ -65,6 +66,18 @@ const Header = () => {
                                             className='cursor-pointer'
                                         >
                                             Disconnect Wallet
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            onSelect={() =>
+                                                window.open(
+                                                    `https://etherscan.io/address/${address.toLowerCase()}`,
+                                                    '_blank'
+                                                )
+                                            }
+                                            className='cursor-pointer'
+                                        >
+                                            View on Etherscan
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
