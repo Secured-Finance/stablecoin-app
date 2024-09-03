@@ -54,7 +54,7 @@ export const DepositWithdrawBox = ({
                         </span>
                     </div>
                 </div>
-                <div className='flex h-10 w-full items-center justify-between overflow-hidden rounded-lg border'>
+                <div className='flex h-10 w-full items-center justify-between overflow-hidden rounded-lg border border-foreground'>
                     <div className='flex w-full justify-between gap-2 px-2'>
                         <InputBase
                             value={amount}
@@ -63,7 +63,7 @@ export const DepositWithdrawBox = ({
                         />
                         <Button size='badge'>MAX</Button>
                     </div>
-                    <div className='flex h-full w-fit items-center bg-black px-3 text-white dark:bg-white dark:text-black'>
+                    <div className='flex h-full w-fit items-center bg-primary px-3 text-primary-foreground'>
                         {currency}
                     </div>
                 </div>

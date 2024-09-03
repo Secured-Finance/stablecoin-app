@@ -39,7 +39,7 @@ export const Earn = () => {
         <Page name='earn'>
             <div className='flex h-full flex-col items-center justify-center gap-4'>
                 <Card className='w-[560px] overflow-hidden'>
-                    <CardHeader className='bg-black text-white dark:bg-white dark:text-black'>
+                    <CardHeader className='bg-primary text-background'>
                         <CardTitle>Manage BTC.b Stability Pool</CardTitle>
                     </CardHeader>
                     <CardContent className='flex flex-col'>

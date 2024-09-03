@@ -32,7 +32,7 @@ const Header = () => {
             <div className='relative'>
                 <nav
                     data-cy='header'
-                    className='h-16 w-full border-b border-black-20 dark:border-white-20'
+                    className='h-16 w-full border-b border-foreground/20'
                 >
                     <div className='flex flex-row items-center justify-between'>
                         <Link href='/' className='flex pl-7'>
