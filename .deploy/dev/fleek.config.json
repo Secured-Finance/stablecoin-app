@@ -2,7 +2,7 @@
     "sites": [
       {
         "slug": "dev-stablecoin",
-        "distDir": "",
+        "distDir": ".deploy/dev",
         "buildCommand": ""
       }
     ]

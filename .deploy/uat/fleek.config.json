@@ -2,7 +2,7 @@
     "sites": [
       {
         "slug": "uat-stablecoin",
-        "distDir": "",
+        "distDir": ".deploy/uat",
         "buildCommand": ""
       }
     ]
