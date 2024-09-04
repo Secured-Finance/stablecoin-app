@@ -7,8 +7,9 @@ import {
     http,
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { sepolia } from 'wagmi';
-import { MockConnector } from 'wagmi/connectors/mock';
+import { createConfig } from 'wagmi';
+import { sepolia } from 'wagmi/chains';
+import { mock } from 'wagmi/connectors';
 
 const privateKey =
     '0xde926db3012af759b4f24b5a51ef6afa397f04670f634aa4f48d4480417007f3';
@@ -28,17 +29,20 @@ publicClient.waitForTransactionReceipt = async (
     } as unknown as TransactionReceipt;
 };
 
-const walletClient = createWalletClient({
+export const walletClient = createWalletClient({
     account: account,
     chain: sepolia,
     transport: http(),
 });
 
-export const connector = new MockConnector({
+const connector = mock({
+    accounts: [account.address],
+});
+
+export const config = createConfig({
     chains: [sepolia],
-    options: {
-        chainId: sepolia.id,
-        walletClient: walletClient,
-        flags: { isAuthorized: true },
+    transports: {
+        [sepolia.id]: http(),
     },
+    connectors: [connector],
 });

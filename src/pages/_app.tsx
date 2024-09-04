@@ -2,27 +2,29 @@ import * as amplitude from '@amplitude/analytics-browser';
 import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-browser';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
+import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
+import { Layout } from 'src/components/templates';
+import SecuredFinanceProvider from 'src/contexts';
 import store from 'src/store';
-import {
-    getAmplitudeApiKey,
-    getSupportedChainIds,
-    getSupportedNetworks,
-    getWalletConnectId,
-} from 'src/utils';
-import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+import { getAmplitudeApiKey, getWalletConnectId } from 'src/utils';
+import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
+import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 
+const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
+    ssr: false,
+});
+
 const projectId = getWalletConnectId();
+
+const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
 
 const queryClient = new QueryClient();
 
@@ -39,45 +41,42 @@ if (typeof window !== 'undefined') {
     });
 }
 
-const chainIds = getSupportedChainIds();
-const networks = getSupportedNetworks().filter(chain =>
-    chainIds.includes(chain.id)
-);
+const metadata = {
+    name: 'Stablecoin',
+    description: 'AppKit Example',
+    url: 'https://web3modal.com', // origin must match your domain & subdomain
+    icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
 
-const { chains, publicClient } = configureChains(networks, [
-    alchemyProvider({
-        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '',
-    }),
-    publicProvider(),
-]);
+const config = defaultWagmiConfig({
+    chains: [mainnet, filecoin, sepolia, filecoinCalibration],
+    projectId: projectId,
+    metadata,
+    ssr: true,
+    auth: {
+        email: false,
+        socials: undefined,
+        showWallets: true,
+        walletFeatures: false,
+    },
+    transports: {
+        [mainnet.id]: http(
+            `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`
+        ),
+        [sepolia.id]: http(
+            `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`
+        ),
+        [filecoin.id]: http(),
+        [filecoinCalibration.id]: http(),
+    },
+});
 
-const config = createConfig({
-    autoConnect: false,
-    publicClient: publicClient,
-    connectors: [
-        new MetaMaskConnector({ chains }),
-        new WalletConnectConnector({
-            chains,
-            options: {
-                projectId: projectId,
-                qrModalOptions: {
-                    themeVariables: {
-                        '--wcm-font-family':
-                            "'Suisse International', sans-serif",
-                        '--wcm-accent-color': '#002133',
-                        '--wcm-background-color': '#5162FF',
-                    },
-                },
-            },
-        }),
-        new InjectedConnector({
-            chains,
-            options: {
-                name: 'Injected',
-                shimDisconnect: true,
-            },
-        }),
-    ],
+createWeb3Modal({
+    wagmiConfig: config,
+    projectId,
+    enableAnalytics: true,
+    enableSwaps: false,
+    enableOnramp: false,
 });
 
 function App({ Component, pageProps }: AppProps) {
@@ -92,7 +91,16 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             <Provider store={store}>
                 <Providers>
-                    <Component {...pageProps} />
+                    <ThemeProvider
+                        attribute='class'
+                        defaultTheme='light'
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <Layout navBar={<Header />}>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ThemeProvider>
                 </Providers>
             </Provider>
         </>
@@ -103,7 +111,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <CookiesProvider>
             <QueryClientProvider client={queryClient}>
-                <WagmiConfig config={config}>{children}</WagmiConfig>
+                <WagmiProvider config={config}>
+                    <SecuredFinanceProvider>{children}</SecuredFinanceProvider>
+                </WagmiProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </CookiesProvider>
