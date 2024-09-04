@@ -39,18 +39,9 @@ jobs:
           name: WebApp
           path: .deploy/${{ vars.FLEEK_ENV }}/build
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-            node-version-file: '.nvmrc'
-            cache: 'npm'
-
       - name: Install Fleek CLI
         run: npm i -g @fleek-platform/cli
 
       - name: Deploy Site
         id: deploy
         run: fleek sites deploy --config .deploy/${{ vars.FLEEK_ENV }}/fleek.config.json
-
-      - name: Get the output url
-        run: echo "Deploy url is ${{ steps.deploy.outputs }}"
