@@ -50,7 +50,7 @@ jobs:
 
       - name: Deploy Site
         id: deploy
-        run: fleek sites deploy --config fleek.${{ vars.FLEEK_ENV }}.json --working-directory .deploy/${{ vars.FLEEK_ENV }}
+        run: fleek sites deploy --config fleek.${{ vars.FLEEK_ENV }}.json
 
       - name: Get the output url
         run: echo "Deploy url is ${{ steps.deploy.outputs }}"
