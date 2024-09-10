@@ -8,8 +8,8 @@ export default {
     component: DepositWithdrawBox,
     args: {
         type: 'Deposit',
-        currency: CurrencySymbol.BTCb,
-        balance: BigInt('11214214'),
+        currency: CurrencySymbol.FIL,
+        balance: BigInt('112142140000000000000000'),
         onClick: () => {},
     },
     decorators: [withWalletProvider],

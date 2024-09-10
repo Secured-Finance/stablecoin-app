@@ -15,7 +15,7 @@ import { useSPDeposit, useSPWithdraw } from 'src/hooks';
 import { amountFormatterToBase, CurrencySymbol } from 'src/utils';
 
 export const Earn = () => {
-    const currency = CurrencySymbol.BTCb;
+    const currency = CurrencySymbol.FIL;
     const { onSPDeposit } = useSPDeposit();
     const { onSPWithdraw } = useSPWithdraw();
 

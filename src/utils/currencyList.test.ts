@@ -1,8 +1,7 @@
 import {
     filBytes32,
-    usdcBytes32,
-    wbtcBytes32,
-    wfilBytes32,
+    ifilBytes32,
+    tfilBytes32,
 } from 'src/stories/mocks/fixtures';
 import {
     CurrencySymbol,
@@ -16,9 +15,8 @@ import {
     toCurrencySymbol,
 } from './currencyList';
 
-const wfil = currencyMap.WFIL;
 const fil = currencyMap.FIL;
-const wbtc = currencyMap.WBTC;
+const tfil = currencyMap.tFIL;
 
 describe('currencyList toBaseUnit', () => {
     it('should return the value in wei for fil', () => {
@@ -36,33 +34,24 @@ describe('currencyList toBaseUnit', () => {
     });
 
     it('should return the value in attoFil for FIL', () => {
-        expect(wfil.toBaseUnit(1).toString()).toEqual('1000000000000000000');
-        expect(wfil.toBaseUnit(1.23).toString()).toEqual('1230000000000000000');
-        expect(wfil.toBaseUnit(1.23456789).toString()).toEqual(
+        expect(tfil.toBaseUnit(1).toString()).toEqual('1000000000000000000');
+        expect(tfil.toBaseUnit(1.23).toString()).toEqual('1230000000000000000');
+        expect(tfil.toBaseUnit(1.23456789).toString()).toEqual(
             '1234567890000000000'
         );
-        expect(wfil.toBaseUnit(0.00000001).toString()).toEqual('10000000000');
-        expect(wfil.toBaseUnit(0.000000000001).toString()).toEqual('1000000');
-        expect(wfil.toBaseUnit(0.000000000000000001).toString()).toEqual('1');
+        expect(tfil.toBaseUnit(0.00000001).toString()).toEqual('10000000000');
+        expect(tfil.toBaseUnit(0.000000000001).toString()).toEqual('1000000');
+        expect(tfil.toBaseUnit(0.000000000000000001).toString()).toEqual('1');
     });
 
     it('should return 0 if the input value is inferior to the base blockchain unit', () => {
-        expect(wfil.toBaseUnit(0.0000000000000000001).toString()).toEqual('0');
-        expect(wfil.toBaseUnit(0.0000000000000000009).toString()).toEqual('0');
-        expect(wfil.toBaseUnit(0.000000000000000000001).toString()).toEqual(
+        expect(tfil.toBaseUnit(0.0000000000000000001).toString()).toEqual('0');
+        expect(tfil.toBaseUnit(0.0000000000000000009).toString()).toEqual('0');
+        expect(tfil.toBaseUnit(0.000000000000000000001).toString()).toEqual(
             '0'
         );
         expect(fil.toBaseUnit(0.0000000000000000001).toString()).toEqual('0');
         expect(fil.toBaseUnit(0.000000000000000000001).toString()).toEqual('0');
-    });
-
-    it('should return the value in satoshi for WBTC', () => {
-        expect(wbtc.toBaseUnit(1).toString()).toEqual('100000000');
-        expect(wbtc.toBaseUnit(1.23).toString()).toEqual('123000000');
-        expect(wbtc.toBaseUnit(1.23456789).toString()).toEqual('123456789');
-        expect(wbtc.toBaseUnit(0.00000001).toString()).toEqual('1');
-        expect(wbtc.toBaseUnit(0.000000000001).toString()).toEqual('0');
-        expect(wbtc.toBaseUnit(0.000000000000000001).toString()).toEqual('0');
     });
 });
 
@@ -88,32 +77,20 @@ describe('currencyList fromBaseUnit', () => {
 
     it('should return the value in FIL for attoFil amount', () => {
         expect(
-            wfil.fromBaseUnit(BigInt('1000000000000000000')).toString()
+            tfil.fromBaseUnit(BigInt('1000000000000000000')).toString()
         ).toEqual('1');
         expect(
-            wfil.fromBaseUnit(BigInt('1230000000000000000')).toString()
+            tfil.fromBaseUnit(BigInt('1230000000000000000')).toString()
         ).toEqual('1.23');
         expect(
-            wfil.fromBaseUnit(BigInt('1234567890000000000')).toString()
+            tfil.fromBaseUnit(BigInt('1234567890000000000')).toString()
         ).toEqual('1.23456789');
-        expect(wfil.fromBaseUnit(BigInt('10000000000')).toString()).toEqual(
+        expect(tfil.fromBaseUnit(BigInt('10000000000')).toString()).toEqual(
             '1e-8'
         );
-        expect(wfil.fromBaseUnit(BigInt('1000000')).toString()).toEqual(
+        expect(tfil.fromBaseUnit(BigInt('1000000')).toString()).toEqual(
             '1e-12'
         );
-    });
-
-    it('should return the value in WBTC for satoshi amount', () => {
-        expect(wbtc.fromBaseUnit(BigInt('100000000')).toString()).toEqual('1');
-        expect(wbtc.fromBaseUnit(BigInt('123000000')).toString()).toEqual(
-            '1.23'
-        );
-        expect(wbtc.fromBaseUnit(BigInt('123456789')).toString()).toEqual(
-            '1.23456789'
-        );
-        expect(wbtc.fromBaseUnit(BigInt('1')).toString()).toEqual('1e-8');
-        expect(wbtc.fromBaseUnit(BigInt('0')).toString()).toEqual('0');
     });
 });
 
@@ -122,8 +99,11 @@ describe('toCurrency', () => {
         expect(toCurrency(CurrencySymbol.FIL)).toEqual(
             currencyMap.FIL.toCurrency()
         );
-        expect(toCurrency(CurrencySymbol.WFIL)).toEqual(
-            currencyMap.WFIL.toCurrency()
+        expect(toCurrency(CurrencySymbol.iFIL)).toEqual(
+            currencyMap.iFIL.toCurrency()
+        );
+        expect(toCurrency(CurrencySymbol.tFIL)).toEqual(
+            currencyMap.tFIL.toCurrency()
         );
     });
 });
@@ -140,7 +120,7 @@ describe('currencyList amountFormatterToBase', () => {
     });
 
     it('should return the value in attoFil for FIL', () => {
-        const format = amountFormatterToBase[CurrencySymbol.WFIL];
+        const format = amountFormatterToBase[CurrencySymbol.FIL];
         expect(format(1).toString()).toEqual('1000000000000000000');
         expect(format(1.23).toString()).toEqual('1230000000000000000');
         expect(format(1.23456789).toString()).toEqual('1234567890000000000');
@@ -150,22 +130,12 @@ describe('currencyList amountFormatterToBase', () => {
     });
 
     it('should return 0 if the input value is inferior to the base blockchain unit', () => {
-        const format = amountFormatterToBase[CurrencySymbol.WFIL];
+        const format = amountFormatterToBase[CurrencySymbol.FIL];
         expect(format(0.0000000000000000001).toString()).toEqual('0');
         expect(format(0.0000000000000000009).toString()).toEqual('0');
         expect(format(0.000000000000000000001).toString()).toEqual('0');
         expect(format(0.0000000000000000001).toString()).toEqual('0');
         expect(format(0.000000000000000000001).toString()).toEqual('0');
-    });
-
-    it('should return the value in satoshi for WBTC', () => {
-        const format = amountFormatterToBase[CurrencySymbol.WBTC];
-        expect(format(1).toString()).toEqual('100000000');
-        expect(format(1.23).toString()).toEqual('123000000');
-        expect(format(1.23456789).toString()).toEqual('123456789');
-        expect(format(0.00000001).toString()).toEqual('1');
-        expect(format(0.000000000001).toString()).toEqual('0');
-        expect(format(0.000000000000000001).toString()).toEqual('0');
     });
 });
 
@@ -187,7 +157,7 @@ describe('currencyList amountFormatterFromBase', () => {
     });
 
     it('should return the value in FIL for attoFil amount', () => {
-        const format = amountFormatterFromBase[CurrencySymbol.WFIL];
+        const format = amountFormatterFromBase[CurrencySymbol.FIL];
         expect(format(BigInt('1000000000000000000')).toString()).toEqual('1');
         expect(format(BigInt('1230000000000000000')).toString()).toEqual(
             '1.23'
@@ -198,24 +168,13 @@ describe('currencyList amountFormatterFromBase', () => {
         expect(format(BigInt('10000000000')).toString()).toEqual('1e-8');
         expect(format(BigInt('1000000')).toString()).toEqual('1e-12');
     });
-
-    it('should return the value in WBTC for satoshi amount', () => {
-        const format = amountFormatterFromBase[CurrencySymbol.WBTC];
-        expect(format(BigInt('100000000')).toString()).toEqual('1');
-        expect(format(BigInt('123000000')).toString()).toEqual('1.23');
-        expect(format(BigInt('123456789')).toString()).toEqual('1.23456789');
-        expect(format(BigInt('100000000000')).toString()).toEqual('1000');
-        expect(format(BigInt('1')).toString()).toEqual('1e-8');
-        expect(format(BigInt('0')).toString()).toEqual('0');
-    });
 });
 
 describe('toCurrencySymbol', () => {
     it('should convert a currency string to a currency symbol', () => {
         expect(toCurrencySymbol('FIL')).toEqual(CurrencySymbol.FIL);
-        expect(toCurrencySymbol('WFIL')).toEqual(CurrencySymbol.WFIL);
-        expect(toCurrencySymbol('WBTC')).toEqual(CurrencySymbol.WBTC);
-        expect(toCurrencySymbol('USDC')).toEqual(CurrencySymbol.USDC);
+        expect(toCurrencySymbol('iFIL')).toEqual(CurrencySymbol.iFIL);
+        expect(toCurrencySymbol('tFIL')).toEqual(CurrencySymbol.tFIL);
     });
 
     it('should return undefined if the currency is not supported', () => {
@@ -228,9 +187,8 @@ describe('toCurrencySymbol', () => {
 describe('hexToCurrencySymbol', () => {
     it('should convert a hex string to a currency symbol', () => {
         expect(hexToCurrencySymbol(filBytes32)).toEqual(CurrencySymbol.FIL);
-        expect(hexToCurrencySymbol(wfilBytes32)).toEqual(CurrencySymbol.WFIL);
-        expect(hexToCurrencySymbol(wbtcBytes32)).toEqual(CurrencySymbol.WBTC);
-        expect(hexToCurrencySymbol(usdcBytes32)).toEqual(CurrencySymbol.USDC);
+        expect(hexToCurrencySymbol(ifilBytes32)).toEqual(CurrencySymbol.iFIL);
+        expect(hexToCurrencySymbol(tfilBytes32)).toEqual(CurrencySymbol.tFIL);
     });
 
     it('should return undefined if the currency is not supported', () => {
