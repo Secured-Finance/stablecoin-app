@@ -1,6 +1,6 @@
-import { Currency } from './currency';
+import { Token } from './token';
 
-export class IFIL extends Currency {
+export class IFIL extends Token {
     private constructor() {
         super(18, 'iFIL', 'Infinity Pool Staked FIL');
     }

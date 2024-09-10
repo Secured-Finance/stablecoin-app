@@ -1,6 +1,7 @@
 import { BigNumber as BigNumberJS } from 'bignumber.js';
 import FilIcon from 'src/assets/coins/fil.svg';
 import IFilIcon from 'src/assets/coins/ifil.svg';
+import SFUsdIcon from 'src/assets/coins/sfusd.svg';
 import ZcFilIcon from 'src/assets/coins/zc-fil.svg';
 import { SvgIcon } from 'src/types';
 import { fromBytes32 } from 'src/utils';
@@ -9,6 +10,7 @@ import {
     Currency as CurrencyInterface,
     FIL,
     IFIL,
+    SFUSD,
     TFIL,
 } from 'src/utils/currencies';
 
@@ -20,6 +22,7 @@ export enum CurrencySymbol {
     FIL = 'FIL',
     iFIL = 'iFIL',
     tFIL = 'tFIL',
+    sfUSD = 'sfUSD',
 }
 
 export const currencyMap: Readonly<
@@ -71,6 +74,21 @@ export const currencyMap: Readonly<
         toCurrency: () => IFIL.onChain(),
         roundingDecimal: 0,
         longName: 'Infinity Pool Staked FIL',
+    },
+    [CurrencySymbol.sfUSD]: {
+        index: 3,
+        symbol: CurrencySymbol.sfUSD,
+        name: 'SF Stable Coin',
+        icon: SFUsdIcon,
+        coinGeckoId: '', // TODO
+        isCollateral: false,
+        toBaseUnit: (amount: number | string) =>
+            convertToBlockchainUnit(amount, SFUSD.onChain()),
+        fromBaseUnit: (amount: bigint) =>
+            convertFromBlockchainUnit(amount, SFUSD.onChain()),
+        toCurrency: () => SFUSD.onChain(),
+        roundingDecimal: 0,
+        longName: 'SF Stable Coin',
     },
 };
 
@@ -132,6 +150,8 @@ export function toCurrencySymbol(ccy: string) {
             return CurrencySymbol.tFIL;
         case CurrencySymbol.iFIL:
             return CurrencySymbol.iFIL;
+        case CurrencySymbol.sfUSD:
+            return CurrencySymbol.sfUSD;
         default:
             return undefined;
     }
