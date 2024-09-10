@@ -8,16 +8,19 @@ interface NavTabProps {
 export const NavTab = ({ text, active = false }: NavTabProps) => {
     return (
         <div
-            className='group flex h-16 w-fit cursor-pointer flex-col'
+            className='group relative flex h-full w-[100px] cursor-pointer flex-col'
             data-testid={`${text}-nav-tab`}
         >
-            <div className='flex flex-grow items-center justify-center px-10 text-3.5 uppercase leading-4'>
-                {text}
+            <div className='flex h-full items-center justify-center'>
+                <span className='text-3.5 capitalize leading-4'>{text}</span>
             </div>
             <span
-                className={clsx('h-1 w-full group-hover:bg-foreground/50', {
-                    'bg-foreground': active,
-                })}
+                className={clsx(
+                    'absolute bottom-0 h-1 w-full group-hover:bg-foreground/50',
+                    {
+                        'bg-foreground': active,
+                    }
+                )}
             ></span>
         </div>
     );
