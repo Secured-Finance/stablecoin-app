@@ -1,4 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
+import { useRouter } from 'next/router';
 import { Page } from 'src/components/templates';
 import { Button, DataTable } from 'src/components/ui';
 import {
@@ -125,15 +126,15 @@ export const columns: ColumnDef<Payment>[] = [
     {
         id: 'actions',
         header: '',
-        cell: ({ row }) => {
+        cell: function CellComponent({ row }) {
+            const router = useRouter();
             const currency = row.original.currency;
 
             return (
                 <div className='flex w-fit items-center px-4'>
                     <Button
                         className='px-10 py-2'
-                        // eslint-disable-next-line no-console
-                        onClick={() => console.log('clicked', currency)}
+                        onClick={() => router.push(`/earn/${currency}`)}
                     >
                         Manage
                     </Button>
