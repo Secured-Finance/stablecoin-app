@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import { CollateralConfig } from 'satoshi-sdk';
+// import FIL from 'src/assets/collateral/FIL.svg';
 import {
     Button,
     Card,
@@ -10,10 +13,9 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from 'src/components/ui';
-import { CurrencySymbol } from 'src/utils';
 
 interface CoinDetailsCardProps {
-    currency: CurrencySymbol;
+    currency: CollateralConfig;
 }
 
 const details = [
@@ -41,32 +43,57 @@ const details = [
     },
 ];
 
+const metadata = [
+    {
+        label: 'Total Value Locked',
+        value: '$10.2m',
+    },
+    {
+        label: 'Minted sfUSD',
+        value: '3.20m/100.00m',
+    },
+    {
+        label: 'MCR',
+        value: '150%',
+    },
+];
+
 export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
     return (
-        <Card className='w-[260px]'>
-            <CardHeader>
-                <CardTitle className='text-center text-6 font-semibold leading-6'>
-                    {currency}
+        <Card className='flex-1 rounded-xl border-0 shadow-md laptop:min-w-[260px]'>
+            <CardHeader className='relative py-[21px]'>
+                <CardTitle className='text-center text-8 font-semibold leading-10'>
+                    {currency.NAME}
                 </CardTitle>
             </CardHeader>
-            <CardContent className='grid w-full gap-4 px-0'>
-                <div className='flex flex-col gap-[6px] px-3'>
-                    {details.map((detail, index) => (
-                        <div key={index}>
-                            <DetailBox {...detail} />
-                        </div>
+            <CardContent className='grid w-full gap-4 px-3 pb-4'>
+                <ul className='flex flex-col'>
+                    {metadata.map((meta, index) => (
+                        <li
+                            key={index}
+                            className='flex justify-between border-b border-neutral-50 py-[5px] text-3 leading-4.5 last-of-type:border-b-0'
+                        >
+                            <span>{meta.label}</span>
+                            <span className='font-semibold'>{meta.value}</span>
+                        </li>
                     ))}
-                </div>
-                <div className='flex items-center justify-between rounded-[18px] bg-foreground py-2.5 pl-2.5 pr-1.5 text-background'>
+                </ul>
+                <ul className='flex flex-col gap-1.5'>
+                    {details.map((detail, index) => (
+                        <li key={index}>
+                            <DetailBox {...detail} />
+                        </li>
+                    ))}
+                </ul>
+                <div className='flex items-center justify-between rounded-xl px-3 py-2.5 text-neutral-900'>
                     <span className='text-4 font-bold leading-4.5'>APR</span>
                     <div className='flex gap-1'>
-                        <span className='font-numerical text-3.5 font-bold leading-5'>
-                            1.81% {'->'} 3.63%
-                        </span>
                         <TooltipProvider delayDuration={300}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <span className='flex h-[22px] w-[22px] cursor-pointer rounded-full bg-background'></span>
+                                    <span className='font-numerical text-3.5 font-bold leading-5'>
+                                        1.81% — 3.63%
+                                    </span>
                                 </TooltipTrigger>
                                 <TooltipContent
                                     className='max-w-[360px]'
@@ -84,7 +111,9 @@ export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
                 </div>
             </CardContent>
             <CardFooter className='px-3'>
-                <Button className='w-full'>{`Choose ${currency}`}</Button>
+                <Link href={`/vaults/${currency.ADDRESS}`} className='w-full'>
+                    <Button className='w-full text-3.5 text-neutral-50'>{`Choose ${currency.NAME}`}</Button>
+                </Link>
             </CardFooter>
         </Card>
     );
@@ -100,7 +129,7 @@ const DetailBox = ({
     content: string;
 }) => {
     return (
-        <div className='flex w-full justify-between rounded-xl bg-foreground px-3 py-[3px] text-background'>
+        <div className='flex w-full justify-between rounded-xl bg-neutral-200 px-3 py-1 text-neutral-900'>
             {content ? (
                 <TooltipProvider delayDuration={300}>
                     <Tooltip>

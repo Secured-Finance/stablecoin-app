@@ -1,4 +1,5 @@
 import * as jest from 'jest-mock';
+import { CollateralConfig } from 'satoshi-sdk';
 
 export const mockUseSF = () => {
     const mockSecuredFinance = {
@@ -13,6 +14,18 @@ export const mockUseSF = () => {
                     BigInt('3000000000000000000'),
                 ])
             ),
+        },
+        TroveManager: {
+            doDeposit: ({
+                collateral,
+                addedCollAmt,
+            }: {
+                collateral: CollateralConfig;
+                addedCollAmt: bigint;
+            }) => {
+                return { status: 200, args: { collateral, addedCollAmt } };
+            },
+            doWithdraw: jest.fn(),
         },
     };
 

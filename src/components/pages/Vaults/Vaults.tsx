@@ -1,36 +1,45 @@
-import { useSelector } from 'react-redux';
+import { Button } from '@/components/ui';
+import Link from 'next/link';
+import { ProtocolConfigMap } from 'satoshi-sdk';
 import { CoinDetailsCard } from 'src/components/molecules';
 import { Page } from 'src/components/templates';
-import { RootState } from 'src/store/types';
-import { CurrencySymbol } from 'src/utils';
-import { useAccount } from 'wagmi';
 
 export const Vaults = () => {
-    const { address, isConnecting, isDisconnected } = useAccount();
-    const chainId = useSelector((state: RootState) => state.blockchain.chainId);
-    const block = useSelector(
-        (state: RootState) => state.blockchain.latestBlock
-    );
+    const protocolConfig = ProtocolConfigMap.BITLAYER_MAINNET;
+    const collateralCurrencies = protocolConfig.COLLATERALS;
 
     return (
         <Page name='vaults'>
-            <div className='flex h-full flex-col items-center justify-center gap-2'>
-                <span className='text-16 text-foreground'>
-                    Welcome to the Stable Coin Project!
-                </span>
-                <span>
-                    {isConnecting
-                        ? 'Connecting...'
-                        : isDisconnected
-                        ? 'Disconnected'
-                        : address}
-                </span>
-                <span>{chainId}</span>
-                <span>{block}</span>
-                <div className='flex flex-row gap-3'>
-                    <CoinDetailsCard currency={CurrencySymbol.FIL} />
-                    <CoinDetailsCard currency={CurrencySymbol.iFIL} />
-                </div>
+            <div className='mx-auto flex h-full flex-col items-center justify-center text-neutral-900 laptop:max-w-[663px] laptop:gap-9'>
+                <h1 className='typography-desktop-h-6'>
+                    Choose a Vault to mint sfUSD
+                </h1>
+                <section className='w-full'>
+                    <div className='flex items-center justify-between rounded-xl px-5 py-3 text-neutral-700 shadow-lg'>
+                        <h2 className='typography-desktop-body-2'>
+                            Earn up to <b>3.69% APR on</b> any sfUSD you
+                            <br />
+                            mint by depositing into the Stability Pool.
+                        </h2>
+                        <aside className='flex flex-col items-center gap-2'>
+                            <Link href='/earn'>
+                                <Button className='bg-neutral-800 text-4.5 text-neutral-50'>
+                                    Take me there
+                                </Button>
+                            </Link>
+                            <Link href='/' className='text-3 leading-5'>
+                                <span className='underline'>
+                                    More opportunities
+                                </span>
+                            </Link>
+                        </aside>
+                    </div>
+                </section>
+                <section className='flex w-full flex-row laptop:gap-[22px]'>
+                    {collateralCurrencies.map(ccy => (
+                        <CoinDetailsCard key={ccy.ADDRESS} currency={ccy} />
+                    ))}
+                </section>
             </div>
         </Page>
     );

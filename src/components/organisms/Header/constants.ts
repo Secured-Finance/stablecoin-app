@@ -1,7 +1,7 @@
 export const LINKS = [
     {
         text: 'Vaults',
-        link: '/',
+        link: '/vaults',
     },
     {
         text: 'Earn',
