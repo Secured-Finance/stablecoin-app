@@ -9,7 +9,7 @@ export const Page = ({
 }) => {
     return (
         <div
-            className='desktop:max-w-[1920px relative mx-auto mt-3 flex flex-col gap-2 tablet:min-w-[728px] laptop:mt-12 laptop:min-w-[970px] laptop:gap-4 laptop:px-6 desktop:min-w-[1120px]'
+            className='relative mx-auto mb-24 mt-3 flex flex-col gap-2 tablet:min-w-[728px] laptop:mt-[50px] laptop:min-w-[970px] laptop:gap-4 laptop:px-6 desktop:min-w-[1120px] desktop:max-w-[1920px]'
             data-testid={name}
         >
             <div className='flex flex-col gap-6'>

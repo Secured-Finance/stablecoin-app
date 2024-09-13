@@ -1,21 +1,21 @@
-import { mockUseSF } from '@/stories/mocks/useSFMock';
 import { useCallback } from 'react';
-import { CollateralConfig } from 'satoshi-sdk';
+import { mockUseSF } from 'src/stories/mocks/useSFMock';
 
 export const useSPTroveDeposit = () => {
     const securedFinance = mockUseSF();
 
     const handleSPTroveDeposit = useCallback(
-        async (collateral: CollateralConfig, addedCollAmt: bigint) => {
+        async (collateral: string, addedCollAmt: bigint) => {
             if (!securedFinance) {
                 return;
             }
 
             try {
-                const receipt = await securedFinance.TroveManager.doDeposit({
+                const receipt = securedFinance.TroveManager.doDeposit({
                     collateral,
                     addedCollAmt,
                 });
+
                 return receipt;
             } catch (err) {}
         },

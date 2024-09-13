@@ -2,7 +2,8 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import SFLogo from 'src/assets/img/logo.svg';
+import SFLogoDark from 'src/assets/img/logo-dark.svg';
+import SFLogoLight from 'src/assets/img/logo-light.svg';
 import { NavTab } from 'src/components/atoms';
 import {
     Button,
@@ -22,6 +23,7 @@ const Header = () => {
     const { open } = useWeb3Modal();
     const { disconnect } = useDisconnect();
     const { address } = useAccount();
+    const isDarkTheme = theme === 'dark';
 
     const handleChecked = (checked: boolean) => {
         checked ? setAppTheme('dark') : setAppTheme('light');
@@ -32,11 +34,15 @@ const Header = () => {
             <div className='relative'>
                 <nav
                     data-cy='header'
-                    className='h-16 w-full border-b border-foreground/20'
+                    className='h-16 w-full border-b-[1.5px] border-foreground bg-white dark:bg-black'
                 >
-                    <div className='flex flex-row items-center justify-between'>
-                        <Link href='/' className='flex pl-7'>
-                            <SFLogo className='inline h-4 desktop:w-[160px]' />
+                    <div className='flex h-full flex-row items-center justify-between px-5'>
+                        <Link href='/' className='flex'>
+                            {isDarkTheme ? (
+                                <SFLogoDark className='inline h-4 w-40' />
+                            ) : (
+                                <SFLogoLight className='inline h-4 w-40' />
+                            )}
                         </Link>
                         <div className='hidden h-full flex-row laptop:flex'>
                             {LINKS.map(link => (
@@ -48,7 +54,7 @@ const Header = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className='flex items-center gap-2 pr-4'>
+                        <div className='flex items-center gap-2.5'>
                             {address ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -87,7 +93,7 @@ const Header = () => {
                                 </Button>
                             )}
                             <Switch
-                                checked={theme === 'dark'}
+                                checked={isDarkTheme}
                                 onCheckedChange={handleChecked}
                             />
                         </div>
@@ -101,7 +107,7 @@ const Header = () => {
 const ItemLink = ({ text, link }: { text: string; link: string }) => {
     const router = useRouter();
     const useCheckActive = () => {
-        return router.pathname === link;
+        return router.pathname.includes(link);
     };
 
     return (

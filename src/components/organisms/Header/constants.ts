@@ -16,7 +16,7 @@ export const LINKS = [
         link: '/lock',
     },
     {
-        text: 'Dao',
+        text: 'DAO',
         link: '/dao',
     },
 ];

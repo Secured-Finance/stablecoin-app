@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import { CollateralConfig } from 'satoshi-sdk';
-// import FIL from 'src/assets/collateral/FIL.svg';
 import {
     Button,
     Card,
@@ -13,9 +11,12 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from 'src/components/ui';
+import { currencyMap, CurrencySymbol } from 'src/utils';
 
 interface CoinDetailsCardProps {
-    currency: CollateralConfig;
+    currency: {
+        NAME: string;
+    };
 }
 
 const details = [
@@ -59,10 +60,13 @@ const metadata = [
 ];
 
 export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
+    const CcyIcon = currencyMap[currency.NAME as CurrencySymbol].icon;
+
     return (
-        <Card className='flex-1 rounded-xl border-0 shadow-md laptop:min-w-[260px]'>
-            <CardHeader className='relative py-[21px]'>
+        <Card className='relative flex-1 rounded-xl border-0 shadow-md laptop:min-w-[260px]'>
+            <CardHeader className='px-3 py-[21px]'>
                 <CardTitle className='text-center text-8 font-semibold leading-10'>
+                    <CcyIcon className='absolute left-3 top-3 h-14 w-14' />
                     {currency.NAME}
                 </CardTitle>
             </CardHeader>
@@ -85,14 +89,14 @@ export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
                         </li>
                     ))}
                 </ul>
-                <div className='flex items-center justify-between rounded-xl px-3 py-2.5 text-neutral-900'>
-                    <span className='text-4 font-bold leading-4.5'>APR</span>
+                <div className='flex items-center justify-between rounded-xl bg-neutral-200 px-3 py-2.5 font-semibold text-neutral-800'>
+                    <span className='text-3.5 leading-4.5'>APR</span>
                     <div className='flex gap-1'>
                         <TooltipProvider delayDuration={300}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <span className='font-numerical text-3.5 font-bold leading-5'>
-                                        1.81% — 3.63%
+                                    <span className='font-numerical text-3.5 font-bold leading-4.5'>
+                                        2.46 – 3.69%
                                     </span>
                                 </TooltipTrigger>
                                 <TooltipContent
@@ -111,8 +115,8 @@ export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
                 </div>
             </CardContent>
             <CardFooter className='px-3'>
-                <Link href={`/vaults/${currency.ADDRESS}`} className='w-full'>
-                    <Button className='w-full text-3.5 text-neutral-50'>{`Choose ${currency.NAME}`}</Button>
+                <Link href={`/vaults/${currency.NAME}`} className='w-full'>
+                    <Button className='w-full bg-neutral-800 text-3.5 text-neutral-50'>{`Choose ${currency.NAME}`}</Button>
                 </Link>
             </CardFooter>
         </Card>

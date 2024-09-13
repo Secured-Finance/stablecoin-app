@@ -56,6 +56,9 @@ module.exports = {
                 width: 'width',
             },
             colors: {
+                app: {
+                    background: 'var(--app-background)',
+                },
                 primary: {
                     '50': '#F5F6FF',
                     '300': '#B9BDEA',

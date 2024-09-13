@@ -1,6 +1,8 @@
 import assert from 'assert';
 
 export abstract class BaseCurrency {
+    public abstract readonly isNative: boolean;
+    public abstract readonly isToken: boolean;
     public readonly decimals: number;
     public readonly symbol: string;
     public readonly name: string;

@@ -1,5 +1,4 @@
 import * as jest from 'jest-mock';
-import { CollateralConfig } from 'satoshi-sdk';
 
 export const mockUseSF = () => {
     const mockSecuredFinance = {
@@ -16,16 +15,47 @@ export const mockUseSF = () => {
             ),
         },
         TroveManager: {
-            doDeposit: ({
-                collateral,
-                addedCollAmt,
-            }: {
-                collateral: CollateralConfig;
-                addedCollAmt: bigint;
-            }) => {
-                return { status: 200, args: { collateral, addedCollAmt } };
-            },
+            doDeposit: jest.fn(
+                ({
+                    collateral,
+                    addedCollAmt,
+                }: {
+                    collateral: string;
+                    addedCollAmt: bigint;
+                }) => {
+                    return { status: 200, args: { collateral, addedCollAmt } };
+                }
+            ),
             doWithdraw: jest.fn(),
+        },
+        getCollateralConfig: jest.fn(() => [
+            {
+                NAME: 'tFIL',
+            },
+            {
+                NAME: 'iFIL',
+            },
+        ]),
+        protocolConfig: {
+            TOKEN_LIST: [
+                {
+                    symbol: 'tFIL',
+                },
+                {
+                    symbol: 'iFIL',
+                },
+                {
+                    symbol: 'sfUSD',
+                },
+            ],
+            COLLATERALS: [
+                {
+                    NAME: 'tFIL',
+                },
+                {
+                    NAME: 'iFIL',
+                },
+            ],
         },
     };
 

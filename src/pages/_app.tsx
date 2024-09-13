@@ -13,8 +13,12 @@ import 'src/bigIntPatch';
 import { Layout } from 'src/components/templates';
 import SecuredFinanceProvider from 'src/contexts';
 import store from 'src/store';
-import { getAmplitudeApiKey, getWalletConnectId } from 'src/utils';
-import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
+import {
+    getAmplitudeApiKey,
+    getSupportedChains,
+    getWalletConnectId,
+} from 'src/utils';
+import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 
@@ -23,8 +27,6 @@ const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
 });
 
 const projectId = getWalletConnectId();
-
-const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
 
 const queryClient = new QueryClient();
 
@@ -48,8 +50,10 @@ const metadata = {
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
+const network = getSupportedChains();
+
 const config = defaultWagmiConfig({
-    chains: [mainnet, filecoin, sepolia, filecoinCalibration],
+    chains: network,
     projectId: projectId,
     metadata,
     ssr: true,
@@ -60,12 +64,6 @@ const config = defaultWagmiConfig({
         walletFeatures: false,
     },
     transports: {
-        [mainnet.id]: http(
-            `https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`
-        ),
-        [sepolia.id]: http(
-            `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`
-        ),
         [filecoin.id]: http(),
         [filecoinCalibration.id]: http(),
     },
