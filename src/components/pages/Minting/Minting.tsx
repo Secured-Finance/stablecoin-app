@@ -3,7 +3,7 @@ import { ArrowLeftIcon, CheckIcon, LoaderCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import FIL from 'src/assets/coins/FIL.svg';
+import FIL from 'src/assets/coins/fil.svg';
 import { Page } from 'src/components/templates';
 import {
     Button,
