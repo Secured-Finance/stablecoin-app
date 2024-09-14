@@ -28,25 +28,26 @@ export const Minting = () => {
     const [collAmt, setCollAmt] = useState<string>();
     const [isApproved, setIsApproved] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(false);
     const [defaultPercentage, setDefaultPercentage] = useState<number>(150);
 
-    const addedCollAmt = parseEther('0.2'); // Let's add 0.2 BTC worth of WBTC
+    const addedCollAmt = parseEther('0.2'); // 0.2 BTC worth of WBTC
     const collateral = router.query.collateral;
 
     const { onSPTroveDeposit: handleSPDeposit } = useSPTroveDeposit();
 
     const handleDepositFunds = async () => {
+        setIsLoading(true);
         await handleSPDeposit(collateral as string, addedCollAmt);
 
-        new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 3500));
 
         router.push('/success');
     };
 
     // This is a mock function to simulate signing data
     const mockHandleApprove = async () => {
-        // Simulate signing data
-        setIsLoading(true);
+        setIsLoadingApprove(true);
 
         const accounts = await window.ethereum.request({
             method: 'eth_requestAccounts',
@@ -57,7 +58,7 @@ export const Minting = () => {
             params: ['Mock approval for sfUSD minting', accounts[0]],
         });
 
-        setIsLoading(false);
+        setIsLoadingApprove(false);
         setIsApproved(true);
     };
 
@@ -166,13 +167,13 @@ export const Minting = () => {
                                 <Button
                                     className='flex-1 gap-1.5'
                                     onClick={() => mockHandleApprove()}
-                                    disabled={isApproved || isLoading}
+                                    disabled={isApproved || isLoadingApprove}
                                 >
-                                    {isLoading && (
-                                        <LoaderCircle className='h-[15px] w-[15px] animate-spin' />
-                                    )}
-                                    {isLoading ? (
-                                        'Approving...'
+                                    {isLoadingApprove ? (
+                                        <>
+                                            <LoaderCircle className='h-[15px] w-[15px] animate-spin' />
+                                            Approving...
+                                        </>
                                     ) : isApproved ? (
                                         <>
                                             <CheckIcon className='h-[15px] w-[15px]' />{' '}
@@ -184,15 +185,20 @@ export const Minting = () => {
                                 </Button>
                                 <Button
                                     className={cn(
-                                        'flex-1',
+                                        'flex-1 gap-1.5',
                                         buttonVariants({ variant: 'outline' })
                                     )}
-                                    onClick={async () =>
-                                        await handleDepositFunds()
-                                    }
-                                    disabled={!isApproved}
+                                    onClick={() => handleDepositFunds()}
+                                    disabled={!isApproved || isLoading}
                                 >
-                                    Open Vault
+                                    {isLoading ? (
+                                        <>
+                                            <LoaderCircle className='h-[15px] w-[15px] animate-spin' />
+                                            Minting...
+                                        </>
+                                    ) : (
+                                        'Open Vault'
+                                    )}
                                 </Button>
                             </div>
                         )}

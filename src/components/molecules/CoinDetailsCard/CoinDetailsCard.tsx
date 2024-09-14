@@ -89,7 +89,7 @@ export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
                         </li>
                     ))}
                 </ul>
-                <div className='flex items-center justify-between rounded-xl bg-neutral-200 px-3 py-2.5 font-semibold text-neutral-800'>
+                <button className='flex items-center justify-between rounded-xl border border-neutral-600 bg-neutral-200 px-3 py-2.5 font-semibold text-neutral-800'>
                     <span className='text-3.5 leading-4.5'>APR</span>
                     <div className='flex gap-1'>
                         <TooltipProvider delayDuration={300}>
@@ -112,7 +112,7 @@ export const CoinDetailsCard = ({ currency }: CoinDetailsCardProps) => {
                             </Tooltip>
                         </TooltipProvider>
                     </div>
-                </div>
+                </button>
             </CardContent>
             <CardFooter className='px-3'>
                 <Link href={`/vaults/${currency.NAME}`} className='w-full'>
@@ -133,7 +133,7 @@ const DetailBox = ({
     content: string;
 }) => {
     return (
-        <div className='flex w-full justify-between rounded-xl bg-neutral-200 px-3 py-1 text-neutral-900'>
+        <div className='flex w-full justify-between rounded-[8px] bg-neutral-200 px-3 py-1 text-neutral-900'>
             {content ? (
                 <TooltipProvider delayDuration={300}>
                     <Tooltip>
