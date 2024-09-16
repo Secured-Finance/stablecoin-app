@@ -23,6 +23,7 @@ export enum CurrencySymbol {
     iFIL = 'iFIL',
     tFIL = 'tFIL',
     sfUSD = 'sfUSD',
+    SFT = 'SFT',
 }
 
 export const currencyMap: Readonly<
@@ -76,6 +77,21 @@ export const currencyMap: Readonly<
         longName: 'Infinity Pool Staked FIL',
     },
     [CurrencySymbol.sfUSD]: {
+        index: 3,
+        symbol: CurrencySymbol.sfUSD,
+        name: 'SF Stable Coin',
+        icon: SFUsdIcon,
+        coinGeckoId: '', // TODO
+        isCollateral: false,
+        toBaseUnit: (amount: number | string) =>
+            convertToBlockchainUnit(amount, SFUSD.onChain()),
+        fromBaseUnit: (amount: bigint) =>
+            convertFromBlockchainUnit(amount, SFUSD.onChain()),
+        toCurrency: () => SFUSD.onChain(),
+        roundingDecimal: 0,
+        longName: 'SF Stable Coin',
+    },
+    [CurrencySymbol.SFT]: {
         index: 3,
         symbol: CurrencySymbol.sfUSD,
         name: 'SF Stable Coin',
@@ -152,6 +168,8 @@ export function toCurrencySymbol(ccy: string) {
             return CurrencySymbol.iFIL;
         case CurrencySymbol.sfUSD:
             return CurrencySymbol.sfUSD;
+        case CurrencySymbol.SFT:
+            return CurrencySymbol.SFT;
         default:
             return undefined;
     }

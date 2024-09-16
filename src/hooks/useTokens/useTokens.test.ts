@@ -14,6 +14,7 @@ describe('useTokens', () => {
                 CurrencySymbol.tFIL,
                 CurrencySymbol.iFIL,
                 CurrencySymbol.sfUSD,
+                CurrencySymbol.SFT,
             ])
         );
     });

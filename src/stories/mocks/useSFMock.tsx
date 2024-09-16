@@ -47,6 +47,9 @@ export const mockUseSF = () => {
                 {
                     symbol: 'sfUSD',
                 },
+                {
+                    symbol: 'SFT',
+                },
             ],
             COLLATERALS: [
                 {

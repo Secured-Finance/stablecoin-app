@@ -156,7 +156,7 @@ const data: Payment[] = [
     },
     {
         id: '728ed52',
-        currency: CurrencySymbol.sfUSD,
+        currency: CurrencySymbol.SFT,
         tvl: 71533,
         unboostedApr: 10.05,
         boostedApr: 20.9,

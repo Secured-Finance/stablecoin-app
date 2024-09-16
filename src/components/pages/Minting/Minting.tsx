@@ -147,8 +147,8 @@ export const Minting = () => {
                             </Label>
                             <div className='relative'>
                                 <Input
-                                    value={(+(collAmt || '0') * 3.59).toFixed(
-                                        4
+                                    value={(+(collAmt || '0') * 3.67).toFixed(
+                                        0
                                     )}
                                     disabled
                                     className='text-neutral-900 disabled:opacity-100'
