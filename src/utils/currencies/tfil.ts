@@ -1,15 +1,15 @@
 import { BaseCurrency } from './baseCurrency';
 import { NativeCurrency } from './nativeCurrency';
 
-export class FIL extends NativeCurrency {
+export class TFIL extends NativeCurrency {
     private constructor() {
-        super(18, 'FIL', 'Filecoin');
+        super(18, 'tFIL', 'Testnet Filecoin');
     }
 
-    private static instance: FIL;
+    private static instance: TFIL;
 
-    public static onChain(): FIL {
-        return this.instance ?? (this.instance = new FIL());
+    public static onChain(): TFIL {
+        return this.instance ?? (this.instance = new TFIL());
     }
 
     public readonly wrapped = this;

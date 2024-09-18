@@ -14,6 +14,35 @@ export const mockUseSF = () => {
                 ])
             ),
         },
+        getCollateralConfig: jest.fn(() => [
+            {
+                NAME: 'tFIL',
+            },
+            {
+                NAME: 'iFIL',
+            },
+        ]),
+        protocolConfig: {
+            TOKEN_LIST: [
+                {
+                    symbol: 'tFIL',
+                },
+                {
+                    symbol: 'iFIL',
+                },
+                {
+                    symbol: 'sfUSD',
+                },
+            ],
+            COLLATERALS: [
+                {
+                    NAME: 'tFIL',
+                },
+                {
+                    NAME: 'iFIL',
+                },
+            ],
+        },
     };
 
     return mockSecuredFinance;

@@ -1,6 +1,6 @@
 export const LINKS = [
     {
-        text: 'Vaults',
+        text: 'Vault',
         link: '/',
     },
     {
@@ -16,7 +16,7 @@ export const LINKS = [
         link: '/lock',
     },
     {
-        text: 'Dao',
+        text: 'DAO',
         link: '/dao',
     },
 ];

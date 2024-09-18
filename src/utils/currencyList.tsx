@@ -1,26 +1,18 @@
 import { BigNumber as BigNumberJS } from 'bignumber.js';
-import BtcIcon from 'src/assets/coins/btc.svg';
 import FilIcon from 'src/assets/coins/fil.svg';
 import IFilIcon from 'src/assets/coins/ifil.svg';
-import UsdcIcon from 'src/assets/coins/usdc.svg';
-import WBtcIcon from 'src/assets/coins/wbtc.svg';
-import WFilIcon from 'src/assets/coins/wfil.svg';
-import ZcBtcIcon from 'src/assets/coins/zc-btc.svg';
+import SFUsdIcon from 'src/assets/coins/sfusd.svg';
 import ZcFilIcon from 'src/assets/coins/zc-fil.svg';
-import ZcUsdcIcon from 'src/assets/coins/zc-usdc.svg';
 import { SvgIcon } from 'src/types';
+import { fromBytes32 } from 'src/utils';
 import {
-    AXLFIL,
-    BTCB,
     Currency,
     Currency as CurrencyInterface,
     FIL,
     IFIL,
-    USDC,
-    WBTC,
-    WFIL,
+    SFUSD,
+    TFIL,
 } from 'src/utils/currencies';
-import { hexToString } from 'viem';
 
 BigNumberJS.set({ EXPONENTIAL_AT: 30 }); // setting to a decent limit
 
@@ -28,73 +20,16 @@ export const ZERO_BI = BigInt(0);
 
 export enum CurrencySymbol {
     FIL = 'FIL',
-    WFIL = 'WFIL',
-    USDC = 'USDC',
-    WBTC = 'WBTC',
-    BTCb = 'BTC.b',
-    axlFIL = 'axlFIL',
     iFIL = 'iFIL',
+    tFIL = 'tFIL',
+    sfUSD = 'sfUSD',
 }
 
 export const currencyMap: Readonly<
     Record<CurrencySymbol, Readonly<CurrencyInfo>>
 > = {
-    [CurrencySymbol.USDC]: {
-        index: 0,
-        symbol: CurrencySymbol.USDC,
-        name: USDC.onChain().name,
-        icon: UsdcIcon,
-        zcIcon: ZcUsdcIcon,
-        coinGeckoId: 'usd-coin',
-        isCollateral: true,
-        toBaseUnit: (amount: number | string) =>
-            convertToBlockchainUnit(amount, USDC.onChain()),
-        fromBaseUnit: (amount: bigint) =>
-            convertFromBlockchainUnit(amount, USDC.onChain()),
-        toCurrency: () => USDC.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.usdc,
-        // pillColor: tailwindConfig.theme.colors.pill.usdc,
-        roundingDecimal: 0,
-        longName: 'USD Coin',
-    },
-    [CurrencySymbol.WBTC]: {
-        index: 1,
-        symbol: CurrencySymbol.WBTC,
-        name: WBTC.onChain().name,
-        icon: WBtcIcon,
-        zcIcon: ZcBtcIcon,
-        coinGeckoId: 'wrapped-bitcoin',
-        isCollateral: true,
-        toBaseUnit: (amount: number | string) =>
-            convertToBlockchainUnit(amount, WBTC.onChain()),
-        fromBaseUnit: (amount: bigint) =>
-            convertFromBlockchainUnit(amount, WBTC.onChain()),
-        toCurrency: () => WBTC.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.btc,
-        // pillColor: tailwindConfig.theme.colors.pill.btc,
-        roundingDecimal: 4,
-        longName: 'Bitcoin',
-    },
-    [CurrencySymbol.BTCb]: {
-        index: 2,
-        symbol: CurrencySymbol.BTCb,
-        name: BTCB.onChain().name,
-        icon: BtcIcon,
-        zcIcon: ZcBtcIcon,
-        coinGeckoId: 'wrapped-bitcoin',
-        isCollateral: true,
-        toBaseUnit: (amount: number | string) =>
-            convertToBlockchainUnit(amount, BTCB.onChain()),
-        fromBaseUnit: (amount: bigint) =>
-            convertFromBlockchainUnit(amount, BTCB.onChain()),
-        toCurrency: () => BTCB.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.btc,
-        // pillColor: tailwindConfig.theme.colors.pill.btc,
-        roundingDecimal: 4,
-        longName: 'Bitcoin',
-    },
     [CurrencySymbol.FIL]: {
-        index: 3,
+        index: 0,
         symbol: CurrencySymbol.FIL,
         name: 'Filecoin',
         icon: FilIcon,
@@ -106,49 +41,27 @@ export const currencyMap: Readonly<
         fromBaseUnit: (amount: bigint) =>
             convertFromBlockchainUnit(amount, FIL.onChain()),
         toCurrency: () => FIL.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.fil,
-        // pillColor: tailwindConfig.theme.colors.pill.fil,
         roundingDecimal: 0,
         longName: 'Filecoin',
     },
-    [CurrencySymbol.WFIL]: {
-        index: 4,
-        symbol: CurrencySymbol.WFIL,
-        name: WFIL.onChain().name,
-        icon: WFilIcon,
+    [CurrencySymbol.tFIL]: {
+        index: 1,
+        symbol: CurrencySymbol.tFIL,
+        name: 'Filecoin',
+        icon: FilIcon,
         zcIcon: ZcFilIcon,
         coinGeckoId: 'filecoin',
-        isCollateral: false,
+        isCollateral: true,
         toBaseUnit: (amount: number | string) =>
-            convertToBlockchainUnit(amount, WFIL.onChain()),
+            convertToBlockchainUnit(amount, TFIL.onChain()),
         fromBaseUnit: (amount: bigint) =>
-            convertFromBlockchainUnit(amount, WFIL.onChain()),
-        toCurrency: () => WFIL.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.fil,
-        // pillColor: tailwindConfig.theme.colors.pill.fil,
+            convertFromBlockchainUnit(amount, TFIL.onChain()),
+        toCurrency: () => TFIL.onChain(),
         roundingDecimal: 0,
-        longName: 'Wrapped Filecoin',
-    },
-    [CurrencySymbol.axlFIL]: {
-        index: 5,
-        symbol: CurrencySymbol.axlFIL,
-        name: 'Axelar Wrapped FIL',
-        icon: WFilIcon,
-        zcIcon: ZcFilIcon,
-        coinGeckoId: 'filecoin',
-        isCollateral: false,
-        toBaseUnit: (amount: number | string) =>
-            convertToBlockchainUnit(amount, AXLFIL.onChain()),
-        fromBaseUnit: (amount: bigint) =>
-            convertFromBlockchainUnit(amount, AXLFIL.onChain()),
-        toCurrency: () => AXLFIL.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.fil,
-        // pillColor: tailwindConfig.theme.colors.pill.fil,
-        roundingDecimal: 0,
-        longName: 'Axelar Wrapped FIL',
+        longName: 'Filecoin',
     },
     [CurrencySymbol.iFIL]: {
-        index: 6,
+        index: 2,
         symbol: CurrencySymbol.iFIL,
         name: 'Infinity Pool Staked FIL',
         icon: IFilIcon,
@@ -159,10 +72,23 @@ export const currencyMap: Readonly<
         fromBaseUnit: (amount: bigint) =>
             convertFromBlockchainUnit(amount, IFIL.onChain()),
         toCurrency: () => IFIL.onChain(),
-        // chartColor: tailwindConfig.theme.colors.chart.fil,
-        // pillColor: tailwindConfig.theme.colors.pill.fil,
         roundingDecimal: 0,
         longName: 'Infinity Pool Staked FIL',
+    },
+    [CurrencySymbol.sfUSD]: {
+        index: 3,
+        symbol: CurrencySymbol.sfUSD,
+        name: 'SF Stable Coin',
+        icon: SFUsdIcon,
+        coinGeckoId: '', // TODO
+        isCollateral: false,
+        toBaseUnit: (amount: number | string) =>
+            convertToBlockchainUnit(amount, SFUSD.onChain()),
+        fromBaseUnit: (amount: bigint) =>
+            convertFromBlockchainUnit(amount, SFUSD.onChain()),
+        toCurrency: () => SFUSD.onChain(),
+        roundingDecimal: 0,
+        longName: 'SF Stable Coin',
     },
 };
 
@@ -208,8 +134,6 @@ export type CurrencyInfo = {
     toBaseUnit: (amount: number | string) => bigint;
     fromBaseUnit: (amount: bigint) => number;
     toCurrency: () => CurrencyInterface;
-    // chartColor: string;
-    // pillColor: string;
     roundingDecimal: number;
     longName: string;
 };
@@ -222,25 +146,19 @@ export function toCurrencySymbol(ccy: string) {
     switch (ccy) {
         case CurrencySymbol.FIL:
             return CurrencySymbol.FIL;
-        case CurrencySymbol.WFIL:
-            return CurrencySymbol.WFIL;
-        case CurrencySymbol.USDC:
-            return CurrencySymbol.USDC;
-        case CurrencySymbol.WBTC:
-            return CurrencySymbol.WBTC;
-        case CurrencySymbol.BTCb:
-            return CurrencySymbol.BTCb;
-        case CurrencySymbol.axlFIL:
-            return CurrencySymbol.axlFIL;
+        case CurrencySymbol.tFIL:
+            return CurrencySymbol.tFIL;
         case CurrencySymbol.iFIL:
             return CurrencySymbol.iFIL;
+        case CurrencySymbol.sfUSD:
+            return CurrencySymbol.sfUSD;
         default:
             return undefined;
     }
 }
 
 export function hexToCurrencySymbol(hex: string) {
-    return toCurrencySymbol(hexToString(hex as `0x${string}`, { size: 32 }));
+    return toCurrencySymbol(fromBytes32(hex));
 }
 
 const convertToBlockchainUnit = (amount: number | string, ccy: Currency) => {
