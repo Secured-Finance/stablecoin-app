@@ -154,15 +154,6 @@ const data: Payment[] = [
         deposit: 0.0,
         earned: 0.0,
     },
-    {
-        id: '728ed52',
-        currency: CurrencySymbol.sfUSD,
-        tvl: 71533,
-        unboostedApr: 10.05,
-        boostedApr: 20.9,
-        deposit: 0.0,
-        earned: 0.0,
-    },
 ];
 
 export const Earn = () => {

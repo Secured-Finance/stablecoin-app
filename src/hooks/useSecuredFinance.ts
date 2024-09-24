@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { Context } from 'src/contexts/SecuredFinanceProvider';
+import { SecuredFinanceContext } from 'src/contexts';
 
 const useSF = () => {
-    const { satoshiClient } = useContext(Context);
+    const { satoshiClient } = useContext(SecuredFinanceContext);
     return satoshiClient;
 };
 

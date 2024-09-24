@@ -87,7 +87,7 @@ export const currencyMap: Readonly<
         fromBaseUnit: (amount: bigint) =>
             convertFromBlockchainUnit(amount, SFUSD.onChain()),
         toCurrency: () => SFUSD.onChain(),
-        roundingDecimal: 0,
+        roundingDecimal: 4,
         longName: 'SF Stable Coin',
     },
 };

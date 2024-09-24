@@ -1,3 +1,4 @@
+import { Decimal } from '@liquity/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useMemo, useState } from 'react';
 import { InputBase } from 'src/components/atoms';
@@ -13,7 +14,7 @@ import { useAccount } from 'wagmi';
 
 interface DepositWithdrawBoxProps {
     type: 'Deposit' | 'Withdraw';
-    balance: bigint;
+    balance: Decimal;
     currency: CurrencySymbol;
     onClick: (value: string) => void;
 }
@@ -31,11 +32,8 @@ export const DepositWithdrawBox = ({
     const [amount, setAmount] = useState<string>();
 
     const isButtonDisabled = useMemo(
-        () =>
-            !amount ||
-            amountFormatterToBase[currency](amount) === ZERO_BI ||
-            amountFormatterToBase[currency](amount) > balance,
-        [amount, balance, currency]
+        () => !amount || amountFormatterToBase[currency](amount) === ZERO_BI,
+        [amount, currency]
     );
 
     return (
@@ -47,7 +45,7 @@ export const DepositWithdrawBox = ({
                         <span>Balance: </span>
                         <span>
                             {ordinaryFormat(
-                                ccy.fromBaseUnit(balance),
+                                +balance.toString(),
                                 0,
                                 ccy.roundingDecimal
                             )}

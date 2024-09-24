@@ -1,4 +1,5 @@
 import { withWalletProvider } from '.storybook/decorators';
+import { Decimal } from '@liquity/lib-base';
 import type { Meta, StoryFn } from '@storybook/react';
 import { CurrencySymbol } from 'src/utils';
 import { DepositWithdrawBox } from '.';
@@ -9,7 +10,7 @@ export default {
     args: {
         type: 'Deposit',
         currency: CurrencySymbol.FIL,
-        balance: BigInt('112142140000000000000000'),
+        balance: Decimal.from('112142140000000000000000'),
         onClick: () => {},
     },
     decorators: [withWalletProvider],

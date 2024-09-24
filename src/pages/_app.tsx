@@ -5,27 +5,30 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
+import { Header } from 'src/components/organisms';
+import { WalletConnector } from 'src/components/organisms/WalletConnector/WalletConnector';
 import { Layout } from 'src/components/templates';
-import SecuredFinanceProvider from 'src/contexts';
+import {
+    LiquityFrontendProvider,
+    LiquityProvider,
+    SecuredFinanceProvider,
+} from 'src/contexts';
+import { TransactionProvider } from 'src/hooks/useTransactionFunction';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
-import { filecoin, filecoinCalibration } from 'viem/chains';
+import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 
-const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
-    ssr: false,
-});
-
+const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const projectId = getWalletConnectId();
 
 const queryClient = new QueryClient();
@@ -66,6 +69,12 @@ const config = defaultWagmiConfig({
     transports: {
         [filecoin.id]: http(),
         [filecoinCalibration.id]: http(),
+        [mainnet.id]: http(
+            `https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`
+        ),
+        [sepolia.id]: http(
+            `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`
+        ),
     },
 });
 
@@ -110,7 +119,17 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <CookiesProvider>
             <QueryClientProvider client={queryClient}>
                 <WagmiProvider config={config}>
-                    <SecuredFinanceProvider>{children}</SecuredFinanceProvider>
+                    <WalletConnector>
+                        <TransactionProvider>
+                            <LiquityProvider>
+                                <SecuredFinanceProvider>
+                                    <LiquityFrontendProvider>
+                                        {children}
+                                    </LiquityFrontendProvider>
+                                </SecuredFinanceProvider>
+                            </LiquityProvider>
+                        </TransactionProvider>
+                    </WalletConnector>
                 </WagmiProvider>
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>

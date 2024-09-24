@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { Decimal, LiquityStoreState } from '@liquity/lib-base';
+import { useCallback, useState } from 'react';
 import { DepositWithdrawBox } from 'src/components/molecules';
 import {
     Card,
@@ -10,31 +11,61 @@ import {
     TabsList,
     TabsTrigger,
 } from 'src/components/ui';
-import { useSPDeposit, useSPWithdraw } from 'src/hooks';
-import { amountFormatterToBase, CurrencySymbol } from 'src/utils';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useTransactionFunction } from 'src/hooks/useTransactionFunction';
+import { CurrencySymbol } from 'src/utils';
+
+const selector = ({
+    remainingStabilityPoolLQTYReward,
+    accountBalance,
+    lusdBalance,
+    lqtyBalance,
+    lusdInStabilityPool,
+    stabilityDeposit,
+}: LiquityStoreState) => ({
+    remainingStabilityPoolLQTYReward,
+    accountBalance,
+    lusdBalance,
+    lqtyBalance,
+    lusdInStabilityPool,
+    stabilityDeposit,
+});
 
 export const ManageStabilityPool = ({
     currency,
 }: {
     currency: CurrencySymbol;
 }) => {
-    const { onSPDeposit } = useSPDeposit();
-    const { onSPWithdraw } = useSPWithdraw();
+    const { lusdBalance: realLusdBalance, stabilityDeposit } =
+        useLiquitySelector(selector);
+
+    const [amount, setAmount] = useState('0');
+    const { liquity } = useLiquity();
+
+    const transactionId = 'stability-deposit';
+
+    const [sendTransaction] = useTransactionFunction(
+        transactionId,
+        liquity.send.withdrawLUSDFromStabilityPool.bind(
+            liquity.send,
+            Decimal.from(amount)
+        )
+    );
 
     const handleSPDeposit = useCallback(
         async (value: string) => {
-            const depositAmount = amountFormatterToBase[currency](value);
-            await onSPDeposit(depositAmount);
+            setAmount(value);
+            await sendTransaction();
         },
-        [currency, onSPDeposit]
+        [sendTransaction]
     );
 
     const handleSPWithdraw = useCallback(
         async (value: string) => {
-            const withdrawAmount = amountFormatterToBase[currency](value);
-            await onSPWithdraw(withdrawAmount);
+            setAmount(value);
+            await sendTransaction();
         },
-        [currency, onSPWithdraw]
+        [sendTransaction]
     );
 
     return (
@@ -59,7 +90,7 @@ export const ManageStabilityPool = ({
                                 type='Deposit'
                                 currency={currency}
                                 onClick={handleSPDeposit}
-                                balance={BigInt('141214214')}
+                                balance={realLusdBalance}
                             />
                         </TabsContent>
                         <TabsContent value='withdraw' className='pt-4'>
@@ -67,7 +98,7 @@ export const ManageStabilityPool = ({
                                 type='Withdraw'
                                 currency={currency}
                                 onClick={handleSPWithdraw}
-                                balance={BigInt('110000000')}
+                                balance={stabilityDeposit.currentLUSD}
                             />
                         </TabsContent>
                     </Tabs>

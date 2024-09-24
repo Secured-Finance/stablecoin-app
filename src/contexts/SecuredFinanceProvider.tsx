@@ -25,13 +25,13 @@ export interface SFContext {
     satoshiClient?: SatoshiClient;
 }
 
-export const Context = createContext<SFContext>({
+export const SecuredFinanceContext = createContext<SFContext>({
     satoshiClient: undefined,
 });
 
-const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const SecuredFinanceProvider: React.FC<{
+    children: React.ReactNode;
+}> = ({ children }) => {
     const dispatch = useDispatch();
     const { chain, isConnected } = useAccount();
     const protocolConfig = ProtocolConfigMap.BEVM_MAINNET;
@@ -128,10 +128,8 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
     }, [dispatch, handleChainChanged, publicClient]);
 
     return (
-        <Context.Provider value={{ satoshiClient }}>
+        <SecuredFinanceContext.Provider value={{ satoshiClient }}>
             {children}
-        </Context.Provider>
+        </SecuredFinanceContext.Provider>
     );
 };
-
-export default SecuredFinanceProvider;
