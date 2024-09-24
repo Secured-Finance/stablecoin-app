@@ -25,7 +25,7 @@ import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
+const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
 const projectId = getWalletConnectId();
 
 const queryClient = new QueryClient();
