@@ -9,14 +9,11 @@ import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
+import { Loader } from 'src/components/atoms';
 import { Header } from 'src/components/organisms';
 import { WalletConnector } from 'src/components/organisms/WalletConnector/WalletConnector';
 import { Layout } from 'src/components/templates';
-import {
-    LiquityFrontendProvider,
-    LiquityProvider,
-    SecuredFinanceProvider,
-} from 'src/contexts';
+import { LiquityFrontendProvider, LiquityProvider } from 'src/contexts';
 import { TransactionProvider } from 'src/hooks/useTransactionFunction';
 import store from 'src/store';
 import {
@@ -121,12 +118,10 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <WagmiProvider config={config}>
                     <WalletConnector>
                         <TransactionProvider>
-                            <LiquityProvider>
-                                <SecuredFinanceProvider>
-                                    <LiquityFrontendProvider>
-                                        {children}
-                                    </LiquityFrontendProvider>
-                                </SecuredFinanceProvider>
+                            <LiquityProvider loader={<Loader />}>
+                                <LiquityFrontendProvider>
+                                    {children}
+                                </LiquityFrontendProvider>
                             </LiquityProvider>
                         </TransactionProvider>
                     </WalletConnector>

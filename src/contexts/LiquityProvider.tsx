@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Provider } from '@ethersproject/abstract-provider';
 import { Web3Provider } from '@ethersproject/providers';
 import {
@@ -22,18 +23,20 @@ export const LiquityContext = createContext<LiquityContextValue | undefined>(
     undefined
 );
 
-// type LiquityProviderProps = React.PropsWithChildren<{
-//     loader?: React.ReactNode;
-//     unsupportedNetworkFallback?: React.ReactNode;
-//     unsupportedMainnetFallback?: React.ReactNode;
-// }>;
+type LiquityProviderProps = React.PropsWithChildren<{
+    loader?: React.ReactNode;
+    unsupportedNetworkFallback?: React.ReactNode;
+    unsupportedMainnetFallback?: React.ReactNode;
+}>;
 
-export const LiquityProvider: React.FC<{ children: React.ReactNode }> = ({
+export const LiquityProvider: React.FC<LiquityProviderProps> = ({
     children,
+    loader,
 }) => {
     const chainId = useChainId();
     const client = useClient();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const provider =
         client &&
         new Web3Provider(
@@ -61,7 +64,6 @@ export const LiquityProvider: React.FC<{ children: React.ReactNode }> = ({
         ).getSigner(account.address);
 
     const [config, setConfig] = useState<LiquityFrontendConfig>();
-    console.log('config', config);
 
     const connection = useMemo(() => {
         if (config && provider && signer && account.address) {
@@ -85,11 +87,11 @@ export const LiquityProvider: React.FC<{ children: React.ReactNode }> = ({
     }, []);
 
     if (!config || !provider || !signer || !account.address) {
-        return <>{'arpit'}</>;
+        return <>{loader}</>;
     }
 
     if (!connection) {
-        return <>{'arpit'}</>;
+        return <>{loader}</>;
     }
 
     const liquity = EthersLiquity._from(connection);

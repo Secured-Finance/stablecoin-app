@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getAddress, isAddress } from '@ethersproject/address';
 
 export type LiquityFrontendConfig = {

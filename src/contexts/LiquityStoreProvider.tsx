@@ -20,17 +20,11 @@ export const LiquityStoreProvider: React.FC<LiquityStoreProviderProps> = ({
 
     useEffect(() => {
         store.onLoaded = () => setLoadedStore(store);
-        const stop = store.start();
-
-        return () => {
-            store.onLoaded = undefined;
-            setLoadedStore(undefined);
-            stop();
-        };
+        store.start();
     }, [store]);
 
     if (!loadedStore) {
-        return <>arpit</>;
+        return <>{loader}</>;
     }
 
     return (

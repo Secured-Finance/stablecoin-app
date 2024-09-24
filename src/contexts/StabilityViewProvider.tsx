@@ -65,6 +65,7 @@ export const StabilityViewProvider: React.FC<
     const dispatchEvent = useCallback((event: StabilityEvent) => {
         const nextView = transition(viewRef.current, event);
 
+        // eslint-disable-next-line no-console
         console.log(
             'dispatchEvent() [current-view, event, next-view]',
             viewRef.current,

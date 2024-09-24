@@ -3,9 +3,14 @@ import { Decimal, Difference, Trove } from '@liquity/lib-base';
 import { useLiquity } from 'src/hooks/useLiquity';
 import { LiquityStoreProvider } from './LiquityStoreProvider';
 
-export const LiquityFrontendProvider: React.FC<{
-    children: React.ReactNode;
-}> = ({ children }) => {
+type LiquityFrontendProps = React.PropsWithChildren<{
+    loader?: React.ReactNode;
+}>;
+
+export const LiquityFrontendProvider: React.FC<LiquityFrontendProps> = ({
+    children,
+    loader,
+}) => {
     const { account, provider, liquity } = useLiquity();
 
     // For console tinkering ;-)
@@ -20,7 +25,7 @@ export const LiquityFrontendProvider: React.FC<{
     });
 
     return (
-        <LiquityStoreProvider store={liquity.store}>
+        <LiquityStoreProvider {...{ loader }} store={liquity.store}>
             {children}
         </LiquityStoreProvider>
     );
