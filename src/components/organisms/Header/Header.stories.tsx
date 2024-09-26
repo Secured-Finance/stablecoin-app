@@ -1,7 +1,7 @@
 import { RESPONSIVE_PARAMETERS } from '.storybook/constants';
 import { withWalletProvider } from '.storybook/decorators';
 import type { Meta, StoryFn } from '@storybook/react';
-import Header from './Header';
+import { Header } from '.';
 
 export default {
     title: 'Organism/Header',

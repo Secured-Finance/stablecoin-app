@@ -5,26 +5,85 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
-import { Layout } from 'src/components/templates';
+import { AppLoader } from 'src/components/AppLoader';
+import { Icon } from 'src/components/Icon';
+import { TransactionProvider } from 'src/components/Transaction';
+import { WalletConnector } from 'src/components/WalletConnector';
 import SecuredFinanceProvider from 'src/contexts';
+import { LiquityProvider } from 'src/hooks/LiquityContext';
+import { LiquityFrontend } from 'src/LiquityFrontend';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
-import { filecoin, filecoinCalibration } from 'viem/chains';
+import { Flex, Heading, Link, Paragraph, ThemeUIProvider } from 'theme-ui';
+import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
+import theme from '../theme';
 
-const Header = dynamic(() => import('src/components/organisms/Header/Header'), {
-    ssr: false,
-});
+const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
+
+// Start pre-fetching the config
+// getConfig().then(config => {
+//     // console.log("Frontend config:");
+//     // console.log(config);
+//     Object.assign(window, { config });
+// });
+
+const UnsupportedMainnetFallback: React.FC = () => (
+    <Flex
+        sx={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            textAlign: 'center',
+        }}
+    >
+        <Heading sx={{ mb: 3 }}>
+            <Icon name='exclamation-triangle' /> This app is for testing
+            purposes only.
+        </Heading>
+
+        <Paragraph sx={{ mb: 3 }}>
+            Please change your network to Görli or Sepolia.
+        </Paragraph>
+
+        <Paragraph>
+            If you would like to use the Liquity Protocol on mainnet, please
+            pick a frontend{' '}
+            <Link href='https://www.liquity.org/frontend'>
+                here <Icon name='external-link-alt' size='xs' />
+            </Link>
+            .
+        </Paragraph>
+    </Flex>
+);
+
+const UnsupportedNetworkFallback: React.FC = () => (
+    <Flex
+        sx={{
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            textAlign: 'center',
+        }}
+    >
+        <Heading sx={{ mb: 3 }}>
+            <Icon name='exclamation-triangle' /> Liquity is not supported on
+            this network.
+        </Heading>
+        Please switch to mainnet, Görli or Sepolia.
+    </Flex>
+);
 
 const projectId = getWalletConnectId();
 
@@ -66,6 +125,12 @@ const config = defaultWagmiConfig({
     transports: {
         [filecoin.id]: http(),
         [filecoinCalibration.id]: http(),
+        [mainnet.id]: http(
+            `https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`
+        ),
+        [sepolia.id]: http(
+            `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`
+        ),
     },
 });
 
@@ -95,9 +160,7 @@ function App({ Component, pageProps }: AppProps) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <Layout navBar={<Header />}>
-                            <Component {...pageProps} />
-                        </Layout>
+                        <Component {...pageProps} />
                     </ThemeProvider>
                 </Providers>
             </Provider>
@@ -106,15 +169,36 @@ function App({ Component, pageProps }: AppProps) {
 }
 
 const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const loader = <AppLoader />;
+
     return (
-        <CookiesProvider>
-            <QueryClientProvider client={queryClient}>
-                <WagmiProvider config={config}>
-                    <SecuredFinanceProvider>{children}</SecuredFinanceProvider>
-                </WagmiProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
-        </CookiesProvider>
+        <ThemeUIProvider theme={theme}>
+            <CookiesProvider>
+                <QueryClientProvider client={queryClient}>
+                    <WagmiProvider config={config}>
+                        <WalletConnector>
+                            <LiquityProvider
+                                loader={loader}
+                                unsupportedNetworkFallback={
+                                    <UnsupportedNetworkFallback />
+                                }
+                                unsupportedMainnetFallback={
+                                    <UnsupportedMainnetFallback />
+                                }
+                            >
+                                <TransactionProvider>
+                                    <LiquityFrontend loader={loader} />
+                                </TransactionProvider>
+                            </LiquityProvider>
+                        </WalletConnector>
+                        <SecuredFinanceProvider>
+                            {children}
+                        </SecuredFinanceProvider>
+                    </WagmiProvider>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            </CookiesProvider>
+        </ThemeUIProvider>
     );
 };
 
