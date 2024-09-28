@@ -1,5 +1,7 @@
-function Vaults() {
-    return <></>;
+import { PageSwitcher } from 'src/components/pages/PageSwitcher';
+
+function Dashboard() {
+    return <PageSwitcher />;
 }
 
-export default Vaults;
+export default Dashboard;

@@ -10,10 +10,13 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
+import { Header } from 'src/components/Header';
 import { Icon } from 'src/components/Icon';
+import { SystemStatsPopup } from 'src/components/SystemStatsPopup';
+import { Layout } from 'src/components/templates';
 import { TransactionProvider } from 'src/components/Transaction';
+import { UserAccount } from 'src/components/UserAccount';
 import { WalletConnector } from 'src/components/WalletConnector';
-import SecuredFinanceProvider from 'src/contexts';
 import { LiquityProvider } from 'src/hooks/LiquityContext';
 import { LiquityFrontend } from 'src/LiquityFrontend';
 import store from 'src/store';
@@ -160,7 +163,16 @@ function App({ Component, pageProps }: AppProps) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <Component {...pageProps} />
+                        <Layout
+                            navBar={
+                                <Header>
+                                    <UserAccount />
+                                    <SystemStatsPopup />
+                                </Header>
+                            }
+                        >
+                            <Component {...pageProps} />
+                        </Layout>
                     </ThemeProvider>
                 </Providers>
             </Provider>
@@ -187,13 +199,12 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                 }
                             >
                                 <TransactionProvider>
-                                    <LiquityFrontend loader={loader} />
+                                    <LiquityFrontend loader={loader}>
+                                        {children}
+                                    </LiquityFrontend>
                                 </TransactionProvider>
                             </LiquityProvider>
                         </WalletConnector>
-                        <SecuredFinanceProvider>
-                            {children}
-                        </SecuredFinanceProvider>
                     </WagmiProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>

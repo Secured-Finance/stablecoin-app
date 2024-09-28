@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 import { Box, Button, Container, Flex } from 'theme-ui';
 import { Icon } from './Icon';
-import { Link } from './Link';
 import { LiquityLogo } from './LiquityLogo';
 
 const logoHeight = '32px';
@@ -45,8 +45,8 @@ export const SideNav: React.FC = () => {
                     sx={{ m: 3, mt: 1, p: 0 }}
                     onClick={() => setIsVisible(false)}
                 >
-                    <Link to='/'>Dashboard</Link>
-                    <Link to='/risky-troves'>Risky Troves</Link>
+                    <Link href='/'>Dashboard</Link>
+                    <Link href='/risky-troves'>Risky Troves</Link>
                 </Box>
             </Flex>
         </Container>

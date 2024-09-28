@@ -6,6 +6,7 @@ import { useLiquitySelector } from '@liquity/lib-react';
 
 import { useLiquity } from 'src/hooks/LiquityContext';
 
+import { Page } from '../templates';
 import { Dashboard } from './Dashboard';
 import { FrontendRegistration } from './FrontendRegistration';
 import { FrontendRegistrationSuccess } from './FrontendRegistrationSuccess';
@@ -31,19 +32,23 @@ export const PageSwitcher: React.FC = () => {
         }
     }, [unregistered]);
 
+    let component;
+
     if (registering || unregistered) {
         if (frontend.status === 'registered') {
-            return (
+            component = (
                 <FrontendRegistrationSuccess
                     onDismiss={() => setRegistering(false)}
                 />
             );
         } else if (account === frontendTag) {
-            return <FrontendRegistration />;
+            component = <FrontendRegistration />;
         } else {
-            return <UnregisteredFrontend />;
+            component = <UnregisteredFrontend />;
         }
     } else {
-        return <Dashboard />;
+        component = <Dashboard />;
     }
+
+    return <Page name='dashboard'>{component}</Page>;
 };

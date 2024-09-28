@@ -9,12 +9,12 @@ export const Layout = ({
 }) => {
     return (
         <div
-            className='flex h-screen w-full flex-col justify-between gap-8'
+            className='flex h-screen w-full flex-grow flex-col justify-between gap-8'
             data-testid='wrapper-div'
         >
             <div className='w-full'>
                 <header className='sticky top-0 z-30 w-full'>{navBar}</header>
-                <main className='w-full'>{children}</main>
+                <main className='h-full w-full'>{children}</main>
             </div>
             <footer className='sticky bottom-0 z-30 w-full bg-neutral-900'>
                 {footer}
