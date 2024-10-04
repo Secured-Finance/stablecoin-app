@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Box, Flex } from 'theme-ui';
+import { Link } from './Link';
 
 // const TemporaryNewBadge = () => {
 //     const isBeforeNovember2022 = new Date() < new Date('2022-11-01');
@@ -18,10 +18,10 @@ export const Nav: React.FC = () => {
             sx={{ display: ['none', 'flex'], alignItems: 'center', flex: 1 }}
         >
             <Flex>
-                <Link href='/'>Dashboard</Link>
+                <Link to='/'>Dashboard</Link>
             </Flex>
             <Flex sx={{ justifyContent: 'flex-end', mr: 3, flex: 1 }}>
-                <Link href='/risky-troves' className='text-3'>
+                <Link sx={{ fontSize: 1 }} to='/risky-troves'>
                     Risky Troves
                 </Link>
             </Flex>
