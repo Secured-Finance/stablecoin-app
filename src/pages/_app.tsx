@@ -13,7 +13,6 @@ import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
 import { WalletConnector } from 'src/components/WalletConnector';
-import SecuredFinanceProvider from 'src/contexts';
 import { LiquityProvider } from 'src/hooks/LiquityContext';
 import { LiquityFrontend } from 'src/LiquityFrontend';
 import store from 'src/store';
@@ -164,7 +163,7 @@ function App({ Component, pageProps }: AppProps) {
     );
 }
 
-const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Providers: React.FC<{ children: React.ReactNode }> = () => {
     const loader = <AppLoader />;
 
     return (
@@ -187,9 +186,6 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                 </TransactionProvider>
                             </LiquityProvider>
                         </WalletConnector>
-                        <SecuredFinanceProvider>
-                            {children}
-                        </SecuredFinanceProvider>
                     </WagmiProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>

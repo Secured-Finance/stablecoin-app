@@ -1,7 +1,10 @@
 import { useLiquitySelector } from '@liquity/lib-react';
 import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
-import { Box, Flex, Heading, Text } from 'theme-ui';
+import { useLiquity } from 'src/hooks/LiquityContext';
+import { AddressUtils } from 'src/utils';
+import { Box, Button, Flex, Heading, Text } from 'theme-ui';
 import { COIN, GT } from '../strings';
 import { Icon } from './Icon';
 
@@ -16,28 +19,23 @@ const select = ({
 });
 
 export const UserAccount: React.FC = () => {
-    // const { account } = useLiquity();
+    const { account } = useLiquity();
+    const { open } = useWeb3Modal();
     const { accountBalance, lusdBalance, lqtyBalance } =
         useLiquitySelector(select);
-    // const { bLusdBalance, lusdBalance: customLusdBalance } = useBondView();
-    // const { LUSD_OVERRIDE_ADDRESS } = useBondAddresses();
 
     return (
         <Flex>
-            {/* <ConnectKitButton.Custom>
-                {connectKit => (
-                    <Button
-                        variant='outline'
-                        sx={{ alignItems: 'center', p: 2, mr: 3 }}
-                        onClick={connectKit.show}
-                    >
-                        <Icon name='user-circle' size='lg' />
-                        <Text as='span' sx={{ ml: 2, fontSize: 1 }}>
-                            {AddressUtils.format(account, 6)}
-                        </Text>
-                    </Button>
-                )}
-            </ConnectKitButton.Custom> */}
+            <Button
+                variant='outline'
+                sx={{ alignItems: 'center', p: 2, mr: 3 }}
+                onClick={() => open()}
+            >
+                <Icon name='user-circle' size='lg' />
+                <Text as='span' sx={{ ml: 2, fontSize: 1 }}>
+                    {AddressUtils.format(account, 6)}
+                </Text>
+            </Button>
 
             <Box
                 sx={{
