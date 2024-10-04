@@ -32,7 +32,7 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         {params.depositCollateral && params.borrowLUSD ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
+                <Amount>{params.depositCollateral.prettify()} ETH</Amount> and
                 receive{' '}
                 <Amount>
                     {params.borrowLUSD.prettify()} {COIN}
@@ -45,12 +45,12 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
                     {params.repayLUSD.prettify()} {COIN}
                 </Amount>{' '}
                 and receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
+                <Amount>{params.withdrawCollateral.prettify()} ETH</Amount>
             </>
         ) : params.depositCollateral && params.repayLUSD ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
+                <Amount>{params.depositCollateral.prettify()} ETH</Amount> and
                 pay{' '}
                 <Amount>
                     {params.repayLUSD.prettify()} {COIN}
@@ -59,7 +59,7 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         ) : params.borrowLUSD && params.withdrawCollateral ? (
             <>
                 You will receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount> and{' '}
+                <Amount>{params.withdrawCollateral.prettify()} ETH</Amount> and{' '}
                 <Amount>
                     {params.borrowLUSD.prettify()} {COIN}
                 </Amount>
@@ -67,12 +67,12 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         ) : params.depositCollateral ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount>
+                <Amount>{params.depositCollateral.prettify()} ETH</Amount>
             </>
         ) : params.withdrawCollateral ? (
             <>
                 You will receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
+                <Amount>{params.withdrawCollateral.prettify()} ETH</Amount>
             </>
         ) : params.borrowLUSD ? (
             <>
@@ -241,7 +241,7 @@ const validateTroveCreation = (
             <ErrorDescription>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
+                    {depositCollateral.sub(accountBalance).prettify()} ETH
                 </Amount>
                 .
             </ErrorDescription>
@@ -354,7 +354,7 @@ const validateTroveAdjustment = (
             <ErrorDescription>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
+                    {depositCollateral.sub(accountBalance).prettify()} ETH
                 </Amount>
                 .
             </ErrorDescription>

@@ -259,7 +259,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
             {description ??
                 (openingNewTrove ? (
                     <InfoBubble>
-                        Start by entering the amount of tFIL you would like to
+                        Start by entering the amount of ETH you would like to
                         deposit as collateral.
                     </InfoBubble>
                 ) : (

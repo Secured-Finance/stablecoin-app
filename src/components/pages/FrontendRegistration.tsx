@@ -121,7 +121,7 @@ export const FrontendRegistration: React.FC = () => {
                 <Paragraph sx={{ fontSize: 1, mt: 3 }}>
                     You are about to register{' '}
                     <b>{AddressUtils.format(account, 6)}</b> to receive{' '}
-                    <b>{cut.mul(100).toString()}%</b> of the SFT rewards earned
+                    <b>{cut.mul(100).toString()}%</b> of the LQTY rewards earned
                     through this frontend.
                 </Paragraph>
 

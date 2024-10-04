@@ -30,7 +30,7 @@ export const ReadOnlyStake: React.FC = () => {
             <Box sx={{ p: [2, 3] }}>
                 <DisabledEditableRow
                     label='Stake'
-                    inputId='stake-SFT'
+                    inputId='stake-lqty'
                     amount={lqtyStake.stakedLQTY.prettify()}
                     unit={GT}
                 />
@@ -47,12 +47,12 @@ export const ReadOnlyStake: React.FC = () => {
                     inputId='stake-gain-eth'
                     amount={lqtyStake.collateralGain.prettify(4)}
                     color={lqtyStake.collateralGain.nonZero && 'success'}
-                    unit='tFIL'
+                    unit='ETH'
                 />
 
                 <StaticRow
                     label='Issuance gain'
-                    inputId='stake-gain-USDSF'
+                    inputId='stake-gain-lusd'
                     amount={lqtyStake.lusdGain.prettify()}
                     color={lqtyStake.lusdGain.nonZero && 'success'}
                     unit={COIN}

@@ -45,7 +45,7 @@ export const CollateralSurplusAction: React.FC = () => {
                 send={liquity.claimCollateralSurplus.bind(liquity, undefined)}
             >
                 <Button sx={{ mx: 2 }}>
-                    Claim {collateralSurplusBalance.prettify()} tFIL
+                    Claim {collateralSurplusBalance.prettify()} ETH
                 </Button>
             </Transaction>
         </Flex>

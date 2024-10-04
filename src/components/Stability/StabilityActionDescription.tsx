@@ -19,7 +19,7 @@ export const StabilityActionDescription: React.FC<
 > = ({ originalDeposit, change }) => {
     const collateralGain = originalDeposit.collateralGain.nonZero
         ?.prettify(4)
-        .concat(' tFIL');
+        .concat(' ETH');
     const lqtyReward = originalDeposit.lqtyReward.nonZero
         ?.prettify()
         .concat(' ', GT);

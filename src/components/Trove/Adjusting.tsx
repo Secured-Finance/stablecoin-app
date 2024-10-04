@@ -225,7 +225,7 @@ export const Adjusting: React.FC = () => {
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
-                    unit='tFIL'
+                    unit='ETH'
                     editedAmount={collateral.toString(4)}
                     setEditedAmount={(amount: string) =>
                         setCollateral(Decimal.from(amount))
@@ -293,7 +293,7 @@ export const Adjusting: React.FC = () => {
                         <InfoIcon
                             tooltip={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    The total amount of USDSF your Trove will
+                                    The total amount of LUSD your Trove will
                                     hold.{' '}
                                     {isDirty && (
                                         <>
@@ -301,9 +301,9 @@ export const Adjusting: React.FC = () => {
                                             {totalDebt
                                                 .sub(LUSD_LIQUIDATION_RESERVE)
                                                 .prettify(2)}{' '}
-                                            USDSF to reclaim your collateral (
+                                            LUSD to reclaim your collateral (
                                             {LUSD_LIQUIDATION_RESERVE.toString()}{' '}
-                                            USDSF Liquidation Reserve excluded).
+                                            LUSD Liquidation Reserve excluded).
                                         </>
                                     )}
                                 </Card>

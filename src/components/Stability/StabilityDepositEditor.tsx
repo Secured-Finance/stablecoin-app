@@ -80,7 +80,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
             <Box sx={{ p: [2, 3] }}>
                 <EditableRow
                     label='Deposit'
-                    inputId='deposit-SFT'
+                    inputId='deposit-lqty'
                     amount={editedLUSD.prettify()}
                     maxAmount={maxAmount.toString()}
                     maxedOut={maxedOut}
@@ -121,7 +121,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                 originalDeposit.collateralGain.nonZero &&
                                 'success'
                             }
-                            unit='tFIL'
+                            unit='ETH'
                         />
 
                         <StaticRow
@@ -139,7 +139,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the SFT rewards accrue
+                                            Although the LQTY rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore
