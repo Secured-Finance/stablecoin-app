@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
-import { Card, Heading, Box, Flex, Button } from 'theme-ui';
+import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 
 import { LiquityStoreState } from '@liquity/lib-base';
 import { useLiquitySelector } from '@liquity/lib-react';
 
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
+import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState } from '../Transaction';
 import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
@@ -14,7 +15,6 @@ import { ClaimRewards } from './actions/ClaimRewards';
 import { useStabilityView } from './context/StabilityViewContext';
 import { RemainingLQTY } from './RemainingLQTY';
 import { Yield } from './Yield';
-import { InfoIcon } from '../InfoIcon';
 
 const selector = ({
     stabilityDeposit,
@@ -70,7 +70,7 @@ export const ActiveDeposit: React.FC = () => {
                 <Box>
                     <DisabledEditableRow
                         label='Deposit'
-                        inputId='deposit-lusd'
+                        inputId='deposit-USDSF'
                         amount={stabilityDeposit.currentLUSD.prettify()}
                         unit={COIN}
                     />
@@ -89,7 +89,7 @@ export const ActiveDeposit: React.FC = () => {
                         color={
                             stabilityDeposit.collateralGain.nonZero && 'success'
                         }
-                        unit='ETH'
+                        unit='tFIL'
                     />
 
                     <Flex sx={{ alignItems: 'center' }}>
@@ -108,7 +108,7 @@ export const ActiveDeposit: React.FC = () => {
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the LQTY rewards accrue
+                                            Although the SFT rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore
@@ -135,13 +135,13 @@ export const ActiveDeposit: React.FC = () => {
                     </Button>
 
                     <ClaimRewards disabled={!hasGain && !hasReward}>
-                        Claim ETH and LQTY
+                        Claim tFIL and SFT
                     </ClaimRewards>
                 </Flex>
 
                 {hasTrove && (
                     <ClaimAndMove disabled={!hasGain}>
-                        Claim LQTY and move ETH to Trove
+                        Claim SFT and move tFIL to Trove
                     </ClaimAndMove>
                 )}
             </Box>

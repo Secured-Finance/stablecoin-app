@@ -127,7 +127,7 @@ export const Opening: React.FC = () => {
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
-                    unit='ETH'
+                    unit='tFIL'
                     editedAmount={collateral.toString(4)}
                     setEditedAmount={(amount: string) =>
                         setCollateral(Decimal.from(amount))
@@ -195,7 +195,7 @@ export const Opening: React.FC = () => {
                         <InfoIcon
                             tooltip={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    The total amount of LUSD your Trove will
+                                    The total amount of USDSF your Trove will
                                     hold.{' '}
                                     {isDirty && (
                                         <>
@@ -203,9 +203,9 @@ export const Opening: React.FC = () => {
                                             {totalDebt
                                                 .sub(LUSD_LIQUIDATION_RESERVE)
                                                 .prettify(2)}{' '}
-                                            LUSD to reclaim your collateral (
+                                            USDSF to reclaim your collateral (
                                             {LUSD_LIQUIDATION_RESERVE.toString()}{' '}
-                                            LUSD Liquidation Reserve excluded).
+                                            USDSF Liquidation Reserve excluded).
                                         </>
                                     )}
                                 </Card>
@@ -222,7 +222,7 @@ export const Opening: React.FC = () => {
                         riskiest Troves
                     </Link>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/lusd-redemptions#how-can-i-avoid-being-redeemed-against'>
+                    <LearnMoreLink link='https://docs.liquity.org/faq/USDSF-redemptions#how-can-i-avoid-being-redeemed-against'>
                         redeemed.
                     </LearnMoreLink>
                 </InfoBubble>
@@ -231,7 +231,7 @@ export const Opening: React.FC = () => {
 
                 {description ?? (
                     <InfoBubble>
-                        Start by entering the amount of ETH you would like to
+                        Start by entering the amount of tFIL you would like to
                         deposit as collateral.
                     </InfoBubble>
                 )}

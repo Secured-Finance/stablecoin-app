@@ -84,7 +84,7 @@ const StakingManagerActionDescription: React.FC<
     const unstakeLQTY = change.unstakeLQTY?.prettify().concat(' ', GT);
     const collateralGain = originalStake.collateralGain.nonZero
         ?.prettify(4)
-        .concat(' ETH');
+        .concat(' tFIL');
     const lusdGain = originalStake.lusdGain.nonZero
         ?.prettify()
         .concat(' ', COIN);

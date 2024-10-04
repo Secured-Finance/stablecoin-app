@@ -26,9 +26,9 @@ const Balances: React.FC = () => {
     return (
         <Box sx={{ mb: 3 }}>
             <Heading>My Account Balances</Heading>
-            <Statistic lexicon={l.ETH}>{accountBalance.prettify(4)}</Statistic>
-            <Statistic lexicon={l.LUSD}>{lusdBalance.prettify()}</Statistic>
-            <Statistic lexicon={l.LQTY}>{lqtyBalance.prettify()}</Statistic>
+            <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
+            <Statistic lexicon={l.USDSF}>{lusdBalance.prettify()}</Statistic>
+            <Statistic lexicon={l.SFT}>{lqtyBalance.prettify()}</Statistic>
         </Box>
     );
 };
@@ -115,7 +115,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
 
             <Statistic lexicon={l.TVL}>
                 {total.collateral.shorten()}{' '}
-                <Text sx={{ fontSize: 1 }}>&nbsp;ETH</Text>
+                <Text sx={{ fontSize: 1 }}>&nbsp;tFIL</Text>
                 <Text sx={{ fontSize: 1 }}>
                     &nbsp;($
                     {Decimal.from(total.collateral.mul(price)).shorten()})
