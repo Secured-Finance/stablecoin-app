@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui */
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     LiquityStoreState,
@@ -6,8 +7,7 @@ import {
     LUSD_MINIMUM_NET_DEBT,
     Percent,
     Trove,
-} from '@liquity/lib-base';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Flex, Heading, Spinner } from 'theme-ui';

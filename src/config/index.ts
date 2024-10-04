@@ -3,16 +3,13 @@ import { getAddress, isAddress } from '@ethersproject/address';
 
 export type LiquityFrontendConfig = {
     frontendTag: string;
-    infuraApiKey?: string;
-    alchemyApiKey?: string;
     testnetOnly?: boolean;
     walletConnectProjectId: string;
 };
 
 const defaultConfig: LiquityFrontendConfig = {
     frontendTag: '0xA12c287E3e61e13F346FA85527Eaa39648962466',
-    testnetOnly: false,
-    alchemyApiKey: 'm-w08JDeYLZeOUiSLqqP6knzePXomYXF',
+    testnetOnly: true,
     walletConnectProjectId: '9e84ebddd063e9ffd0a2728fe25ca07e',
 };
 
@@ -32,28 +29,6 @@ const parseConfig = (json: unknown): LiquityFrontendConfig => {
             } else {
                 console.error('Malformed frontendTag:');
                 console.log(frontendTag);
-            }
-        }
-
-        if (hasKey(json, 'infuraApiKey') && json.infuraApiKey !== '') {
-            const { infuraApiKey } = json;
-
-            if (typeof infuraApiKey === 'string') {
-                config.infuraApiKey = infuraApiKey;
-            } else {
-                console.error('Malformed infuraApiKey:');
-                console.log(infuraApiKey);
-            }
-        }
-
-        if (hasKey(json, 'alchemyApiKey') && json.alchemyApiKey !== '') {
-            const { alchemyApiKey } = json;
-
-            if (typeof alchemyApiKey === 'string') {
-                config.alchemyApiKey = alchemyApiKey;
-            } else {
-                console.error('Malformed alchemyApiKey:');
-                console.log(alchemyApiKey);
             }
         }
 

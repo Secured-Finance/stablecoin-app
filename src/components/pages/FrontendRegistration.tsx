@@ -11,7 +11,7 @@ import {
     Spinner,
 } from 'theme-ui';
 
-import { Decimal } from '@liquity/lib-base';
+import { Decimal } from '@secured-finance/lib-base';
 
 import { Icon } from 'src/components/Icon';
 import { Transaction, useMyTransactionState } from 'src/components/Transaction';

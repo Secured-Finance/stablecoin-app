@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Button, Card, Heading } from 'theme-ui';
 
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Decimalish,
     Difference,
     LiquityStoreState,
     LQTYStake,
-} from '@liquity/lib-base';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
 
 import { COIN, GT } from '../../strings';
 

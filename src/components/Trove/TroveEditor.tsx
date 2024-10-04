@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Card, Heading } from 'theme-ui';
 
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Decimalish,
@@ -9,8 +10,7 @@ import {
     LUSD_LIQUIDATION_RESERVE,
     Percent,
     Trove,
-} from '@liquity/lib-base';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
 
 import { COIN } from '../../strings';
 

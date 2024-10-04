@@ -1,3 +1,4 @@
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Difference,
@@ -5,8 +6,7 @@ import {
     LUSD_LIQUIDATION_RESERVE,
     Percent,
     Trove,
-} from '@liquity/lib-base';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 

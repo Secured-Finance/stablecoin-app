@@ -1,11 +1,5 @@
 import Filecoin from 'src/assets/icons/filecoin-network.svg';
-import {
-    Chain,
-    filecoin,
-    filecoinCalibration,
-    mainnet,
-    sepolia,
-} from 'viem/chains';
+import { Chain, filecoin, filecoinCalibration } from 'viem/chains';
 import { isProdEnv } from './isProdEnv';
 
 type ChainInformation = {
@@ -13,8 +7,11 @@ type ChainInformation = {
     icon: React.ReactNode;
 };
 
-const testnetChains: readonly [Chain, ...Chain[]] = [sepolia];
-const mainnetChains: readonly [Chain, ...Chain[]] = [mainnet, sepolia];
+const testnetChains: readonly [Chain, ...Chain[]] = [filecoinCalibration];
+const mainnetChains: readonly [Chain, ...Chain[]] = [
+    filecoin,
+    filecoinCalibration,
+];
 
 export const getSupportedChains = () => {
     return isProdEnv() ? mainnetChains : testnetChains;

@@ -2,12 +2,16 @@
 import React, { useCallback, useEffect } from 'react';
 import { Button, Flex } from 'theme-ui';
 
-import { Decimal, Decimalish, LiquityStoreState } from '@liquity/lib-base';
 import {
     LiquityStoreUpdate,
     useLiquityReducer,
     useLiquitySelector,
 } from '@liquity/lib-react';
+import {
+    Decimal,
+    Decimalish,
+    LiquityStoreState,
+} from '@secured-finance/lib-base';
 
 import { COIN } from '../../strings';
 

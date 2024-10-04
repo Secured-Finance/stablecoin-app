@@ -11,7 +11,7 @@ import {
     TroveChange,
     TroveClosureParams,
     TroveCreationParams,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import { COIN } from '../../../strings';
 

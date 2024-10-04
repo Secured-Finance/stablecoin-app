@@ -1,7 +1,7 @@
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 
-import { LiquityStoreState } from '@liquity/lib-base';
 import { useLiquitySelector } from '@liquity/lib-react';
+import { LiquityStoreState } from '@secured-finance/lib-base';
 
 import { COIN, GT } from '../../strings';
 

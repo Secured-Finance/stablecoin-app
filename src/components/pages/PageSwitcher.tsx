@@ -1,8 +1,8 @@
 import { AddressZero } from '@ethersproject/constants';
 import { useEffect, useState } from 'react';
 
-import { LiquityStoreState } from '@liquity/lib-base';
 import { useLiquitySelector } from '@liquity/lib-react';
+import { LiquityStoreState } from '@secured-finance/lib-base';
 
 import { useLiquity } from 'src/hooks/LiquityContext';
 

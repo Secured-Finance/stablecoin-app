@@ -1,6 +1,6 @@
 import { Wallet } from '@ethersproject/wallet';
-import { Decimal, Difference, Trove } from '@liquity/lib-base';
 import { LiquityStoreProvider } from '@liquity/lib-react';
+import { Decimal, Difference, Trove } from '@secured-finance/lib-base';
 import React from 'react';
 import { Route, HashRouter as Router, Switch } from 'react-router-dom';
 import { RiskyTrovesPage } from 'src/components//pages/RiskyTrovesPage';

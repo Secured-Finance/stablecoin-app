@@ -10,11 +10,14 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import 'react-circular-progressbar/dist/styles.css';
 
-import { LiquityReceipt, SentLiquityTransaction } from '@liquity/lib-base';
+import {
+    LiquityReceipt,
+    SentLiquityTransaction,
+} from '@secured-finance/lib-base';
 import {
     EthersTransactionCancelledError,
     EthersTransactionOverrides,
-} from '@liquity/lib-ethers';
+} from '@secured-finance/lib-ethers';
 
 import { useLiquity } from '../hooks/LiquityContext';
 

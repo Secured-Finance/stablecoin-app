@@ -1,5 +1,5 @@
-import { Decimal, LiquityStoreState } from '@liquity/lib-base';
 import { useLiquitySelector } from '@liquity/lib-react';
+import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
 import React from 'react';
 import { Box, Flex, Heading, Text } from 'theme-ui';
 import { COIN, GT } from '../strings';

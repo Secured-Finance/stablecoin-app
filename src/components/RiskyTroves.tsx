@@ -1,12 +1,12 @@
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
     MINIMUM_COLLATERAL_RATIO,
     Percent,
     UserTrove,
-} from '@liquity/lib-base';
-import { BlockPolledLiquityStoreState } from '@liquity/lib-ethers';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
+import { BlockPolledLiquityStoreState } from '@secured-finance/lib-ethers';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
 

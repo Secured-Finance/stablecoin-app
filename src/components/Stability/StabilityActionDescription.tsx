@@ -4,7 +4,7 @@ import {
     Decimal,
     StabilityDeposit,
     StabilityDepositChange,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import { COIN, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';

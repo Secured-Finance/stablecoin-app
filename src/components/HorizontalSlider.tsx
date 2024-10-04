@@ -1,4 +1,4 @@
-import { Decimal } from '@liquity/lib-base';
+import { Decimal } from '@secured-finance/lib-base';
 import { toFloat } from 'src/utils';
 import { Button, Flex, Text, Slider as ThemeUiSlider } from 'theme-ui';
 import { InfoIcon } from './InfoIcon';

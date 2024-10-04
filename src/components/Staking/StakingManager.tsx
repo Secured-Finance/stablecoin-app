@@ -7,7 +7,7 @@ import {
     LiquityStoreState,
     LQTYStake,
     LQTYStakeChange,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import {
     LiquityStoreUpdate,

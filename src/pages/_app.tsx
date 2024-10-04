@@ -23,12 +23,12 @@ import {
     getWalletConnectId,
 } from 'src/utils';
 import { Flex, Heading, Link, Paragraph, ThemeUIProvider } from 'theme-ui';
-import { filecoin, filecoinCalibration, mainnet, sepolia } from 'viem/chains';
+import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 import theme from '../theme';
 
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? '';
+const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
 // Start pre-fetching the config
 // getConfig().then(config => {
@@ -123,13 +123,9 @@ const config = defaultWagmiConfig({
         walletFeatures: false,
     },
     transports: {
-        [filecoin.id]: http(),
-        [filecoinCalibration.id]: http(),
-        [mainnet.id]: http(
-            `https://eth-mainnet.g.alchemy.com/v2/${alchemyApiKey}`
-        ),
-        [sepolia.id]: http(
-            `https://eth-sepolia.g.alchemy.com/v2/${alchemyApiKey}`
+        [filecoin.id]: http(`https://rpc.ankr.com/filecoin/${ankerApiKey}`),
+        [filecoinCalibration.id]: http(
+            `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`
         ),
     },
 });

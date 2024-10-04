@@ -7,7 +7,7 @@ import {
     Difference,
     LiquityStoreState,
     StabilityDeposit,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import { useLiquitySelector } from '@liquity/lib-react';
 

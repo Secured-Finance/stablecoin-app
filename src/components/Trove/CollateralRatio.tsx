@@ -6,7 +6,7 @@ import {
     Decimal,
     Difference,
     Percent,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import { Icon } from '../Icon';
 

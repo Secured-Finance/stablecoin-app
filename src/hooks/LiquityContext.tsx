@@ -15,7 +15,7 @@ import {
     EthersLiquity,
     EthersLiquityWithStore,
     _connectByChainId,
-} from '@liquity/lib-ethers';
+} from '@secured-finance/lib-ethers';
 
 import { LiquityFrontendConfig, getConfig } from '../config';
 import { BatchedProvider } from '../providers/BatchingProvider';

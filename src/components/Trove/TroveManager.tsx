@@ -8,7 +8,7 @@ import {
     LiquityStoreState,
     LUSD_MINIMUM_DEBT,
     Trove,
-} from '@liquity/lib-base';
+} from '@secured-finance/lib-base';
 
 import {
     LiquityStoreUpdate,

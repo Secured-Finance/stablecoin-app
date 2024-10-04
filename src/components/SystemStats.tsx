@@ -1,6 +1,6 @@
 import { AddressZero } from '@ethersproject/constants';
-import { Decimal, LiquityStoreState, Percent } from '@liquity/lib-base';
 import { useLiquitySelector } from '@liquity/lib-react';
+import { Decimal, LiquityStoreState, Percent } from '@secured-finance/lib-base';
 import React from 'react';
 import { Box, Card, Heading, Link, Text } from 'theme-ui';
 

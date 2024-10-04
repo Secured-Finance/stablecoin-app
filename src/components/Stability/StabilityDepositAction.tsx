@@ -1,9 +1,9 @@
+import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     LiquityStoreState,
     StabilityDepositChange,
-} from '@liquity/lib-base';
-import { useLiquitySelector } from '@liquity/lib-react';
+} from '@secured-finance/lib-base';
 import { Button } from 'theme-ui';
 
 import { useLiquity } from '../../hooks/LiquityContext';
