@@ -2,13 +2,11 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProtocolConfigMap, SatoshiClient } from 'satoshi-sdk';
 import {
-    updateChainError,
     updateChainId,
     updateIsChainIdDetected,
     updateLatestBlock,
 } from 'src/store/blockchain';
 import { RootState } from 'src/store/types';
-import { getSupportedChainIds } from 'src/utils';
 import { hexToNumber, WalletClient } from 'viem';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 
@@ -46,9 +44,6 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const dispatchChainError = useCallback(
         (chainId: number) => {
-            dispatch(
-                updateChainError(!getSupportedChainIds().includes(chainId))
-            );
             dispatch(updateChainId(chainId));
         },
         [dispatch]

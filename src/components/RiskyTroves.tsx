@@ -41,7 +41,7 @@ const liquidatableInRecoveryMode = (
     ) {
         return [
             trove.debt.lte(lusdInStabilityPool),
-            "There's not enough LUSD in the Stability pool to cover the debt",
+            "There's not enough USDSF in the Stability pool to cover the debt",
         ] as const;
     } else {
         return liquidatableInNormalMode(trove, price);
@@ -252,7 +252,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                             opacity: 0.5,
                                         }}
                                     >
-                                        ETH
+                                        tFIL
                                     </Box>
                                 </th>
                                 <th>

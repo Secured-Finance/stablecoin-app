@@ -49,7 +49,7 @@ export const UserAccount: React.FC = () => {
 
                 {(
                     [
-                        ['ETH', accountBalance],
+                        ['tFIL', accountBalance],
                         [COIN, Decimal.from(lusdBalance || 0)],
                         [GT, Decimal.from(lqtyBalance)],
                     ] as const

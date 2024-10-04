@@ -1,12 +1,6 @@
 import assert from 'assert';
 import { Environment } from './strings';
 
-export const getSupportedChainIds = (): number[] => {
-    const supportedChainIds = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN_IDS;
-    assert(supportedChainIds, 'NEXT_PUBLIC_SUPPORTED_CHAIN_IDS is not set');
-    return supportedChainIds.split(',').map(n => parseInt(n, 10));
-};
-
 export const getNonSubgraphSupportedChainIds = (): number[] => {
     const nonSupportedChainIds =
         process.env.NEXT_PUBLIC_NON_SUBGRAPH_SUPPORTED_CHAIN_IDS;
