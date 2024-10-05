@@ -1,10 +1,10 @@
 import { AddressZero } from '@ethersproject/constants';
 import { useLiquitySelector } from '@liquity/lib-react';
 import { Decimal, LiquityStoreState, Percent } from '@secured-finance/lib-base';
+import packageJson from 'package.json';
 import React from 'react';
-import { Box, Card, Heading, Link, Text } from 'theme-ui';
-
 import { isProdEnv } from 'src/utils';
+import { Box, Card, Heading, Link, Text } from 'theme-ui';
 import { useLiquity } from '../hooks/LiquityContext';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
@@ -35,7 +35,9 @@ const Balances: React.FC = () => {
 
 const GitHubCommit: React.FC<{ children?: string }> = ({ children }) =>
     children?.match(/[0-9a-f]{40}/) ? (
-        <Link href={`https://github.com/liquity/dev/commit/${children}`}>
+        <Link
+            href={`https://github.com/Secured-Finance/stablecoin-contracts/commit/${children}`}
+        >
             {children.substr(0, 7)}
         </Link>
     ) : (
@@ -103,7 +105,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         <Card {...{ variant }}>
             {showBalances && <Balances />}
 
-            <Heading>Liquity statistics</Heading>
+            <Heading>Statistics</Heading>
 
             <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
                 Protocol
@@ -169,11 +171,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                 </Box>
                 <Box sx={{ fontSize: 0 }}>
                     Frontend version:{' '}
-                    {!isProdEnv() ? (
-                        'development'
-                    ) : (
-                        <GitHubCommit>{'arpit'}</GitHubCommit>
-                    )}
+                    {!isProdEnv() ? 'development' : packageJson.version}
                 </Box>
             </Box>
         </Card>

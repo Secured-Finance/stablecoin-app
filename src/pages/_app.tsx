@@ -13,6 +13,8 @@ import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
 import { WalletConnector } from 'src/components/WalletConnector';
+import { getConfig } from 'src/config';
+import { useAsyncValue } from 'src/hooks/AsyncValue';
 import { LiquityProvider } from 'src/hooks/LiquityContext';
 import { LiquityFrontend } from 'src/LiquityFrontend';
 import store from 'src/store';
@@ -30,11 +32,11 @@ import theme from '../theme';
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
 // Start pre-fetching the config
-// getConfig().then(config => {
-//     // console.log("Frontend config:");
-//     // console.log(config);
-//     Object.assign(window, { config });
-// });
+getConfig().then(config => {
+    // console.log("Frontend config:");
+    // console.log(config);
+    Object.assign(window, { config });
+});
 
 const UnsupportedMainnetFallback: React.FC = () => (
     <Flex
@@ -52,12 +54,12 @@ const UnsupportedMainnetFallback: React.FC = () => (
         </Heading>
 
         <Paragraph sx={{ mb: 3 }}>
-            Please change your network to Görli or Sepolia.
+            Please change your network to Filecoin Calibration.
         </Paragraph>
 
         <Paragraph>
-            If you would like to use the Liquity Protocol on mainnet, please
-            pick a frontend{' '}
+            If you would like to use this protocol on mainnet, please pick a
+            frontend{' '}
             <Link href='https://www.liquity.org/frontend'>
                 here <Icon name='external-link-alt' size='xs' />
             </Link>
@@ -77,10 +79,10 @@ const UnsupportedNetworkFallback: React.FC = () => (
         }}
     >
         <Heading sx={{ mb: 3 }}>
-            <Icon name='exclamation-triangle' /> Liquity is not supported on
-            this network.
+            <Icon name='exclamation-triangle' /> This protocol is not supported
+            on this network.
         </Heading>
-        Please switch to mainnet, Görli or Sepolia.
+        Please switch to Filecoin or Filecoin Calibration.
     </Flex>
 );
 
@@ -110,7 +112,7 @@ const metadata = {
 
 const network = getSupportedChains();
 
-const config = defaultWagmiConfig({
+const wagmiConfig = defaultWagmiConfig({
     chains: network,
     projectId: projectId,
     metadata,
@@ -130,11 +132,12 @@ const config = defaultWagmiConfig({
 });
 
 createWeb3Modal({
-    wagmiConfig: config,
+    wagmiConfig,
     projectId,
     enableAnalytics: true,
     enableSwaps: false,
     enableOnramp: false,
+    allowUnsupportedChain: true,
 });
 
 function App({ Component, pageProps }: AppProps) {
@@ -164,32 +167,35 @@ function App({ Component, pageProps }: AppProps) {
 }
 
 const Providers: React.FC<{ children: React.ReactNode }> = () => {
+    const config = useAsyncValue(getConfig);
     const loader = <AppLoader />;
 
     return (
         <ThemeUIProvider theme={theme}>
-            <CookiesProvider>
-                <QueryClientProvider client={queryClient}>
-                    <WagmiProvider config={config}>
-                        <WalletConnector>
-                            <LiquityProvider
-                                loader={loader}
-                                unsupportedNetworkFallback={
-                                    <UnsupportedNetworkFallback />
-                                }
-                                unsupportedMainnetFallback={
-                                    <UnsupportedMainnetFallback />
-                                }
-                            >
-                                <TransactionProvider>
-                                    <LiquityFrontend loader={loader} />
-                                </TransactionProvider>
-                            </LiquityProvider>
-                        </WalletConnector>
-                    </WagmiProvider>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-            </CookiesProvider>
+            {config.loaded && (
+                <CookiesProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <WagmiProvider config={wagmiConfig}>
+                            <WalletConnector>
+                                <LiquityProvider
+                                    loader={loader}
+                                    unsupportedNetworkFallback={
+                                        <UnsupportedNetworkFallback />
+                                    }
+                                    unsupportedMainnetFallback={
+                                        <UnsupportedMainnetFallback />
+                                    }
+                                >
+                                    <TransactionProvider>
+                                        <LiquityFrontend loader={loader} />
+                                    </TransactionProvider>
+                                </LiquityProvider>
+                            </WalletConnector>
+                        </WagmiProvider>
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </QueryClientProvider>
+                </CookiesProvider>
+            )}
         </ThemeUIProvider>
     );
 };
