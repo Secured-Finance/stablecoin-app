@@ -10,8 +10,12 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
+import { Header } from 'src/components/Header';
 import { Icon } from 'src/components/Icon';
+import { SystemStatsPopup } from 'src/components/SystemStatsPopup';
+import { Layout } from 'src/components/templates';
 import { TransactionProvider } from 'src/components/Transaction';
+import { UserAccount } from 'src/components/UserAccount';
 import { WalletConnector } from 'src/components/WalletConnector';
 import { LiquityProvider } from 'src/hooks/LiquityContext';
 import { LiquityFrontend } from 'src/LiquityFrontend';
@@ -155,7 +159,16 @@ function App({ Component, pageProps }: AppProps) {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <Component {...pageProps} />
+                        <Layout
+                            navBar={
+                                <Header>
+                                    <UserAccount />
+                                    <SystemStatsPopup />
+                                </Header>
+                            }
+                        >
+                            <Component {...pageProps} />
+                        </Layout>
                     </ThemeProvider>
                 </Providers>
             </Provider>
@@ -163,7 +176,7 @@ function App({ Component, pageProps }: AppProps) {
     );
 }
 
-const Providers: React.FC<{ children: React.ReactNode }> = () => {
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const loader = <AppLoader />;
 
     return (
@@ -182,7 +195,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                                 }
                             >
                                 <TransactionProvider>
-                                    <LiquityFrontend loader={loader} />
+                                    <LiquityFrontend loader={loader}>
+                                        {children}
+                                    </LiquityFrontend>
                                 </TransactionProvider>
                             </LiquityProvider>
                         </WalletConnector>

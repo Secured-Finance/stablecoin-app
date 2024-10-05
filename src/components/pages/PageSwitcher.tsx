@@ -6,6 +6,7 @@ import { LiquityStoreState } from '@secured-finance/lib-base';
 
 import { useLiquity } from 'src/hooks/LiquityContext';
 
+import { Container } from 'theme-ui';
 import { Dashboard } from './Dashboard';
 import { FrontendRegistration } from './FrontendRegistration';
 import { FrontendRegistrationSuccess } from './FrontendRegistrationSuccess';
@@ -31,19 +32,35 @@ export const PageSwitcher: React.FC = () => {
         }
     }, [unregistered]);
 
+    let component;
+
     if (registering || unregistered) {
         if (frontend.status === 'registered') {
-            return (
+            component = (
                 <FrontendRegistrationSuccess
                     onDismiss={() => setRegistering(false)}
                 />
             );
         } else if (account === frontendTag) {
-            return <FrontendRegistration />;
+            component = <FrontendRegistration />;
         } else {
-            return <UnregisteredFrontend />;
+            component = <UnregisteredFrontend />;
         }
     } else {
-        return <Dashboard />;
+        component = <Dashboard />;
     }
+
+    return (
+        <Container
+            variant='main'
+            sx={{
+                display: 'flex',
+                flexGrow: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+        >
+            {component}
+        </Container>
+    );
 };
