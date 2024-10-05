@@ -9,9 +9,8 @@ import {
 } from '@secured-finance/lib-base';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useLiquitySelector, useStableTroveChange } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Spinner } from 'theme-ui';
-import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { InfoBubble } from '../InfoBubble';

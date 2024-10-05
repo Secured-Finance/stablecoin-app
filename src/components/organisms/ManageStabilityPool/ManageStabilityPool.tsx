@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { DepositWithdrawBox } from 'src/components/molecules';
 import {
     Card,
@@ -10,33 +9,13 @@ import {
     TabsList,
     TabsTrigger,
 } from 'src/components/ui';
-import { useSPDeposit, useSPWithdraw } from 'src/hooks';
-import { amountFormatterToBase, CurrencySymbol } from 'src/utils';
+import { CurrencySymbol } from 'src/utils';
 
 export const ManageStabilityPool = ({
     currency,
 }: {
     currency: CurrencySymbol;
 }) => {
-    const { onSPDeposit } = useSPDeposit();
-    const { onSPWithdraw } = useSPWithdraw();
-
-    const handleSPDeposit = useCallback(
-        async (value: string) => {
-            const depositAmount = amountFormatterToBase[currency](value);
-            await onSPDeposit(depositAmount);
-        },
-        [currency, onSPDeposit]
-    );
-
-    const handleSPWithdraw = useCallback(
-        async (value: string) => {
-            const withdrawAmount = amountFormatterToBase[currency](value);
-            await onSPWithdraw(withdrawAmount);
-        },
-        [currency, onSPWithdraw]
-    );
-
     return (
         <div className='flex h-full flex-col items-center justify-center gap-4'>
             <Card className='w-[560px] overflow-hidden'>
@@ -58,7 +37,7 @@ export const ManageStabilityPool = ({
                             <DepositWithdrawBox
                                 type='Deposit'
                                 currency={currency}
-                                onClick={handleSPDeposit}
+                                onClick={() => {}}
                                 balance={BigInt('141214214')}
                             />
                         </TabsContent>
@@ -66,7 +45,7 @@ export const ManageStabilityPool = ({
                             <DepositWithdrawBox
                                 type='Withdraw'
                                 currency={currency}
-                                onClick={handleSPWithdraw}
+                                onClick={() => {}}
                                 balance={BigInt('110000000')}
                             />
                         </TabsContent>
