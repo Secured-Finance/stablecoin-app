@@ -1,11 +1,9 @@
-import React from 'react';
-
 import {
     Decimal,
     StabilityDeposit,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
-
+import React from 'react';
 import { COIN, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
 

@@ -1,7 +1,5 @@
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-
 import { GT } from '../../strings';
-
 import { InfoMessage } from '../InfoMessage';
 import { useStakingView } from './context/StakingViewContext';
 

@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from 'theme-ui';
-
 import { Icon } from './Icon';
 
 export const InfoBubble: React.FC<React.PropsWithChildren> = ({ children }) => (

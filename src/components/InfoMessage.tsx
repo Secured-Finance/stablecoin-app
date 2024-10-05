@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, Text } from 'theme-ui';
-
 import { Icon } from './Icon';
 
 type InfoMessageProps = React.PropsWithChildren<{

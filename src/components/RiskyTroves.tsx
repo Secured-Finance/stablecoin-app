@@ -7,11 +7,9 @@ import {
 } from '@secured-finance/lib-base';
 import { BlockPolledLiquityStoreState } from '@secured-finance/lib-ethers';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
-
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
-import { useLiquity } from '../hooks/LiquityContext';
+import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { Icon } from './Icon';

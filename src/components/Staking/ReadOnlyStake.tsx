@@ -1,14 +1,10 @@
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-
 import { LiquityStoreState } from '@secured-finance/lib-base';
 import { useLiquitySelector } from 'src/hooks';
-
+import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
-
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
-
 import { useStakingView } from './context/StakingViewContext';
 import { StakingGainsAction } from './StakingGainsAction';
 

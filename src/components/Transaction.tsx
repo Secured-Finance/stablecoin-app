@@ -6,10 +6,6 @@ import {
     TransactionResponse,
 } from '@ethersproject/abstract-provider';
 import { hexDataLength, hexDataSlice } from '@ethersproject/bytes';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-
-import 'react-circular-progressbar/dist/styles.css';
-
 import {
     LiquityReceipt,
     SentLiquityTransaction,
@@ -18,6 +14,8 @@ import {
     EthersTransactionCancelledError,
     EthersTransactionOverrides,
 } from '@secured-finance/lib-ethers';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import 'react-circular-progressbar/dist/styles.css';
 
 import { useLiquity } from '../hooks/LiquityContext';
 

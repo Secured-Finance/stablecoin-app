@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
+import { useLiquity } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
-
-import { useLiquity } from '../hooks/LiquityContext';
-
 import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 

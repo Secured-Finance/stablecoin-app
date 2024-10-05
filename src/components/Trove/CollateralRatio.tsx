@@ -1,15 +1,12 @@
-import React from 'react';
-import { Box, Card, Flex } from 'theme-ui';
-
 import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
     Difference,
     Percent,
 } from '@secured-finance/lib-base';
-
+import React from 'react';
+import { Box, Card, Flex } from 'theme-ui';
 import { Icon } from '../Icon';
-
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';

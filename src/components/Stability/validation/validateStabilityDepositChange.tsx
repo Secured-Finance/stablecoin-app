@@ -4,7 +4,6 @@ import {
     StabilityDeposit,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
-
 import { COIN } from '../../../strings';
 import { Amount } from '../../ActionDescription';
 import { ErrorDescription } from '../../ErrorDescription';

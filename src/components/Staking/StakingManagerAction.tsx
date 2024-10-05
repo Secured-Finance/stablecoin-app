@@ -1,8 +1,6 @@
-import { Button } from 'theme-ui';
-
 import { Decimal, LQTYStakeChange } from '@secured-finance/lib-base';
-
-import { useLiquity } from '../../hooks/LiquityContext';
+import { useLiquity } from 'src/hooks';
+import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';
 
 type StakingActionProps = React.PropsWithChildren<{

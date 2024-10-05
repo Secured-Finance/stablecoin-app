@@ -1,10 +1,8 @@
 import { AddressZero } from '@ethersproject/constants';
 import { LiquityStoreState } from '@secured-finance/lib-base';
 import React from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { Box, Container, Flex } from 'theme-ui';
-import { useLiquity } from '../hooks/LiquityContext';
-
 import { LiquityLogo } from './LiquityLogo';
 import { Nav } from './Nav';
 import { SideNav } from './SideNav';

@@ -12,9 +12,7 @@ import {
     TroveClosureParams,
     TroveCreationParams,
 } from '@secured-finance/lib-base';
-
 import { COIN } from '../../../strings';
-
 import { ActionDescription, Amount } from '../../ActionDescription';
 import { ErrorDescription } from '../../ErrorDescription';
 

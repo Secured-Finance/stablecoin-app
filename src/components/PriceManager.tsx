@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
-
 import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
-import { useLiquitySelector } from 'src/hooks';
-
-import { useLiquity } from '../hooks/LiquityContext';
-
+import React, { useEffect, useState } from 'react';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
 import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 

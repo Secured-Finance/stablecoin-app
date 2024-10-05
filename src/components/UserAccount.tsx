@@ -1,8 +1,7 @@
 import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
-import { useLiquitySelector } from 'src/hooks';
-import { useLiquity } from 'src/hooks/LiquityContext';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
 import { Box, Button, Flex, Heading, Text } from 'theme-ui';
 import { COIN, GT } from '../strings';

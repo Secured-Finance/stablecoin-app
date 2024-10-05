@@ -9,7 +9,6 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLiquitySelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';

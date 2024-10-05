@@ -12,7 +12,6 @@ import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
-
 import { useStakingView } from './context/StakingViewContext';
 
 const select = ({ lqtyBalance, totalStakedLQTY }: LiquityStoreState) => ({

@@ -1,6 +1,6 @@
 import React from 'react';
+import { useLiquity } from 'src/hooks';
 import { Button } from 'theme-ui';
-import { useLiquity } from '../../../hooks/LiquityContext';
 import { useTransactionFunction } from '../../Transaction';
 
 type ClaimAndMoveProps = React.PropsWithChildren<{

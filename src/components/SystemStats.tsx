@@ -2,10 +2,9 @@ import { AddressZero } from '@ethersproject/constants';
 import { Decimal, LiquityStoreState, Percent } from '@secured-finance/lib-base';
 import packageJson from 'package.json';
 import React from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
 import { Box, Card, Heading, Link, Text } from 'theme-ui';
-import { useLiquity } from '../hooks/LiquityContext';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 

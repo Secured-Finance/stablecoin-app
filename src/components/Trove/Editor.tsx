@@ -8,7 +8,6 @@ import {
     Text,
     ThemeUICSSProperties,
 } from 'theme-ui';
-
 import { Icon } from '../Icon';
 
 type RowProps = SxProp &

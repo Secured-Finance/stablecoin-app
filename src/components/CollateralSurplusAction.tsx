@@ -1,8 +1,7 @@
 import { LiquityStoreState } from '@secured-finance/lib-base';
 import React, { useEffect } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { Button, Flex, Spinner } from 'theme-ui';
-import { useLiquity } from '../hooks/LiquityContext';
 import { Transaction, useMyTransactionState } from './Transaction';
 import { useTroveView } from './Trove/context/TroveViewContext';
 

@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
-import React, { useEffect } from 'react';
-
 import { Decimal, TroveChange } from '@secured-finance/lib-base';
 import { PopulatedEthersLiquityTransaction } from '@secured-finance/lib-ethers';
-
-import { useLiquity } from '../../hooks/LiquityContext';
+import React, { useEffect } from 'react';
+import { useLiquity } from 'src/hooks';
 import { WarningBubble } from '../WarningBubble';
 
 export type GasEstimationState =

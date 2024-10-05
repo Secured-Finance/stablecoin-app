@@ -3,10 +3,8 @@ import {
     LiquityStoreState,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
-import { useLiquitySelector } from 'src/hooks';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
 import { Button } from 'theme-ui';
-
-import { useLiquity } from '../../hooks/LiquityContext';
 import { useTransactionFunction } from '../Transaction';
 
 type StabilityDepositActionProps = React.PropsWithChildren<{

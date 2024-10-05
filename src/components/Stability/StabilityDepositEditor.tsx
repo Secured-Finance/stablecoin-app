@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import { Box, Button, Card, Heading } from 'theme-ui';
-
 import {
     Decimal,
     Decimalish,
@@ -8,11 +5,10 @@ import {
     LiquityStoreState,
     StabilityDeposit,
 } from '@secured-finance/lib-base';
-
+import React, { useState } from 'react';
 import { useLiquitySelector } from 'src/hooks';
-
+import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
-
 import { Icon } from '../Icon';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
