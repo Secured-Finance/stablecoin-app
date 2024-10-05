@@ -1,23 +1,19 @@
 /* eslint-disable no-console */
-import React, { useCallback, useEffect } from 'react';
-import { Button, Flex } from 'theme-ui';
-
-import {
-    LiquityStoreUpdate,
-    useLiquityReducer,
-    useLiquitySelector,
-} from '@liquity/lib-react';
 import {
     Decimal,
     Decimalish,
     LiquityStoreState,
 } from '@secured-finance/lib-base';
-
+import React, { useCallback, useEffect } from 'react';
+import {
+    LiquityStoreUpdate,
+    useLiquityReducer,
+    useLiquitySelector,
+} from 'src/hooks';
+import { Button, Flex } from 'theme-ui';
 import { COIN } from '../../strings';
-
 import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
-
 import { StabilityDepositAction } from './StabilityDepositAction';
 import { StabilityDepositEditor } from './StabilityDepositEditor';
 import { useStabilityView } from './context/StabilityViewContext';

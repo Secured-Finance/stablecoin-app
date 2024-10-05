@@ -1,8 +1,6 @@
-import { Button } from 'theme-ui';
-
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState } from '@secured-finance/lib-base';
-
+import { useLiquitySelector } from 'src/hooks';
+import { Button } from 'theme-ui';
 import { useLiquity } from '../../hooks/LiquityContext';
 import { useTransactionFunction } from '../Transaction';
 

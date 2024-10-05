@@ -1,11 +1,8 @@
 import { AddressZero } from '@ethersproject/constants';
-import { useEffect, useState } from 'react';
-
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState } from '@secured-finance/lib-base';
-
+import { useEffect, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { useLiquity } from 'src/hooks/LiquityContext';
-
 import { Dashboard } from './Dashboard';
 import { FrontendRegistration } from './FrontendRegistration';
 import { FrontendRegistrationSuccess } from './FrontendRegistrationSuccess';

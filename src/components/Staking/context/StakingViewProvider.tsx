@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
-
-import { LiquityStoreUpdate, useLiquityReducer } from '@liquity/lib-react';
 import { LiquityStoreState, LQTYStake } from '@secured-finance/lib-base';
-
+import { useEffect } from 'react';
+import { LiquityStoreUpdate, useLiquityReducer } from 'src/hooks';
 import { useMyTransactionState } from '../../Transaction';
-
 import { StakingViewAction, StakingViewContext } from './StakingViewContext';
 
 type StakingViewProviderAction =

@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-import { useCallback, useEffect } from 'react';
-import { Button, Flex } from 'theme-ui';
-
 import {
     Decimal,
     Decimalish,
@@ -9,20 +6,18 @@ import {
     LUSD_MINIMUM_DEBT,
     Trove,
 } from '@secured-finance/lib-base';
-
+import { useCallback, useEffect } from 'react';
 import {
     LiquityStoreUpdate,
     useLiquityReducer,
     useLiquitySelector,
-} from '@liquity/lib-react';
-
+} from 'src/hooks';
+import { Button, Flex } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
-
 import { TroveAction } from './TroveAction';
 import { TroveEditor } from './TroveEditor';
 import { useTroveView } from './context/TroveViewContext';
-
 import {
     selectForTroveChangeValidation,
     validateTroveChange,

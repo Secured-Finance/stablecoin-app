@@ -32,11 +32,11 @@ import theme from '../theme';
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
 // Start pre-fetching the config
-getConfig().then(config => {
-    // console.log("Frontend config:");
-    // console.log(config);
-    Object.assign(window, { config });
-});
+// getConfig().then(config => {
+//     // console.log("Frontend config:");
+//     // console.log(config);
+//     Object.assign(window, { config });
+// });
 
 const UnsupportedMainnetFallback: React.FC = () => (
     <Flex

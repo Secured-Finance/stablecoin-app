@@ -1,6 +1,6 @@
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';

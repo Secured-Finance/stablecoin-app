@@ -1,6 +1,6 @@
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState, UserTroveStatus } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { TroveViewContext } from './TroveViewContext';
 import type { TroveEvent, TroveView } from './types';
 

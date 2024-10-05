@@ -1,6 +1,6 @@
-import { useLiquitySelector } from '@liquity/lib-react';
 import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { Card, Paragraph, Text } from 'theme-ui';
 import { Badge } from '../Badge';
 import { InfoIcon } from '../InfoIcon';

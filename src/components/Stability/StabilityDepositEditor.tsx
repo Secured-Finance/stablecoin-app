@@ -9,7 +9,7 @@ import {
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 
-import { useLiquitySelector } from '@liquity/lib-react';
+import { useLiquitySelector } from 'src/hooks';
 
 import { COIN, GT } from '../../strings';
 

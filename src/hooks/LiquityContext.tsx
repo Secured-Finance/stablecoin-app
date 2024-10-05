@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Provider } from '@ethersproject/abstract-provider';
 import { Web3Provider } from '@ethersproject/providers';
+import {
+    BlockPolledLiquityStore,
+    EthersLiquity,
+    EthersLiquityWithStore,
+    _connectByChainId,
+} from '@secured-finance/lib-ethers';
 import React, {
     createContext,
     useContext,
@@ -8,17 +14,9 @@ import React, {
     useMemo,
     useState,
 } from 'react';
+import { BatchedProvider } from 'src/contexts';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
-
-import {
-    BlockPolledLiquityStore,
-    EthersLiquity,
-    EthersLiquityWithStore,
-    _connectByChainId,
-} from '@secured-finance/lib-ethers';
-
 import { LiquityFrontendConfig, getConfig } from '../config';
-import { BatchedProvider } from '../providers/BatchingProvider';
 
 type LiquityContextValue = {
     config: LiquityFrontendConfig;

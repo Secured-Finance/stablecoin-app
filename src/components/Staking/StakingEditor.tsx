@@ -1,7 +1,3 @@
-import React, { useState } from 'react';
-import { Box, Button, Card, Heading } from 'theme-ui';
-
-import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Decimalish,
@@ -9,9 +5,10 @@ import {
     LiquityStoreState,
     LQTYStake,
 } from '@secured-finance/lib-base';
-
+import React, { useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
+import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
-
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';

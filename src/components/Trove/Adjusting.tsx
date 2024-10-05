@@ -1,4 +1,3 @@
-import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Difference,
@@ -8,6 +7,7 @@ import {
     Trove,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';

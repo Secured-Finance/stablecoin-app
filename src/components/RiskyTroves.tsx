@@ -1,4 +1,3 @@
-import { useLiquitySelector } from '@liquity/lib-react';
 import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
@@ -8,6 +7,7 @@ import {
 } from '@secured-finance/lib-base';
 import { BlockPolledLiquityStoreState } from '@secured-finance/lib-ethers';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
 
 import { AddressUtils } from 'src/utils';

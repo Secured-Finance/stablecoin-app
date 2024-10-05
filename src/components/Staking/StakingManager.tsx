@@ -1,6 +1,3 @@
-import React from 'react';
-import { Button, Flex } from 'theme-ui';
-
 import {
     Decimal,
     Decimalish,
@@ -8,15 +5,14 @@ import {
     LQTYStake,
     LQTYStakeChange,
 } from '@secured-finance/lib-base';
-
+import React from 'react';
 import {
     LiquityStoreUpdate,
     useLiquityReducer,
     useLiquitySelector,
-} from '@liquity/lib-react';
-
+} from 'src/hooks';
+import { Button, Flex } from 'theme-ui';
 import { COIN, GT } from '../../strings';
-
 import { ActionDescription, Amount } from '../ActionDescription';
 import { ErrorDescription } from '../ErrorDescription';
 import { InfoBubble } from '../InfoBubble';

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState, StabilityDeposit } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
 import { StabilityViewContext } from './StabilityViewContext';
 import type { StabilityEvent, StabilityView } from './types';
 

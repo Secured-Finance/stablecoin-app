@@ -1,7 +1,3 @@
-import React from 'react';
-import { Box, Card, Heading } from 'theme-ui';
-
-import { useLiquitySelector } from '@liquity/lib-react';
 import {
     Decimal,
     Decimalish,
@@ -11,9 +7,10 @@ import {
     Percent,
     Trove,
 } from '@secured-finance/lib-base';
-
+import React from 'react';
+import { useLiquitySelector } from 'src/hooks';
+import { Box, Card, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
-
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { CollateralRatio } from './CollateralRatio';

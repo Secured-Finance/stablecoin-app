@@ -27,9 +27,9 @@ export const Context = createContext<SFContext>({
     satoshiClient: undefined,
 });
 
-const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+export const SecuredFinanceProvider: React.FC<{
+    children: React.ReactNode;
+}> = ({ children }) => {
     const dispatch = useDispatch();
     const { chain, isConnected } = useAccount();
     const protocolConfig = ProtocolConfigMap.BEVM_MAINNET;
@@ -128,5 +128,3 @@ const SecuredFinanceProvider: React.FC<{ children: React.ReactNode }> = ({
         </Context.Provider>
     );
 };
-
-export default SecuredFinanceProvider;

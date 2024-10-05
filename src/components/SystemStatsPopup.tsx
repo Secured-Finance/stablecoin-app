@@ -1,9 +1,7 @@
-import React, { useRef, useState } from 'react';
-import { Button, Container, Flex } from 'theme-ui';
-
-import { useLiquitySelector } from '@liquity/lib-react';
 import { LiquityStoreState } from '@secured-finance/lib-base';
-
+import React, { useRef, useState } from 'react';
+import { useLiquitySelector } from 'src/hooks';
+import { Button, Container, Flex } from 'theme-ui';
 import { Icon } from './Icon';
 import { SystemStats } from './SystemStats';
 
