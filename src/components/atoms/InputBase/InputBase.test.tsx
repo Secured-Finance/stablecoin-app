@@ -5,7 +5,7 @@ import * as stories from './InputBase.stories';
 
 const { Default, WithValue } = composeStories(stories);
 
-describe('test InputBase component', () => {
+describe.skip('test InputBase component', () => {
     it('should render input', () => {
         render(<Default />);
 

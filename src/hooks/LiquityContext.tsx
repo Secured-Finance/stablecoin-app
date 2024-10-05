@@ -14,9 +14,9 @@ import React, {
     useMemo,
     useState,
 } from 'react';
+import { LiquityFrontendConfig, getConfig } from 'src/config';
 import { BatchedProvider } from 'src/contexts';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
-import { LiquityFrontendConfig, getConfig } from '../config';
 
 type LiquityContextValue = {
     config: LiquityFrontendConfig;
