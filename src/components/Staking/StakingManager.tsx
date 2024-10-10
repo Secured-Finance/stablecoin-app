@@ -81,7 +81,7 @@ const StakingManagerActionDescription: React.FC<
     const collateralGain = originalStake.collateralGain.nonZero
         ?.prettify(4)
         .concat(' tFIL');
-    const lusdGain = originalStake.lusdGain.nonZero
+    const debtTokenGain = originalStake.debtTokenGain.nonZero
         ?.prettify()
         .concat(' ', COIN);
 
@@ -106,18 +106,18 @@ const StakingManagerActionDescription: React.FC<
                     wallet
                 </>
             )}
-            {(collateralGain || lusdGain) && (
+            {(collateralGain || debtTokenGain) && (
                 <>
                     {' '}
                     and claiming{' '}
-                    {collateralGain && lusdGain ? (
+                    {collateralGain && debtTokenGain ? (
                         <>
                             <Amount>{collateralGain}</Amount> and{' '}
-                            <Amount>{lusdGain}</Amount>
+                            <Amount>{debtTokenGain}</Amount>
                         </>
                     ) : (
                         <>
-                            <Amount>{collateralGain ?? lusdGain}</Amount>
+                            <Amount>{collateralGain ?? debtTokenGain}</Amount>
                         </>
                     )}
                 </>

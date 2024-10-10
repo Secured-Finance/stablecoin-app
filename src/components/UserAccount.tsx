@@ -9,18 +9,18 @@ import { Icon } from './Icon';
 
 const select = ({
     accountBalance,
-    lusdBalance,
+    debtTokenBalance,
     lqtyBalance,
 }: LiquityStoreState) => ({
     accountBalance,
-    lusdBalance,
+    debtTokenBalance,
     lqtyBalance,
 });
 
 export const UserAccount: React.FC = () => {
     const { account } = useLiquity();
     const { open } = useWeb3Modal();
-    const { accountBalance, lusdBalance, lqtyBalance } =
+    const { accountBalance, debtTokenBalance, lqtyBalance } =
         useLiquitySelector(select);
 
     return (
@@ -47,7 +47,7 @@ export const UserAccount: React.FC = () => {
                 {(
                     [
                         ['tFIL', accountBalance],
-                        [COIN, Decimal.from(lusdBalance || 0)],
+                        [COIN, Decimal.from(debtTokenBalance || 0)],
                         [GT, Decimal.from(lqtyBalance)],
                     ] as const
                 ).map(([currency, balance], i) => (

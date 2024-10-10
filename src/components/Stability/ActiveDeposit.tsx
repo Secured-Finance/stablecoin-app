@@ -17,21 +17,21 @@ import { Yield } from './Yield';
 const selector = ({
     stabilityDeposit,
     trove,
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
 }: LiquityStoreState) => ({
     stabilityDeposit,
     trove,
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
 });
 
 export const ActiveDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
-    const { stabilityDeposit, trove, lusdInStabilityPool } =
+    const { stabilityDeposit, trove, debtTokenInStabilityPool } =
         useLiquitySelector(selector);
 
-    const poolShare = stabilityDeposit.currentLUSD.mulDiv(
+    const poolShare = stabilityDeposit.currentDebtToken.mulDiv(
         100,
-        lusdInStabilityPool
+        debtTokenInStabilityPool
     );
 
     const handleAdjustDeposit = useCallback(() => {
@@ -69,7 +69,7 @@ export const ActiveDeposit: React.FC = () => {
                     <DisabledEditableRow
                         label='Deposit'
                         inputId='deposit-usdsf'
-                        amount={stabilityDeposit.currentLUSD.prettify()}
+                        amount={stabilityDeposit.currentDebtToken.prettify()}
                         unit={COIN}
                     />
 

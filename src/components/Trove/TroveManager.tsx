@@ -3,7 +3,7 @@ import {
     Decimal,
     Decimalish,
     LiquityStoreState,
-    LUSD_MINIMUM_DEBT,
+    MINIMUM_DEBT,
     Trove,
 } from '@secured-finance/lib-base';
 import { useCallback, useEffect } from 'react';
@@ -103,7 +103,7 @@ const reduce = (
         case 'addMinimumDebt':
             return {
                 ...state,
-                edited: edited.setDebt(LUSD_MINIMUM_DEBT),
+                edited: edited.setDebt(MINIMUM_DEBT),
                 addedMinimumDebt: true,
             };
 
@@ -161,9 +161,9 @@ const feeFrom = (
     if (
         change &&
         change.type !== 'invalidCreation' &&
-        change.params.borrowLUSD
+        change.params.borrowDebtToken
     ) {
-        return change.params.borrowLUSD.mul(borrowingRate);
+        return change.params.borrowDebtToken.mul(borrowingRate);
     } else {
         return Decimal.ZERO;
     }

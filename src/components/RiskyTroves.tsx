@@ -29,7 +29,7 @@ const liquidatableInRecoveryMode = (
     trove: UserTrove,
     price: Decimal,
     totalCollateralRatio: Decimal,
-    lusdInStabilityPool: Decimal
+    debtTokenInStabilityPool: Decimal
 ) => {
     const collateralRatio = trove.collateralRatio(price);
 
@@ -38,8 +38,8 @@ const liquidatableInRecoveryMode = (
         collateralRatio.lt(totalCollateralRatio)
     ) {
         return [
-            trove.debt.lte(lusdInStabilityPool),
-            "There's not enough USDSF in the Stability pool to cover the debt",
+            trove.debt.lte(debtTokenInStabilityPool),
+            "There's not enough token in the Stability pool to cover the debt",
         ] as const;
     } else {
         return liquidatableInNormalMode(trove, price);
@@ -54,14 +54,14 @@ const select = ({
     numberOfTroves,
     price,
     total,
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     blockTag,
 }: BlockPolledLiquityStoreState) => ({
     numberOfTroves,
     price,
     recoveryMode: total.collateralRatioIsBelowCritical(price),
     totalCollateralRatio: total.collateralRatio(price),
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     blockTag,
 });
 
@@ -71,7 +71,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         numberOfTroves,
         recoveryMode,
         totalCollateralRatio,
-        lusdInStabilityPool,
+        debtTokenInStabilityPool,
         price,
     } = useLiquitySelector(select);
     const { liquity } = useLiquity();
@@ -395,7 +395,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                                   trove,
                                                                   price,
                                                                   totalCollateralRatio,
-                                                                  lusdInStabilityPool
+                                                                  debtTokenInStabilityPool
                                                               )
                                                             : liquidatableInNormalMode(
                                                                   trove,

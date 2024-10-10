@@ -7,10 +7,10 @@ import { InfoIcon } from '../InfoIcon';
 import { fetchLqtyPrice } from './context/fetchLqtyPrice';
 
 const selector = ({
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     remainingStabilityPoolLQTYReward,
 }: LiquityStoreState) => ({
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     remainingStabilityPoolLQTYReward,
 });
 
@@ -21,12 +21,13 @@ const dailyIssuanceFraction = Decimal.from(
 const dailyIssuancePercentage = dailyIssuanceFraction.mul(100);
 
 export const Yield: React.FC = () => {
-    const { lusdInStabilityPool, remainingStabilityPoolLQTYReward } =
+    const { debtTokenInStabilityPool, remainingStabilityPoolLQTYReward } =
         useLiquitySelector(selector);
 
     const [lqtyPrice, setLqtyPrice] = useState<Decimal | undefined>(undefined);
     const hasZeroValue =
-        remainingStabilityPoolLQTYReward.isZero || lusdInStabilityPool.isZero;
+        remainingStabilityPoolLQTYReward.isZero ||
+        debtTokenInStabilityPool.isZero;
 
     useEffect(() => {
         (async () => {
@@ -47,7 +48,7 @@ export const Yield: React.FC = () => {
     const lqtyIssuanceOneDayInUSD = lqtyIssuanceOneDay.mul(lqtyPrice);
     const aprPercentage = lqtyIssuanceOneDayInUSD.mulDiv(
         365 * 100,
-        lusdInStabilityPool
+        debtTokenInStabilityPool
     );
     const remainingLqtyInUSD = remainingStabilityPoolLQTYReward.mul(lqtyPrice);
 
@@ -72,8 +73,8 @@ export const Yield: React.FC = () => {
                                 mt: 2,
                             }}
                         >
-                            ($LQTY_REWARDS * DAILY_ISSUANCE% / DEPOSITED_LUSD) *
-                            365 * 100 ={' '}
+                            ($LQTY_REWARDS * DAILY_ISSUANCE% /
+                            DEPOSITED_DEBT_TOKEN) * 365 * 100 ={' '}
                             <Text sx={{ fontWeight: 'bold' }}> APR</Text>
                         </Paragraph>
                         <Paragraph
@@ -82,7 +83,7 @@ export const Yield: React.FC = () => {
                             ($
                             {remainingLqtyInUSD.shorten()} *{' '}
                             {dailyIssuancePercentage.toString(4)}% / $
-                            {lusdInStabilityPool.shorten()}) * 365 * 100 =
+                            {debtTokenInStabilityPool.shorten()}) * 365 * 100 =
                             <Text sx={{ fontWeight: 'bold' }}>
                                 {' '}
                                 {aprPercentage.toString(2)}%

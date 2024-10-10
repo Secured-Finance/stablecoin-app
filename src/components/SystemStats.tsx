@@ -10,23 +10,25 @@ import { Statistic } from './Statistic';
 
 const selectBalances = ({
     accountBalance,
-    lusdBalance,
+    debtTokenBalance,
     lqtyBalance,
 }: LiquityStoreState) => ({
     accountBalance,
-    lusdBalance,
+    debtTokenBalance,
     lqtyBalance,
 });
 
 const Balances: React.FC = () => {
-    const { accountBalance, lusdBalance, lqtyBalance } =
+    const { accountBalance, debtTokenBalance, lqtyBalance } =
         useLiquitySelector(selectBalances);
 
     return (
         <Box sx={{ mb: 3 }}>
             <Heading>My Account Balances</Heading>
             <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
-            <Statistic lexicon={l.USDSF}>{lusdBalance.prettify()}</Statistic>
+            <Statistic lexicon={l.USDSF}>
+                {debtTokenBalance.prettify()}
+            </Statistic>
             <Statistic lexicon={l.SFT}>{lqtyBalance.prettify()}</Statistic>
         </Box>
     );
@@ -52,7 +54,7 @@ const select = ({
     numberOfTroves,
     price,
     total,
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     borrowingRate,
     redemptionRate,
     totalStakedLQTY,
@@ -61,7 +63,7 @@ const select = ({
     numberOfTroves,
     price,
     total,
-    lusdInStabilityPool,
+    debtTokenInStabilityPool,
     borrowingRate,
     redemptionRate,
     totalStakedLQTY,
@@ -86,15 +88,16 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
     const {
         numberOfTroves,
         price,
-        lusdInStabilityPool,
+        debtTokenInStabilityPool,
         total,
         borrowingRate,
         totalStakedLQTY,
         kickbackRate,
     } = useLiquitySelector(select);
 
-    const lusdInStabilityPoolPct =
-        total.debt.nonZero && new Percent(lusdInStabilityPool.div(total.debt));
+    const debtTokenInStabilityPoolPct =
+        total.debt.nonZero &&
+        new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
     const kickbackRatePct =
@@ -125,14 +128,14 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
             <Statistic lexicon={l.TROVES}>
                 {Decimal.from(numberOfTroves).prettify(0)}
             </Statistic>
-            <Statistic lexicon={l.LUSD_SUPPLY}>
+            <Statistic lexicon={l.DEBT_TOKEN_SUPPLY}>
                 {total.debt.shorten()}
             </Statistic>
-            {lusdInStabilityPoolPct && (
-                <Statistic lexicon={l.STABILITY_POOL_LUSD}>
-                    {lusdInStabilityPool.shorten()}
+            {debtTokenInStabilityPoolPct && (
+                <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
+                    {debtTokenInStabilityPool.shorten()}
                     <Text sx={{ fontSize: 1 }}>
-                        &nbsp;({lusdInStabilityPoolPct.toString(1)})
+                        &nbsp;({debtTokenInStabilityPoolPct.toString(1)})
                     </Text>
                 </Statistic>
             )}

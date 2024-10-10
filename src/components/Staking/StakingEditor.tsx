@@ -122,8 +122,10 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                         <StaticRow
                             label='Issuance gain'
                             inputId='stake-gain-usdsf'
-                            amount={originalStake.lusdGain.prettify()}
-                            color={originalStake.lusdGain.nonZero && 'success'}
+                            amount={originalStake.debtTokenGain.prettify()}
+                            color={
+                                originalStake.debtTokenGain.nonZero && 'success'
+                            }
                             unit={COIN}
                         />
                     </>
