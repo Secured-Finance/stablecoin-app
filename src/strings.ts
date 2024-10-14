@@ -1,4 +1,4 @@
-export const COIN = 'USDSF';
-export const GT = 'SFT';
+export const COIN = 'USDFC';
+export const GT = 'SCR';
 export const LP = 'UNI LP';
-// export const LP = "tFIL/USDSF LP";
+// export const LP = "tFIL/USDFC LP";

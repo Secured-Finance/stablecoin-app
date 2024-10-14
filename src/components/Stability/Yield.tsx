@@ -56,13 +56,13 @@ export const Yield: React.FC = () => {
 
     return (
         <Badge>
-            <Text>SFT APR {aprPercentage.toString(2)}%</Text>
+            <Text>SCR APR {aprPercentage.toString(2)}%</Text>
             <InfoIcon
                 tooltip={
                     <Card variant='tooltip' sx={{ width: ['220px', '518px'] }}>
                         <Paragraph>
                             An <Text sx={{ fontWeight: 'bold' }}>estimate</Text>{' '}
-                            of the SFT return on the USDSF deposited to the
+                            of the SCR return on the USDFC deposited to the
                             Stability Pool over the next year, not including
                             your tFIL gains from liquidations.
                         </Paragraph>

@@ -21,8 +21,8 @@ export const NoDeposit: React.FC = () => {
                 </Flex>
             </Heading>
             <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title='You have no USDSF in the Stability Pool.'>
-                    You can earn tFIL and SFT rewards by depositing USDSF.
+                <InfoMessage title='You have no USDFC in the Stability Pool.'>
+                    You can earn tFIL and SCR rewards by depositing USDFC.
                 </InfoMessage>
 
                 <Flex variant='layout.actions'>

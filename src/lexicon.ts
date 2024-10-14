@@ -7,7 +7,7 @@ export type Lexicon = {
 export const BORROW_FEE: Lexicon = {
     term: 'Borrowing Fee',
     description:
-        "The Borrowing Fee is a one-off fee charged as a percentage of the borrowed amount (in USDSF) and is part of a Trove's debt. The fee varies between 0.5% and 5% depending on USDSF redemption volumes.",
+        "The Borrowing Fee is a one-off fee charged as a percentage of the borrowed amount (in USDFC) and is part of a Trove's debt. The fee varies between 0.5% and 5% depending on USDFC redemption volumes.",
 };
 
 export const TVL: Lexicon = {
@@ -17,9 +17,9 @@ export const TVL: Lexicon = {
 };
 
 export const STAKED_LQTY: Lexicon = {
-    term: 'Staked SFT',
+    term: 'Staked SCR',
     description:
-        'The total amount of SFT that is staked for earning fee revenue.',
+        'The total amount of SCR that is staked for earning fee revenue.',
 };
 
 export const TCR: Lexicon = {
@@ -35,27 +35,27 @@ export const RECOVERY_MODE: Lexicon = {
 };
 
 export const STABILITY_POOL_DEBT_TOKEN: Lexicon = {
-    term: 'USDSF in Stability Pool',
+    term: 'USDFC in Stability Pool',
     description:
-        'The total USDSF currently held in the Stability Pool, expressed as an amount and a fraction of the USDSF supply.',
+        'The total USDFC currently held in the Stability Pool, expressed as an amount and a fraction of the USDFC supply.',
 };
 
 export const KICKBACK_RATE: Lexicon = {
     term: 'Kickback Rate',
     description:
-        'A rate between 0 and 100% set by the Frontend Operator that determines the fraction of SFT that will be paid out as a kickback to the Stability Providers using the frontend.',
+        'A rate between 0 and 100% set by the Frontend Operator that determines the fraction of SCR that will be paid out as a kickback to the Stability Providers using the frontend.',
 };
 
 export const tFIL: Lexicon = {
     term: 'tFIL',
 };
 
-export const USDSF: Lexicon = {
-    term: 'USDSF',
+export const USDFC: Lexicon = {
+    term: 'USDFC',
 };
 
-export const SFT: Lexicon = {
-    term: 'SFT',
+export const SCR: Lexicon = {
+    term: 'SCR',
 };
 
 export const TROVES: Lexicon = {
@@ -64,6 +64,6 @@ export const TROVES: Lexicon = {
 };
 
 export const DEBT_TOKEN_SUPPLY: Lexicon = {
-    term: 'USDSF supply',
-    description: 'The total USDSF minted by this protocol.',
+    term: 'USDFC supply',
+    description: 'The total USDFC minted by this protocol.',
 };

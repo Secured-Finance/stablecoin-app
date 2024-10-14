@@ -83,7 +83,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
             <Box sx={{ p: [2, 3] }}>
                 <EditableRow
                     label='Deposit'
-                    inputId='deposit-sft'
+                    inputId='deposit-scr'
                     amount={editedDebtToken.prettify()}
                     maxAmount={maxAmount.toString()}
                     maxedOut={maxedOut}
@@ -142,7 +142,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the SFT rewards accrue
+                                            Although the SCR rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore

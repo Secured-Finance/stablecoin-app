@@ -71,7 +71,7 @@ export const validateStabilityDepositChange = (
         return [
             undefined,
             <ErrorDescription key={2}>
-                You are not allowed to withdraw USDSF from your Stability
+                You are not allowed to withdraw USDFC from your Stability
                 Deposit when there are undercollateralized Troves. Please
                 liquidate those Troves or try again later.
             </ErrorDescription>,

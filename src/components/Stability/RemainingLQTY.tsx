@@ -12,7 +12,7 @@ export const RemainingLQTY: React.FC = () => {
 
     return (
         <Flex sx={{ mr: 2, fontSize: 2, fontWeight: 'medium' }}>
-            {remainingStabilityPoolLQTYReward.prettify(0)} SFT remaining
+            {remainingStabilityPoolLQTYReward.prettify(0)} SCR remaining
         </Flex>
     );
 };

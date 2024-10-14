@@ -68,7 +68,7 @@ export const ActiveDeposit: React.FC = () => {
                 <Box>
                     <DisabledEditableRow
                         label='Deposit'
-                        inputId='deposit-usdsf'
+                        inputId='deposit-usdfc'
                         amount={stabilityDeposit.currentDebtToken.prettify()}
                         unit={COIN}
                     />
@@ -106,7 +106,7 @@ export const ActiveDeposit: React.FC = () => {
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the SFT rewards accrue
+                                            Although the SCR rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore
@@ -133,13 +133,13 @@ export const ActiveDeposit: React.FC = () => {
                     </Button>
 
                     <ClaimRewards disabled={!hasGain && !hasReward}>
-                        Claim tFIL and SFT
+                        Claim tFIL and SCR
                     </ClaimRewards>
                 </Flex>
 
                 {hasTrove && (
                     <ClaimAndMove disabled={!hasGain}>
-                        Claim SFT and move tFIL to Trove
+                        Claim SCR and move tFIL to Trove
                     </ClaimAndMove>
                 )}
             </Box>

@@ -193,7 +193,7 @@ export const Opening: React.FC = () => {
                         <InfoIcon
                             tooltip={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    The total amount of USDSF your Trove will
+                                    The total amount of USDFC your Trove will
                                     hold.{' '}
                                     {isDirty && (
                                         <>
@@ -201,9 +201,9 @@ export const Opening: React.FC = () => {
                                             {totalDebt
                                                 .sub(LIQUIDATION_RESERVE)
                                                 .prettify(2)}{' '}
-                                            USDSF to reclaim your collateral (
+                                            USDFC to reclaim your collateral (
                                             {LIQUIDATION_RESERVE.toString()}{' '}
-                                            USDSF Liquidation Reserve excluded).
+                                            USDFC Liquidation Reserve excluded).
                                         </>
                                     )}
                                 </Card>
@@ -220,7 +220,7 @@ export const Opening: React.FC = () => {
                         riskiest Troves
                     </Link>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/usdsf-redemptions#how-can-i-avoid-being-redeemed-against'>
+                    <LearnMoreLink link='https://docs.liquity.org/faq/usdfc-redemptions#how-can-i-avoid-being-redeemed-against'>
                         redeemed.
                     </LearnMoreLink>
                 </InfoBubble>

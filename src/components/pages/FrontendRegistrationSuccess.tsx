@@ -37,7 +37,7 @@ export const FrontendRegistrationSuccess: React.FC<
             </Flex>
 
             <Paragraph sx={{ fontSize: 2 }}>
-                Your frontend is now ready to receive SFT rewards.
+                Your frontend is now ready to receive SCR rewards.
             </Paragraph>
         </Box>
 

@@ -75,7 +75,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
             <Box sx={{ p: [2, 3] }}>
                 <EditableRow
                     label='Stake'
-                    inputId='stake-sft'
+                    inputId='stake-scr'
                     amount={editedLQTY.prettify()}
                     maxAmount={maxAmount.toString()}
                     maxedOut={maxedOut}
@@ -121,7 +121,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
 
                         <StaticRow
                             label='Issuance gain'
-                            inputId='stake-gain-usdsf'
+                            inputId='stake-gain-usdfc'
                             amount={originalStake.debtTokenGain.prettify()}
                             color={
                                 originalStake.debtTokenGain.nonZero && 'success'
