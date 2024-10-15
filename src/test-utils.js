@@ -1,4 +1,3 @@
-import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -46,9 +45,7 @@ function render(
         );
 
         if (apolloMocks) {
-            return (
-                <MockedProvider mocks={apolloMocks}>{component}</MockedProvider>
-            );
+            return { component };
         }
         return component;
     }
@@ -81,13 +78,9 @@ function renderHook(
         const queryClient = new QueryClient(defaultOptions);
         return (
             <Provider store={store}>
-                <MockedProvider mocks={apolloMocks}>
-                    <QueryClientProvider client={queryClient}>
-                        <WagmiProvider config={config}>
-                            {children}
-                        </WagmiProvider>
-                    </QueryClientProvider>
-                </MockedProvider>
+                <QueryClientProvider client={queryClient}>
+                    <WagmiProvider config={config}>{children}</WagmiProvider>
+                </QueryClientProvider>
             </Provider>
         );
     }

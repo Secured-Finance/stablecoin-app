@@ -1,0 +1,69 @@
+import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
+import React, { useEffect, useState } from 'react';
+import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
+import { Icon } from './Icon';
+import { Transaction } from './Transaction';
+
+const selectPrice = ({ price }: LiquityStoreState) => price;
+
+export const PriceManager: React.FC = () => {
+    const {
+        liquity: {
+            send: liquity,
+            connection: { _priceFeedIsTestnet: canSetPrice },
+        },
+    } = useLiquity();
+
+    const price = useLiquitySelector(selectPrice);
+    const [editedPrice, setEditedPrice] = useState(price.toString(2));
+
+    useEffect(() => {
+        setEditedPrice(price.toString(2));
+    }, [price]);
+
+    return (
+        <Card>
+            <Heading>Price feed</Heading>
+
+            <Box sx={{ p: [2, 3] }}>
+                <Flex sx={{ alignItems: 'stretch' }}>
+                    <Label>tFIL</Label>
+
+                    <Label variant='unit'>$</Label>
+
+                    <Input
+                        type={canSetPrice ? 'number' : 'text'}
+                        step='any'
+                        value={editedPrice}
+                        onChange={e => setEditedPrice(e.target.value)}
+                        disabled={!canSetPrice}
+                    />
+
+                    {canSetPrice && (
+                        <Flex sx={{ ml: 2, alignItems: 'center' }}>
+                            <Transaction
+                                id='set-price'
+                                tooltip='Set'
+                                tooltipPlacement='bottom'
+                                send={overrides => {
+                                    if (!editedPrice) {
+                                        throw new Error('Invalid price');
+                                    }
+                                    return liquity.setPrice(
+                                        Decimal.from(editedPrice),
+                                        overrides
+                                    );
+                                }}
+                            >
+                                <Button variant='icon'>
+                                    <Icon name='chart-line' size='lg' />
+                                </Button>
+                            </Transaction>
+                        </Flex>
+                    )}
+                </Flex>
+            </Box>
+        </Card>
+    );
+};

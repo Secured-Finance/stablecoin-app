@@ -18,7 +18,7 @@ import { AddressUtils } from 'src/utils';
 import { useAccount, useDisconnect } from 'wagmi';
 import { LINKS } from './constants';
 
-const Header = () => {
+export const Header = () => {
     const { setTheme: setAppTheme, theme } = useTheme();
     const { open } = useWeb3Modal();
     const { disconnect } = useDisconnect();
@@ -116,5 +116,3 @@ const ItemLink = ({ text, link }: { text: string; link: string }) => {
         </Link>
     );
 };
-
-export default Header;

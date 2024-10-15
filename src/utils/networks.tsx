@@ -8,7 +8,10 @@ type ChainInformation = {
 };
 
 const testnetChains: readonly [Chain, ...Chain[]] = [filecoinCalibration];
-const mainnetChains: readonly [Chain, ...Chain[]] = [filecoin];
+const mainnetChains: readonly [Chain, ...Chain[]] = [
+    filecoin,
+    filecoinCalibration,
+];
 
 export const getSupportedChains = () => {
     return isProdEnv() ? mainnetChains : testnetChains;

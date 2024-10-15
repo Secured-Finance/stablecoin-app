@@ -16,7 +16,7 @@ on:
     secrets:
       NPM_AUTH_TOKEN:
         required: true
-      ALCHEMY_API_KEY:
+      ANKER_API_KEY:
         required: true
       WALLET_CONNECT_ID:
         required: true
@@ -56,8 +56,7 @@ jobs:
 
       - run: |
           cat <<EOF > .env.local
-          NEXT_PUBLIC_ALCHEMY_API_KEY=${{ secrets.ALCHEMY_API_KEY }}
-          NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=${{ vars.SUPPORTED_CHAIN_IDS }}
+          NEXT_PUBLIC_ANKER_API_KEY=${{ secrets.ANKER_API_KEY }}
           NEXT_PUBLIC_USE_PACKAGE_VERSION=${{ vars.USE_PACKAGE_VERSION }}
           NEXT_PUBLIC_WALLET_CONNECT_ID=${{ secrets.WALLET_CONNECT_ID }}
           SF_ENV=${{ vars.SF_ENV }}
