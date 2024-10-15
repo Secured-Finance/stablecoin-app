@@ -155,5 +155,6 @@
   }
   body {
     @apply font-secondary;
+    background-color: #F1F5F9;
   }
 }

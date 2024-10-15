@@ -360,7 +360,8 @@ const theme: Theme = {
             px: [2, '12px', '12px', 5],
             py: [2, '12px', '12px'],
 
-            ...headerGradient,
+            // ...headerGradient,
+            bg: 'rgba(255, 255, 255, 1)',
             boxShadow: [1, 'none'],
         },
 
