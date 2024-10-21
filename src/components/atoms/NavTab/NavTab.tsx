@@ -16,7 +16,7 @@ export const NavTab = ({ text, active = false }: NavTabProps) => {
             </div>
             <span
                 className={clsx(
-                    'absolute bottom-0 h-1 w-full group-hover:bg-foreground/50',
+                    'group-hover:bg-foreground/50 absolute bottom-0 h-1 w-full',
                     {
                         'bg-foreground': active,
                     }
