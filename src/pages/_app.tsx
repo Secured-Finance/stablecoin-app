@@ -3,7 +3,6 @@ import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-bro
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
-import { ThemeProvider } from 'next-themes';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { CookiesProvider } from 'react-cookie';
@@ -152,14 +151,7 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             <Provider store={store}>
                 <Providers>
-                    <ThemeProvider
-                        attribute='class'
-                        defaultTheme='light'
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <Component {...pageProps} />
-                    </ThemeProvider>
+                    <Component {...pageProps} />
                 </Providers>
             </Provider>
         </>
