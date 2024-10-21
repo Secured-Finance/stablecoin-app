@@ -2,8 +2,7 @@ import { Wallet } from '@ethersproject/wallet';
 import { Decimal, Difference, Trove } from '@secured-finance/lib-base';
 import React from 'react';
 import { Route, HashRouter as Router, Switch } from 'react-router-dom';
-import { RiskyTrovesPage } from 'src/components//pages/RiskyTrovesPage';
-import { PageSwitcher } from 'src/components/pages/PageSwitcher';
+import { PageSwitcher, RiskyTrovesPage } from 'src/components/pages';
 import { LiquityStoreProvider } from 'src/contexts';
 import { Container, Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style

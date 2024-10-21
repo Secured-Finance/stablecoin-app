@@ -1,8 +1,7 @@
-import { Box, Flex, Heading, Paragraph } from 'theme-ui';
-
 import { Icon } from 'src/components/Icon';
 import { useLiquity } from 'src/hooks/LiquityContext';
 import { AddressUtils } from 'src/utils';
+import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 
 export const UnregisteredFrontend: React.FC = () => {
     const {

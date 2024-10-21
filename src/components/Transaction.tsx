@@ -16,12 +16,9 @@ import {
 } from '@secured-finance/lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-
-import { useLiquity } from '../hooks/LiquityContext';
-
+import { useLiquity } from 'src/hooks/LiquityContext';
 import type { TooltipProps } from './Tooltip';
 import { Tooltip } from './Tooltip';
-
 import { TransactionStatus } from './TransactionStatus';
 
 type TransactionIdle = {

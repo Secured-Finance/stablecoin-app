@@ -139,5 +139,4 @@ module.exports = {
             '26': '104px',
         },
     },
-    plugins: [require('tailwindcss-animate')],
 };

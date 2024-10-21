@@ -1,12 +1,14 @@
 import { AddressZero } from '@ethersproject/constants';
 import { LiquityStoreState } from '@secured-finance/lib-base';
 import { useEffect, useState } from 'react';
+import {
+    Dashboard,
+    FrontendRegistration,
+    FrontendRegistrationSuccess,
+    UnregisteredFrontend,
+} from 'src/components/pages';
 import { useLiquitySelector } from 'src/hooks';
 import { useLiquity } from 'src/hooks/LiquityContext';
-import { Dashboard } from './Dashboard';
-import { FrontendRegistration } from './FrontendRegistration';
-import { FrontendRegistrationSuccess } from './FrontendRegistrationSuccess';
-import { UnregisteredFrontend } from './UnregisteredFrontend';
 
 const selectFrontend = ({ frontend }: LiquityStoreState) => frontend;
 
