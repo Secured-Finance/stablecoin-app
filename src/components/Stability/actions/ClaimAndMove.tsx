@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLiquity } from 'src/hooks';
+import { useSfStablecoin } from 'src/hooks';
 import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../../Transaction';
 
@@ -11,11 +11,11 @@ export const ClaimAndMove: React.FC<ClaimAndMoveProps> = ({
     disabled,
     children,
 }) => {
-    const { liquity } = useLiquity();
+    const { sfStablecoin } = useSfStablecoin();
 
     const [sendTransaction] = useTransactionFunction(
         'stability-deposit',
-        liquity.send.transferCollateralGainToTrove.bind(liquity.send)
+        sfStablecoin.send.transferCollateralGainToTrove.bind(sfStablecoin.send)
     );
 
     return (

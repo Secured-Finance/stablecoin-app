@@ -2,15 +2,15 @@
 import {
     Decimal,
     Decimalish,
-    LiquityStoreState,
     MINIMUM_DEBT,
+    SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
 import { useCallback, useEffect } from 'react';
 import {
-    LiquityStoreUpdate,
-    useLiquityReducer,
-    useLiquitySelector,
+    SfStablecoinStoreUpdate,
+    useSfStablecoinReducer,
+    useSfStablecoinSelector,
 } from 'src/hooks';
 import { Button, Flex } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
@@ -23,7 +23,7 @@ import {
     validateTroveChange,
 } from './validation/validateTroveChange';
 
-const init = ({ trove }: LiquityStoreState) => ({
+const init = ({ trove }: SfStablecoinStoreState) => ({
     original: trove,
     edited: new Trove(trove.collateral, trove.debt),
     changePending: false,
@@ -33,7 +33,7 @@ const init = ({ trove }: LiquityStoreState) => ({
 
 type TroveManagerState = ReturnType<typeof init>;
 type TroveManagerAction =
-    | LiquityStoreUpdate
+    | SfStablecoinStoreUpdate
     | {
           type:
               | 'startChange'
@@ -169,7 +169,7 @@ const feeFrom = (
     }
 };
 
-const select = (state: LiquityStoreState) => ({
+const select = (state: SfStablecoinStoreState) => ({
     fees: state.fees,
     validationContext: selectForTroveChangeValidation(state),
 });
@@ -187,11 +187,9 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
     collateral,
     debt,
 }) => {
-    const [{ original, edited, changePending }, dispatch] = useLiquityReducer(
-        reduce,
-        init
-    );
-    const { fees, validationContext } = useLiquitySelector(select);
+    const [{ original, edited, changePending }, dispatch] =
+        useSfStablecoinReducer(reduce, init);
+    const { fees, validationContext } = useSfStablecoinSelector(select);
 
     useEffect(() => {
         if (collateral !== undefined) {

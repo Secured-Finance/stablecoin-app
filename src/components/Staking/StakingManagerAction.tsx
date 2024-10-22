@@ -1,23 +1,29 @@
-import { Decimal, LQTYStakeChange } from '@secured-finance/lib-base';
-import { useLiquity } from 'src/hooks';
+import { Decimal, ProtocolTokenStakeChange } from '@secured-finance/lib-base';
+import { useSfStablecoin } from 'src/hooks';
 import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';
 
 type StakingActionProps = React.PropsWithChildren<{
-    change: LQTYStakeChange<Decimal>;
+    change: ProtocolTokenStakeChange<Decimal>;
 }>;
 
 export const StakingManagerAction: React.FC<StakingActionProps> = ({
     change,
     children,
 }) => {
-    const { liquity } = useLiquity();
+    const { sfStablecoin } = useSfStablecoin();
 
     const [sendTransaction] = useTransactionFunction(
         'stake',
-        change.stakeLQTY
-            ? liquity.send.stakeLQTY.bind(liquity.send, change.stakeLQTY)
-            : liquity.send.unstakeLQTY.bind(liquity.send, change.unstakeLQTY)
+        change.stakeProtocolToken
+            ? sfStablecoin.send.stakeProtocolToken.bind(
+                  sfStablecoin.send,
+                  change.stakeProtocolToken
+              )
+            : sfStablecoin.send.unstakeProtocolToken.bind(
+                  sfStablecoin.send,
+                  change.unstakeProtocolToken
+              )
     );
 
     return <Button onClick={sendTransaction}>{children}</Button>;

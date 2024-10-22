@@ -1,6 +1,6 @@
-import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
+import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Card, Paragraph, Text } from 'theme-ui';
 import { Badge } from '../Badge';
 import { InfoIcon } from '../InfoIcon';
@@ -8,10 +8,10 @@ import { fetchLqtyPrice } from './context/fetchLqtyPrice';
 
 const selector = ({
     debtTokenInStabilityPool,
-    remainingStabilityPoolLQTYReward,
-}: LiquityStoreState) => ({
+    remainingStabilityPoolProtocolTokenReward,
+}: SfStablecoinStoreState) => ({
     debtTokenInStabilityPool,
-    remainingStabilityPoolLQTYReward,
+    remainingStabilityPoolProtocolTokenReward,
 });
 
 const yearlyIssuanceFraction = 0.5;
@@ -21,12 +21,14 @@ const dailyIssuanceFraction = Decimal.from(
 const dailyIssuancePercentage = dailyIssuanceFraction.mul(100);
 
 export const Yield: React.FC = () => {
-    const { debtTokenInStabilityPool, remainingStabilityPoolLQTYReward } =
-        useLiquitySelector(selector);
+    const {
+        debtTokenInStabilityPool,
+        remainingStabilityPoolProtocolTokenReward,
+    } = useSfStablecoinSelector(selector);
 
     const [lqtyPrice, setLqtyPrice] = useState<Decimal | undefined>(undefined);
     const hasZeroValue =
-        remainingStabilityPoolLQTYReward.isZero ||
+        remainingStabilityPoolProtocolTokenReward.isZero ||
         debtTokenInStabilityPool.isZero;
 
     useEffect(() => {
@@ -42,7 +44,7 @@ export const Yield: React.FC = () => {
 
     if (hasZeroValue || lqtyPrice === undefined) return null;
 
-    const lqtyIssuanceOneDay = remainingStabilityPoolLQTYReward.mul(
+    const lqtyIssuanceOneDay = remainingStabilityPoolProtocolTokenReward.mul(
         dailyIssuanceFraction
     );
     const lqtyIssuanceOneDayInUSD = lqtyIssuanceOneDay.mul(lqtyPrice);
@@ -50,7 +52,8 @@ export const Yield: React.FC = () => {
         365 * 100,
         debtTokenInStabilityPool
     );
-    const remainingLqtyInUSD = remainingStabilityPoolLQTYReward.mul(lqtyPrice);
+    const remainingLqtyInUSD =
+        remainingStabilityPoolProtocolTokenReward.mul(lqtyPrice);
 
     if (aprPercentage.isZero) return null;
 
@@ -73,8 +76,8 @@ export const Yield: React.FC = () => {
                                 mt: 2,
                             }}
                         >
-                            ($LQTY_REWARDS * DAILY_ISSUANCE% /
-                            DEPOSITED_DEBT_TOKEN) * 365 * 100 ={' '}
+                            ($SCR_REWARDS * DAILY_ISSUANCE% / DEPOSITED_USDFC) *
+                            365 * 100 ={' '}
                             <Text sx={{ fontWeight: 'bold' }}> APR</Text>
                         </Paragraph>
                         <Paragraph

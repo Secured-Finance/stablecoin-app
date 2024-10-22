@@ -2,9 +2,9 @@
 import { Provider } from '@ethersproject/abstract-provider';
 import { Web3Provider } from '@ethersproject/providers';
 import {
-    BlockPolledLiquityStore,
-    EthersLiquity,
-    EthersLiquityWithStore,
+    BlockPolledSfStablecoinStore,
+    EthersSfStablecoin,
+    EthersSfStablecoinWithStore,
     _connectByChainId,
 } from '@secured-finance/lib-ethers';
 import React, {
@@ -14,28 +14,26 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { LiquityFrontendConfig, getConfig } from 'src/config';
+import { FrontendConfig, getConfig } from 'src/config';
 import { BatchedProvider } from 'src/contexts';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
-type LiquityContextValue = {
-    config: LiquityFrontendConfig;
+type ContextValue = {
+    config: FrontendConfig;
     account: string;
     provider: Provider;
-    liquity: EthersLiquityWithStore<BlockPolledLiquityStore>;
+    sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
 };
 
-const LiquityContext = createContext<LiquityContextValue | undefined>(
-    undefined
-);
+const SfStablecoinContext = createContext<ContextValue | undefined>(undefined);
 
-type LiquityProviderProps = React.PropsWithChildren<{
+type SfStablecoinProviderProps = React.PropsWithChildren<{
     loader?: React.ReactNode;
     unsupportedNetworkFallback?: React.ReactNode;
     unsupportedMainnetFallback?: React.ReactNode;
 }>;
 
-export const LiquityProvider: React.FC<LiquityProviderProps> = ({
+export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
     children,
     loader,
     unsupportedNetworkFallback,
@@ -71,7 +69,7 @@ export const LiquityProvider: React.FC<LiquityProviderProps> = ({
             chainId
         ).getSigner(account.address);
 
-    const [config, setConfig] = useState<LiquityFrontendConfig>();
+    const [config, setConfig] = useState<FrontendConfig>();
 
     const connection = useMemo(() => {
         if (config && provider && signer && account.address) {
@@ -106,31 +104,29 @@ export const LiquityProvider: React.FC<LiquityProviderProps> = ({
         return <>{unsupportedNetworkFallback}</>;
     }
 
-    const liquity = EthersLiquity._from(connection);
-    liquity.store.logging = true;
+    const sfStablecoin = EthersSfStablecoin._from(connection);
+    sfStablecoin.store.logging = true;
 
     return (
-        <LiquityContext.Provider
+        <SfStablecoinContext.Provider
             value={{
                 config,
                 account: account.address,
                 provider: connection.provider,
-                liquity,
+                sfStablecoin,
             }}
         >
             {children}
-        </LiquityContext.Provider>
+        </SfStablecoinContext.Provider>
     );
 };
 
-export const useLiquity = () => {
-    const liquityContext = useContext(LiquityContext);
+export const useSfStablecoin = () => {
+    const context = useContext(SfStablecoinContext);
 
-    if (!liquityContext) {
-        throw new Error(
-            'You must provide a LiquityContext via LiquityProvider'
-        );
+    if (!context) {
+        throw new Error('You must provide a Context via SfStablecoinProvider');
     }
 
-    return liquityContext;
+    return context;
 };

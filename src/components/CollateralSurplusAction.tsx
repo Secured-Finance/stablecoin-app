@@ -1,19 +1,19 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect } from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Button, Flex, Spinner } from 'theme-ui';
 import { Transaction, useMyTransactionState } from './Transaction';
 import { useTroveView } from './Trove/context/TroveViewContext';
 
-const select = ({ collateralSurplusBalance }: LiquityStoreState) => ({
+const select = ({ collateralSurplusBalance }: SfStablecoinStoreState) => ({
     collateralSurplusBalance,
 });
 
 export const CollateralSurplusAction: React.FC = () => {
-    const { collateralSurplusBalance } = useLiquitySelector(select);
+    const { collateralSurplusBalance } = useSfStablecoinSelector(select);
     const {
-        liquity: { send: liquity },
-    } = useLiquity();
+        sfStablecoin: { send: sfStablecoin },
+    } = useSfStablecoin();
 
     const myTransactionId = 'claim-coll-surplus';
     const myTransactionState = useMyTransactionState(myTransactionId);
@@ -38,7 +38,10 @@ export const CollateralSurplusAction: React.FC = () => {
         <Flex variant='layout.actions'>
             <Transaction
                 id={myTransactionId}
-                send={liquity.claimCollateralSurplus.bind(liquity, undefined)}
+                send={sfStablecoin.claimCollateralSurplus.bind(
+                    sfStablecoin,
+                    undefined
+                )}
             >
                 <Button sx={{ mx: 2 }}>
                     Claim {collateralSurplusBalance.prettify()} tFIL

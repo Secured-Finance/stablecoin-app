@@ -1,6 +1,6 @@
 import { ContractInterface, ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { useLiquity } from './LiquityContext';
+import { useSfStablecoin } from './SfStablecoinContext';
 
 type ContractStatus = 'UNKNOWN' | 'LOADED' | 'FAILED';
 type Contract<TContractType> = {
@@ -12,7 +12,7 @@ export function useContract<TContractType>(
     address: string | null,
     abi: ContractInterface
 ): [TContractType | undefined, ContractStatus] {
-    const { provider } = useLiquity();
+    const { provider } = useSfStablecoin();
     const [contract, setContract] = useState<Contract<TContractType>>();
 
     useEffect(() => {

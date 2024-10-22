@@ -3,12 +3,12 @@ import {
     Decimalish,
     Difference,
     LIQUIDATION_RESERVE,
-    LiquityStoreState,
     Percent,
+    SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
 import React from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Card, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
@@ -29,7 +29,7 @@ type TroveEditorProps = React.PropsWithChildren<{
     ) => void;
 }>;
 
-const select = ({ price }: LiquityStoreState) => ({ price });
+const select = ({ price }: SfStablecoinStoreState) => ({ price });
 
 // XXX Only used for closing Troves now
 export const TroveEditor: React.FC<TroveEditorProps> = ({
@@ -40,7 +40,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
     borrowingRate,
     changePending,
 }) => {
-    const { price } = useLiquitySelector(select);
+    const { price } = useSfStablecoinSelector(select);
 
     const feePct = new Percent(borrowingRate);
 

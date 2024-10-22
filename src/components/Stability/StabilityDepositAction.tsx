@@ -1,9 +1,9 @@
 import {
     Decimal,
-    LiquityStoreState,
+    SfStablecoinStoreState,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';
 
@@ -12,7 +12,7 @@ type StabilityDepositActionProps = React.PropsWithChildren<{
     change: StabilityDepositChange<Decimal>;
 }>;
 
-const selectFrontendRegistered = ({ frontend }: LiquityStoreState) =>
+const selectFrontendRegistered = ({ frontend }: SfStablecoinStoreState) =>
     frontend.status === 'registered';
 
 export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
@@ -20,21 +20,23 @@ export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
     transactionId,
     change,
 }) => {
-    const { config, liquity } = useLiquity();
-    const frontendRegistered = useLiquitySelector(selectFrontendRegistered);
+    const { config, sfStablecoin } = useSfStablecoin();
+    const frontendRegistered = useSfStablecoinSelector(
+        selectFrontendRegistered
+    );
 
     const frontendTag = frontendRegistered ? config.frontendTag : undefined;
 
     const [sendTransaction] = useTransactionFunction(
         transactionId,
         change.depositDebtToken
-            ? liquity.send.depositDebtTokenInStabilityPool.bind(
-                  liquity.send,
+            ? sfStablecoin.send.depositDebtTokenInStabilityPool.bind(
+                  sfStablecoin.send,
                   change.depositDebtToken,
                   frontendTag
               )
-            : liquity.send.withdrawDebtTokenFromStabilityPool.bind(
-                  liquity.send,
+            : sfStablecoin.send.withdrawDebtTokenFromStabilityPool.bind(
+                  sfStablecoin.send,
                   change.withdrawDebtToken
               )
     );

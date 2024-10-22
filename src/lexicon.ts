@@ -16,7 +16,7 @@ export const TVL: Lexicon = {
         'The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in tFIL and USD.',
 };
 
-export const STAKED_LQTY: Lexicon = {
+export const STAKED_PROTOCOL_TOKEN: Lexicon = {
     term: 'Staked SCR',
     description:
         'The total amount of SCR that is staked for earning fee revenue.',
@@ -50,11 +50,11 @@ export const tFIL: Lexicon = {
     term: 'tFIL',
 };
 
-export const USDFC: Lexicon = {
+export const DEBT_TOKEN: Lexicon = {
     term: 'USDFC',
 };
 
-export const SCR: Lexicon = {
+export const PROTOCOL_TOKEN: Lexicon = {
     term: 'SCR',
 };
 

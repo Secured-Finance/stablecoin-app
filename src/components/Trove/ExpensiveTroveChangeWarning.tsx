@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { Decimal, TroveChange } from '@secured-finance/lib-base';
-import { PopulatedEthersLiquityTransaction } from '@secured-finance/lib-ethers';
+import { PopulatedEthersTransaction } from '@secured-finance/lib-ethers';
 import React, { useEffect } from 'react';
-import { useLiquity } from 'src/hooks';
+import { useSfStablecoin } from 'src/hooks';
 import { WarningBubble } from '../WarningBubble';
 
 export type GasEstimationState =
     | { type: 'idle' | 'inProgress' }
-    | { type: 'complete'; populatedTx: PopulatedEthersLiquityTransaction };
+    | { type: 'complete'; populatedTx: PopulatedEthersTransaction };
 
 type ExpensiveTroveChangeWarningParams = {
     troveChange?: Exclude<TroveChange<Decimal>, { type: 'invalidCreation' }>;
@@ -26,7 +26,7 @@ export const ExpensiveTroveChangeWarning: React.FC<
     gasEstimationState,
     setGasEstimationState,
 }) => {
-    const { liquity } = useLiquity();
+    const { sfStablecoin } = useSfStablecoin();
 
     useEffect(() => {
         if (troveChange && troveChange.type !== 'closure') {
@@ -36,11 +36,11 @@ export const ExpensiveTroveChangeWarning: React.FC<
 
             const timeoutId = setTimeout(async () => {
                 const populatedTx = await (troveChange.type === 'creation'
-                    ? liquity.populate.openTrove(troveChange.params, {
+                    ? sfStablecoin.populate.openTrove(troveChange.params, {
                           maxBorrowingRate,
                           borrowingFeeDecayToleranceMinutes,
                       })
-                    : liquity.populate.adjustTrove(troveChange.params, {
+                    : sfStablecoin.populate.adjustTrove(troveChange.params, {
                           maxBorrowingRate,
                           borrowingFeeDecayToleranceMinutes,
                       }));

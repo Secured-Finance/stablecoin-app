@@ -1,12 +1,12 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useEffect, useReducer } from 'react';
 import { equals } from 'src/utils';
-import { useLiquityStore } from './useLiquityStore';
+import { useSfStablecoinStore } from './useSfStablecoinStore';
 
-export const useLiquitySelector = <S, T>(
-    select: (state: LiquityStoreState<T>) => S
+export const useSfStablecoinSelector = <S, T>(
+    select: (state: SfStablecoinStoreState<T>) => S
 ): S => {
-    const store = useLiquityStore<T>();
+    const store = useSfStablecoinStore<T>();
     const [, rerender] = useReducer(() => ({}), {});
 
     useEffect(

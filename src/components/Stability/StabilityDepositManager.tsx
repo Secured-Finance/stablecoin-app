@@ -2,13 +2,13 @@
 import {
     Decimal,
     Decimalish,
-    LiquityStoreState,
+    SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
 import {
-    LiquityStoreUpdate,
-    useLiquityReducer,
-    useLiquitySelector,
+    SfStablecoinStoreUpdate,
+    useSfStablecoinReducer,
+    useSfStablecoinSelector,
 } from 'src/hooks';
 import { Button, Flex } from 'theme-ui';
 import { COIN } from '../../strings';
@@ -22,7 +22,7 @@ import {
     validateStabilityDepositChange,
 } from './validation/validateStabilityDepositChange';
 
-const init = ({ stabilityDeposit }: LiquityStoreState) => ({
+const init = ({ stabilityDeposit }: SfStablecoinStoreState) => ({
     originalDeposit: stabilityDeposit,
     editedDebtToken: stabilityDeposit.currentDebtToken,
     changePending: false,
@@ -30,7 +30,7 @@ const init = ({ stabilityDeposit }: LiquityStoreState) => ({
 
 type StabilityDepositManagerState = ReturnType<typeof init>;
 type StabilityDepositManagerAction =
-    | LiquityStoreUpdate
+    | SfStablecoinStoreUpdate
     | { type: 'startChange' | 'finishChange' | 'revert' }
     | { type: 'setDeposit'; newValue: Decimalish };
 
@@ -90,7 +90,9 @@ const reduce = (
                 updatedDeposit.collateralGain.lt(
                     originalDeposit.collateralGain
                 ) ||
-                updatedDeposit.lqtyReward.lt(originalDeposit.lqtyReward);
+                updatedDeposit.protocolTokenReward.lt(
+                    originalDeposit.protocolTokenReward
+                );
 
             if (changePending && changeCommitted) {
                 return finishChange(revert(newState));
@@ -110,8 +112,8 @@ const transactionId = 'stability-deposit';
 
 export const StabilityDepositManager: React.FC = () => {
     const [{ originalDeposit, editedDebtToken, changePending }, dispatch] =
-        useLiquityReducer(reduce, init);
-    const validationContext = useLiquitySelector(
+        useSfStablecoinReducer(reduce, init);
+    const validationContext = useSfStablecoinSelector(
         selectForStabilityDepositChangeValidation
     );
     const { dispatchEvent } = useStabilityView();
