@@ -2,14 +2,14 @@
 import {
     Decimal,
     LIQUIDATION_RESERVE,
-    LiquityStoreState,
     MINIMUM_NET_DEBT,
     Percent,
+    SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLiquitySelector, useStableTroveChange } from 'src/hooks';
+import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
@@ -31,7 +31,7 @@ import {
     validateTroveChange,
 } from './validation/validateTroveChange';
 
-const selector = (state: LiquityStoreState) => {
+const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
     return {
         fees,
@@ -48,7 +48,7 @@ const GAS_ROOM_ETH = Decimal.from(0.1);
 export const Opening: React.FC = () => {
     const { dispatchEvent } = useTroveView();
     const { fees, price, accountBalance, validationContext } =
-        useLiquitySelector(selector);
+        useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
     const editingState = useState<string>();
 

@@ -1,7 +1,7 @@
-import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
+import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
 import { Box, Button, Flex, Heading, Text } from 'theme-ui';
 import { COIN, GT } from '../strings';
@@ -10,18 +10,18 @@ import { Icon } from './Icon';
 const select = ({
     accountBalance,
     debtTokenBalance,
-    lqtyBalance,
-}: LiquityStoreState) => ({
+    protocolTokenBalance,
+}: SfStablecoinStoreState) => ({
     accountBalance,
     debtTokenBalance,
-    lqtyBalance,
+    protocolTokenBalance,
 });
 
 export const UserAccount: React.FC = () => {
-    const { account } = useLiquity();
+    const { account } = useSfStablecoin();
     const { open } = useWeb3Modal();
-    const { accountBalance, debtTokenBalance, lqtyBalance } =
-        useLiquitySelector(select);
+    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+        useSfStablecoinSelector(select);
 
     return (
         <Flex>
@@ -48,7 +48,7 @@ export const UserAccount: React.FC = () => {
                     [
                         ['tFIL', accountBalance],
                         [COIN, Decimal.from(debtTokenBalance || 0)],
-                        [GT, Decimal.from(lqtyBalance)],
+                        [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
                 ).map(([currency, balance], i) => (
                     <Flex key={i} sx={{ ml: 3, flexDirection: 'column' }}>

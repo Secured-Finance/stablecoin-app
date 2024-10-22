@@ -1,7 +1,7 @@
 import { AddressZero } from '@ethersproject/constants';
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Box, Container, Flex } from 'theme-ui';
 import { LiquityLogo } from './LiquityLogo';
 import { Nav } from './Nav';
@@ -9,15 +9,15 @@ import { SideNav } from './SideNav';
 
 const logoHeight = '32px';
 
-const select = ({ frontend }: LiquityStoreState) => ({
+const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
 });
 
 export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
     const {
         config: { frontendTag },
-    } = useLiquity();
-    const { frontend } = useLiquitySelector(select);
+    } = useSfStablecoin();
+    const { frontend } = useSfStablecoinSelector(select);
     const isFrontendRegistered =
         frontendTag === AddressZero || frontend.status === 'registered';
 

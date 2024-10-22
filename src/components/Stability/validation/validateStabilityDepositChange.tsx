@@ -1,6 +1,6 @@
 import {
     Decimal,
-    LiquityStoreState,
+    SfStablecoinStoreState,
     StabilityDeposit,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
@@ -14,7 +14,7 @@ export const selectForStabilityDepositChangeValidation = ({
     debtTokenBalance,
     ownFrontend,
     haveUndercollateralizedTroves,
-}: LiquityStoreState) => ({
+}: SfStablecoinStoreState) => ({
     trove,
     debtTokenBalance,
     haveOwnFrontend: ownFrontend.status === 'registered',

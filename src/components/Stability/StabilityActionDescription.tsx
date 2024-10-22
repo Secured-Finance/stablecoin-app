@@ -18,7 +18,7 @@ export const StabilityActionDescription: React.FC<
     const collateralGain = originalDeposit.collateralGain.nonZero
         ?.prettify(4)
         .concat(' tFIL');
-    const lqtyReward = originalDeposit.lqtyReward.nonZero
+    const protocolTokenReward = originalDeposit.protocolTokenReward.nonZero
         ?.prettify()
         .concat(' ', GT);
 
@@ -41,17 +41,17 @@ export const StabilityActionDescription: React.FC<
                     to your wallet
                 </>
             )}
-            {(collateralGain || lqtyReward) && (
+            {(collateralGain || protocolTokenReward) && (
                 <>
                     {' '}
                     and claiming at least{' '}
-                    {collateralGain && lqtyReward ? (
+                    {collateralGain && protocolTokenReward ? (
                         <>
                             <Amount>{collateralGain}</Amount> and{' '}
-                            <Amount>{lqtyReward}</Amount>
+                            <Amount>{protocolTokenReward}</Amount>
                         </>
                     ) : (
-                        <Amount>{collateralGain ?? lqtyReward}</Amount>
+                        <Amount>{collateralGain ?? protocolTokenReward}</Amount>
                     )}
                 </>
             )}

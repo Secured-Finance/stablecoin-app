@@ -1,6 +1,6 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
@@ -11,14 +11,14 @@ import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
 import { ClaimAndMove } from './actions/ClaimAndMove';
 import { ClaimRewards } from './actions/ClaimRewards';
 import { useStabilityView } from './context/StabilityViewContext';
-import { RemainingLQTY } from './RemainingLQTY';
+import { RemainingProtocolToken } from './RemainingProtocolToken';
 import { Yield } from './Yield';
 
 const selector = ({
     stabilityDeposit,
     trove,
     debtTokenInStabilityPool,
-}: LiquityStoreState) => ({
+}: SfStablecoinStoreState) => ({
     stabilityDeposit,
     trove,
     debtTokenInStabilityPool,
@@ -27,7 +27,7 @@ const selector = ({
 export const ActiveDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
     const { stabilityDeposit, trove, debtTokenInStabilityPool } =
-        useLiquitySelector(selector);
+        useSfStablecoinSelector(selector);
 
     const poolShare = stabilityDeposit.currentDebtToken.mulDiv(
         100,
@@ -38,7 +38,7 @@ export const ActiveDeposit: React.FC = () => {
         dispatchEvent('ADJUST_DEPOSIT_PRESSED');
     }, [dispatchEvent]);
 
-    const hasReward = !stabilityDeposit.lqtyReward.isZero;
+    const hasReward = !stabilityDeposit.protocolTokenReward.isZero;
     const hasGain = !stabilityDeposit.collateralGain.isZero;
     const hasTrove = !trove.isEmpty;
 
@@ -60,7 +60,7 @@ export const ActiveDeposit: React.FC = () => {
                 Stability Pool
                 {!isWaitingForTransaction && (
                     <Flex sx={{ justifyContent: 'flex-end' }}>
-                        <RemainingLQTY />
+                        <RemainingProtocolToken />
                     </Flex>
                 )}
             </Heading>
@@ -68,7 +68,7 @@ export const ActiveDeposit: React.FC = () => {
                 <Box>
                     <DisabledEditableRow
                         label='Deposit'
-                        inputId='deposit-usdfc'
+                        inputId='deposit-debt-token'
                         amount={stabilityDeposit.currentDebtToken.prettify()}
                         unit={COIN}
                     />
@@ -94,9 +94,10 @@ export const ActiveDeposit: React.FC = () => {
                         <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
-                            amount={stabilityDeposit.lqtyReward.prettify()}
+                            amount={stabilityDeposit.protocolTokenReward.prettify()}
                             color={
-                                stabilityDeposit.lqtyReward.nonZero && 'success'
+                                stabilityDeposit.protocolTokenReward.nonZero &&
+                                'success'
                             }
                             unit={GT}
                             infoIcon={

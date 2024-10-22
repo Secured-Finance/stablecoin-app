@@ -1,13 +1,13 @@
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 
 import { Icon } from 'src/components/Icon';
-import { useLiquity } from 'src/hooks/LiquityContext';
+import { useSfStablecoin } from 'src/hooks/SfStablecoinContext';
 import { AddressUtils } from 'src/utils';
 
 export const UnregisteredFrontend: React.FC = () => {
     const {
         config: { frontendTag },
-    } = useLiquity();
+    } = useSfStablecoin();
 
     return (
         <Box

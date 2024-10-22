@@ -1,14 +1,14 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useRef, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Button, Container, Flex } from 'theme-ui';
 import { Icon } from './Icon';
 import { SystemStats } from './SystemStats';
 
-const select = ({ total, price }: LiquityStoreState) => ({ total, price });
+const select = ({ total, price }: SfStablecoinStoreState) => ({ total, price });
 
 export const SystemStatsPopup: React.FC = () => {
-    const { price, total } = useLiquitySelector(select);
+    const { price, total } = useSfStablecoinSelector(select);
 
     const [systemStatsOpen, setSystemStatsOpen] = useState(false);
     const systemStatsOverlayRef = useRef<HTMLDivElement>(null);

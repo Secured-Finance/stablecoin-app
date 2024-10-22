@@ -1,6 +1,6 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
@@ -8,7 +8,7 @@ import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
 import { DisabledEditableRow } from './Editor';
 import { useTroveView } from './context/TroveViewContext';
 
-const select = ({ trove, price }: LiquityStoreState) => ({ trove, price });
+const select = ({ trove, price }: SfStablecoinStoreState) => ({ trove, price });
 
 export const ReadOnlyTrove: React.FC = () => {
     const { dispatchEvent } = useTroveView();
@@ -19,7 +19,7 @@ export const ReadOnlyTrove: React.FC = () => {
         dispatchEvent('CLOSE_TROVE_PRESSED');
     }, [dispatchEvent]);
 
-    const { trove, price } = useLiquitySelector(select);
+    const { trove, price } = useSfStablecoinSelector(select);
 
     // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (

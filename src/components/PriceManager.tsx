@@ -1,21 +1,21 @@
-import { Decimal, LiquityStoreState } from '@secured-finance/lib-base';
+import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
 import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 
-const selectPrice = ({ price }: LiquityStoreState) => price;
+const selectPrice = ({ price }: SfStablecoinStoreState) => price;
 
 export const PriceManager: React.FC = () => {
     const {
-        liquity: {
-            send: liquity,
+        sfStablecoin: {
+            send: sfStablecoin,
             connection: { _priceFeedIsTestnet: canSetPrice },
         },
-    } = useLiquity();
+    } = useSfStablecoin();
 
-    const price = useLiquitySelector(selectPrice);
+    const price = useSfStablecoinSelector(selectPrice);
     const [editedPrice, setEditedPrice] = useState(price.toString(2));
 
     useEffect(() => {
@@ -50,7 +50,7 @@ export const PriceManager: React.FC = () => {
                                     if (!editedPrice) {
                                         throw new Error('Invalid price');
                                     }
-                                    return liquity.setPrice(
+                                    return sfStablecoin.setPrice(
                                         Decimal.from(editedPrice),
                                         overrides
                                     );

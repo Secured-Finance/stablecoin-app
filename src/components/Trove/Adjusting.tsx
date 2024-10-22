@@ -2,12 +2,12 @@ import {
     Decimal,
     Difference,
     LIQUIDATION_RESERVE,
-    LiquityStoreState,
     Percent,
+    SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
@@ -29,7 +29,7 @@ import {
     validateTroveChange,
 } from './validation/validateTroveChange';
 
-const selector = (state: LiquityStoreState) => {
+const selector = (state: SfStablecoinStoreState) => {
     const { trove, fees, price, accountBalance } = state;
     return {
         trove,
@@ -100,7 +100,7 @@ const applyUnsavedNetDebtChanges = (
 export const Adjusting: React.FC = () => {
     const { dispatchEvent } = useTroveView();
     const { trove, fees, price, accountBalance, validationContext } =
-        useLiquitySelector(selector);
+        useSfStablecoinSelector(selector);
     const editingState = useState<string>();
     const previousTrove = useRef<Trove>(trove);
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);

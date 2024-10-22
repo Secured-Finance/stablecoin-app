@@ -5,9 +5,9 @@ import {
     Percent,
     UserTrove,
 } from '@secured-finance/lib-base';
-import { BlockPolledLiquityStoreState } from '@secured-finance/lib-ethers';
+import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
 import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
 import { COIN } from '../strings';
@@ -56,7 +56,7 @@ const select = ({
     total,
     debtTokenInStabilityPool,
     blockTag,
-}: BlockPolledLiquityStoreState) => ({
+}: BlockPolledSfStablecoinStoreState) => ({
     numberOfTroves,
     price,
     recoveryMode: total.collateralRatioIsBelowCritical(price),
@@ -73,8 +73,8 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         totalCollateralRatio,
         debtTokenInStabilityPool,
         price,
-    } = useLiquitySelector(select);
-    const { liquity } = useLiquity();
+    } = useSfStablecoinSelector(select);
+    const { sfStablecoin } = useSfStablecoin();
 
     const [loading, setLoading] = useState(true);
     const [troves, setTroves] = useState<UserTrove[]>();
@@ -109,7 +109,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
 
         setLoading(true);
 
-        liquity
+        sfStablecoin
             .getTroves(
                 {
                     first: pageSize,
@@ -130,7 +130,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         };
         // Omit blockTag from deps on purpose
         // eslint-disable-next-line
-    }, [liquity, clampedPage, pageSize, reload]);
+    }, [sfStablecoin, clampedPage, pageSize, reload]);
 
     useEffect(() => {
         forceReload();
@@ -402,8 +402,8 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                                   price
                                                               ),
                                                     ]}
-                                                    send={liquity.send.liquidate.bind(
-                                                        liquity.send,
+                                                    send={sfStablecoin.send.liquidate.bind(
+                                                        sfStablecoin.send,
                                                         trove.ownerAddress
                                                     )}
                                                 >

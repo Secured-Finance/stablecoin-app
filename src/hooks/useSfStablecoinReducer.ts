@@ -1,26 +1,26 @@
-import { LiquityStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { equals } from 'src/utils';
-import { useLiquityStore } from './useLiquityStore';
+import { useSfStablecoinStore } from './useSfStablecoinStore';
 
-export type LiquityStoreUpdate<T = unknown> = {
+export type SfStablecoinStoreUpdate<T = unknown> = {
     type: 'updateStore';
-    newState: LiquityStoreState<T>;
-    oldState: LiquityStoreState<T>;
-    stateChange: Partial<LiquityStoreState<T>>;
+    newState: SfStablecoinStoreState<T>;
+    oldState: SfStablecoinStoreState<T>;
+    stateChange: Partial<SfStablecoinStoreState<T>>;
 };
 
-export const useLiquityReducer = <S, A, T>(
-    reduce: (state: S, action: A | LiquityStoreUpdate<T>) => S,
-    init: (storeState: LiquityStoreState<T>) => S
-): [S, (action: A | LiquityStoreUpdate<T>) => void] => {
-    const store = useLiquityStore<T>();
+export const useSfStablecoinReducer = <S, A, T>(
+    reduce: (state: S, action: A | SfStablecoinStoreUpdate<T>) => S,
+    init: (storeState: SfStablecoinStoreState<T>) => S
+): [S, (action: A | SfStablecoinStoreUpdate<T>) => void] => {
+    const store = useSfStablecoinStore<T>();
     const oldStore = useRef(store);
     const state = useRef(init(store.state));
     const [, rerender] = useReducer(() => ({}), {});
 
     const dispatch = useCallback(
-        (action: A | LiquityStoreUpdate<T>) => {
+        (action: A | SfStablecoinStoreUpdate<T>) => {
             const newState = reduce(state.current, action);
 
             if (!equals(newState, state.current)) {

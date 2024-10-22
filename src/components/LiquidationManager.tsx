@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useLiquity } from 'src/hooks';
+import { useSfStablecoin } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
 import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 
 export const LiquidationManager: React.FC = () => {
     const {
-        liquity: { send: liquity },
-    } = useLiquity();
+        sfStablecoin: { send: sfStablecoin },
+    } = useSfStablecoin();
     const [numberOfTrovesToLiquidate, setNumberOfTrovesToLiquidate] =
         useState('90');
 
@@ -40,7 +40,7 @@ export const LiquidationManager: React.FC = () => {
                                 if (!numberOfTrovesToLiquidate) {
                                     throw new Error('Invalid number');
                                 }
-                                return liquity.liquidateUpTo(
+                                return sfStablecoin.liquidateUpTo(
                                     parseInt(numberOfTrovesToLiquidate, 10),
                                     overrides
                                 );
