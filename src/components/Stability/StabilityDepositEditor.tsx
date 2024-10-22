@@ -2,11 +2,11 @@ import {
     Decimal,
     Decimalish,
     Difference,
-    LiquityStoreState,
+    SfStablecoinStoreState,
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
@@ -17,7 +17,7 @@ import { EditableRow, StaticRow } from '../Trove/Editor';
 const select = ({
     debtTokenBalance,
     debtTokenInStabilityPool,
-}: LiquityStoreState) => ({
+}: SfStablecoinStoreState) => ({
     debtTokenBalance,
     debtTokenInStabilityPool,
 });
@@ -41,7 +41,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
     children,
 }) => {
     const { debtTokenBalance, debtTokenInStabilityPool } =
-        useLiquitySelector(select);
+        useSfStablecoinSelector(select);
     const editingState = useState<string>();
 
     const edited = !editedDebtToken.eq(originalDeposit.currentDebtToken);
@@ -130,9 +130,10 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                         <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
-                            amount={originalDeposit.lqtyReward.prettify()}
+                            amount={originalDeposit.protocolTokenReward.prettify()}
                             color={
-                                originalDeposit.lqtyReward.nonZero && 'success'
+                                originalDeposit.protocolTokenReward.nonZero &&
+                                'success'
                             }
                             unit={GT}
                             infoIcon={

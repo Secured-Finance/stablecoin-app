@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { InfoMessage } from '../InfoMessage';
 import { useStabilityView } from './context/StabilityViewContext';
-import { RemainingLQTY } from './RemainingLQTY';
+import { RemainingProtocolToken } from './RemainingProtocolToken';
 import { Yield } from './Yield';
 
 export const NoDeposit: React.FC = () => {
@@ -17,7 +17,7 @@ export const NoDeposit: React.FC = () => {
             <Heading>
                 Stability Pool
                 <Flex sx={{ justifyContent: 'flex-end' }}>
-                    <RemainingLQTY />
+                    <RemainingProtocolToken />
                 </Flex>
             </Heading>
             <Box sx={{ p: [2, 3] }}>

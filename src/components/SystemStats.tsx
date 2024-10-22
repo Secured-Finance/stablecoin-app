@@ -1,8 +1,12 @@
 import { AddressZero } from '@ethersproject/constants';
-import { Decimal, LiquityStoreState, Percent } from '@secured-finance/lib-base';
+import {
+    Decimal,
+    Percent,
+    SfStablecoinStoreState,
+} from '@secured-finance/lib-base';
 import packageJson from 'package.json';
 import React from 'react';
-import { useLiquity, useLiquitySelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
 import { Box, Card, Heading, Link, Text } from 'theme-ui';
 import * as l from '../lexicon';
@@ -11,25 +15,27 @@ import { Statistic } from './Statistic';
 const selectBalances = ({
     accountBalance,
     debtTokenBalance,
-    lqtyBalance,
-}: LiquityStoreState) => ({
+    protocolTokenBalance,
+}: SfStablecoinStoreState) => ({
     accountBalance,
     debtTokenBalance,
-    lqtyBalance,
+    protocolTokenBalance,
 });
 
 const Balances: React.FC = () => {
-    const { accountBalance, debtTokenBalance, lqtyBalance } =
-        useLiquitySelector(selectBalances);
+    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+        useSfStablecoinSelector(selectBalances);
 
     return (
         <Box sx={{ mb: 3 }}>
             <Heading>My Account Balances</Heading>
             <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
-            <Statistic lexicon={l.USDFC}>
+            <Statistic lexicon={l.DEBT_TOKEN}>
                 {debtTokenBalance.prettify()}
             </Statistic>
-            <Statistic lexicon={l.SCR}>{lqtyBalance.prettify()}</Statistic>
+            <Statistic lexicon={l.PROTOCOL_TOKEN}>
+                {protocolTokenBalance.prettify()}
+            </Statistic>
         </Box>
     );
 };
@@ -57,16 +63,16 @@ const select = ({
     debtTokenInStabilityPool,
     borrowingRate,
     redemptionRate,
-    totalStakedLQTY,
+    totalStakedProtocolToken,
     frontend,
-}: LiquityStoreState) => ({
+}: SfStablecoinStoreState) => ({
     numberOfTroves,
     price,
     total,
     debtTokenInStabilityPool,
     borrowingRate,
     redemptionRate,
-    totalStakedLQTY,
+    totalStakedProtocolToken,
     kickbackRate:
         frontend.status === 'registered' ? frontend.kickbackRate : null,
 });
@@ -76,14 +82,14 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
     showBalances,
 }) => {
     const {
-        liquity: {
+        sfStablecoin: {
             connection: {
                 version: contractsVersion,
                 deploymentDate,
                 frontendTag,
             },
         },
-    } = useLiquity();
+    } = useSfStablecoin();
 
     const {
         numberOfTroves,
@@ -91,9 +97,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         debtTokenInStabilityPool,
         total,
         borrowingRate,
-        totalStakedLQTY,
+        totalStakedProtocolToken,
         kickbackRate,
-    } = useLiquitySelector(select);
+    } = useSfStablecoinSelector(select);
 
     const debtTokenInStabilityPoolPct =
         total.debt.nonZero &&
@@ -139,8 +145,8 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     </Text>
                 </Statistic>
             )}
-            <Statistic lexicon={l.STAKED_LQTY}>
-                {totalStakedLQTY.shorten()}
+            <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
+                {totalStakedProtocolToken.shorten()}
             </Statistic>
             <Statistic lexicon={l.TCR}>
                 {totalCollateralRatioPct.prettify()}

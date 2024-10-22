@@ -7,8 +7,8 @@ import {
 } from '@ethersproject/abstract-provider';
 import { hexDataLength, hexDataSlice } from '@ethersproject/bytes';
 import {
-    LiquityReceipt,
-    SentLiquityTransaction,
+    ProtocolReceipt,
+    SentProtocolTransaction,
 } from '@secured-finance/lib-base';
 import {
     EthersTransactionCancelledError,
@@ -16,9 +16,7 @@ import {
 } from '@secured-finance/lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-
-import { useLiquity } from '../hooks/LiquityContext';
-
+import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
 import { Tooltip } from './Tooltip';
 
@@ -121,9 +119,9 @@ type ButtonlikeProps = {
     onClick?: () => void;
 };
 
-type SentTransaction = SentLiquityTransaction<
+type SentTransaction = SentProtocolTransaction<
     TransactionResponse,
-    LiquityReceipt<TransactionReceipt>
+    ProtocolReceipt<TransactionReceipt>
 >;
 
 export type TransactionFunction = (
@@ -266,7 +264,7 @@ const tryToGetRevertReason = async (
 };
 
 export const TransactionMonitor: React.FC = () => {
-    const { provider } = useLiquity();
+    const { provider } = useSfStablecoin();
     const [transactionState, setTransactionState] = useTransactionState();
 
     const id =

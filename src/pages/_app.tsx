@@ -15,8 +15,8 @@ import { TransactionProvider } from 'src/components/Transaction';
 import { WalletConnector } from 'src/components/WalletConnector';
 import { getConfig } from 'src/config';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
-import { LiquityProvider } from 'src/hooks/LiquityContext';
-import { LiquityFrontend } from 'src/LiquityFrontend';
+import { SfStablecoinProvider } from 'src/hooks/SfStablecoinContext';
+import { SfStablecoinFrontend } from 'src/SfStablecoinFrontend';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
@@ -104,7 +104,7 @@ if (typeof window !== 'undefined') {
 }
 
 const metadata = {
-    name: 'Stablecoin',
+    name: 'SfStablecoin',
     description: 'AppKit Example',
     url: 'https://web3modal.com', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
@@ -177,7 +177,7 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                     <QueryClientProvider client={queryClient}>
                         <WagmiProvider config={wagmiConfig}>
                             <WalletConnector>
-                                <LiquityProvider
+                                <SfStablecoinProvider
                                     loader={loader}
                                     unsupportedNetworkFallback={
                                         <UnsupportedNetworkFallback />
@@ -187,9 +187,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                                     }
                                 >
                                     <TransactionProvider>
-                                        <LiquityFrontend loader={loader} />
+                                        <SfStablecoinFrontend loader={loader} />
                                     </TransactionProvider>
-                                </LiquityProvider>
+                                </SfStablecoinProvider>
                             </WalletConnector>
                         </WagmiProvider>
                         <ReactQueryDevtools initialIsOpen={false} />

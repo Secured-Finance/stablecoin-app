@@ -1,6 +1,9 @@
-import { LiquityStoreState, UserTroveStatus } from '@secured-finance/lib-base';
+import {
+    SfStablecoinStoreState,
+    UserTroveStatus,
+} from '@secured-finance/lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useLiquitySelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { TroveViewContext } from './TroveViewContext';
 import type { TroveEvent, TroveView } from './types';
 
@@ -78,11 +81,11 @@ const getInitialView = (troveStatus: UserTroveStatus): TroveView => {
     return 'NONE';
 };
 
-const select = ({ trove: { status } }: LiquityStoreState) => status;
+const select = ({ trove: { status } }: SfStablecoinStoreState) => status;
 
 export const TroveViewProvider: React.FC<React.PropsWithChildren> = props => {
     const { children } = props;
-    const troveStatus = useLiquitySelector(select);
+    const troveStatus = useSfStablecoinSelector(select);
 
     const [view, setView] = useState<TroveView>(getInitialView(troveStatus));
     const viewRef = useRef<TroveView>(view);
