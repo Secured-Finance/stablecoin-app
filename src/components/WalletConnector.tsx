@@ -1,6 +1,6 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { Button } from 'src/components/ui';
 import { useAccount } from 'wagmi';
+import { Button } from './atoms';
 
 export const WalletConnector: React.FC<{
     children: React.ReactNode;

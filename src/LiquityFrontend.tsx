@@ -7,13 +7,13 @@ import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { LiquityStoreProvider } from 'src/contexts';
 import { Container, Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
-import { Header } from './components/Header';
+import { Header } from './components/organisms';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
-import { SystemStatsPopup } from './components/SystemStatsPopup';
+// import { SystemStatsPopup } from './components/SystemStatsPopup';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
-import { UserAccount } from './components/UserAccount';
+// import { UserAccount } from './components/UserAccount';
 import { useLiquity } from './hooks/LiquityContext';
 
 type LiquityFrontendProps = {
@@ -46,10 +46,7 @@ export const LiquityFrontend: React.FC<LiquityFrontendProps> = ({ loader }) => {
                                     minHeight: '100%',
                                 }}
                             >
-                                <Header>
-                                    <UserAccount />
-                                    <SystemStatsPopup />
-                                </Header>
+                                <Header />
 
                                 <Container
                                     variant='main'

@@ -14,7 +14,7 @@ import { WagmiProvider } from 'wagmi';
 
 export const withAppLayout = (Story: StoryFn) => {
     return (
-        <Layout navBar={<Header  />}>
+        <Layout navBar={<Header />}>
             <Story />
         </Layout>
     );
