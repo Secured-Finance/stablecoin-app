@@ -136,7 +136,6 @@ createWeb3Modal({
     enableAnalytics: true,
     enableSwaps: false,
     enableOnramp: false,
-    allowUnsupportedChain: true,
 });
 
 function App({ Component, pageProps }: AppProps) {
