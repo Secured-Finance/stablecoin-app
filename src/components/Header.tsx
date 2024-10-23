@@ -3,8 +3,8 @@ import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React from 'react';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Box, Container, Flex } from 'theme-ui';
-import { LiquityLogo } from './LiquityLogo';
 import { Nav } from './Nav';
+import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
 
 const logoHeight = '32px';
@@ -24,7 +24,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Container variant='header'>
             <Flex sx={{ alignItems: 'center', flex: 1 }}>
-                <LiquityLogo height={logoHeight} />
+                <SecuredFinanceLogo height={logoHeight} />
 
                 <Box
                     sx={{

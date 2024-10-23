@@ -5,6 +5,7 @@ module.exports = {
     theme: {
         extend: {
             lineHeight: {
+                '3.5': '14px',
                 '4.5': '18px',
                 '5.5': '22px',
                 '11': '44px',
