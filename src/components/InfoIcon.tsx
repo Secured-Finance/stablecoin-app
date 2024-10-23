@@ -1,24 +1,20 @@
-import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { Tooltip } from 'src/components/atoms';
 import { Icon } from './Icon';
-import type { TooltipProps } from './Tooltip';
-import { Tooltip } from './Tooltip';
 
-export type InfoIconProps = Pick<TooltipProps, 'placement' | 'link'> &
-    Pick<FontAwesomeIconProps, 'size'> & {
-        tooltip: React.ReactNode;
-    };
-
-export const InfoIcon: React.FC<InfoIconProps> = ({
-    link,
+export const InfoIcon = ({
     placement = 'right',
-    tooltip,
-    size = '1x',
+    message,
+}: {
+    placement?: Parameters<typeof Tooltip>[0]['placement'];
+    message: React.ReactNode;
 }) => {
     return (
-        <Tooltip message={tooltip} placement={placement} link={link}>
-            &nbsp;
-            <Icon name='question-circle' size={size} />
+        <Tooltip
+            iconElement={<Icon name='question-circle' size='1x' />}
+            placement={placement}
+        >
+            {message}
         </Tooltip>
     );
 };

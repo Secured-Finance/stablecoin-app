@@ -53,7 +53,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                     pendingColor={change?.positive ? 'success' : 'danger'}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '220px' }}>
                                     The ratio between the dollar value of the
                                     collateral and the debt (in USDFC) you are

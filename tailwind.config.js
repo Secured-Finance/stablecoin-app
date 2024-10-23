@@ -3,6 +3,9 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
     content: ['./src/**/*.{ts,tsx,js,jsx}', './public/index.html'],
     theme: {
+        boxShadow: {
+            dropdown: '0px 16px 64px -48px rgba(31, 47, 70, 0.4)',
+        },
         extend: {
             lineHeight: {
                 '3.5': '14px',

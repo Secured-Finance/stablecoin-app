@@ -138,7 +138,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                             unit={GT}
                             infoIcon={
                                 <InfoIcon
-                                    tooltip={
+                                    message={
                                         <Card
                                             variant='tooltip'
                                             sx={{ width: '240px' }}

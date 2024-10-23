@@ -102,7 +102,7 @@ export const ActiveDeposit: React.FC = () => {
                             unit={GT}
                             infoIcon={
                                 <InfoIcon
-                                    tooltip={
+                                    message={
                                         <Card
                                             variant='tooltip'
                                             sx={{ width: '240px' }}

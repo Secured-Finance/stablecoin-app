@@ -1,4 +1,3 @@
-import { AddressZero } from '@ethersproject/constants';
 import {
     Decimal,
     Percent,
@@ -83,11 +82,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
 }) => {
     const {
         sfStablecoin: {
-            connection: {
-                version: contractsVersion,
-                deploymentDate,
-                frontendTag,
-            },
+            connection: { version: contractsVersion, deploymentDate },
         },
     } = useSfStablecoin();
 
@@ -98,7 +93,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         total,
         borrowingRate,
         totalStakedProtocolToken,
-        kickbackRate,
     } = useSfStablecoinSelector(select);
 
     const debtTokenInStabilityPoolPct =
@@ -106,14 +100,12 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
-    const kickbackRatePct =
-        frontendTag === AddressZero ? '100' : kickbackRate?.mul(100).prettify();
 
     return (
         <Card {...{ variant }}>
             {showBalances && <Balances />}
 
-            <Heading>Statistics</Heading>
+            <Heading>SF Stablecoin Statistics</Heading>
 
             <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
                 Protocol
@@ -159,15 +151,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                 )}
             </Statistic>
             {}
-
-            <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
-                Frontend
-            </Heading>
-            {kickbackRatePct && (
-                <Statistic lexicon={l.KICKBACK_RATE}>
-                    {kickbackRatePct}%
-                </Statistic>
-            )}
 
             <Box sx={{ mt: 3, opacity: 0.66 }}>
                 <Box sx={{ fontSize: 0 }}>
