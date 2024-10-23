@@ -33,7 +33,7 @@ export const UserAccount: React.FC = () => {
                 rel='noopener noreferrer'
                 aria-label='Fixed Income'
             >
-                <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] px-2 ring-1 ring-primary-300 focus:outline-none laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
+                <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
                     <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                         Fixed Income
                     </span>
@@ -41,7 +41,7 @@ export const UserAccount: React.FC = () => {
                 </div>
             </Link>
             <button
-                className='flex h-8 items-center gap-x-1 rounded-[8px] px-2 ring-1 ring-neutral-300 focus:outline-none laptop:h-10 laptop:gap-x-1.5 laptop:rounded-xl laptop:px-3 laptop:ring-[1.5px]'
+                className='flex h-8 items-center gap-x-1 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:rounded-[10px] laptop:px-3 laptop:ring-[1.5px]'
                 onClick={() => open()}
             >
                 <span>
@@ -63,13 +63,12 @@ export const UserAccount: React.FC = () => {
                         [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
                 ).map(([currency, balance], i) => (
-                    <div className='flex flex-col gap-[2px] px-2' key={i}>
-                        <span className='text-3.5 font-semibold leading-3.5 text-neutral-800'>
-                            {currency}
-                        </span>
-                        <span className='text-3.5 leading-3.5 text-neutral-800'>
-                            {balance.prettify()}
-                        </span>
+                    <div
+                        className='flex flex-col gap-0.5 px-2 text-3.5 leading-3.5 text-neutral-800'
+                        key={i}
+                    >
+                        <span className='font-semibold '>{currency}</span>
+                        <span>{balance.prettify()}</span>
                     </div>
                 ))}
             </div>

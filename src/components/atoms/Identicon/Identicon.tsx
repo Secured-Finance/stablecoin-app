@@ -15,5 +15,12 @@ export const Identicon = ({ value, size }: IdenticonProps) => {
         }
     }, [value]);
 
-    return <svg ref={iconRef} width={size} height={size} />;
+    return (
+        <svg
+            ref={iconRef}
+            width={size}
+            height={size}
+            className='rounded-full'
+        />
+    );
 };
