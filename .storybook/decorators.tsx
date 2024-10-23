@@ -6,19 +6,16 @@ import { config } from './../src/stories/mocks/mockWallet';
 // import { account, connector, publicClient } from 'src/stories/mocks/mockWallet';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { useDispatch } from 'react-redux';
-import { Header } from 'src/components/organisms/Header/Header';
-import { Layout } from 'src/components/templates';
-import { updateChainError } from 'src/store/blockchain';
 import timemachine from 'timemachine';
 import { WagmiProvider } from 'wagmi';
 
-export const withAppLayout = (Story: StoryFn) => {
-    return (
-        <Layout navBar={<Header  />}>
-            <Story />
-        </Layout>
-    );
-};
+// export const withAppLayout = (Story: StoryFn) => {
+//     return (
+//         <Layout navBar={<Header  />}>
+//             <Story />
+//         </Layout>
+//     );
+// };
 
 export const withWalletProvider = (Story: StoryFn, Context: StoryContext) => {
     createWeb3Modal({

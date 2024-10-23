@@ -1,12 +1,13 @@
 import { AddressZero } from '@ethersproject/constants';
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useEffect, useState } from 'react';
-import { useSfStablecoinSelector } from 'src/hooks';
-import { useSfStablecoin } from 'src/hooks/SfStablecoinContext';
-import { Dashboard } from './Dashboard';
-import { FrontendRegistration } from './FrontendRegistration';
-import { FrontendRegistrationSuccess } from './FrontendRegistrationSuccess';
-import { UnregisteredFrontend } from './UnregisteredFrontend';
+import {
+    Dashboard,
+    FrontendRegistration,
+    FrontendRegistrationSuccess,
+    UnregisteredFrontend,
+} from 'src/components/pages';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 
 const selectFrontend = ({ frontend }: SfStablecoinStoreState) => frontend;
 

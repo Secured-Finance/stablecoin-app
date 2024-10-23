@@ -19,7 +19,6 @@ import 'react-circular-progressbar/dist/styles.css';
 import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
 import { Tooltip } from './Tooltip';
-
 import { TransactionStatus } from './TransactionStatus';
 
 type TransactionIdle = {

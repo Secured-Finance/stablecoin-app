@@ -1,6 +1,5 @@
-import { Box, Button, Flex, Heading, Paragraph } from 'theme-ui';
-
 import { Icon } from 'src/components/Icon';
+import { Box, Button, Flex, Heading, Paragraph } from 'theme-ui';
 
 type FrontendRegistrationSuccessProps = {
     onDismiss: () => void;

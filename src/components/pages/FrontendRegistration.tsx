@@ -1,4 +1,9 @@
+import { Decimal } from '@secured-finance/lib-base';
 import { useState } from 'react';
+import { Icon } from 'src/components/Icon';
+import { Transaction, useMyTransactionState } from 'src/components/Transaction';
+import { useSfStablecoin } from 'src/hooks';
+import { AddressUtils } from 'src/utils';
 import {
     Box,
     Button,
@@ -10,13 +15,6 @@ import {
     Paragraph,
     Spinner,
 } from 'theme-ui';
-
-import { Decimal } from '@secured-finance/lib-base';
-
-import { Icon } from 'src/components/Icon';
-import { Transaction, useMyTransactionState } from 'src/components/Transaction';
-import { useSfStablecoin } from 'src/hooks/SfStablecoinContext';
-import { AddressUtils } from 'src/utils';
 
 type FrontendRegistrationActionProps = {
     kickbackRate: Decimal;
