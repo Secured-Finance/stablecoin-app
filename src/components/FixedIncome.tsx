@@ -9,7 +9,7 @@ export const FixedIncome: React.FC = () => {
         <Card>
             <Heading>Fixed Income Market</Heading>
             <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title=''>
+                <InfoMessage>
                     Lend USDFC to earn fixed returns and acquire zero-coupon
                     bonds.
                 </InfoMessage>
