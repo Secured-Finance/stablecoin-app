@@ -41,7 +41,7 @@ export const StabilityActionDescription: React.FC<
                     to your wallet
                 </>
             )}
-            {(collateralGain || protocolTokenReward) && (
+            {/* {(collateralGain || protocolTokenReward) && (
                 <>
                     {' '}
                     and claiming at least{' '}
@@ -53,6 +53,13 @@ export const StabilityActionDescription: React.FC<
                     ) : (
                         <Amount>{collateralGain ?? protocolTokenReward}</Amount>
                     )}
+                </>
+            )} */}
+            {collateralGain && (
+                <>
+                    {' '}
+                    and claiming at least{' '}
+                    <Amount>{collateralGain ?? protocolTokenReward}</Amount>
                 </>
             )}
             .
