@@ -1,7 +1,9 @@
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
-import { Box, Button, Container, Flex } from 'theme-ui';
+import { NavLink, useLocation } from 'react-router-dom';
+import { LINKS } from 'src/constants';
+import { Button, Container, Flex } from 'theme-ui';
 import { Icon } from './Icon';
-import { Link } from './Link';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 const logoHeight = '32px';
@@ -10,15 +12,13 @@ export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const overlay = useRef<HTMLDivElement>(null);
 
+    const { pathname } = useLocation();
+
     if (!isVisible) {
         return (
-            <Button
-                sx={{ display: ['flex', 'none'] }}
-                variant='icon'
-                onClick={() => setIsVisible(true)}
-            >
+            <button onClick={() => setIsVisible(true)} className='h-6 w-6'>
                 <Icon name='bars' size='lg' />
-            </Button>
+            </button>
         );
     }
     return (
@@ -40,14 +40,22 @@ export const SideNav: React.FC = () => {
                     <Icon name='times' size='2x' />
                 </Button>
                 <SecuredFinanceLogo height={logoHeight} p={2} />
-                <Box
-                    as='nav'
-                    sx={{ m: 3, mt: 1, p: 0 }}
-                    onClick={() => setIsVisible(false)}
-                >
-                    <Link to='/'>Dashboard</Link>
-                    <Link to='/risky-troves'>Risky Troves</Link>
-                </Box>
+                <div className='flex flex-col gap-4'>
+                    {LINKS.map(link => (
+                        <NavLink
+                            key={link.label}
+                            to={link.to}
+                            className={clsx(
+                                'text-4.5 font-semibold leading-7 text-neutral-900',
+                                {
+                                    'text-primary-500': pathname === link.to,
+                                }
+                            )}
+                        >
+                            {link.label}
+                        </NavLink>
+                    ))}
+                </div>
             </Flex>
         </Container>
     );

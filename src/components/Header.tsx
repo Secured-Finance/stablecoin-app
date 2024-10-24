@@ -2,7 +2,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React from 'react';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { Box, Container, Flex } from 'theme-ui';
+import { Container } from 'theme-ui';
 import { Nav } from './Nav';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
@@ -23,24 +23,15 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return (
         <Container variant='header'>
-            <Flex sx={{ alignItems: 'center', flex: 1 }}>
+            <div className='flex items-center gap-3 tablet:gap-8'>
                 <SecuredFinanceLogo height={logoHeight} />
-
-                <Box
-                    sx={{
-                        mx: [2, 3],
-                        width: '0px',
-                        height: '100%',
-                        borderLeft: ['none', '1px solid lightgrey'],
-                    }}
-                />
                 {isFrontendRegistered && (
                     <>
                         <SideNav />
                         <Nav />
                     </>
                 )}
-            </Flex>
+            </div>
 
             {children}
         </Container>
