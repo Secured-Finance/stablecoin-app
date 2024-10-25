@@ -90,7 +90,6 @@ const cardGapY = [3, 3, 4];
 const card: ThemeUIStyleObject = {
     position: 'relative',
     mt: cardGapY,
-    border: 1,
     boxShadow: [1, null, 2],
 };
 
@@ -99,8 +98,13 @@ const infoCard: ThemeUIStyleObject = {
 
     padding: 3,
 
-    borderColor: 'rgba(122,199,240,0.4)',
-    background: 'linear-gradient(200deg, #d4d9fc, #cae9f9)',
+    borderWidth: '1.5px',
+    borderTopWidth: '4px',
+    borderColor: '#B9BDEA',
+    borderTopColor: '#5162FF',
+    borderBottomLeftRadius: '12px',
+    borderBottomRightRadius: '12px',
+    background: 'linear-gradient(112deg, #fff, #f2f3fc)',
 
     h2: {
         mb: 2,
@@ -149,7 +153,7 @@ const headerGradient: ThemeUIStyleObject = {
 };
 
 const theme: Theme = {
-    breakpoints: ['48em', '52em', '64em'],
+    breakpoints: ['48em', '64em', '90em'],
 
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
 
@@ -265,22 +269,24 @@ const theme: Theme = {
             ...card,
 
             padding: 0,
+            borderTopWidth: '4px',
+            borderTopColor: '#5162FF',
+            borderBottomLeftRadius: '12px',
+            borderBottomRightRadius: '12px',
 
-            borderColor: 'muted',
-            bg: 'background',
+            bg: '#FBFAFC',
 
             '> h2': {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
 
-                height: '56px',
+                height: '48px',
 
-                pl: 3,
-                py: 2,
-                pr: 2,
+                px: '14px',
+                py: '8px',
 
-                bg: 'muted',
+                bg: '#E2E8F0',
 
                 fontSize: cardHeadingFontSize,
             },
@@ -357,11 +363,9 @@ const theme: Theme = {
             top: 0,
             zIndex: 1,
 
-            px: [2, '12px', '12px', 5],
-            py: [2, '12px', '12px'],
-
-            ...headerGradient,
-            boxShadow: [1, 'none'],
+            px: ['16px', '16px', '20px'],
+            py: ['12px', '12px', '8px'],
+            bg: 'rgba(255, 255, 255, 1)',
         },
 
         footer: {

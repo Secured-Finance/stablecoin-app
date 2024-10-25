@@ -151,7 +151,7 @@ export const Opening: React.FC = () => {
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '200px' }}>
                                     An amount set aside to cover the
                                     liquidator’s gas costs if your Trove needs
@@ -172,7 +172,7 @@ export const Opening: React.FC = () => {
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
                                     This amount is deducted from the borrowed
                                     amount as a one-time fee. There are no
@@ -191,7 +191,7 @@ export const Opening: React.FC = () => {
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
                                     The total amount of USDFC your Trove will
                                     hold.{' '}

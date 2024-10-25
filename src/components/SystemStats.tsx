@@ -1,4 +1,3 @@
-import { AddressZero } from '@ethersproject/constants';
 import {
     Decimal,
     Percent,
@@ -23,7 +22,7 @@ const selectBalances = ({
 });
 
 const Balances: React.FC = () => {
-    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+    const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(selectBalances);
 
     return (
@@ -33,9 +32,9 @@ const Balances: React.FC = () => {
             <Statistic lexicon={l.DEBT_TOKEN}>
                 {debtTokenBalance.prettify()}
             </Statistic>
-            <Statistic lexicon={l.PROTOCOL_TOKEN}>
+            {/* <Statistic lexicon={l.PROTOCOL_TOKEN}>
                 {protocolTokenBalance.prettify()}
-            </Statistic>
+            </Statistic> */}
         </Box>
     );
 };
@@ -83,11 +82,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
 }) => {
     const {
         sfStablecoin: {
-            connection: {
-                version: contractsVersion,
-                deploymentDate,
-                frontendTag,
-            },
+            connection: { version: contractsVersion, deploymentDate },
         },
     } = useSfStablecoin();
 
@@ -97,8 +92,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         debtTokenInStabilityPool,
         total,
         borrowingRate,
-        totalStakedProtocolToken,
-        kickbackRate,
     } = useSfStablecoinSelector(select);
 
     const debtTokenInStabilityPoolPct =
@@ -106,14 +99,12 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
-    const kickbackRatePct =
-        frontendTag === AddressZero ? '100' : kickbackRate?.mul(100).prettify();
 
     return (
         <Card {...{ variant }}>
             {showBalances && <Balances />}
 
-            <Heading>Statistics</Heading>
+            <Heading>SF Stablecoin Statistics</Heading>
 
             <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
                 Protocol
@@ -145,9 +136,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     </Text>
                 </Statistic>
             )}
-            <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
+            {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
                 {totalStakedProtocolToken.shorten()}
-            </Statistic>
+            </Statistic> */}
             <Statistic lexicon={l.TCR}>
                 {totalCollateralRatioPct.prettify()}
             </Statistic>
@@ -159,15 +150,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                 )}
             </Statistic>
             {}
-
-            <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
-                Frontend
-            </Heading>
-            {kickbackRatePct && (
-                <Statistic lexicon={l.KICKBACK_RATE}>
-                    {kickbackRatePct}%
-                </Statistic>
-            )}
 
             <Box sx={{ mt: 3, opacity: 0.66 }}>
                 <Box sx={{ fontSize: 0 }}>

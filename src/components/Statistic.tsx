@@ -9,7 +9,7 @@ type StatisticProps = React.PropsWithChildren<{
 
 export const Statistic: React.FC<StatisticProps> = ({ lexicon, children }) => {
     return (
-        <Flex sx={{ borderBottom: 1, borderColor: 'rgba(0, 0, 0, 0.1)' }}>
+        <Flex sx={{ borderBottom: 1, borderColor: '#B9BDEA' }}>
             <Flex
                 sx={{
                     alignItems: 'center',
@@ -19,13 +19,7 @@ export const Statistic: React.FC<StatisticProps> = ({ lexicon, children }) => {
                 }}
             >
                 <Flex>{lexicon.term}</Flex>
-                {lexicon.term && (
-                    <InfoIcon
-                        size='xs'
-                        tooltip={lexicon.description}
-                        link={lexicon.link}
-                    />
-                )}
+                {lexicon.term && <InfoIcon message={lexicon.description} />}
             </Flex>
             <Flex
                 sx={{

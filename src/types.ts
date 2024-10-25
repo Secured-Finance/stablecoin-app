@@ -286,3 +286,5 @@ export type BLusdLpRewards = Array<{
     address: string;
     amount: Decimal;
 }>;
+
+export type Alignment = 'left' | 'center' | 'right' | 'top' | 'top-right';

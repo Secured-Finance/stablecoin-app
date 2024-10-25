@@ -82,7 +82,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                         unit={COIN}
                         infoIcon={
                             <InfoIcon
-                                tooltip={
+                                message={
                                     <Card
                                         variant='tooltip'
                                         sx={{ width: '200px' }}
@@ -108,7 +108,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
                                     This amount is deducted from the borrowed
                                     amount as a one-time fee. There are no

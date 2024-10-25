@@ -61,7 +61,7 @@ export const Yield: React.FC = () => {
         <Badge>
             <Text>SCR APR {aprPercentage.toString(2)}%</Text>
             <InfoIcon
-                tooltip={
+                message={
                     <Card variant='tooltip' sx={{ width: ['220px', '518px'] }}>
                         <Paragraph>
                             An <Text sx={{ fontWeight: 'bold' }}>estimate</Text>{' '}
