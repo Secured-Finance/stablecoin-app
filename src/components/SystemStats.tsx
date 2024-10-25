@@ -9,7 +9,7 @@ import React from 'react';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
-import { Box, Card, Text } from 'theme-ui';
+import { Card } from 'theme-ui';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -130,15 +130,15 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     </Statistic>
 
                     <Statistic lexicon={l.TVL}>
-                        {total.collateral.shorten()}{' '}
-                        <Text sx={{ fontSize: 1 }}>&nbsp;tFIL</Text>
-                        <Text sx={{ fontSize: 1 }}>
+                        {total.collateral.shorten()}
+                        <span>&nbsp;tFIL</span>
+                        <span>
                             &nbsp;($
                             {Decimal.from(
                                 total.collateral.mul(price)
                             ).shorten()}
                             )
-                        </Text>
+                        </span>
                     </Statistic>
                     <Statistic lexicon={l.TROVES}>
                         {Decimal.from(numberOfTroves).prettify(0)}
@@ -149,10 +149,10 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     {debtTokenInStabilityPoolPct && (
                         <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
                             {debtTokenInStabilityPool.shorten()}
-                            <Text sx={{ fontSize: 1 }}>
+                            <span>
                                 &nbsp;({debtTokenInStabilityPoolPct.toString(1)}
                                 )
-                            </Text>
+                            </span>
                         </Statistic>
                     )}
                     {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
@@ -162,8 +162,8 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                         {totalCollateralRatioPct.prettify()}
                     </Statistic>
                     <Statistic lexicon={l.RECOVERY_MODE}>
-                        {total.collateralRatioIsBelowCritical(price) ? (
-                            <Box color='danger'>Yes</Box>
+                        {!total.collateralRatioIsBelowCritical(price) ? (
+                            <span className='text-red-500'>Yes</span>
                         ) : (
                             'No'
                         )}
