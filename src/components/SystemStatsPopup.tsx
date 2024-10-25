@@ -23,7 +23,7 @@ export const SystemStatsPopup: React.FC = () => {
                 <span>
                     <InfoIcon
                         className={clsx('text-primary-500', {
-                            'text-red-600':
+                            'text-red-500':
                                 total.collateralRatioIsBelowCritical(price),
                         })}
                     />

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import XIcon from 'src/assets/icons/x.svg';
 import { LINKS } from 'src/constants';
-import { Button, Container, Flex } from 'theme-ui';
 import { Icon } from './Icon';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
@@ -13,6 +13,16 @@ export const SideNav: React.FC = () => {
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
+
+    const handleOutsideClick = (
+        e:
+            | React.MouseEvent<HTMLDivElement, MouseEvent>
+            | React.KeyboardEvent<HTMLDivElement>
+    ) => {
+        if (e.target === overlay.current) {
+            setIsVisible(false);
+        }
+    };
 
     if (!isVisible) {
         return (
@@ -25,24 +35,25 @@ export const SideNav: React.FC = () => {
         );
     }
     return (
-        <Container
-            variant='infoOverlay'
+        <div
             ref={overlay}
-            onClick={e => {
-                if (e.target === overlay.current) {
-                    setIsVisible(false);
+            tabIndex={0}
+            className='fixed inset-0 h-screen w-screen bg-neutral-600/50 tablet:hidden'
+            onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    handleOutsideClick(e);
                 }
             }}
+            role='button'
+            onClick={handleOutsideClick}
         >
-            <Flex variant='layout.sidenav'>
-                <Button
-                    sx={{ position: 'fixed', right: '25vw', m: 2 }}
-                    variant='icon'
-                    onClick={() => setIsVisible(false)}
-                >
-                    <Icon name='times' size='2x' />
-                </Button>
-                <SecuredFinanceLogo height={logoHeight} p={2} />
+            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4'>
+                <div className='flex items-center justify-between'>
+                    <SecuredFinanceLogo height={logoHeight} p={2} />
+                    <button onClick={() => setIsVisible(false)}>
+                        <XIcon className='h-6 w-6 font-bold text-primary-500' />
+                    </button>
+                </div>
                 <div className='flex flex-col gap-4'>
                     {LINKS.map(link => (
                         <NavLink
@@ -54,12 +65,13 @@ export const SideNav: React.FC = () => {
                                     'text-primary-500': pathname === link.to,
                                 }
                             )}
+                            onClick={() => setIsVisible(false)}
                         >
                             {link.label}
                         </NavLink>
                     ))}
                 </div>
-            </Flex>
-        </Container>
+            </aside>
+        </div>
     );
 };

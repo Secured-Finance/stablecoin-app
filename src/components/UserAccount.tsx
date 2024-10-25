@@ -67,7 +67,7 @@ export const UserAccount: React.FC = () => {
                         className='flex flex-col gap-0.5 px-2 text-3.5 leading-3.5 text-neutral-800'
                         key={i}
                     >
-                        <span className='font-semibold '>{currency}</span>
+                        <span className='font-semibold'>{currency}</span>
                         <span>{balance.prettify()}</span>
                     </div>
                 ))}
