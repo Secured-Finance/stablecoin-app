@@ -45,7 +45,7 @@ export const UserAccount: React.FC = () => {
                 onClick={() => open()}
             >
                 <span>
-                    <Identicon value={account} size={16} />
+                    <Identicon value={account.toLowerCase()} size={16} />
                 </span>
                 <span
                     className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
