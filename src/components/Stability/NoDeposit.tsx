@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
+import { Button } from 'src/components/atoms';
+import { Box, Card, Flex, Heading } from 'theme-ui';
 import { InfoMessage } from '../InfoMessage';
 import { useStabilityView } from './context/StabilityViewContext';
 
