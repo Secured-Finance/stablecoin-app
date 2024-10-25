@@ -1,6 +1,6 @@
 import React from 'react';
+import QuestionIcon from 'src/assets/icons/question-line.svg';
 import { Tooltip } from 'src/components/atoms';
-import { Icon } from './Icon';
 
 export const InfoIcon = ({
     placement = 'right',
@@ -11,12 +11,7 @@ export const InfoIcon = ({
 }) => {
     return (
         <Tooltip
-            iconElement={
-                <div className='flex items-center'>
-                    &nbsp;
-                    <Icon name='question-circle' size='1x' />
-                </div>
-            }
+            iconElement={<QuestionIcon className='ml-0.5 h-4 w-4' />}
             placement={placement}
         >
             {message}
