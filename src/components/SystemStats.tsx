@@ -162,7 +162,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                         {totalCollateralRatioPct.prettify()}
                     </Statistic>
                     <Statistic lexicon={l.RECOVERY_MODE}>
-                        {!total.collateralRatioIsBelowCritical(price) ? (
+                        {total.collateralRatioIsBelowCritical(price) ? (
                             <span className='text-red-500'>Yes</span>
                         ) : (
                             'No'
