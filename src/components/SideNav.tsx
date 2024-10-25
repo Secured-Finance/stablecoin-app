@@ -1,12 +1,10 @@
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
 import { LINKS } from 'src/constants';
-import { Icon } from './Icon';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
-
-const logoHeight = '32px';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -28,9 +26,9 @@ export const SideNav: React.FC = () => {
         return (
             <button
                 onClick={() => setIsVisible(true)}
-                className='flex h-6 w-6 items-center justify-center tablet:hidden'
+                className='flex items-center justify-center laptop:hidden'
             >
-                <Icon name='bars' size='lg' />
+                <MenuIcon className='h-6 w-6' />
             </button>
         );
     }
@@ -38,7 +36,7 @@ export const SideNav: React.FC = () => {
         <div
             ref={overlay}
             tabIndex={0}
-            className='fixed inset-0 h-screen w-screen bg-neutral-600/50 tablet:hidden'
+            className='fixed inset-0 z-50 h-screen w-screen bg-neutral-600/50 laptop:hidden'
             onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     handleOutsideClick(e);
@@ -47,9 +45,9 @@ export const SideNav: React.FC = () => {
             role='button'
             onClick={handleOutsideClick}
         >
-            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4'>
+            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'>
                 <div className='flex items-center justify-between'>
-                    <SecuredFinanceLogo height={logoHeight} p={2} />
+                    <SecuredFinanceLogo />
                     <button onClick={() => setIsVisible(false)}>
                         <XIcon className='h-6 w-6 font-bold text-primary-500' />
                     </button>

@@ -7,8 +7,6 @@ import { Nav } from './Nav';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
 
-const logoHeight = '32px';
-
 const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
 });
@@ -23,8 +21,8 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return (
         <Container variant='header'>
-            <div className='flex items-center gap-3 tablet:gap-8'>
-                <SecuredFinanceLogo height={logoHeight} />
+            <div className='flex items-center gap-3 laptop:gap-8'>
+                <SecuredFinanceLogo />
                 {isFrontendRegistered && (
                     <>
                         <SideNav />

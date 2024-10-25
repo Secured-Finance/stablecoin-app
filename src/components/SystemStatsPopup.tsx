@@ -17,17 +17,15 @@ export const SystemStatsPopup: React.FC = () => {
     return (
         <>
             <button
-                className='flex h-8 items-center gap-x-1 rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 tablet:hidden laptop:h-10 laptop:gap-x-1.5 laptop:rounded-[10px] laptop:px-3 laptop:ring-[1.5px]'
+                className='flex h-8 items-center rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:hidden'
                 onClick={() => setSystemStatsOpen(!systemStatsOpen)}
             >
-                <span>
-                    <InfoIcon
-                        className={clsx('text-primary-500', {
-                            'text-red-500':
-                                total.collateralRatioIsBelowCritical(price),
-                        })}
-                    />
-                </span>
+                <InfoIcon
+                    className={clsx('text-primary-500', {
+                        'text-red-500':
+                            total.collateralRatioIsBelowCritical(price),
+                    })}
+                />
             </button>
 
             {systemStatsOpen && (

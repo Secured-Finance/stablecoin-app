@@ -6,7 +6,7 @@ export const Nav: React.FC = () => {
     const { pathname } = useLocation();
 
     return (
-        <div className='hidden tablet:flex'>
+        <div className='hidden laptop:flex'>
             {LINKS.map(link => (
                 <NavLink
                     key={link.to}
