@@ -6,7 +6,7 @@ import ExternalLink from 'src/assets/icons/external-link.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { COIN, GT } from 'src/strings';
+import { COIN } from 'src/strings';
 import { AddressUtils } from 'src/utils';
 
 const select = ({
@@ -22,7 +22,7 @@ const select = ({
 export const UserAccount: React.FC = () => {
     const { account } = useSfStablecoin();
     const { open } = useWeb3Modal();
-    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+    const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
 
     return (
@@ -41,7 +41,7 @@ export const UserAccount: React.FC = () => {
                 </div>
             </Link>
             <button
-                className='flex h-8 items-center gap-x-1 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:rounded-[10px] laptop:px-3 laptop:ring-[1.5px]'
+                className='flex h-8 items-center gap-x-1 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'
                 onClick={() => open()}
             >
                 <span>
@@ -60,7 +60,7 @@ export const UserAccount: React.FC = () => {
                     [
                         ['tFIL', accountBalance],
                         [COIN, Decimal.from(debtTokenBalance || 0)],
-                        [GT, Decimal.from(protocolTokenBalance)],
+                        // [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
                 ).map(([currency, balance], i) => (
                     <div

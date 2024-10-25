@@ -22,7 +22,7 @@ const selectBalances = ({
 });
 
 const Balances: React.FC = () => {
-    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+    const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(selectBalances);
 
     return (
@@ -32,9 +32,9 @@ const Balances: React.FC = () => {
             <Statistic lexicon={l.DEBT_TOKEN}>
                 {debtTokenBalance.prettify()}
             </Statistic>
-            <Statistic lexicon={l.PROTOCOL_TOKEN}>
+            {/* <Statistic lexicon={l.PROTOCOL_TOKEN}>
                 {protocolTokenBalance.prettify()}
-            </Statistic>
+            </Statistic> */}
         </Box>
     );
 };
@@ -92,7 +92,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         debtTokenInStabilityPool,
         total,
         borrowingRate,
-        totalStakedProtocolToken,
     } = useSfStablecoinSelector(select);
 
     const debtTokenInStabilityPoolPct =
@@ -137,9 +136,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     </Text>
                 </Statistic>
             )}
-            <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
+            {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
                 {totalStakedProtocolToken.shorten()}
-            </Statistic>
+            </Statistic> */}
             <Statistic lexicon={l.TCR}>
                 {totalCollateralRatioPct.prettify()}
             </Statistic>

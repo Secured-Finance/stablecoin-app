@@ -8,9 +8,8 @@ import {
 import React, { useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN } from '../../strings';
 import { Icon } from '../Icon';
-import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
 
@@ -127,7 +126,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                             unit='tFIL'
                         />
 
-                        <StaticRow
+                        {/* <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
                             amount={originalDeposit.protocolTokenReward.prettify()}
@@ -154,7 +153,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                     }
                                 />
                             }
-                        />
+                        /> */}
                     </>
                 )}
                 {children}

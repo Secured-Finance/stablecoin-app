@@ -90,6 +90,6 @@
   body {
     @apply font-secondary;
     background-color: #F1F5F9;
-    height: 100%;
+    min-height: 100dvh;
   }
 }
