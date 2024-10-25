@@ -5,6 +5,7 @@ module.exports = {
     theme: {
         boxShadow: {
             dropdown: '0px 16px 64px -48px rgba(31, 47, 70, 0.4)',
+            sidenav: '0px 46px 64px 0px rgba(31, 47, 70, 0.4)',
         },
         extend: {
             lineHeight: {
