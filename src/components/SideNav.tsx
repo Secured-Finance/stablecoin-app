@@ -16,7 +16,10 @@ export const SideNav: React.FC = () => {
 
     if (!isVisible) {
         return (
-            <button onClick={() => setIsVisible(true)} className='h-6 w-6'>
+            <button
+                onClick={() => setIsVisible(true)}
+                className='flex h-6 w-6 items-center justify-center tablet:hidden'
+            >
                 <Icon name='bars' size='lg' />
             </button>
         );

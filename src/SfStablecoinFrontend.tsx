@@ -49,8 +49,10 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                 }}
                             >
                                 <Header>
-                                    <UserAccount />
-                                    <SystemStatsPopup />
+                                    <div className='flex items-center gap-2'>
+                                        <UserAccount />
+                                        <SystemStatsPopup />
+                                    </div>
                                 </Header>
 
                                 <Container
