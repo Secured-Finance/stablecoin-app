@@ -11,7 +11,12 @@ export const InfoIcon = ({
 }) => {
     return (
         <Tooltip
-            iconElement={<Icon name='question-circle' size='1x' />}
+            iconElement={
+                <div className='flex items-center'>
+                    &nbsp;
+                    <Icon name='question-circle' size='1x' />
+                </div>
+            }
             placement={placement}
         >
             {message}
