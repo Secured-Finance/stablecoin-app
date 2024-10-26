@@ -1,6 +1,6 @@
 import { Decimal, TroveChange } from '@secured-finance/lib-base';
 import { useSfStablecoin } from 'src/hooks';
-import { Button } from 'theme-ui';
+import { Button } from '../atoms';
 import { useTransactionFunction } from '../Transaction';
 
 type TroveActionProps = React.PropsWithChildren<{

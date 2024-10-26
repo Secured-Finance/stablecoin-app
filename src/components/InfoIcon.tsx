@@ -1,6 +1,6 @@
+import { Info } from 'lucide-react';
 import React from 'react';
 import { Tooltip } from 'src/components/atoms';
-import { Icon } from './Icon';
 
 export const InfoIcon = ({
     placement = 'right',
@@ -11,7 +11,7 @@ export const InfoIcon = ({
 }) => {
     return (
         <Tooltip
-            iconElement={<Icon name='question-circle' size='1x' />}
+            iconElement={<Info className='h-3.5 w-3.5 text-neutral-500' />}
             placement={placement}
         >
             {message}

@@ -9,7 +9,7 @@ export const variantStyle: { [key in ButtonVariants]: string } = {
     [ButtonVariants.secondary]:
         'border-primary-300 bg-transparent hover:border-primary-500 active:bg-primary-300/20',
     [ButtonVariants.tertiary]:
-        'border-neutral-200 bg-transparent hover:border-neutral-400 active:bg-neutral-200/20',
+        'border-neutral-500 bg-transparent hover:border-neutral-400',
 };
 
 export const sizeStyle: { [key in ButtonSizes]: string } = {
@@ -23,7 +23,7 @@ export const sizeStyle: { [key in ButtonSizes]: string } = {
 export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.xxs]: 'text-2.5 leading-[14px]',
     [ButtonSizes.xs]: 'text-2.5 leading-[14px]',
-    [ButtonSizes.sm]: 'text-xs leading-4',
+    [ButtonSizes.sm]: 'text-3 leading-4',
     [ButtonSizes.md]: 'text-sm leading-[18px]',
     [ButtonSizes.lg]: 'text-base leading-5',
 };
