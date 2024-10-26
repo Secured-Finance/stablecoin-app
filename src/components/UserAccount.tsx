@@ -33,7 +33,7 @@ export const UserAccount: React.FC = () => {
                 rel='noopener noreferrer'
                 aria-label='Fixed Income'
             >
-                <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
+                <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
                     <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                         Fixed Income
                     </span>
@@ -45,7 +45,7 @@ export const UserAccount: React.FC = () => {
                 onClick={() => open()}
             >
                 <span>
-                    <Identicon value={account} size={16} />
+                    <Identicon value={account.toLowerCase()} size={16} />
                 </span>
                 <span
                     className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
@@ -67,7 +67,7 @@ export const UserAccount: React.FC = () => {
                         className='flex flex-col gap-0.5 px-2 text-3.5 leading-3.5 text-neutral-800'
                         key={i}
                     >
-                        <span className='font-semibold '>{currency}</span>
+                        <span className='font-semibold'>{currency}</span>
                         <span>{balance.prettify()}</span>
                     </div>
                 ))}

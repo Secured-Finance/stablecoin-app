@@ -153,7 +153,7 @@ const headerGradient: ThemeUIStyleObject = {
 };
 
 const theme: Theme = {
-    breakpoints: ['48em', '64em', '90em'],
+    breakpoints: ['64em', '90em'],
 
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
 
