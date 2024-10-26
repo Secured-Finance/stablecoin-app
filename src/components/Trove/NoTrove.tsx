@@ -15,7 +15,7 @@ export const CardComponent = ({
     return (
         <div className='shadow mt-8 flex flex-col rounded-b-xl bg-neutral-50'>
             <div className='h-[42px] border-t-4 border-primary-500 bg-neutral-200 px-3.5 py-2 font-semibold leading-[22px] text-neutral-900'>
-                <h2>{title}</h2>
+                <h2 className='flex items-center justify-between'>{title}</h2>
             </div>
             <div className='flex flex-col gap-2 px-4 pb-4 pt-3'>
                 {children}

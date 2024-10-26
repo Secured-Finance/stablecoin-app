@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Card, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
+import { Icon } from '../Icon';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -92,10 +93,10 @@ export const Opening: React.FC = () => {
         dispatchEvent('CANCEL_ADJUST_TROVE_PRESSED');
     }, [dispatchEvent]);
 
-    // const reset = useCallback(() => {
-    //     setCollateral(Decimal.ZERO);
-    //     setBorrowAmount(Decimal.ZERO);
-    // }, []);
+    const reset = useCallback(() => {
+        setCollateral(Decimal.ZERO);
+        setBorrowAmount(Decimal.ZERO);
+    }, []);
 
     useEffect(() => {
         if (!collateral.isZero && borrowAmount.isZero) {
@@ -108,16 +109,15 @@ export const Opening: React.FC = () => {
             title={
                 <>
                     Trove
-                    {/* TODO: consider whether we need a reset button */}
-                    {/* {isDirty && !isTransactionPending && (
-                        <Button
+                    {isDirty && !isTransactionPending && (
+                        <button
                             // variant='titleIcon'
                             // sx={{ ':enabled:hover': { color: 'danger' } }}
                             onClick={reset}
                         >
                             <Icon name='history' size='lg' />
-                        </Button>
-                    )} */}
+                        </button>
+                    )}
                 </>
             }
             actionComponent={
