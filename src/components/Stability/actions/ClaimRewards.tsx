@@ -1,6 +1,6 @@
 import React from 'react';
+import { Button } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
-import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../../Transaction';
 
 type ClaimRewardsProps = React.PropsWithChildren<{

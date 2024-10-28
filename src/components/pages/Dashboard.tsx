@@ -1,4 +1,3 @@
-import { FixedIncome } from 'src/components/FixedIncome';
 import { PriceManager } from 'src/components/PriceManager';
 import { Stability } from 'src/components/Stability/Stability';
 import { SystemStats } from 'src/components/SystemStats';
@@ -10,7 +9,6 @@ export const Dashboard: React.FC = () => (
         <Container variant='left'>
             <Trove />
             <Stability />
-            <FixedIncome />
         </Container>
 
         <Container variant='right'>

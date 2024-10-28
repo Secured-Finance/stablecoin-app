@@ -5,12 +5,13 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
+import { Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { Button, Flex } from 'theme-ui';
+import { Flex } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
@@ -167,7 +168,10 @@ export const StabilityDepositManager: React.FC = () => {
                 ))}
 
             <Flex variant='layout.actions'>
-                <Button variant='cancel' onClick={handleCancel}>
+                <Button
+                    variant={ButtonVariants.tertiary}
+                    onClick={handleCancel}
+                >
                     Cancel
                 </Button>
 

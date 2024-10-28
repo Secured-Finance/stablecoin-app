@@ -1,7 +1,6 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Flex } from 'theme-ui';
 
 const selector = ({
     remainingStabilityPoolProtocolTokenReward,
@@ -14,9 +13,9 @@ export const RemainingProtocolToken: React.FC = () => {
         useSfStablecoinSelector(selector);
 
     return (
-        <Flex sx={{ mr: 2, fontSize: 2, fontWeight: 'medium' }}>
+        <span className='typography-desktop-body-5 font-semibold text-neutral-900'>
             {remainingStabilityPoolProtocolTokenReward.prettify(0)} SCR
             remaining
-        </Flex>
+        </span>
     );
 };

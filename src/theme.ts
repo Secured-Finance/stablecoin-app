@@ -89,14 +89,14 @@ const cardGapY = [3, 3, 4];
 
 const card: ThemeUIStyleObject = {
     position: 'relative',
-    mt: cardGapY,
+    mt: '24px',
     boxShadow: [1, null, 2],
 };
 
 const infoCard: ThemeUIStyleObject = {
     ...card,
 
-    padding: 3,
+    padding: ['12px', '16px'],
 
     borderWidth: '1.5px',
     borderTopWidth: '4px',
@@ -275,20 +275,24 @@ const theme: Theme = {
             borderBottomRightRadius: '12px',
 
             bg: '#FBFAFC',
+            boxShadow: '0px 4px 32px 0px rgba(100, 116, 139, 0.10)',
 
             '> h2': {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
 
-                height: '48px',
+                height: '40px',
 
                 px: '14px',
                 py: '8px',
 
                 bg: '#E2E8F0',
+                color: '#002133',
 
-                fontSize: cardHeadingFontSize,
+                fontSize: '14px',
+                lineHeight: '22px',
+                fontWeight: 'bold',
             },
         },
 

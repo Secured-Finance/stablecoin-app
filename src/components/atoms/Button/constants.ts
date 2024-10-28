@@ -9,7 +9,7 @@ export const variantStyle: { [key in ButtonVariants]: string } = {
     [ButtonVariants.secondary]:
         'border-primary-500 bg-transparent hover:border-primary-300 active:bg-primary-300/20',
     [ButtonVariants.tertiary]:
-        'border-neutral-500 bg-transparent hover:border-neutral-400',
+        'border-neutral-500 bg-transparent hover:border-neutral-400 active:bg-neutral-200/20',
 };
 
 export const sizeStyle: { [key in ButtonSizes]: string } = {
