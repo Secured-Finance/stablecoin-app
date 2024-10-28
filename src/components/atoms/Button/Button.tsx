@@ -43,14 +43,12 @@ export const Button = ({
             {...tagProps}
             aria-label={label}
             className={clsx(
-                'flex items-center justify-center border font-semibold disabled:border-0 disabled:bg-primary-500/30 disabled:text-neutral-50',
+                'flex items-center justify-center border font-semibold',
                 props?.className,
                 sizeStyle[size],
                 variantStyle[variant],
                 {
-                    'text-neutral-50': variant === ButtonVariants.primary,
-                    'text-primary-500': variant === ButtonVariants.secondary,
-                    'text-neutral-900': variant === ButtonVariants.tertiary,
+                    'disabled:border-0': variant === ButtonVariants.primary,
                     'w-full': fullWidth,
                     'w-fit': !fullWidth,
                 }

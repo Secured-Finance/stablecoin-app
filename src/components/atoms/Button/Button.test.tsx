@@ -66,6 +66,6 @@ describe('test Button component', () => {
     });
     it('should render an outlined button when variant is tertiary', async () => {
         render(<Tertiary />);
-        expect(screen.getByRole('button')).toHaveClass('border-neutral-500');
+        expect(screen.getByRole('button')).toHaveClass('border-neutral-600');
     });
 });
