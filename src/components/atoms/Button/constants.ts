@@ -5,7 +5,7 @@ export const FIGMA_STORYBOOK_LINK =
 
 export const variantStyle: { [key in ButtonVariants]: string } = {
     [ButtonVariants.primary]:
-        'border-transparent bg-primary-500 text-neutral-50 hover:bg-primary-700 active:border-primary-500 disabled:bg-neutral-600 disabled:text-neutral-400',
+        'border-transparent bg-primary-500 text-neutral-50 hover:bg-primary-700 active:border-primary-500 disabled:bg-primary-500/[33%] disabled:text-neutral-50',
     [ButtonVariants.secondary]:
         'border-primary-500 bg-transparent text-primary-500 hover:border-primary-700 hover:text-primary-700 active:border-primary-500 active:bg-primary-300/10 active:text-primary-500 disabled:opacity-35',
     [ButtonVariants.tertiary]:

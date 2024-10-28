@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react';
 import InfoIcon from 'src/assets/icons/information-circle.svg';
-import { Button } from 'src/components/atoms';
+import { Button, ButtonSizes } from 'src/components/atoms';
 import { CardComponent } from 'src/components/molecules';
+import { useBreakpoint } from 'src/hooks';
 import { useStabilityView } from './context/StabilityViewContext';
 
 export const NoDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
+    const isMobile = useBreakpoint('tablet');
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('DEPOSIT_PRESSED');
@@ -21,7 +23,14 @@ export const NoDeposit: React.FC = () => {
                 </Flex> */}
                 </>
             }
-            actionComponent={<Button onClick={handleOpenTrove}>Deposit</Button>}
+            actionComponent={
+                <Button
+                    onClick={handleOpenTrove}
+                    size={isMobile ? ButtonSizes.sm : undefined}
+                >
+                    Deposit
+                </Button>
+            }
         >
             <div className='flex items-center gap-1'>
                 <InfoIcon className='h-4 w-4' />
