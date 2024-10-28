@@ -145,7 +145,7 @@ export const StaticRow: React.FC<StaticRowProps> = ({
     children,
     ...props
 }) => (
-    <div className='flex flex-col px-3'>
+    <div className='flex flex-col'>
         {label && (
             <label
                 id={labelId}

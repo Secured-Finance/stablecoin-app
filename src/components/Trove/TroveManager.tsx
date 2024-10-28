@@ -7,12 +7,12 @@ import {
     Trove,
 } from '@secured-finance/lib-base';
 import { useCallback, useEffect } from 'react';
+import { Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { Button, Flex } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
 import { TroveAction } from './TroveAction';
@@ -262,11 +262,13 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                     </InfoBubble>
                 ))}
 
-            <Flex variant='layout.actions'>
-                <Button variant='cancel' onClick={handleCancel}>
+            <div className='flex justify-end gap-2'>
+                <Button
+                    variant={ButtonVariants.tertiary}
+                    onClick={handleCancel}
+                >
                     Cancel
                 </Button>
-
                 {validChange ? (
                     <TroveAction
                         transactionId={`${transactionIdPrefix}${validChange.type}`}
@@ -279,7 +281,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                 ) : (
                     <Button disabled>Confirm</Button>
                 )}
-            </Flex>
+            </div>
         </TroveEditor>
     );
 };

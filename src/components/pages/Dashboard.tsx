@@ -6,7 +6,7 @@ import { Trove } from 'src/components/Trove/Trove';
 import { Container } from 'theme-ui';
 
 export const Dashboard: React.FC = () => (
-    <Container variant='columns'>
+    <Container variant='columns' className='px-5 laptop:px-0'>
         <Container variant='left'>
             <Trove />
             <Stability />

@@ -49,7 +49,7 @@ export const Button = ({
                 variantStyle[variant],
                 {
                     'text-neutral-50': variant === ButtonVariants.primary,
-                    'text-primary-300': variant === ButtonVariants.secondary,
+                    'text-primary-500': variant === ButtonVariants.secondary,
                     'text-neutral-900': variant === ButtonVariants.tertiary,
                     'w-full': fullWidth,
                     'w-fit': !fullWidth,

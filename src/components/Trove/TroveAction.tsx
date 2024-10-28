@@ -1,6 +1,6 @@
 import { Decimal, TroveChange } from '@secured-finance/lib-base';
-import { useSfStablecoin } from 'src/hooks';
-import { Button } from '../atoms';
+import { Button, ButtonSizes } from 'src/components/atoms';
+import { useBreakpoint, useSfStablecoin } from 'src/hooks';
 import { useTransactionFunction } from '../Transaction';
 
 type TroveActionProps = React.PropsWithChildren<{
@@ -18,6 +18,7 @@ export const TroveAction: React.FC<TroveActionProps> = ({
     borrowingFeeDecayToleranceMinutes,
 }) => {
     const { sfStablecoin } = useSfStablecoin();
+    const isMobile = useBreakpoint('tablet');
 
     const [sendTransaction] = useTransactionFunction(
         transactionId,
@@ -42,5 +43,12 @@ export const TroveAction: React.FC<TroveActionProps> = ({
               )
     );
 
-    return <Button onClick={sendTransaction}>{children}</Button>;
+    return (
+        <Button
+            onClick={sendTransaction}
+            size={isMobile ? ButtonSizes.sm : undefined}
+        >
+            {children}
+        </Button>
+    );
 };

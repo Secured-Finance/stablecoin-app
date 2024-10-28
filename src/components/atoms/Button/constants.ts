@@ -7,7 +7,7 @@ export const variantStyle: { [key in ButtonVariants]: string } = {
     [ButtonVariants.primary]:
         'border-transparent bg-primary-500 hover:bg-primary-700 active:border-primary-500',
     [ButtonVariants.secondary]:
-        'border-primary-300 bg-transparent hover:border-primary-500 active:bg-primary-300/20',
+        'border-primary-500 bg-transparent hover:border-primary-300 active:bg-primary-300/20',
     [ButtonVariants.tertiary]:
         'border-neutral-500 bg-transparent hover:border-neutral-400',
 };

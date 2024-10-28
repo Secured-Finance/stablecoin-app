@@ -6,7 +6,7 @@ import {
 } from '@secured-finance/lib-base';
 import React from 'react';
 import HeartIcon from 'src/assets/icons/heart.svg';
-import { Card, Flex } from 'theme-ui';
+import { Card } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';
@@ -25,7 +25,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
     const changePct = change && new Percent(change);
     return (
         <>
-            <Flex>
+            <div className='flex items-center gap-2'>
                 <HeartIcon className='h-8 w-8' />
 
                 <StaticRow
@@ -67,7 +67,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                         />
                     }
                 />
-            </Flex>
+            </div>
         </>
     );
 };
