@@ -2,7 +2,6 @@ import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { Card, Paragraph, Text } from 'theme-ui';
-import { Badge } from '../Badge';
 import { InfoIcon } from '../InfoIcon';
 import { fetchLqtyPrice } from './context/fetchLqtyPrice';
 
@@ -58,8 +57,10 @@ export const Yield: React.FC = () => {
     if (aprPercentage.isZero) return null;
 
     return (
-        <Badge>
-            <Text>SCR APR {aprPercentage.toString(2)}%</Text>
+        <div className='rounded-md bg-neutral-200 px-2 py-1'>
+            <span className='text-3 leading-4 text-neutral-900'>
+                SCR APR {aprPercentage.toString(2)}%
+            </span>
             <InfoIcon
                 message={
                     <Card variant='tooltip' sx={{ width: ['220px', '518px'] }}>
@@ -95,6 +96,6 @@ export const Yield: React.FC = () => {
                     </Card>
                 }
             ></InfoIcon>
-        </Badge>
+        </div>
     );
 };

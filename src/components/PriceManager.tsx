@@ -26,7 +26,7 @@ export const PriceManager: React.FC = () => {
         <Card>
             <Heading>Price feed</Heading>
 
-            <Box sx={{ p: [2, 3] }}>
+            <Box sx={{ p: ['12px', '12px'] }}>
                 <Flex sx={{ alignItems: 'stretch' }}>
                     <Label>tFIL</Label>
 
