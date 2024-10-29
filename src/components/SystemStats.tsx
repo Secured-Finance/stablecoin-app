@@ -112,7 +112,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
     const borrowingFeePct = new Percent(borrowingRate);
 
     return (
-        <Card {...{ variant }}>
+        <Card {...{ variant }} className='!mt-0'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
                 {showBalances && <Balances />}
 

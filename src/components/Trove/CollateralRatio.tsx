@@ -34,12 +34,12 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                     amount={collateralRatioPct.prettify()}
                     color={
                         value?.gt(CRITICAL_COLLATERAL_RATIO)
-                            ? 'success'
+                            ? 'text-success-700'
                             : value?.gt(1.2)
-                            ? 'warning'
+                            ? 'text-success-700'
                             : value?.lte(1.2)
                             ? 'danger'
-                            : 'muted'
+                            : 'text-neutral-300'
                     }
                     pendingAmount={
                         change?.positive?.absoluteValue?.gt(10)
@@ -48,7 +48,11 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                             ? '--'
                             : changePct?.nonZeroish(2)?.prettify()
                     }
-                    pendingColor={change?.positive ? 'success' : 'danger'}
+                    pendingColor={
+                        change?.positive
+                            ? 'text-success-700'
+                            : 'text-success-700'
+                    }
                     infoIcon={
                         <InfoIcon
                             message={

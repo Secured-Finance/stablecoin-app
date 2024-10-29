@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, ButtonSizes } from 'src/components/atoms';
-import { useBreakpoint, useSfStablecoin } from 'src/hooks';
+import { Button } from 'src/components/atoms';
+import { useSfStablecoin } from 'src/hooks';
 import { useTransactionFunction } from '../../Transaction';
 
 type ClaimRewardsProps = React.PropsWithChildren<{
@@ -12,7 +12,6 @@ export const ClaimRewards: React.FC<ClaimRewardsProps> = ({
     children,
 }) => {
     const { sfStablecoin } = useSfStablecoin();
-    const isMobile = useBreakpoint('tablet');
 
     const [sendTransaction] = useTransactionFunction(
         'stability-deposit',
@@ -20,11 +19,7 @@ export const ClaimRewards: React.FC<ClaimRewardsProps> = ({
     );
 
     return (
-        <Button
-            onClick={sendTransaction}
-            size={isMobile ? ButtonSizes.sm : undefined}
-            disabled={disabled}
-        >
+        <Button onClick={sendTransaction} disabled={disabled}>
             {children}
         </Button>
     );

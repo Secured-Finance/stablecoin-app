@@ -76,6 +76,7 @@ export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
     labelledBy,
     amount,
     unit,
+    color,
     pendingAmount,
     pendingColor,
     onClick,
@@ -93,8 +94,10 @@ export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
         >
             {amount && (
                 <Flex sx={{ alignItems: 'center' }}>
-                    <span className='typography-desktop-body-3'>
-                        <span className='font-semibold'>{amount}</span>{' '}
+                    <span className='typography-desktop-body-2'>
+                        <span className={clsx('font-semibold', color)}>
+                            {amount}
+                        </span>{' '}
                         {unit ?? unit}
                     </span>
 
@@ -144,26 +147,28 @@ export const StaticRow: React.FC<StaticRowProps> = ({
     amount,
     children,
     ...props
-}) => (
-    <div className='flex flex-col'>
-        {label && (
-            <label
-                id={labelId}
-                htmlFor={labelFor}
-                className='typography-desktop-body-5 relative flex items-center gap-1 text-neutral-900'
-            >
-                {label} {infoIcon && infoIcon}
-            </label>
-        )}
-        {amount ? (
-            <StaticAmounts amount={amount} {...props}>
-                {children}
-            </StaticAmounts>
-        ) : (
-            children
-        )}
-    </div>
-);
+}) => {
+    return (
+        <div className='flex flex-col'>
+            {label && (
+                <label
+                    id={labelId}
+                    htmlFor={labelFor}
+                    className='typography-desktop-body-5 relative flex items-center gap-1 text-neutral-900'
+                >
+                    {label} {infoIcon && infoIcon}
+                </label>
+            )}
+            {amount ? (
+                <StaticAmounts amount={amount} {...props}>
+                    {children}
+                </StaticAmounts>
+            ) : (
+                children
+            )}
+        </div>
+    );
+};
 
 type DisabledEditableRowProps = Omit<
     StaticAmountsProps,

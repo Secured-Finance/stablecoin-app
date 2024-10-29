@@ -1,8 +1,8 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
-import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { CardComponent } from 'src/components/molecules';
-import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
+import { Button, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -46,8 +46,6 @@ export const ActiveDeposit: React.FC = () => {
         transactionState.type === 'waitingForApproval' ||
         transactionState.type === 'waitingForConfirmation';
 
-    const isMobile = useBreakpoint('tablet');
-
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
             dispatchEvent('REWARDS_CLAIMED');
@@ -71,7 +69,6 @@ export const ActiveDeposit: React.FC = () => {
                     <Button
                         variant={ButtonVariants.tertiary}
                         onClick={handleAdjustDeposit}
-                        size={isMobile ? ButtonSizes.sm : undefined}
                     >
                         <Icon name='pen' size='sm' />
                         &nbsp;Adjust
@@ -81,30 +78,33 @@ export const ActiveDeposit: React.FC = () => {
                 </>
             }
         >
-            <DisabledEditableRow
-                label='Deposit'
-                inputId='deposit-debt-token'
-                amount={stabilityDeposit.currentDebtToken.prettify()}
-                unit={COIN}
-            />
-
-            <div className='px-3'>
-                <StaticRow
-                    label='Pool share'
-                    inputId='deposit-share'
-                    amount={poolShare.prettify(4)}
-                    unit='%'
+            <div className='flex flex-col gap-3'>
+                <DisabledEditableRow
+                    label='Deposit'
+                    inputId='deposit-debt-token'
+                    amount={stabilityDeposit.currentDebtToken.prettify()}
+                    unit={COIN}
                 />
 
-                <StaticRow
-                    label='Liquidation gain'
-                    inputId='deposit-gain'
-                    amount={stabilityDeposit.collateralGain.prettify(4)}
-                    color={stabilityDeposit.collateralGain.nonZero && 'success'}
-                    unit='tFIL'
-                />
-            </div>
-            {/* <Flex sx={{ alignItems: 'center' }}>
+                <div className='px-3'>
+                    <StaticRow
+                        label='Pool share'
+                        inputId='deposit-share'
+                        amount={poolShare.prettify(4)}
+                        unit='%'
+                    />
+
+                    <StaticRow
+                        label='Liquidation gain'
+                        inputId='deposit-gain'
+                        amount={stabilityDeposit.collateralGain.prettify(4)}
+                        color={
+                            stabilityDeposit.collateralGain.nonZero && 'green'
+                        }
+                        unit='tFIL'
+                    />
+                </div>
+                {/* <Flex sx={{ alignItems: 'center' }}>
                         <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
@@ -139,11 +139,12 @@ export const ActiveDeposit: React.FC = () => {
                             <Yield />
                         </Flex>
                     </Flex> */}
-            {hasTrove && (
-                <ClaimAndMove disabled={!hasGain}>
-                    Move tFIL to Trove
-                </ClaimAndMove>
-            )}
+                {hasTrove && (
+                    <ClaimAndMove disabled={!hasGain}>
+                        Move tFIL to Trove
+                    </ClaimAndMove>
+                )}
+            </div>
             {isWaitingForTransaction && <LoadingOverlay />}
         </CardComponent>
     );

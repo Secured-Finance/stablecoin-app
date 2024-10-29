@@ -363,7 +363,7 @@ const theme: Theme = {
             justifyContent: 'space-between',
             alignItems: 'stretch',
 
-            position: ['fixed', 'relative'],
+            position: ['fixed'],
             top: 0,
             zIndex: 1,
 

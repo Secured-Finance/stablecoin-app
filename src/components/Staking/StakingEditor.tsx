@@ -108,7 +108,9 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                         amount={newPoolShare.prettify(4)}
                         pendingAmount={poolShareChange?.prettify(4).concat('%')}
                         pendingColor={
-                            poolShareChange?.positive ? 'success' : 'danger'
+                            poolShareChange?.positive
+                                ? 'text-success-700'
+                                : 'text-error-700'
                         }
                         unit='%'
                     />
@@ -122,7 +124,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                             amount={originalStake.collateralGain.prettify(4)}
                             color={
                                 originalStake.collateralGain.nonZero &&
-                                'success'
+                                'text-success-700'
                             }
                             unit='tFIL'
                         />
@@ -132,7 +134,8 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                             inputId='stake-gain-debt-token'
                             amount={originalStake.debtTokenGain.prettify()}
                             color={
-                                originalStake.debtTokenGain.nonZero && 'success'
+                                originalStake.debtTokenGain.nonZero &&
+                                'text-success-700'
                             }
                             unit={COIN}
                         />

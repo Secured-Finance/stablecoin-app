@@ -1,11 +1,7 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect } from 'react';
-import { Button, ButtonSizes } from 'src/components/atoms';
-import {
-    useBreakpoint,
-    useSfStablecoin,
-    useSfStablecoinSelector,
-} from 'src/hooks';
+import { Button } from 'src/components/atoms';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Spinner } from 'theme-ui';
 import { Transaction, useMyTransactionState } from './Transaction';
 import { useTroveView } from './Trove/context/TroveViewContext';
@@ -24,7 +20,6 @@ export const CollateralSurplusAction: React.FC = () => {
     const myTransactionState = useMyTransactionState(myTransactionId);
 
     const { dispatchEvent } = useTroveView();
-    const isMobile = useBreakpoint('tablet');
 
     useEffect(() => {
         if (myTransactionState.type === 'confirmedOneShot') {
@@ -34,7 +29,7 @@ export const CollateralSurplusAction: React.FC = () => {
 
     return myTransactionState.type === 'waitingForApproval' ? (
         <div className='flex justify-end gap-2'>
-            <Button disabled size={isMobile ? ButtonSizes.sm : undefined}>
+            <Button disabled>
                 <Spinner sx={{ mr: 2, color: 'white' }} size={20} />
                 Waiting for your approval
             </Button>
@@ -49,7 +44,7 @@ export const CollateralSurplusAction: React.FC = () => {
                     undefined
                 )}
             >
-                <Button size={isMobile ? ButtonSizes.sm : undefined}>
+                <Button>
                     Claim {collateralSurplusBalance.prettify()} tFIL
                 </Button>
             </Transaction>
