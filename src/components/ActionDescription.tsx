@@ -1,25 +1,13 @@
-import { Box, Flex, Text } from 'theme-ui';
+import { Flex, Text } from 'theme-ui';
 
 export const ActionDescription: React.FC<React.PropsWithChildren> = ({
     children,
 }) => (
-    <Box
-        sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-
-            mb: [2, 3],
-            p: 3,
-
-            border: 1,
-            borderColor: 'transparent',
-        }}
-    >
+    <div className=''>
         <Flex sx={{ alignItems: 'center' }}>
-            <Text>{children}</Text>
+            <p className='typography-desktop-body-5'>{children}</p>
         </Flex>
-    </Box>
+    </div>
 );
 
 export const Amount: React.FC<React.PropsWithChildren> = ({ children }) => (

@@ -5,8 +5,8 @@ import {
     Percent,
 } from '@secured-finance/lib-base';
 import React from 'react';
-import { Box, Card, Flex } from 'theme-ui';
-import { Icon } from '../Icon';
+import HeartIcon from 'src/assets/icons/heart.svg';
+import { Card } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';
@@ -25,10 +25,8 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
     const changePct = change && new Percent(change);
     return (
         <>
-            <Flex>
-                <Box sx={{ mt: [2, 0], ml: 3, mr: -2, fontSize: '24px' }}>
-                    <Icon name='heartbeat' />
-                </Box>
+            <div className='flex items-center gap-2'>
+                <HeartIcon className='h-8 w-8' />
 
                 <StaticRow
                     label='Collateral ratio'
@@ -69,7 +67,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                         />
                     }
                 />
-            </Flex>
+            </div>
         </>
     );
 };

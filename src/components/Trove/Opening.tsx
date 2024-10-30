@@ -9,8 +9,14 @@ import {
 } from '@secured-finance/lib-base';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading, Spinner } from 'theme-ui';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/molecules';
+import {
+    useBreakpoint,
+    useSfStablecoinSelector,
+    useStableTroveChange,
+} from 'src/hooks';
+import { Card, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { InfoBubble } from '../InfoBubble';
@@ -87,6 +93,8 @@ export const Opening: React.FC = () => {
         transactionState.type === 'waitingForApproval' ||
         transactionState.type === 'waitingForConfirmation';
 
+    const isMobile = useBreakpoint('tablet');
+
     const handleCancelPressed = useCallback(() => {
         dispatchEvent('CANCEL_ADJUST_TROVE_PRESSED');
     }, [dispatchEvent]);
@@ -103,49 +111,88 @@ export const Opening: React.FC = () => {
     }, [collateral, borrowAmount]);
 
     return (
-        <Card>
-            <Heading>
-                Trove
-                {isDirty && !isTransactionPending && (
+        <CardComponent
+            title={
+                <>
+                    Trove
+                    {isDirty && !isTransactionPending && (
+                        <button
+                            // variant='titleIcon'
+                            // sx={{ ':enabled:hover': { color: 'danger' } }}
+                            onClick={reset}
+                        >
+                            <Icon name='history' size='lg' />
+                        </button>
+                    )}
+                </>
+            }
+            actionComponent={
+                <>
                     <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
-                        onClick={reset}
+                        onClick={handleCancelPressed}
+                        variant={ButtonVariants.tertiary}
+                        size={isMobile ? ButtonSizes.sm : undefined}
                     >
-                        <Icon name='history' size='lg' />
+                        Cancel
                     </Button>
-                )}
-            </Heading>
 
-            <Box sx={{ p: [2, 3] }}>
-                <EditableRow
-                    label='Collateral'
-                    inputId='trove-collateral'
-                    amount={collateral.prettify(4)}
-                    maxAmount={maxCollateral.toString()}
-                    maxedOut={collateralMaxedOut}
-                    editingState={editingState}
-                    unit='tFIL'
-                    editedAmount={collateral.toString(4)}
-                    setEditedAmount={(amount: string) =>
-                        setCollateral(Decimal.from(amount))
-                    }
-                />
+                    {gasEstimationState.type === 'inProgress' ? (
+                        <Button
+                            disabled
+                            size={isMobile ? ButtonSizes.sm : undefined}
+                        >
+                            <Spinner size={24} sx={{ color: 'background' }} />
+                        </Button>
+                    ) : stableTroveChange ? (
+                        <TroveAction
+                            transactionId={TRANSACTION_ID}
+                            change={stableTroveChange}
+                            maxBorrowingRate={maxBorrowingRate}
+                            borrowingFeeDecayToleranceMinutes={60}
+                        >
+                            Confirm
+                        </TroveAction>
+                    ) : (
+                        <Button
+                            variant={ButtonVariants.secondary}
+                            size={isMobile ? ButtonSizes.sm : undefined}
+                            disabled
+                        >
+                            Confirm
+                        </Button>
+                    )}
+                </>
+            }
+        >
+            <EditableRow
+                label='Collateral'
+                inputId='trove-collateral'
+                amount={collateral.prettify(4)}
+                maxAmount={maxCollateral.toString()}
+                maxedOut={collateralMaxedOut}
+                editingState={editingState}
+                unit='tFIL'
+                editedAmount={collateral.toString(4)}
+                setEditedAmount={(amount: string) =>
+                    setCollateral(Decimal.from(amount))
+                }
+            />
 
-                <EditableRow
-                    label='Borrow'
-                    inputId='trove-borrow-amount'
-                    amount={borrowAmount.prettify()}
-                    unit={COIN}
-                    editingState={editingState}
-                    editedAmount={borrowAmount.toString(2)}
-                    setEditedAmount={(amount: string) =>
-                        setBorrowAmount(Decimal.from(amount))
-                    }
-                />
+            <EditableRow
+                label='Borrow'
+                inputId='trove-borrow-amount'
+                amount={borrowAmount.prettify()}
+                unit={COIN}
+                editingState={editingState}
+                editedAmount={borrowAmount.toString(2)}
+                setEditedAmount={(amount: string) =>
+                    setBorrowAmount(Decimal.from(amount))
+                }
+            />
 
+            <div className='flex flex-col gap-3 px-3'>
                 <StaticRow
-                    label='Liquidation Reserve'
+                    label='You can borrow USDSF by opening a Trove.'
                     inputId='trove-liquidation-reserve'
                     amount={`${LIQUIDATION_RESERVE}`}
                     unit={COIN}
@@ -211,61 +258,38 @@ export const Opening: React.FC = () => {
                         />
                     }
                 />
+            </div>
 
-                <CollateralRatio value={collateralRatio} />
+            <CollateralRatio value={collateralRatio} />
 
+            <InfoBubble>
+                Keep your collateral ratio above the{' '}
+                <Link sx={{ variant: 'styles.a' }} href='/risky-troves'>
+                    riskiest Troves
+                </Link>{' '}
+                to avoid being{' '}
+                <LearnMoreLink link='https://docs.liquity.org/faq/usdfc-redemptions#how-can-i-avoid-being-redeemed-against'>
+                    redeemed.
+                </LearnMoreLink>
+            </InfoBubble>
+
+            <CollateralRatioInfoBubble value={collateralRatio} />
+
+            {description ?? (
                 <InfoBubble>
-                    Keep your collateral ratio above the{' '}
-                    <Link sx={{ variant: 'styles.a' }} href='/risky-troves'>
-                        riskiest Troves
-                    </Link>{' '}
-                    to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/usdfc-redemptions#how-can-i-avoid-being-redeemed-against'>
-                        redeemed.
-                    </LearnMoreLink>
+                    Start by entering the amount of tFIL you would like to
+                    deposit as collateral.
                 </InfoBubble>
+            )}
 
-                <CollateralRatioInfoBubble value={collateralRatio} />
-
-                {description ?? (
-                    <InfoBubble>
-                        Start by entering the amount of tFIL you would like to
-                        deposit as collateral.
-                    </InfoBubble>
-                )}
-
-                <ExpensiveTroveChangeWarning
-                    troveChange={stableTroveChange}
-                    maxBorrowingRate={maxBorrowingRate}
-                    borrowingFeeDecayToleranceMinutes={60}
-                    gasEstimationState={gasEstimationState}
-                    setGasEstimationState={setGasEstimationState}
-                />
-
-                <Flex variant='layout.actions'>
-                    <Button variant='cancel' onClick={handleCancelPressed}>
-                        Cancel
-                    </Button>
-
-                    {gasEstimationState.type === 'inProgress' ? (
-                        <Button disabled>
-                            <Spinner size={24} sx={{ color: 'background' }} />
-                        </Button>
-                    ) : stableTroveChange ? (
-                        <TroveAction
-                            transactionId={TRANSACTION_ID}
-                            change={stableTroveChange}
-                            maxBorrowingRate={maxBorrowingRate}
-                            borrowingFeeDecayToleranceMinutes={60}
-                        >
-                            Confirm
-                        </TroveAction>
-                    ) : (
-                        <Button disabled>Confirm</Button>
-                    )}
-                </Flex>
-            </Box>
+            <ExpensiveTroveChangeWarning
+                troveChange={stableTroveChange}
+                maxBorrowingRate={maxBorrowingRate}
+                borrowingFeeDecayToleranceMinutes={60}
+                gasEstimationState={gasEstimationState}
+                setGasEstimationState={setGasEstimationState}
+            />
             {isTransactionPending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

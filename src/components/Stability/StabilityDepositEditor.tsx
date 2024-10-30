@@ -6,8 +6,8 @@ import {
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
+import { CardComponent } from 'src/components/molecules';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -65,35 +65,33 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         Difference.between(newPoolShare, originalPoolShare).nonZero;
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                {edited && !changePending && (
-                    <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
-                        onClick={() => dispatch({ type: 'revert' })}
-                    >
-                        <Icon name='history' size='lg' />
-                    </Button>
-                )}
-            </Heading>
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {edited && !changePending && (
+                        <button onClick={() => dispatch({ type: 'revert' })}>
+                            <Icon name='history' size='lg' />
+                        </button>
+                    )}
+                </>
+            }
+        >
+            <EditableRow
+                label='Deposit'
+                inputId='deposit-scr'
+                amount={editedDebtToken.prettify()}
+                maxAmount={maxAmount.toString()}
+                maxedOut={maxedOut}
+                unit={COIN}
+                {...{ editingState }}
+                editedAmount={editedDebtToken.toString(2)}
+                setEditedAmount={newValue =>
+                    dispatch({ type: 'setDeposit', newValue })
+                }
+            />
 
-            <Box sx={{ p: [2, 3] }}>
-                <EditableRow
-                    label='Deposit'
-                    inputId='deposit-scr'
-                    amount={editedDebtToken.prettify()}
-                    maxAmount={maxAmount.toString()}
-                    maxedOut={maxedOut}
-                    unit={COIN}
-                    {...{ editingState }}
-                    editedAmount={editedDebtToken.toString(2)}
-                    setEditedAmount={newValue =>
-                        dispatch({ type: 'setDeposit', newValue })
-                    }
-                />
-
+            <div className='px-3'>
                 {newPoolShare.infinite ? (
                     <StaticRow
                         label='Pool share'
@@ -156,10 +154,9 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                         /> */}
                     </>
                 )}
-                {children}
-            </Box>
-
+            </div>
+            {children}
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

@@ -1,17 +1,22 @@
+import { Info } from 'lucide-react';
 import React from 'react';
-import QuestionIcon from 'src/assets/icons/question-line.svg';
 import { Tooltip } from 'src/components/atoms';
 
 export const InfoIcon = ({
     placement = 'right',
     message,
+    Icon,
 }: {
     placement?: Parameters<typeof Tooltip>[0]['placement'];
     message: React.ReactNode;
+    Icon?: React.ElementType;
 }) => {
+    const DisplayIcon = Icon ?? Info;
     return (
         <Tooltip
-            iconElement={<QuestionIcon className='ml-0.5 h-4 w-4' />}
+            iconElement={
+                <DisplayIcon className='h-3.5 w-3.5 text-neutral-500' />
+            }
             placement={placement}
         >
             {message}

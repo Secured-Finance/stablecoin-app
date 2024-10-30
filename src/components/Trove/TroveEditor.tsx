@@ -8,8 +8,9 @@ import {
     Trove,
 } from '@secured-finance/lib-base';
 import React from 'react';
+import { CardComponent } from 'src/components/molecules';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Card, Heading } from 'theme-ui';
+import { Card } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -56,79 +57,69 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
     );
 
     return (
-        <Card>
-            <Heading>Trove</Heading>
+        <CardComponent title='Trove'>
+            <StaticRow
+                label='Collateral'
+                inputId='trove-collateral'
+                amount={edited.collateral.prettify(4)}
+                unit='tFIL'
+            />
 
-            <Box sx={{ p: [2, 3] }}>
+            <StaticRow
+                label='Debt'
+                inputId='trove-debt'
+                amount={edited.debt.prettify()}
+                unit={COIN}
+            />
+
+            {original.isEmpty && (
                 <StaticRow
-                    label='Collateral'
-                    inputId='trove-collateral'
-                    amount={edited.collateral.prettify(4)}
-                    unit='tFIL'
-                />
-
-                <StaticRow
-                    label='Debt'
-                    inputId='trove-debt'
-                    amount={edited.debt.prettify()}
-                    unit={COIN}
-                />
-
-                {original.isEmpty && (
-                    <StaticRow
-                        label='Liquidation Reserve'
-                        inputId='trove-liquidation-reserve'
-                        amount={`${LIQUIDATION_RESERVE}`}
-                        unit={COIN}
-                        infoIcon={
-                            <InfoIcon
-                                message={
-                                    <Card
-                                        variant='tooltip'
-                                        sx={{ width: '200px' }}
-                                    >
-                                        An amount set aside to cover the
-                                        liquidator’s gas costs if your Trove
-                                        needs to be liquidated. The amount
-                                        increases your debt and is refunded if
-                                        you close your Trove by fully paying off
-                                        its net debt.
-                                    </Card>
-                                }
-                            />
-                        }
-                    />
-                )}
-
-                <StaticRow
-                    label='Borrowing Fee'
-                    inputId='trove-borrowing-fee'
-                    amount={fee.toString(2)}
-                    pendingAmount={feePct.toString(2)}
+                    label='Liquidation Reserve'
+                    inputId='trove-liquidation-reserve'
+                    amount={`${LIQUIDATION_RESERVE}`}
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
                             message={
-                                <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    This amount is deducted from the borrowed
-                                    amount as a one-time fee. There are no
-                                    recurring fees for borrowing, which is thus
-                                    interest-free.
+                                <Card variant='tooltip' sx={{ width: '200px' }}>
+                                    An amount set aside to cover the
+                                    liquidator’s gas costs if your Trove needs
+                                    to be liquidated. The amount increases your
+                                    debt and is refunded if you close your Trove
+                                    by fully paying off its net debt.
                                 </Card>
                             }
                         />
                     }
                 />
+            )}
 
-                <CollateralRatio
-                    value={collateralRatio}
-                    change={collateralRatioChange}
-                />
+            <StaticRow
+                label='Borrowing Fee'
+                inputId='trove-borrowing-fee'
+                amount={fee.toString(2)}
+                pendingAmount={feePct.toString(2)}
+                unit={COIN}
+                infoIcon={
+                    <InfoIcon
+                        message={
+                            <Card variant='tooltip' sx={{ width: '240px' }}>
+                                This amount is deducted from the borrowed amount
+                                as a one-time fee. There are no recurring fees
+                                for borrowing, which is thus interest-free.
+                            </Card>
+                        }
+                    />
+                }
+            />
 
-                {children}
-            </Box>
+            <CollateralRatio
+                value={collateralRatio}
+                change={collateralRatioChange}
+            />
 
+            {children}
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

@@ -1,42 +1,46 @@
 import React, { useCallback } from 'react';
-import { Button } from 'src/components/atoms';
-import { Box, Card, Flex, Heading } from 'theme-ui';
-import { InfoMessage } from '../InfoMessage';
+import InfoIcon from 'src/assets/icons/information-circle.svg';
+import { Button, ButtonSizes } from 'src/components/atoms';
+import { CardComponent } from 'src/components/molecules';
+import { useBreakpoint } from 'src/hooks';
 import { useStabilityView } from './context/StabilityViewContext';
 
 export const NoDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
+    const isMobile = useBreakpoint('tablet');
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('DEPOSIT_PRESSED');
     }, [dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                {/* <Flex sx={{ justifyContent: 'flex-end' }}>
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {/* <Flex sx={{ justifyContent: 'flex-end' }}>
                     <RemainingProtocolToken />
                 </Flex> */}
-            </Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title='You have no USDFC in the Stability Pool.'>
-                    You can earn tFIL rewards by depositing USDFC.
-                </InfoMessage>
-
-                <Flex variant='layout.actions'>
-                    {/* <Flex
-                        sx={{
-                            justifyContent: 'flex-start',
-                            flex: 1,
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Yield />
-                    </Flex> */}
-                    <Button onClick={handleOpenTrove}>Deposit</Button>
-                </Flex>
-            </Box>
-        </Card>
+                </>
+            }
+            actionComponent={
+                <Button
+                    onClick={handleOpenTrove}
+                    size={isMobile ? ButtonSizes.sm : undefined}
+                >
+                    Deposit
+                </Button>
+            }
+        >
+            <div className='flex items-center gap-1'>
+                <InfoIcon className='h-4 w-4' />
+                <h3 className='typography-desktop-body-4 font-semibold'>
+                    You have no USDFC in the Stability Pool.
+                </h3>
+            </div>
+            <p className='laptop:typography-desktop-body-5 typography-desktop-body-4'>
+                You can earn tFIL rewards by depositing USDFC.
+            </p>
+        </CardComponent>
     );
 };

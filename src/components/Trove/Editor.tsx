@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-import {
-    Button,
-    Flex,
-    Input,
-    Label,
-    SxProp,
-    Text,
-    ThemeUICSSProperties,
-} from 'theme-ui';
+import clsx from 'clsx';
+import React from 'react';
+import { Flex, Input, SxProp, Text, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
+import { Button, ButtonSizes } from '../atoms';
 
 type RowProps = SxProp &
     React.PropsWithChildren<{
@@ -19,7 +13,6 @@ type RowProps = SxProp &
     }>;
 
 export const Row: React.FC<RowProps> = ({
-    sx,
     label,
     labelId,
     labelFor,
@@ -27,34 +20,17 @@ export const Row: React.FC<RowProps> = ({
     infoIcon,
 }) => {
     return (
-        <Flex
-            sx={{
-                alignItems: 'stretch',
-                position: 'relative',
-                width: '100%',
-                ...sx,
-            }}
-        >
-            <Label
+        <div className='flex flex-col gap-0.5 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2'>
+            <label
                 id={labelId}
                 htmlFor={labelFor}
-                sx={{
-                    p: 0,
-                    pl: 3,
-                    pt: '12px',
-                    position: 'absolute',
-                    fontSize: 1,
-                    border: 1,
-                    borderColor: 'transparent',
-                }}
+                className='typography-desktop-body-5 text-neutral-600'
             >
-                <Flex sx={{ alignItems: 'center' }}>
-                    {label}
-                    {infoIcon && infoIcon}
-                </Flex>
-            </Label>
+                {label}
+                {infoIcon && infoIcon}
+            </label>
             {children}
-        </Flex>
+        </div>
     );
 };
 
@@ -96,44 +72,31 @@ type StaticAmountsProps = React.PropsWithChildren<{
 }>;
 
 export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
-    sx,
     inputId,
     labelledBy,
     amount,
     unit,
-    color,
     pendingAmount,
     pendingColor,
     onClick,
     children,
 }) => {
     return (
-        <Flex
+        <button
             id={inputId}
             aria-labelledby={labelledBy}
-            {...{ onClick }}
-            sx={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-
-                ...(onClick ? { cursor: 'text' } : {}),
-
-                ...staticStyle,
-                ...sx,
-            }}
+            onClick={onClick}
+            className={clsx(
+                'flex items-center justify-between',
+                onClick ? 'cursor-text' : ''
+            )}
         >
             {amount && (
                 <Flex sx={{ alignItems: 'center' }}>
-                    <Text sx={{ color, fontWeight: 'medium' }}>{amount}</Text>
-
-                    {unit && (
-                        <>
-                            &nbsp;
-                            <Text sx={{ fontWeight: 'light', opacity: 0.8 }}>
-                                {unit}
-                            </Text>
-                        </>
-                    )}
+                    <span className='typography-desktop-body-3'>
+                        <span className='font-semibold'>{amount}</span>{' '}
+                        {unit ?? unit}
+                    </span>
 
                     {pendingAmount && (
                         <>
@@ -152,23 +115,8 @@ export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
             )}
 
             {children}
-        </Flex>
+        </button>
     );
-};
-
-const staticStyle: ThemeUICSSProperties = {
-    flexGrow: 1,
-
-    mb: 0,
-    pl: 3,
-    pr: '11px',
-    pb: 0,
-    pt: '28px',
-
-    fontSize: 3,
-
-    border: 1,
-    borderColor: 'transparent',
 };
 
 const editableStyle: ThemeUICSSProperties = {
@@ -180,11 +128,10 @@ const editableStyle: ThemeUICSSProperties = {
     pb: 2,
     pt: '28px',
 
-    fontSize: 4,
-
     boxShadow: [1, 2],
     border: 1,
     borderColor: 'muted',
+    backgroundColor: 'transparent,',
 };
 
 type StaticRowProps = RowProps & StaticAmountsProps;
@@ -198,13 +145,16 @@ export const StaticRow: React.FC<StaticRowProps> = ({
     children,
     ...props
 }) => (
-    <Row
-        label={label}
-        labelId={labelId}
-        labelFor={labelFor}
-        infoIcon={infoIcon}
-        sx={{ mt: [-2, -3], pb: [2, 3] }}
-    >
+    <div className='flex flex-col'>
+        {label && (
+            <label
+                id={labelId}
+                htmlFor={labelFor}
+                className='typography-desktop-body-5 relative flex items-center gap-1 text-neutral-900'
+            >
+                {label} {infoIcon && infoIcon}
+            </label>
+        )}
         {amount ? (
             <StaticAmounts amount={amount} {...props}>
                 {children}
@@ -212,7 +162,7 @@ export const StaticRow: React.FC<StaticRowProps> = ({
         ) : (
             children
         )}
-    </Row>
+    </div>
 );
 
 type DisabledEditableRowProps = Omit<
@@ -283,7 +233,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     maxedOut,
 }) => {
     const [editing, setEditing] = editingState;
-    const [invalid, setInvalid] = useState(false);
+    // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
         <Row {...{ label, labelFor: inputId, unit }}>
@@ -297,30 +247,22 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                 onChange={e => {
                     try {
                         setEditedAmount(e.target.value);
-                        setInvalid(false);
+                        // setInvalid(false);
                     } catch {
-                        setInvalid(true);
+                        // setInvalid(true);
                     }
                 }}
                 onBlur={() => {
                     setEditing(undefined);
-                    setInvalid(false);
+                    // setInvalid(false);
                 }}
                 variant='editor'
-                sx={{
-                    ...editableStyle,
-                    fontWeight: 'medium',
-                    bg: invalid ? 'invalid' : 'background',
-                }}
+                className=''
             />
         </Row>
     ) : (
         <Row labelId={`${inputId}-label`} {...{ label, unit }}>
             <StaticAmounts
-                sx={{
-                    ...editableStyle,
-                    bg: invalid ? 'invalid' : 'background',
-                }}
                 labelledBy={`${inputId}-label`}
                 onClick={() => setEditing(inputId)}
                 inputId={inputId}
@@ -332,7 +274,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
             >
                 {maxAmount && (
                     <Button
-                        sx={{ fontSize: 1, p: 1, px: 3 }}
+                        size={ButtonSizes.sm}
                         onClick={event => {
                             setEditedAmount(maxAmount);
                             event.stopPropagation();

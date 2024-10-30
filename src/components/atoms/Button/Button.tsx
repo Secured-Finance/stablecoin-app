@@ -43,14 +43,12 @@ export const Button = ({
             {...tagProps}
             aria-label={label}
             className={clsx(
-                'flex items-center justify-center border font-semibold disabled:border-0 disabled:bg-primary-500/30 disabled:text-neutral-50',
+                'flex items-center justify-center border font-semibold',
                 props?.className,
                 sizeStyle[size],
                 variantStyle[variant],
                 {
-                    'text-neutral-50': variant === ButtonVariants.primary,
-                    'text-neutral-900': variant === ButtonVariants.tertiary,
-                    'text-primary-300': variant === ButtonVariants.secondary,
+                    'disabled:border-0': variant === ButtonVariants.primary,
                     'w-full': fullWidth,
                     'w-fit': !fullWidth,
                 }
@@ -58,14 +56,14 @@ export const Button = ({
         >
             {/* TODO: handle height of start and end icon wrt size prop value */}
             {StartIcon && (
-                <span className='mr-3'>
-                    <StartIcon className='h-4 text-white' role='img' />
+                <span className='mr-1.5'>
+                    <StartIcon className='h-4' role='img' />
                 </span>
             )}
             <p className={clsx('whitespace-nowrap', textStyle[size])}>{text}</p>
             {EndIcon && (
-                <span className='ml-3'>
-                    <EndIcon className='h-4 text-white' role='img' />
+                <span className='ml-1.5'>
+                    <EndIcon className='h-4' role='img' />
                 </span>
             )}
         </Tag>

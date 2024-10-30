@@ -121,7 +121,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                 </span>
 
                 <div className='flex flex-col gap-1'>
-                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 font-semibold text-neutral-900 laptop:font-normal'>
+                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 font-semibold text-neutral-900'>
                         Protocol
                     </span>
 

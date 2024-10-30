@@ -1,7 +1,8 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
-import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/molecules';
+import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -45,6 +46,8 @@ export const ActiveDeposit: React.FC = () => {
         transactionState.type === 'waitingForApproval' ||
         transactionState.type === 'waitingForConfirmation';
 
+    const isMobile = useBreakpoint('tablet');
+
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
             dispatchEvent('REWARDS_CLAIMED');
@@ -52,42 +55,56 @@ export const ActiveDeposit: React.FC = () => {
     }, [transactionState.type, dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                {/* {!isWaitingForTransaction && (
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {/* {!isWaitingForTransaction && (
                     <Flex sx={{ justifyContent: 'flex-end' }}>
                         <RemainingProtocolToken />
                     </Flex>
                 )} */}
-            </Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <Box>
-                    <DisabledEditableRow
-                        label='Deposit'
-                        inputId='deposit-debt-token'
-                        amount={stabilityDeposit.currentDebtToken.prettify()}
-                        unit={COIN}
-                    />
+                </>
+            }
+            actionComponent={
+                <>
+                    <Button
+                        variant={ButtonVariants.tertiary}
+                        onClick={handleAdjustDeposit}
+                        size={isMobile ? ButtonSizes.sm : undefined}
+                    >
+                        <Icon name='pen' size='sm' />
+                        &nbsp;Adjust
+                    </Button>
 
-                    <StaticRow
-                        label='Pool share'
-                        inputId='deposit-share'
-                        amount={poolShare.prettify(4)}
-                        unit='%'
-                    />
+                    <ClaimRewards disabled={!hasGain}>Claim tFIL</ClaimRewards>
+                </>
+            }
+        >
+            <DisabledEditableRow
+                label='Deposit'
+                inputId='deposit-debt-token'
+                amount={stabilityDeposit.currentDebtToken.prettify()}
+                unit={COIN}
+            />
 
-                    <StaticRow
-                        label='Liquidation gain'
-                        inputId='deposit-gain'
-                        amount={stabilityDeposit.collateralGain.prettify(4)}
-                        color={
-                            stabilityDeposit.collateralGain.nonZero && 'success'
-                        }
-                        unit='tFIL'
-                    />
+            <div className='px-3'>
+                <StaticRow
+                    label='Pool share'
+                    inputId='deposit-share'
+                    amount={poolShare.prettify(4)}
+                    unit='%'
+                />
 
-                    {/* <Flex sx={{ alignItems: 'center' }}>
+                <StaticRow
+                    label='Liquidation gain'
+                    inputId='deposit-gain'
+                    amount={stabilityDeposit.collateralGain.prettify(4)}
+                    color={stabilityDeposit.collateralGain.nonZero && 'success'}
+                    unit='tFIL'
+                />
+            </div>
+            {/* <Flex sx={{ alignItems: 'center' }}>
                         <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
@@ -122,25 +139,12 @@ export const ActiveDeposit: React.FC = () => {
                             <Yield />
                         </Flex>
                     </Flex> */}
-                </Box>
-
-                <Flex variant='layout.actions'>
-                    <Button variant='outline' onClick={handleAdjustDeposit}>
-                        <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
-                    </Button>
-
-                    <ClaimRewards disabled={!hasGain}>Claim tFIL</ClaimRewards>
-                </Flex>
-
-                {hasTrove && (
-                    <ClaimAndMove disabled={!hasGain}>
-                        Move tFIL to Trove
-                    </ClaimAndMove>
-                )}
-            </Box>
-
+            {hasTrove && (
+                <ClaimAndMove disabled={!hasGain}>
+                    Move tFIL to Trove
+                </ClaimAndMove>
+            )}
             {isWaitingForTransaction && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

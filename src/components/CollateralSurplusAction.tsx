@@ -1,7 +1,12 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect } from 'react';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { Button, Flex, Spinner } from 'theme-ui';
+import { Button, ButtonSizes } from 'src/components/atoms';
+import {
+    useBreakpoint,
+    useSfStablecoin,
+    useSfStablecoinSelector,
+} from 'src/hooks';
+import { Spinner } from 'theme-ui';
 import { Transaction, useMyTransactionState } from './Transaction';
 import { useTroveView } from './Trove/context/TroveViewContext';
 
@@ -19,6 +24,7 @@ export const CollateralSurplusAction: React.FC = () => {
     const myTransactionState = useMyTransactionState(myTransactionId);
 
     const { dispatchEvent } = useTroveView();
+    const isMobile = useBreakpoint('tablet');
 
     useEffect(() => {
         if (myTransactionState.type === 'confirmedOneShot') {
@@ -27,15 +33,15 @@ export const CollateralSurplusAction: React.FC = () => {
     }, [myTransactionState.type, dispatchEvent]);
 
     return myTransactionState.type === 'waitingForApproval' ? (
-        <Flex variant='layout.actions'>
-            <Button disabled sx={{ mx: 2 }}>
+        <div className='flex justify-end gap-2'>
+            <Button disabled size={isMobile ? ButtonSizes.sm : undefined}>
                 <Spinner sx={{ mr: 2, color: 'white' }} size={20} />
                 Waiting for your approval
             </Button>
-        </Flex>
+        </div>
     ) : myTransactionState.type !== 'waitingForConfirmation' &&
       myTransactionState.type !== 'confirmed' ? (
-        <Flex variant='layout.actions'>
+        <div className='flex justify-end gap-2'>
             <Transaction
                 id={myTransactionId}
                 send={sfStablecoin.claimCollateralSurplus.bind(
@@ -43,10 +49,10 @@ export const CollateralSurplusAction: React.FC = () => {
                     undefined
                 )}
             >
-                <Button sx={{ mx: 2 }}>
+                <Button size={isMobile ? ButtonSizes.sm : undefined}>
                     Claim {collateralSurplusBalance.prettify()} tFIL
                 </Button>
             </Transaction>
-        </Flex>
+        </div>
     ) : null;
 };
