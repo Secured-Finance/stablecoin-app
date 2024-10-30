@@ -37,8 +37,9 @@ export const SystemStatsPopup: React.FC = () => {
                             setSystemStatsOpen(false);
                         }
                     }}
+                    className='!flex items-center justify-center px-5'
                 >
-                    <SystemStats variant='infoPopup' showBalances />
+                    <SystemStats showBalances />
                 </Container>
             )}
         </>
