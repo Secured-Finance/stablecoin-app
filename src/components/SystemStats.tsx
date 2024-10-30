@@ -116,12 +116,12 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
             <div className='flex flex-col gap-3 laptop:gap-4'>
                 {showBalances && <Balances />}
 
-                <span className='typography-mobile-body-2 laptop:typography-desktop-body-4 font-semibold text-neutral-900'>
+                <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base'>
                     SF Stablecoin Statistics
                 </span>
 
                 <div className='flex flex-col gap-1'>
-                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 font-semibold text-neutral-900'>
+                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
                         Protocol
                     </span>
 
