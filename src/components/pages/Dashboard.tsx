@@ -11,7 +11,9 @@ export const Dashboard: React.FC = () => (
         </div>
 
         <aside className='flex w-full flex-col gap-5 laptop:w-[42%]'>
-            <SystemStats />
+            <div className='hidden laptop:block'>
+                <SystemStats />
+            </div>
             <PriceManager />
         </aside>
     </section>
