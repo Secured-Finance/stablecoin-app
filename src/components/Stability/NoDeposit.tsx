@@ -2,9 +2,7 @@ import React, { useCallback } from 'react';
 import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
-import { Flex } from 'theme-ui';
 import { useStabilityView } from './context/StabilityViewContext';
-import { RemainingProtocolToken } from './RemainingProtocolToken';
 
 export const NoDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
@@ -18,12 +16,24 @@ export const NoDeposit: React.FC = () => {
             title={
                 <>
                     Stability Pool
-                    <Flex sx={{ justifyContent: 'flex-end' }}>
+                    {/* <div className='flex justify-end'>
                         <RemainingProtocolToken />
-                    </Flex>
+                    </div> */}
                 </>
             }
-            actionComponent={<Button onClick={handleOpenTrove}>Deposit</Button>}
+            actionComponent={
+                <>
+                    {/* <Flex sx={{
+                            justifyContent: 'flex-start',
+                            flex: 1,
+                            alignItems: 'center',
+                        }}
+                >
+                        <Yield />
+                    </Flex> */}
+                    <Button onClick={handleOpenTrove}>Deposit</Button>
+                </>
+            }
         >
             <div className='flex flex-col gap-1 laptop:gap-2'>
                 <div className='flex items-center gap-1'>
