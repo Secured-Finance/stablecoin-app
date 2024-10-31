@@ -9,7 +9,7 @@ export const RiskyTrovesPage: React.FC = () => (
         <div className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
             <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
                 <PlainCard title='Bot functionality'>
-                    <div className='typography-desktop-body-5'>
+                    <div className='typography-desktop-body-4'>
                         <p>
                             Liquidation is expected to be carried out by bots.
                         </p>

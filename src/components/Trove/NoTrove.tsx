@@ -21,11 +21,11 @@ export const NoTrove: React.FC = () => {
             <div className='flex flex-col gap-1 laptop:gap-2'>
                 <div className='flex items-center gap-1'>
                     <InfoIcon className='h-4 w-4' />
-                    <h3 className='typography-desktop-body-4 font-semibold'>
+                    <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
                         You haven&apos;t borrowed any USDFC yet.
                     </h3>
                 </div>
-                <p className='laptop:typography-desktop-body-5 typography-desktop-body-4'>
+                <p className='typography-desktop-body-4'>
                     You can mint and borrow USDFC by opening a Trove.
                 </p>
             </div>

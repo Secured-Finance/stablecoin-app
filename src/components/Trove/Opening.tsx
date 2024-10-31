@@ -178,7 +178,7 @@ export const Opening: React.FC = () => {
 
                 <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
-                        label='You can borrow USDSF by opening a Trove.'
+                        label='Liquidation Reserve'
                         inputId='trove-liquidation-reserve'
                         amount={`${LIQUIDATION_RESERVE}`}
                         unit={COIN}
