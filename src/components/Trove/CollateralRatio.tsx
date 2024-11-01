@@ -36,9 +36,9 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                         value?.gt(CRITICAL_COLLATERAL_RATIO)
                             ? 'text-success-700'
                             : value?.gt(1.2)
-                            ? 'text-success-700'
+                            ? 'text-warning-700'
                             : value?.lte(1.2)
-                            ? 'danger'
+                            ? 'text-error-700'
                             : 'text-neutral-300'
                     }
                     pendingAmount={
@@ -49,9 +49,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                             : changePct?.nonZeroish(2)?.prettify()
                     }
                     pendingColor={
-                        change?.positive
-                            ? 'text-success-700'
-                            : 'text-success-700'
+                        change?.positive ? 'text-success-700' : 'text-error-700'
                     }
                     infoIcon={
                         <InfoIcon

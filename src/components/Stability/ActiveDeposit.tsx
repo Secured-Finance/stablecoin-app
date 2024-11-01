@@ -99,7 +99,8 @@ export const ActiveDeposit: React.FC = () => {
                         inputId='deposit-gain'
                         amount={stabilityDeposit.collateralGain.prettify(4)}
                         color={
-                            stabilityDeposit.collateralGain.nonZero && 'green'
+                            stabilityDeposit.collateralGain.nonZero &&
+                            'text-success-700'
                         }
                         unit='tFIL'
                     />
