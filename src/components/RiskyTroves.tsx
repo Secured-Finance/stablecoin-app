@@ -9,18 +9,16 @@ import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
+import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import RedoIcon from 'src/assets/icons/refresh.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
-import { Box, Button, Text } from 'theme-ui';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { Icon } from './Icon';
 import { LoadingOverlay } from './LoadingOverlay';
 import { Tooltip } from './Tooltip';
 import { Transaction } from './Transaction';
-
-const rowHeight = '40px';
 
 const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
     [
@@ -157,6 +155,9 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         }
     }, [copied]);
 
+    const colClassName =
+        'w-1/4 text-3.5 leading-4.5 laptop:text-xs laptop:leading-5';
+
     return (
         <div className='relative flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
             <div className='flex h-10 items-center justify-between border-t-2 border-primary-500 bg-neutral-200 px-3.5 py-2 text-3.5 font-semibold leading-5.5 tablet:border-t-4 laptop:h-[42px] laptop:px-3.5 laptop:text-base'>
@@ -202,63 +203,53 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                 </div>
             </div>
 
-            {!troves || troves.length === 0 ? (
-                <div className='pb-4 pt-3'>
-                    <Box sx={{ p: 4, fontSize: 3, textAlign: 'center' }}>
+            <div className='px-3 pb-4 pt-3 laptop:px-4'>
+                {!troves || troves.length === 0 ? (
+                    <div>
                         {!troves ? 'Loading...' : 'There are no Troves yet'}
-                    </Box>
-                </div>
-            ) : (
-                <div className='pb-4 pt-3'>
-                    <Box
-                        as='table'
-                        sx={{
-                            mt: 2,
-                            pl: [1, 4],
-                            width: '100%',
-
-                            textAlign: 'center',
-                            lineHeight: 1.15,
-                        }}
-                    >
+                    </div>
+                ) : (
+                    <table className='w-full'>
                         <colgroup>
                             <col style={{ width: '50px' }} />
                             <col />
                             <col />
                             <col />
-                            <col style={{ width: rowHeight }} />
+                            <col />
                         </colgroup>
 
                         <thead>
                             <tr>
-                                <th>Owner</th>
-                                <th>
-                                    <Abbreviation short='Coll.'>
+                                <th className={clsx(colClassName, 'text-left')}>
+                                    Owner
+                                </th>
+                                <th
+                                    className={clsx(
+                                        colClassName,
+                                        'text-center'
+                                    )}
+                                >
+                                    <span className='flex justify-center laptop:hidden'>
+                                        Coll.
+                                    </span>
+                                    <span className='hidden justify-center laptop:flex'>
                                         Collateral
-                                    </Abbreviation>
-                                    <Box
-                                        sx={{
-                                            fontSize: [0, 1],
-                                            fontWeight: 'body',
-                                            opacity: 0.5,
-                                        }}
-                                    >
+                                    </span>
+                                    <span className='text-xs font-normal leading-4 text-neutral-500'>
                                         tFIL
-                                    </Box>
+                                    </span>
                                 </th>
-                                <th>
-                                    Debt
-                                    <Box
-                                        sx={{
-                                            fontSize: [0, 1],
-                                            fontWeight: 'body',
-                                            opacity: 0.5,
-                                        }}
-                                    >
+                                <th className={clsx(colClassName, '')}>
+                                    <span className='flex justify-center'>
+                                        Debt
+                                    </span>
+                                    <span className='text-xs font-normal leading-4 text-neutral-500'>
                                         {COIN}
-                                    </Box>
+                                    </span>
                                 </th>
-                                <th>
+                                <th
+                                    className={clsx(colClassName, 'text-right')}
+                                >
                                     Coll.
                                     <br />
                                     Ratio
@@ -272,35 +263,21 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                 trove =>
                                     !trove.isEmpty && ( // making sure the Trove hasn't been liquidated
                                         // (WONT-FIX: remove check after we can fetch multiple Troves in one call)
-                                        <tr key={trove.ownerAddress}>
-                                            <td
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    height: rowHeight,
-                                                }}
-                                            >
+                                        <tr
+                                            key={trove.ownerAddress}
+                                            className='typography-mobile-body-4 h-[30px] laptop:h-8'
+                                        >
+                                            <td className='flex items-center gap-0.5'>
                                                 <Tooltip
                                                     message={trove.ownerAddress}
                                                     placement='top'
                                                 >
-                                                    <Text
-                                                        variant='address'
-                                                        sx={{
-                                                            width: [
-                                                                '73px',
-                                                                'unset',
-                                                            ],
-                                                            overflow: 'hidden',
-                                                            position:
-                                                                'relative',
-                                                        }}
-                                                    >
+                                                    <span className=''>
                                                         {AddressUtils.format(
                                                             trove.ownerAddress,
                                                             6
                                                         )}
-                                                        <Box
+                                                        {/* <Box
                                                             sx={{
                                                                 display: [
                                                                     'block',
@@ -315,31 +292,30 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                                 background:
                                                                     'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
                                                             }}
-                                                        />
-                                                    </Text>
+                                                        /> */}
+                                                    </span>
                                                 </Tooltip>
 
                                                 <div>
-                                                    <Button
-                                                        variant='icon'
-                                                        sx={{
-                                                            width: '24px',
-                                                            height: '24px',
-                                                        }}
+                                                    <button
+                                                        onClick={() =>
+                                                            setCopied(
+                                                                trove.ownerAddress
+                                                            )
+                                                        }
                                                     >
-                                                        <Icon
+                                                        <Clipboard
                                                             name={
                                                                 copied ===
                                                                 trove.ownerAddress
                                                                     ? 'clipboard-check'
                                                                     : 'clipboard'
                                                             }
-                                                            size='sm'
                                                         />
-                                                    </Button>
+                                                    </button>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td className='text-center'>
                                                 <Abbreviation
                                                     short={trove.collateral.shorten()}
                                                 >
@@ -348,7 +324,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                     )}
                                                 </Abbreviation>
                                             </td>
-                                            <td>
+                                            <td className='text-center'>
                                                 <Abbreviation
                                                     short={trove.debt.shorten()}
                                                 >
@@ -357,28 +333,29 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                             </td>
                                             <td>
                                                 {(collateralRatio => (
-                                                    <Text
-                                                        color={
+                                                    <span
+                                                        className={clsx(
                                                             collateralRatio.gt(
                                                                 CRITICAL_COLLATERAL_RATIO
                                                             )
-                                                                ? 'success'
+                                                                ? 'text-success-700'
                                                                 : collateralRatio.gt(
                                                                       1.2
                                                                   )
-                                                                ? 'warning'
-                                                                : 'danger'
-                                                        }
+                                                                ? 'text-warning-700'
+                                                                : 'text-error-700',
+                                                            'block text-right'
+                                                        )}
                                                     >
                                                         {new Percent(
                                                             collateralRatio
                                                         ).prettify()}
-                                                    </Text>
+                                                    </span>
                                                 ))(
                                                     trove.collateralRatio(price)
                                                 )}
                                             </td>
-                                            <td>
+                                            <td className='flex justify-center'>
                                                 <Transaction
                                                     id={`liquidate-${trove.ownerAddress}`}
                                                     tooltip='Liquidate'
@@ -400,18 +377,18 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                         trove.ownerAddress
                                                     )}
                                                 >
-                                                    <Button variant='dangerIcon'>
+                                                    <button>
                                                         <Icon name='trash' />
-                                                    </Button>
+                                                    </button>
                                                 </Transaction>
                                             </td>
                                         </tr>
                                     )
                             )}
                         </tbody>
-                    </Box>
-                </div>
-            )}
+                    </table>
+                )}
+            </div>
 
             {loading && <LoadingOverlay />}
         </div>
