@@ -158,7 +158,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
     }, [copied]);
 
     return (
-        <div className='flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
+        <div className='relative flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
             <div className='flex h-10 items-center justify-between border-t-2 border-primary-500 bg-neutral-200 px-3.5 py-2 text-3.5 font-semibold leading-5.5 tablet:border-t-4 laptop:h-[42px] laptop:px-3.5 laptop:text-base'>
                 <h2>Risky Troves</h2>
                 <div className='flex items-center gap-1'>
