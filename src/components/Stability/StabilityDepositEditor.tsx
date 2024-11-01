@@ -92,7 +92,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                     }
                 />
 
-                <div className='px-3'>
+                <div className='flex flex-col gap-3 px-3'>
                     {newPoolShare.infinite ? (
                         <StaticRow
                             label='Pool share'

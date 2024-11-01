@@ -27,7 +27,7 @@ export const RiskyTrovesPage: React.FC = () => (
                 <SystemStats />
             </aside>
         </div>
-        <div className='w-full'>
+        <div className='w-full pt-6'>
             <RiskyTroves pageSize={10} />
         </div>
     </section>

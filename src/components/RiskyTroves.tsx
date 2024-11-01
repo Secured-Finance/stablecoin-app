@@ -6,10 +6,13 @@ import {
     UserTrove,
 } from '@secured-finance/lib-base';
 import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
+import clsx from 'clsx';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
+import RedoIcon from 'src/assets/icons/refresh.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
-import { Box, Button, Card, Flex, Heading, Text } from 'theme-ui';
+import { Box, Button, Text } from 'theme-ui';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { Icon } from './Icon';
@@ -155,68 +158,58 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
     }, [copied]);
 
     return (
-        <Card sx={{ width: '100%' }}>
-            <Heading>
-                <Abbreviation short='Troves'>Risky Troves</Abbreviation>
-
-                <Flex sx={{ alignItems: 'center' }}>
+        <div className='flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
+            <div className='flex h-10 items-center justify-between border-t-2 border-primary-500 bg-neutral-200 px-3.5 py-2 text-3.5 font-semibold leading-5.5 tablet:border-t-4 laptop:h-[42px] laptop:px-3.5 laptop:text-base'>
+                <h2>Risky Troves</h2>
+                <div className='flex items-center gap-1'>
                     {numberOfTroves !== 0 && (
                         <>
-                            <Abbreviation
-                                short={`page ${
-                                    clampedPage + 1
-                                } / ${numberOfPages}`}
-                                sx={{
-                                    mr: [0, 3],
-                                    fontWeight: 'body',
-                                    fontSize: [1, 2],
-                                    letterSpacing: [-1, 0],
-                                }}
-                            >
+                            <span className='typography-desktop-body-5 font-normal text-neutral-800'>
                                 {clampedPage * pageSize + 1}-
                                 {Math.min(
                                     (clampedPage + 1) * pageSize,
                                     numberOfTroves
                                 )}{' '}
                                 of {numberOfTroves}
-                            </Abbreviation>
+                            </span>
 
-                            <Button
-                                variant='titleIcon'
+                            <button
                                 onClick={previousPage}
                                 disabled={clampedPage <= 0}
+                                className='disabled:text-neutral-400'
                             >
-                                <Icon name='chevron-left' size='lg' />
-                            </Button>
+                                <ChevronLeft className='h-5 w-5' />
+                            </button>
 
-                            <Button
-                                variant='titleIcon'
+                            <button
                                 onClick={nextPage}
                                 disabled={clampedPage >= numberOfPages - 1}
+                                className='disabled:text-neutral-400'
                             >
-                                <Icon name='chevron-right' size='lg' />
-                            </Button>
+                                <ChevronRight className='h-5 w-5' />
+                            </button>
                         </>
                     )}
 
-                    <Button
-                        variant='titleIcon'
-                        sx={{ opacity: loading ? 0 : 1, ml: [0, 3] }}
+                    <button
+                        className={clsx({
+                            'opacity-0': loading,
+                        })}
                         onClick={forceReload}
                     >
-                        <Icon name='redo' size='lg' />
-                    </Button>
-                </Flex>
-            </Heading>
+                        <RedoIcon className='h-5 w-5' />
+                    </button>
+                </div>
+            </div>
 
             {!troves || troves.length === 0 ? (
-                <Box sx={{ p: [2, 3] }}>
+                <div className='pb-4 pt-3'>
                     <Box sx={{ p: 4, fontSize: 3, textAlign: 'center' }}>
                         {!troves ? 'Loading...' : 'There are no Troves yet'}
                     </Box>
-                </Box>
+                </div>
             ) : (
-                <Box sx={{ p: [2, 3] }}>
+                <div className='pb-4 pt-3'>
                     <Box
                         as='table'
                         sx={{
@@ -417,10 +410,10 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                             )}
                         </tbody>
                     </Box>
-                </Box>
+                </div>
             )}
 
             {loading && <LoadingOverlay />}
-        </Card>
+        </div>
     );
 };

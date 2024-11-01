@@ -54,7 +54,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                         <SystemStatsPopup />
                                     </div>
                                 </Header>
-                                <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5'>
+                                <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 laptop:mt-16'>
                                     <Switch>
                                         <Route path='/' exact>
                                             <PageSwitcher />

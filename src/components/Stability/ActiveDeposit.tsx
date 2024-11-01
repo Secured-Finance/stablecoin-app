@@ -86,7 +86,7 @@ export const ActiveDeposit: React.FC = () => {
                     unit={COIN}
                 />
 
-                <div className='px-3'>
+                <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
                         label='Pool share'
                         inputId='deposit-share'
