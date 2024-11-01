@@ -45,7 +45,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
                 </Card>
             }
         >
-            <span>{children}</span>
+            <span className='flex items-center'>{children}</span>
         </Tippy>
     );
 };
