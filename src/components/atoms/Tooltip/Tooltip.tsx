@@ -2,6 +2,7 @@ import type { TippyProps } from '@tippyjs/react';
 import Tippy from '@tippyjs/react/headless';
 import clsx from 'clsx';
 import { cloneElement } from 'react';
+import { useBreakpoint } from 'src/hooks';
 import { modeStyles } from './constants';
 import { TooltipMode } from './types';
 
@@ -19,11 +20,13 @@ export const Tooltip = ({
     placement = 'top',
     disabled,
 }: TooltipProps) => {
+    const isMobile = useBreakpoint('tablet');
+
     return (
         <Tippy
             interactive
             disabled={disabled}
-            placement={placement}
+            placement={isMobile ? 'auto-start' : placement}
             render={() => (
                 <div
                     className={clsx(
