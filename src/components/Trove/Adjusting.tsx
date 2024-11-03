@@ -209,7 +209,10 @@ export const Adjusting: React.FC = () => {
                 <>
                     Trove
                     {isDirty && !isTransactionPending && (
-                        <button onClick={reset}>
+                        <button
+                            onClick={reset}
+                            className='hover:enabled:text-error-700'
+                        >
                             <Icon name='history' size='lg' />
                         </button>
                     )}

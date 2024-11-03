@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { Flex, Input, SxProp, Text, ThemeUICSSProperties } from 'theme-ui';
+import { Flex, Input, SxProp, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
 import { Button, ButtonSizes } from '../atoms';
 
@@ -34,12 +34,13 @@ export const Row: React.FC<RowProps> = ({
     );
 };
 
-type PendingAmountProps = SxProp & {
+type PendingAmountProps = {
     value: string;
+    color?: string;
 };
 
-const PendingAmount: React.FC<PendingAmountProps> = ({ sx, value }) => (
-    <Text sx={{ ...sx }}>
+const PendingAmount: React.FC<PendingAmountProps> = ({ color, value }) => (
+    <div className={`typography-desktop-body-5 ${color}`}>
         (
         {value === '++' ? (
             <Icon name='angle-double-up' />
@@ -57,7 +58,7 @@ const PendingAmount: React.FC<PendingAmountProps> = ({ sx, value }) => (
             value
         )}
         )
-    </Text>
+    </div>
 );
 
 type StaticAmountsProps = React.PropsWithChildren<{
@@ -105,11 +106,7 @@ export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
                         <>
                             &nbsp;
                             <PendingAmount
-                                sx={{
-                                    color: pendingColor,
-                                    opacity: 0.8,
-                                    fontSize: '0.666em',
-                                }}
+                                color={pendingColor}
                                 value={pendingAmount}
                             />
                         </>
@@ -134,7 +131,7 @@ const editableStyle: ThemeUICSSProperties = {
     boxShadow: [1, 2],
     border: 1,
     borderColor: 'muted',
-    backgroundColor: 'transparent,',
+    backgroundColor: 'transparent',
 };
 
 type StaticRowProps = RowProps & StaticAmountsProps;
@@ -286,7 +283,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                         }}
                         disabled={maxedOut}
                     >
-                        max
+                        Max
                     </Button>
                 )}
             </StaticAmounts>

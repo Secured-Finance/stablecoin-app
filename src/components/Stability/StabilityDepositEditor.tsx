@@ -70,7 +70,10 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                 <>
                     Stability Pool
                     {edited && !changePending && (
-                        <button onClick={() => dispatch({ type: 'revert' })}>
+                        <button
+                            onClick={() => dispatch({ type: 'revert' })}
+                            className='hover:enabled:text-error-700'
+                        >
                             <Icon name='history' size='lg' />
                         </button>
                     )}

@@ -111,7 +111,7 @@ export const Opening: React.FC = () => {
                     Trove
                     {isDirty && !isTransactionPending && (
                         <button
-                            // sx={{ ':enabled:hover': { color: 'danger' } }}
+                            className='hover:enabled:text-error-700'
                             onClick={reset}
                         >
                             <Icon name='history' size='lg' />
