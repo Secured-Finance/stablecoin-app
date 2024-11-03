@@ -11,11 +11,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import RedoIcon from 'src/assets/icons/refresh.svg';
+import TrashIcon from 'src/assets/icons/trash.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
-import { Icon } from './Icon';
 import { LoadingOverlay } from './LoadingOverlay';
 import { Tooltip } from './Tooltip';
 import { Transaction } from './Transaction';
@@ -156,7 +156,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
     }, [copied]);
 
     const colClassName =
-        'w-1/4 text-3.5 leading-4.5 laptop:text-xs laptop:leading-5';
+        'w-1/4 text-3.5 leading-4.5 laptop:text-xs laptop:leading-3.5 laptop:w-[21%] h-full table-cell align-middle';
 
     return (
         <div className='relative flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
@@ -203,7 +203,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                 </div>
             </div>
 
-            <div className='px-3 pb-4 pt-3 laptop:px-4'>
+            <div className='px-3 pb-4 pt-3 text-neutral-800 laptop:px-4'>
                 {!troves || troves.length === 0 ? (
                     <div>
                         {!troves ? 'Loading...' : 'There are no Troves yet'}
@@ -220,7 +220,12 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
 
                         <thead>
                             <tr>
-                                <th className={clsx(colClassName, 'text-left')}>
+                                <th
+                                    className={clsx(
+                                        colClassName,
+                                        'text-left laptop:text-center'
+                                    )}
+                                >
                                     Owner
                                 </th>
                                 <th
@@ -239,7 +244,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         tFIL
                                     </span>
                                 </th>
-                                <th className={clsx(colClassName, '')}>
+                                <th className={colClassName}>
                                     <span className='flex justify-center'>
                                         Debt
                                     </span>
@@ -248,13 +253,16 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                     </span>
                                 </th>
                                 <th
-                                    className={clsx(colClassName, 'text-right')}
+                                    className={clsx(
+                                        colClassName,
+                                        'text-right laptop:text-center'
+                                    )}
                                 >
                                     Coll.
                                     <br />
                                     Ratio
                                 </th>
-                                <th></th>
+                                <th className='text-3.5 leading-4.5 laptop:text-xs laptop:leading-5'></th>
                             </tr>
                         </thead>
 
@@ -265,38 +273,24 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         // (WONT-FIX: remove check after we can fetch multiple Troves in one call)
                                         <tr
                                             key={trove.ownerAddress}
-                                            className='typography-mobile-body-4 h-[30px] laptop:h-8'
+                                            className='typography-mobile-body-4 laptop:typography-desktop-body-5 h-[30px] laptop:h-8'
                                         >
-                                            <td className='flex items-center gap-0.5'>
-                                                <Tooltip
-                                                    message={trove.ownerAddress}
-                                                    placement='top'
-                                                >
-                                                    <span className=''>
-                                                        {AddressUtils.format(
-                                                            trove.ownerAddress,
-                                                            6
-                                                        )}
-                                                        {/* <Box
-                                                            sx={{
-                                                                display: [
-                                                                    'block',
-                                                                    'none',
-                                                                ],
-                                                                position:
-                                                                    'absolute',
-                                                                top: 0,
-                                                                right: 0,
-                                                                width: '50px',
-                                                                height: '100%',
-                                                                background:
-                                                                    'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
-                                                            }}
-                                                        /> */}
-                                                    </span>
-                                                </Tooltip>
+                                            <td>
+                                                <div className='flex items-center gap-0.5 laptop:justify-center'>
+                                                    <Tooltip
+                                                        message={
+                                                            trove.ownerAddress
+                                                        }
+                                                        placement='top'
+                                                    >
+                                                        <span className='font-numerical font-medium'>
+                                                            {AddressUtils.format(
+                                                                trove.ownerAddress,
+                                                                6
+                                                            )}
+                                                        </span>
+                                                    </Tooltip>
 
-                                                <div>
                                                     <button
                                                         onClick={() =>
                                                             setCopied(
@@ -344,7 +338,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                                   )
                                                                 ? 'text-warning-700'
                                                                 : 'text-error-700',
-                                                            'block text-right'
+                                                            'block text-right laptop:text-center'
                                                         )}
                                                     >
                                                         {new Percent(
@@ -355,32 +349,34 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                     trove.collateralRatio(price)
                                                 )}
                                             </td>
-                                            <td className='flex justify-center'>
-                                                <Transaction
-                                                    id={`liquidate-${trove.ownerAddress}`}
-                                                    tooltip='Liquidate'
-                                                    requires={[
-                                                        recoveryMode
-                                                            ? liquidatableInRecoveryMode(
-                                                                  trove,
-                                                                  price,
-                                                                  totalCollateralRatio,
-                                                                  debtTokenInStabilityPool
-                                                              )
-                                                            : liquidatableInNormalMode(
-                                                                  trove,
-                                                                  price
-                                                              ),
-                                                    ]}
-                                                    send={sfStablecoin.send.liquidate.bind(
-                                                        sfStablecoin.send,
-                                                        trove.ownerAddress
-                                                    )}
-                                                >
-                                                    <button>
-                                                        <Icon name='trash' />
-                                                    </button>
-                                                </Transaction>
+                                            <td>
+                                                <div className='flex justify-center laptop:justify-end'>
+                                                    <Transaction
+                                                        id={`liquidate-${trove.ownerAddress}`}
+                                                        tooltip='Liquidate'
+                                                        requires={[
+                                                            recoveryMode
+                                                                ? liquidatableInRecoveryMode(
+                                                                      trove,
+                                                                      price,
+                                                                      totalCollateralRatio,
+                                                                      debtTokenInStabilityPool
+                                                                  )
+                                                                : liquidatableInNormalMode(
+                                                                      trove,
+                                                                      price
+                                                                  ),
+                                                        ]}
+                                                        send={sfStablecoin.send.liquidate.bind(
+                                                            sfStablecoin.send,
+                                                            trove.ownerAddress
+                                                        )}
+                                                    >
+                                                        <button>
+                                                            <TrashIcon className='h-4 w-4 text-neutral-400' />
+                                                        </button>
+                                                    </Transaction>
+                                                </div>
                                             </td>
                                         </tr>
                                     )
