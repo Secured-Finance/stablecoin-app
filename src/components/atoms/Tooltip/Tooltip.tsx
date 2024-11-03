@@ -1,29 +1,30 @@
-import { Tooltip as NextTooltip, TooltipPlacement } from '@nextui-org/tooltip';
+import type { TippyProps } from '@tippyjs/react';
+import Tippy from '@tippyjs/react/headless';
 import clsx from 'clsx';
 import { cloneElement } from 'react';
-import { modeStyles, tooltipOptions } from './constants';
+import { modeStyles } from './constants';
 import { TooltipMode } from './types';
+
+type TooltipProps = Pick<TippyProps, 'placement'> &
+    React.PropsWithChildren<{
+        iconElement: React.ReactNode;
+        mode?: TooltipMode;
+        disabled?: boolean;
+    }>;
 
 export const Tooltip = ({
     iconElement,
     children,
     mode = TooltipMode.Dark,
-    placement,
+    placement = 'top',
     disabled,
-}: {
-    iconElement: React.ReactNode;
-    children: React.ReactNode;
-    mode?: TooltipMode;
-    placement?: TooltipPlacement;
-    disabled?: boolean;
-}) => {
+}: TooltipProps) => {
     return (
-        <NextTooltip
-            isDisabled={disabled}
-            showArrow={true}
-            offset={0}
+        <Tippy
+            interactive
+            disabled={disabled}
             placement={placement}
-            content={
+            render={() => (
                 <div
                     className={clsx(
                         'typography-desktop-body-6 laptop:typography-desktop-body-5 relative flex w-fit max-w-[240px] gap-2.5 overflow-hidden whitespace-normal rounded-[8px] border px-2 py-1 text-left text-neutral-50 shadow-dropdown laptop:px-3',
@@ -32,9 +33,8 @@ export const Tooltip = ({
                 >
                     {children}
                 </div>
-            }
+            )}
             role='tooltip'
-            {...tooltipOptions}
         >
             <div
                 className={clsx(
@@ -49,6 +49,6 @@ export const Tooltip = ({
                     iconElement as React.ReactElement<any>
                 )}
             </div>
-        </NextTooltip>
+        </Tippy>
     );
 };

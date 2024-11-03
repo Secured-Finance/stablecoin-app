@@ -1,6 +1,5 @@
 import * as amplitude from '@amplitude/analytics-browser';
 import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-browser';
-import { NextUIProvider } from '@nextui-org/system';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
@@ -104,7 +103,7 @@ if (typeof window !== 'undefined') {
 }
 
 const metadata = {
-    name: 'SfStablecoin',
+    name: 'SF Stablecoin',
     description: 'AppKit Example',
     url: 'https://web3modal.com', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
@@ -165,32 +164,28 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
     return (
         <ThemeUIProvider theme={theme}>
             {config.loaded && (
-                <NextUIProvider>
-                    <CookiesProvider>
-                        <QueryClientProvider client={queryClient}>
-                            <WagmiProvider config={wagmiConfig}>
-                                <WalletConnector>
-                                    <SfStablecoinProvider
-                                        loader={loader}
-                                        unsupportedNetworkFallback={
-                                            <UnsupportedNetworkFallback />
-                                        }
-                                        unsupportedMainnetFallback={
-                                            <UnsupportedMainnetFallback />
-                                        }
-                                    >
-                                        <TransactionProvider>
-                                            <SfStablecoinFrontend
-                                                loader={loader}
-                                            />
-                                        </TransactionProvider>
-                                    </SfStablecoinProvider>
-                                </WalletConnector>
-                            </WagmiProvider>
-                            <ReactQueryDevtools initialIsOpen={false} />
-                        </QueryClientProvider>
-                    </CookiesProvider>
-                </NextUIProvider>
+                <CookiesProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <WagmiProvider config={wagmiConfig}>
+                            <WalletConnector>
+                                <SfStablecoinProvider
+                                    loader={loader}
+                                    unsupportedNetworkFallback={
+                                        <UnsupportedNetworkFallback />
+                                    }
+                                    unsupportedMainnetFallback={
+                                        <UnsupportedMainnetFallback />
+                                    }
+                                >
+                                    <TransactionProvider>
+                                        <SfStablecoinFrontend loader={loader} />
+                                    </TransactionProvider>
+                                </SfStablecoinProvider>
+                            </WalletConnector>
+                        </WagmiProvider>
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </QueryClientProvider>
+                </CookiesProvider>
             )}
         </ThemeUIProvider>
     );
