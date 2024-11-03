@@ -1,7 +1,11 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    content: ['./src/**/*.{ts,tsx,js,jsx}', './public/index.html'],
+    content: [
+        './src/**/*.{ts,tsx,js,jsx}',
+        './public/index.html',
+        './node_modules/@nextui-org/theme/dist/components/popover.js',
+    ],
     theme: {
         boxShadow: {
             dropdown: '0px 16px 64px -48px rgba(31, 47, 70, 0.4)',

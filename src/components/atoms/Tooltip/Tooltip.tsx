@@ -1,6 +1,6 @@
 import { Tooltip as NextTooltip, TooltipPlacement } from '@nextui-org/tooltip';
 import clsx from 'clsx';
-import { cloneElement, useState } from 'react';
+import { cloneElement } from 'react';
 import { modeStyles, tooltipOptions } from './constants';
 import { TooltipMode } from './types';
 
@@ -17,8 +17,6 @@ export const Tooltip = ({
     placement?: TooltipPlacement;
     disabled?: boolean;
 }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
         <NextTooltip
             isDisabled={disabled}
@@ -35,7 +33,6 @@ export const Tooltip = ({
                     {children}
                 </div>
             }
-            isOpen={isOpen}
             role='tooltip'
             {...tooltipOptions}
         >
@@ -46,8 +43,6 @@ export const Tooltip = ({
                         'cursor-pointer': !disabled,
                     }
                 )}
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
             >
                 {cloneElement(
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
