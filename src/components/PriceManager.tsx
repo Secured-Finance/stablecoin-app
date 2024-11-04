@@ -28,7 +28,7 @@ export const PriceManager: React.FC = () => {
                 <div className='typography-desktop-body-5'>tFIL</div>
 
                 <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
-                    <span className='absolute left-2 top-1/2 -translate-y-1/2'>
+                    <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
                         $
                     </span>
                     <input

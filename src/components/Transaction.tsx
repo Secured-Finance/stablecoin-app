@@ -18,8 +18,9 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
-import { Tooltip } from './Tooltip';
+// import { Tooltip } from './Tooltip';
 import { TransactionStatus } from './TransactionStatus';
+import { Tooltip } from './atoms';
 
 type TransactionIdle = {
     type: 'idle';
@@ -228,11 +229,12 @@ export function Transaction<C extends React.ReactElement<ButtonlikeProps>>({
     }
 
     return tooltip ? (
-        <>
-            <Tooltip message={tooltip} placement={tooltipPlacement || 'right'}>
-                {clonedTrigger}
-            </Tooltip>
-        </>
+        <Tooltip
+            iconElement={clonedTrigger}
+            placement={tooltipPlacement || 'right'}
+        >
+            {tooltip}
+        </Tooltip>
     ) : (
         clonedTrigger
     );

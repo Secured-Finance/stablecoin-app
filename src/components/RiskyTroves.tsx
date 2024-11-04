@@ -9,6 +9,7 @@ import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
+import CheckIcon from 'src/assets/icons/check.svg';
 import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import RedoIcon from 'src/assets/icons/refresh.svg';
 import TrashIcon from 'src/assets/icons/trash.svg';
@@ -17,8 +18,9 @@ import { AddressUtils } from 'src/utils';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { LoadingOverlay } from './LoadingOverlay';
-import { Tooltip } from './Tooltip';
+// import { Tooltip } from './Tooltip';
 import { Transaction } from './Transaction';
+import { Tooltip } from './atoms';
 
 const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
     [
@@ -143,6 +145,8 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         if (copied !== undefined) {
             let cancelled = false;
 
+            navigator.clipboard.writeText(copied);
+
             setTimeout(() => {
                 if (!cancelled) {
                     setCopied(undefined);
@@ -255,7 +259,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                 <th
                                     className={clsx(
                                         colClassName,
-                                        'text-right laptop:text-center'
+                                        'pr-2 text-right laptop:pr-0 laptop:text-center'
                                     )}
                                 >
                                     Coll.
@@ -276,19 +280,19 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                             className='typography-mobile-body-4 laptop:typography-desktop-body-5 h-[30px] laptop:h-8'
                                         >
                                             <td>
-                                                <div className='flex items-center gap-0.5 laptop:justify-center'>
+                                                <div className='flex items-center gap-1 laptop:justify-center'>
                                                     <Tooltip
-                                                        message={
-                                                            trove.ownerAddress
+                                                        iconElement={
+                                                            <span className='min-w-[100px] font-numerical font-medium'>
+                                                                {AddressUtils.format(
+                                                                    trove.ownerAddress,
+                                                                    6
+                                                                )}
+                                                            </span>
                                                         }
-                                                        placement='top'
+                                                        placement={'top'}
                                                     >
-                                                        <span className='font-numerical font-medium'>
-                                                            {AddressUtils.format(
-                                                                trove.ownerAddress,
-                                                                6
-                                                            )}
-                                                        </span>
+                                                        {trove.ownerAddress}
                                                     </Tooltip>
 
                                                     <button
@@ -298,14 +302,12 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                             )
                                                         }
                                                     >
-                                                        <Clipboard
-                                                            name={
-                                                                copied ===
-                                                                trove.ownerAddress
-                                                                    ? 'clipboard-check'
-                                                                    : 'clipboard'
-                                                            }
-                                                        />
+                                                        {copied ===
+                                                        trove.ownerAddress ? (
+                                                            <CheckIcon className='text-success-700' />
+                                                        ) : (
+                                                            <Clipboard />
+                                                        )}
                                                     </button>
                                                 </div>
                                             </td>
@@ -338,7 +340,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                                   )
                                                                 ? 'text-warning-700'
                                                                 : 'text-error-700',
-                                                            'block text-right laptop:text-center'
+                                                            'block pr-2 text-right laptop:pr-0 laptop:text-center'
                                                         )}
                                                     >
                                                         {new Percent(
@@ -372,8 +374,8 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                             trove.ownerAddress
                                                         )}
                                                     >
-                                                        <button>
-                                                            <TrashIcon className='h-4 w-4 text-neutral-400' />
+                                                        <button className='text-error-500 disabled:text-neutral-400'>
+                                                            <TrashIcon className='h-4 w-4' />
                                                         </button>
                                                     </Transaction>
                                                 </div>
