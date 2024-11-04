@@ -105,6 +105,11 @@ module.exports = {
                     '90': 'rgba(255, 255, 255, 0.9)',
                     DEFAULT: '#FFFFFF',
                 },
+                tooltip: {
+                    success: '#0C474C',
+                    warning: '#422F09',
+                    error: '#4A1220',
+                },
             },
         },
         fontFamily: {

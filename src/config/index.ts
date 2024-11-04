@@ -4,13 +4,11 @@ import { getAddress, isAddress } from '@ethersproject/address';
 export type FrontendConfig = {
     frontendTag: string;
     testnetOnly?: boolean;
-    walletConnectProjectId: string;
 };
 
 const defaultConfig: FrontendConfig = {
-    frontendTag: '0xA12c287E3e61e13F346FA85527Eaa39648962466',
+    frontendTag: '0xDBA767F3DFF3835BEf5dE1eDEe91A9901402AB21',
     testnetOnly: true,
-    walletConnectProjectId: '9e84ebddd063e9ffd0a2728fe25ca07e',
 };
 
 function hasKey<K extends string>(o: object, k: K): o is Record<K, unknown> {
