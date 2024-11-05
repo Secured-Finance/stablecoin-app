@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { getSetPriceEnabled } from 'src/utils';
 import { Transaction } from './Transaction';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
@@ -11,9 +12,11 @@ export const PriceManager: React.FC = () => {
     const {
         sfStablecoin: {
             send: sfStablecoin,
-            connection: { _priceFeedIsTestnet: canSetPrice },
+            connection: { _priceFeedIsTestnet },
         },
     } = useSfStablecoin();
+
+    const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
 
     const price = useSfStablecoinSelector(selectPrice);
     const [editedPrice, setEditedPrice] = useState(price.toString(2));

@@ -1,14 +1,6 @@
 import assert from 'assert';
 import { Environment } from './strings';
 
-export const getNonSubgraphSupportedChainIds = (): number[] => {
-    const nonSupportedChainIds =
-        process.env.NEXT_PUBLIC_NON_SUBGRAPH_SUPPORTED_CHAIN_IDS;
-    return !!nonSupportedChainIds
-        ? nonSupportedChainIds.split(',').map(n => parseInt(n, 10))
-        : [];
-};
-
 export const getWalletConnectId = () => {
     const walletConnectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID;
     assert(walletConnectId, 'NEXT_PUBLIC_WALLET_CONNECT_ID is not set');
@@ -40,39 +32,13 @@ export const getEnvironment = () => {
     return SF_ENV;
 };
 
-export const getUsePackageVersion = () => {
-    const NEXT_PUBLIC_USE_PACKAGE_VERSION =
-        process.env.NEXT_PUBLIC_USE_PACKAGE_VERSION;
+export const getSetPriceEnabled = () => {
+    const NEXT_PUBLIC_SET_PRICE_ENABLED =
+        process.env.NEXT_PUBLIC_SET_PRICE_ENABLED;
 
-    if (!NEXT_PUBLIC_USE_PACKAGE_VERSION) {
+    if (!NEXT_PUBLIC_SET_PRICE_ENABLED) {
         return false;
     }
 
-    return NEXT_PUBLIC_USE_PACKAGE_VERSION === 'true';
-};
-
-export const getCommitHash = () => {
-    const NEXT_PUBLIC_COMMIT_HASH = process.env.COMMIT_HASH;
-
-    if (!NEXT_PUBLIC_COMMIT_HASH) {
-        // eslint-disable-next-line no-console
-        console.warn('COMMIT_HASH is not set');
-        return '';
-    }
-
-    return NEXT_PUBLIC_COMMIT_HASH;
-};
-
-export const getGraphqlServerUrl = (): string => {
-    const graphqlServerUrl = process.env.NEXT_PUBLIC_GRAPHQL_SERVER_URL;
-    assert(graphqlServerUrl, 'NEXT_PUBLIC_GRAPHQL_SERVER_URL is not set');
-    return graphqlServerUrl;
-};
-
-export const getSubgraphUrl = (chainId: number): string | undefined => {
-    if (chainId === 314) {
-        return process.env.NEXT_PUBLIC_SUBGRAPH_URL_314;
-    } else {
-        return undefined;
-    }
+    return NEXT_PUBLIC_SET_PRICE_ENABLED === 'true';
 };

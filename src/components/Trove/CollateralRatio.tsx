@@ -91,7 +91,7 @@ export const CollateralRatioInfoBubble: React.FC<
                         liquidated
                     </LearnMoreLink>{' '}
                     under{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/recovery-mode'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
                         Recovery Mode.
                     </LearnMoreLink>
                 </InfoBubble>
