@@ -7,7 +7,7 @@ export const variantStyle: { [key in ButtonVariants]: string } = {
     [ButtonVariants.primary]:
         'border-transparent bg-primary-500 text-neutral-50 hover:bg-primary-700 active:border-primary-500 disabled:bg-primary-500/[33%] disabled:text-neutral-50',
     [ButtonVariants.secondary]:
-        'border-primary-500 bg-transparent text-primary-500 hover:border-primary-700 hover:text-primary-700 active:border-primary-500 active:bg-primary-300/10 active:text-primary-500 disabled:opacity-35',
+        'border-primary-500 bg-transparent text-primary-500 hover:border-primary-700 hover:text-primary-700 active:border-primary-500 active:bg-primary-300/10 active:text-primary-500 disabled:border-primary-500/30 disabled:text-primary-500/30 disabled:bg-transparent',
     [ButtonVariants.tertiary]:
         'border-neutral-600 bg-transparent text-neutral-900 hover:border-neutral-300 active:border-neutral-500 active:bg-neutral-100 active:text-neutral-600 disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-300',
 };
