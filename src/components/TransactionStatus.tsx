@@ -90,6 +90,10 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
                     'bg-[#D4FCD8]': state === 'confirmed',
                     'bg-warning-300': state === 'cancelled',
                     'bg-[#FFDAE0]': state === 'failed',
+                    'bg-[#E8E9FD]':
+                        state !== 'confirmed' &&
+                        state !== 'cancelled' &&
+                        state !== 'failed',
                 }
             )}
         >

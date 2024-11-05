@@ -1,7 +1,7 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
-import InfoIcon from 'src/assets/icons/information-circle-block.svg';
+import InfoIcon from 'src/assets/icons/information-circle-fill.svg';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { Container } from 'theme-ui';
 import { SystemStats } from './SystemStats';
