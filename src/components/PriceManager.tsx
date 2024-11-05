@@ -34,14 +34,19 @@ export const PriceManager: React.FC = () => {
                     <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
                         $
                     </span>
-                    <input
-                        type={canSetPrice ? 'number' : 'text'}
-                        step='any'
-                        value={editedPrice}
-                        onChange={e => setEditedPrice(e.target.value)}
-                        disabled={!canSetPrice}
-                        className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
-                    />
+                    {canSetPrice ? (
+                        <input
+                            type='number'
+                            step='any'
+                            value={editedPrice}
+                            onChange={e => setEditedPrice(e.target.value)}
+                            className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
+                        />
+                    ) : (
+                        <span className='flex h-full flex-1 items-center rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'>
+                            {editedPrice}
+                        </span>
+                    )}
                 </div>
 
                 {canSetPrice && (

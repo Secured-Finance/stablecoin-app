@@ -14,7 +14,7 @@ export const LiquidationManager: React.FC = () => {
     return (
         <CardComponent title='Liquidate'>
             <div className='typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800'>
-                <span>Up to</span>
+                <span className='whitespace-nowrap'>Up to</span>
 
                 <input
                     type='number'
