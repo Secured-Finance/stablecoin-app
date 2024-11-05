@@ -28,27 +28,27 @@ export const PriceManager: React.FC = () => {
     return (
         <CardComponent title='Price feed'>
             <div className='flex items-center gap-2'>
-                <div className='typography-desktop-body-5'>tFIL</div>
-
-                <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
-                    <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
-                        $
+                {canSetPrice ? (
+                    <>
+                        <div className='typography-desktop-body-5'>tFIL</div>
+                        <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
+                            <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
+                                $
+                            </span>
+                            <input
+                                type='number'
+                                step='any'
+                                value={editedPrice}
+                                onChange={e => setEditedPrice(e.target.value)}
+                                className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
+                            />
+                        </div>
+                    </>
+                ) : (
+                    <span className='typography-desktop-body-4 flex h-full flex-1 items-center bg-neutral-50 text-neutral-900'>
+                        {`1 tFIL = ${editedPrice} USD`}
                     </span>
-                    {canSetPrice ? (
-                        <input
-                            type='number'
-                            step='any'
-                            value={editedPrice}
-                            onChange={e => setEditedPrice(e.target.value)}
-                            className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
-                        />
-                    ) : (
-                        <span className='flex h-full flex-1 items-center rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'>
-                            {editedPrice}
-                        </span>
-                    )}
-                </div>
-
+                )}
                 {canSetPrice && (
                     <div className='flex items-center'>
                         <Transaction
