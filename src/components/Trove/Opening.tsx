@@ -7,8 +7,8 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
-import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
@@ -262,11 +262,11 @@ export const Opening: React.FC = () => {
 
                 <InfoBubble>
                     Keep your collateral ratio above the{' '}
-                    <Link sx={{ variant: 'styles.a' }} href='/risky-troves'>
+                    <NavLink sx={{ variant: 'styles.a' }} to='/risky-troves'>
                         riskiest Troves
-                    </Link>{' '}
+                    </NavLink>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/usdfc-redemptions#how-can-i-avoid-being-redeemed-against'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
                         redeemed.
                     </LearnMoreLink>
                 </InfoBubble>
