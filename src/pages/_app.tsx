@@ -22,7 +22,7 @@ import {
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
-import { Flex, Heading, Link, Paragraph, ThemeUIProvider } from 'theme-ui';
+import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
@@ -54,15 +54,6 @@ const UnsupportedMainnetFallback: React.FC = () => (
 
         <Paragraph sx={{ mb: 3 }}>
             Please change your network to Filecoin Calibration.
-        </Paragraph>
-
-        <Paragraph>
-            If you would like to use this protocol on mainnet, please pick a
-            frontend{' '}
-            <Link href='https://www.liquity.org/frontend'>
-                here <Icon name='external-link-alt' size='xs' />
-            </Link>
-            .
         </Paragraph>
     </Flex>
 );
