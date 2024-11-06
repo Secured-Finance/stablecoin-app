@@ -1,33 +1,34 @@
 import React from 'react';
-import { InfoMessage } from 'src/components/InfoMessage';
 import { LiquidationManager } from 'src/components/LiquidationManager';
 import { RiskyTroves } from 'src/components/RiskyTroves';
 import { SystemStats } from 'src/components/SystemStats';
-import { Box, Card, Container, Paragraph } from 'theme-ui';
+import { PlainCard } from 'src/components/templates';
 
 export const RiskyTrovesPage: React.FC = () => (
-    <Container variant='columns'>
-        <Container variant='left'>
-            <Card>
-                <Box sx={{ p: [2, 3] }}>
-                    <InfoMessage title='Bot functionality'>
-                        <Paragraph>
+    <section className='w-full'>
+        <div className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
+            <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
+                <PlainCard title='Bot functionality'>
+                    <div className='typography-desktop-body-4'>
+                        <p>
                             Liquidation is expected to be carried out by bots.
-                        </Paragraph>
-                        <Paragraph>
+                        </p>
+                        <p>
                             Early on you may be able to manually liquidate
                             Troves, but as the system matures this will become
                             less likely.
-                        </Paragraph>
-                    </InfoMessage>
-                </Box>
-            </Card>
-            <LiquidationManager />
-        </Container>
+                        </p>
+                    </div>
+                </PlainCard>
+                <LiquidationManager />
+            </div>
 
-        <Container variant='right'>
-            <SystemStats />
-        </Container>
-        <RiskyTroves pageSize={10} />
-    </Container>
+            <aside className='hidden w-full flex-col gap-5 laptop:flex laptop:w-[42%]'>
+                <SystemStats />
+            </aside>
+        </div>
+        <div className='w-full pt-6'>
+            <RiskyTroves pageSize={10} />
+        </div>
+    </section>
 );

@@ -6,7 +6,7 @@ import {
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
-import { CardComponent } from 'src/components/molecules';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
@@ -70,61 +70,71 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                 <>
                     Stability Pool
                     {edited && !changePending && (
-                        <button onClick={() => dispatch({ type: 'revert' })}>
+                        <button
+                            onClick={() => dispatch({ type: 'revert' })}
+                            className='hover:enabled:text-error-700'
+                        >
                             <Icon name='history' size='lg' />
                         </button>
                     )}
                 </>
             }
         >
-            <EditableRow
-                label='Deposit'
-                inputId='deposit-scr'
-                amount={editedDebtToken.prettify()}
-                maxAmount={maxAmount.toString()}
-                maxedOut={maxedOut}
-                unit={COIN}
-                {...{ editingState }}
-                editedAmount={editedDebtToken.toString(2)}
-                setEditedAmount={newValue =>
-                    dispatch({ type: 'setDeposit', newValue })
-                }
-            />
+            <div className='flex flex-col gap-3'>
+                <EditableRow
+                    label='Deposit'
+                    inputId='deposit-scr'
+                    amount={editedDebtToken.prettify()}
+                    maxAmount={maxAmount.toString()}
+                    maxedOut={maxedOut}
+                    unit={COIN}
+                    {...{ editingState }}
+                    editedAmount={editedDebtToken.toString(2)}
+                    setEditedAmount={newValue =>
+                        dispatch({ type: 'setDeposit', newValue })
+                    }
+                />
 
-            <div className='px-3'>
-                {newPoolShare.infinite ? (
-                    <StaticRow
-                        label='Pool share'
-                        inputId='deposit-share'
-                        amount='N/A'
-                    />
-                ) : (
-                    <StaticRow
-                        label='Pool share'
-                        inputId='deposit-share'
-                        amount={newPoolShare.prettify(4)}
-                        pendingAmount={poolShareChange?.prettify(4).concat('%')}
-                        pendingColor={
-                            poolShareChange?.positive ? 'success' : 'danger'
-                        }
-                        unit='%'
-                    />
-                )}
-
-                {!originalDeposit.isEmpty && (
-                    <>
+                <div className='flex flex-col gap-3 px-3'>
+                    {newPoolShare.infinite ? (
                         <StaticRow
-                            label='Liquidation gain'
-                            inputId='deposit-gain'
-                            amount={originalDeposit.collateralGain.prettify(4)}
-                            color={
-                                originalDeposit.collateralGain.nonZero &&
-                                'success'
-                            }
-                            unit='tFIL'
+                            label='Pool share'
+                            inputId='deposit-share'
+                            amount='N/A'
                         />
+                    ) : (
+                        <StaticRow
+                            label='Pool share'
+                            inputId='deposit-share'
+                            amount={newPoolShare.prettify(4)}
+                            pendingAmount={poolShareChange
+                                ?.prettify(4)
+                                .concat('%')}
+                            pendingColor={
+                                poolShareChange?.positive
+                                    ? 'text-success-700'
+                                    : 'text-error-700'
+                            }
+                            unit='%'
+                        />
+                    )}
 
-                        {/* <StaticRow
+                    {!originalDeposit.isEmpty && (
+                        <>
+                            <StaticRow
+                                label='Liquidation gain'
+                                inputId='deposit-gain'
+                                amount={originalDeposit.collateralGain.prettify(
+                                    4
+                                )}
+                                color={
+                                    originalDeposit.collateralGain.nonZero &&
+                                    'text-success-700'
+                                }
+                                unit='tFIL'
+                            />
+
+                            {/* <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
                             amount={originalDeposit.protocolTokenReward.prettify()}
@@ -152,10 +162,11 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                 />
                             }
                         /> */}
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
+                {children}
             </div>
-            {children}
             {changePending && <LoadingOverlay />}
         </CardComponent>
     );

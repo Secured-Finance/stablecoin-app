@@ -34,12 +34,12 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                     amount={collateralRatioPct.prettify()}
                     color={
                         value?.gt(CRITICAL_COLLATERAL_RATIO)
-                            ? 'success'
+                            ? 'text-success-700'
                             : value?.gt(1.2)
-                            ? 'warning'
+                            ? 'text-warning-700'
                             : value?.lte(1.2)
-                            ? 'danger'
-                            : 'muted'
+                            ? 'text-error-700'
+                            : 'text-neutral-300'
                     }
                     pendingAmount={
                         change?.positive?.absoluteValue?.gt(10)
@@ -48,7 +48,9 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                             ? '--'
                             : changePct?.nonZeroish(2)?.prettify()
                     }
-                    pendingColor={change?.positive ? 'success' : 'danger'}
+                    pendingColor={
+                        change?.positive ? 'text-success-700' : 'text-error-700'
+                    }
                     infoIcon={
                         <InfoIcon
                             message={
@@ -85,11 +87,11 @@ export const CollateralRatioInfoBubble: React.FC<
             {value?.lt(1.5) && (
                 <InfoBubble>
                     Keep your collateral ratio above 150% to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/stability-pool-and-liquidations#what-are-liquidations'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#liquidation-process'>
                         liquidated
                     </LearnMoreLink>{' '}
                     under{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/recovery-mode'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
                         Recovery Mode.
                     </LearnMoreLink>
                 </InfoBubble>

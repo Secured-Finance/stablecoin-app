@@ -14,9 +14,7 @@ export const InfoIcon = ({
     const DisplayIcon = Icon ?? Info;
     return (
         <Tooltip
-            iconElement={
-                <DisplayIcon className='h-3.5 w-3.5 text-neutral-500' />
-            }
+            iconElement={<DisplayIcon className='h-4 w-4 text-neutral-500' />}
             placement={placement}
         >
             {message}

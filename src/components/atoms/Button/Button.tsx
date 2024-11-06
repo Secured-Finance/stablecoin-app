@@ -25,7 +25,7 @@ export const Button = ({
         StartIcon?: SvgIcon;
         EndIcon?: SvgIcon;
     }) => {
-    const isMobile = useBreakpoint('tablet');
+    const isMobile = useBreakpoint('laptop');
     const Tag = href ? 'a' : 'button';
     const tagProps = href
         ? {
@@ -57,13 +57,13 @@ export const Button = ({
             {/* TODO: handle height of start and end icon wrt size prop value */}
             {StartIcon && (
                 <span className='mr-1.5'>
-                    <StartIcon className='h-4' role='img' />
+                    <StartIcon className='h-4 w-4' role='img' />
                 </span>
             )}
             <p className={clsx('whitespace-nowrap', textStyle[size])}>{text}</p>
             {EndIcon && (
                 <span className='ml-1.5'>
-                    <EndIcon className='h-4' role='img' />
+                    <EndIcon className='h-4 w-4' role='img' />
                 </span>
             )}
         </Tag>

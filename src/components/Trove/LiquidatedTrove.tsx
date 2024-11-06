@@ -1,8 +1,8 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
-import { Button, ButtonSizes } from 'src/components/atoms';
-import { CardComponent } from 'src/components/molecules';
-import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
+import { Button } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { CollateralSurplusAction } from '../CollateralSurplusAction';
 import { InfoMessage } from '../InfoMessage';
 import { useTroveView } from './context/TroveViewContext';
@@ -14,7 +14,6 @@ const select = ({ collateralSurplusBalance }: SfStablecoinStoreState) => ({
 export const LiquidatedTrove: React.FC = () => {
     const { hasSurplusCollateral } = useSfStablecoinSelector(select);
     const { dispatchEvent } = useTroveView();
-    const isMobile = useBreakpoint('tablet');
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('OPEN_TROVE_PRESSED');
@@ -27,12 +26,7 @@ export const LiquidatedTrove: React.FC = () => {
                 <>
                     {hasSurplusCollateral && <CollateralSurplusAction />}
                     {!hasSurplusCollateral && (
-                        <Button
-                            onClick={handleOpenTrove}
-                            size={isMobile ? ButtonSizes.sm : undefined}
-                        >
-                            Open Trove
-                        </Button>
+                        <Button onClick={handleOpenTrove}>Open Trove</Button>
                     )}
                 </>
             }

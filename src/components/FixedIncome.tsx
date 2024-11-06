@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
-import { CardComponent } from 'src/components/molecules';
+import { CardComponent } from 'src/components/templates';
 
 export const FixedIncome: React.FC = () => {
     return (

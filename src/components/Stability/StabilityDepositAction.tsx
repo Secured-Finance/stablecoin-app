@@ -3,12 +3,8 @@ import {
     SfStablecoinStoreState,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
-import { Button, ButtonSizes } from 'src/components/atoms';
-import {
-    useBreakpoint,
-    useSfStablecoin,
-    useSfStablecoinSelector,
-} from 'src/hooks';
+import { Button } from 'src/components/atoms';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useTransactionFunction } from '../Transaction';
 
 type StabilityDepositActionProps = React.PropsWithChildren<{
@@ -25,7 +21,7 @@ export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
     change,
 }) => {
     const { config, sfStablecoin } = useSfStablecoin();
-    const isMobile = useBreakpoint('tablet');
+
     const frontendRegistered = useSfStablecoinSelector(
         selectFrontendRegistered
     );
@@ -46,12 +42,5 @@ export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
               )
     );
 
-    return (
-        <Button
-            onClick={sendTransaction}
-            size={isMobile ? ButtonSizes.sm : undefined}
-        >
-            {children}
-        </Button>
-    );
+    return <Button onClick={sendTransaction}>{children}</Button>;
 };

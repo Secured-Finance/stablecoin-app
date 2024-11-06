@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import Trash from 'src/assets/icons/trash.svg';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
-import { Icon } from './Icon';
 import { Transaction } from './Transaction';
 
 export const LiquidationManager: React.FC = () => {
@@ -12,47 +12,40 @@ export const LiquidationManager: React.FC = () => {
         useState('90');
 
     return (
-        <Card>
-            <Heading>Liquidate</Heading>
+        <CardComponent title='Liquidate'>
+            <div className='typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800'>
+                <span>Up to</span>
 
-            <Box sx={{ p: [2, 3] }}>
-                <Flex sx={{ alignItems: 'stretch' }}>
-                    <Label>Up to</Label>
+                <input
+                    type='number'
+                    min='1'
+                    step='1'
+                    value={numberOfTrovesToLiquidate}
+                    onChange={e => setNumberOfTrovesToLiquidate(e.target.value)}
+                    className='typography-desktop-body-3 h-10 flex-1 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2'
+                />
 
-                    <Input
-                        type='number'
-                        min='1'
-                        step='1'
-                        value={numberOfTrovesToLiquidate}
-                        onChange={e =>
-                            setNumberOfTrovesToLiquidate(e.target.value)
+                <span>Troves</span>
+
+                <Transaction
+                    id='batch-liquidate'
+                    tooltip='Liquidate'
+                    tooltipPlacement='bottom'
+                    send={overrides => {
+                        if (!numberOfTrovesToLiquidate) {
+                            throw new Error('Invalid number');
                         }
-                    />
-
-                    <Label>Troves</Label>
-
-                    <Flex sx={{ ml: 2, alignItems: 'center' }}>
-                        <Transaction
-                            id='batch-liquidate'
-                            tooltip='Liquidate'
-                            tooltipPlacement='bottom'
-                            send={overrides => {
-                                if (!numberOfTrovesToLiquidate) {
-                                    throw new Error('Invalid number');
-                                }
-                                return sfStablecoin.liquidateUpTo(
-                                    parseInt(numberOfTrovesToLiquidate, 10),
-                                    overrides
-                                );
-                            }}
-                        >
-                            <Button variant='dangerIcon'>
-                                <Icon name='trash' size='lg' />
-                            </Button>
-                        </Transaction>
-                    </Flex>
-                </Flex>
-            </Box>
-        </Card>
+                        return sfStablecoin.liquidateUpTo(
+                            parseInt(numberOfTrovesToLiquidate, 10),
+                            overrides
+                        );
+                    }}
+                >
+                    <button>
+                        <Trash className='h-6 w-6 text-error-500' />
+                    </button>
+                </Transaction>
+            </div>
+        </CardComponent>
     );
 };

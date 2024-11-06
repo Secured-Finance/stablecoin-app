@@ -5,10 +5,9 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
-import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
-    useBreakpoint,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
@@ -118,7 +117,6 @@ export const StabilityDepositManager: React.FC = () => {
         selectForStabilityDepositChangeValidation
     );
     const { dispatchEvent } = useStabilityView();
-    const isMobile = useBreakpoint('tablet');
 
     const handleCancel = useCallback(() => {
         dispatchEvent('CANCEL_PRESSED');
@@ -172,7 +170,6 @@ export const StabilityDepositManager: React.FC = () => {
                 <Button
                     variant={ButtonVariants.tertiary}
                     onClick={handleCancel}
-                    size={isMobile ? ButtonSizes.sm : undefined}
                 >
                     Cancel
                 </Button>
@@ -185,12 +182,7 @@ export const StabilityDepositManager: React.FC = () => {
                         Confirm
                     </StabilityDepositAction>
                 ) : (
-                    <Button
-                        disabled
-                        size={isMobile ? ButtonSizes.sm : undefined}
-                    >
-                        Confirm
-                    </Button>
+                    <Button disabled>Confirm</Button>
                 )}
             </div>
         </StabilityDepositEditor>

@@ -1,6 +1,6 @@
 import React from 'react';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
-import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../../Transaction';
 
 type ClaimAndMoveProps = React.PropsWithChildren<{
@@ -20,10 +20,11 @@ export const ClaimAndMove: React.FC<ClaimAndMoveProps> = ({
 
     return (
         <Button
-            variant='outline'
-            sx={{ mt: 3, width: '100%' }}
+            variant={ButtonVariants.secondary}
+            size={ButtonSizes.lg}
             onClick={sendTransaction}
             disabled={disabled}
+            fullWidth
         >
             {children}
         </Button>

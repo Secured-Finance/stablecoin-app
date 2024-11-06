@@ -50,7 +50,8 @@ export const ReadOnlyStake: React.FC = () => {
                     inputId='stake-gain-eth'
                     amount={protocolTokenStake.collateralGain.prettify(4)}
                     color={
-                        protocolTokenStake.collateralGain.nonZero && 'success'
+                        protocolTokenStake.collateralGain.nonZero &&
+                        'text-success-700'
                     }
                     unit='tFIL'
                 />
@@ -60,7 +61,8 @@ export const ReadOnlyStake: React.FC = () => {
                     inputId='stake-gain-debt-token'
                     amount={protocolTokenStake.debtTokenGain.prettify()}
                     color={
-                        protocolTokenStake.debtTokenGain.nonZero && 'success'
+                        protocolTokenStake.debtTokenGain.nonZero &&
+                        'text-success-700'
                     }
                     unit={COIN}
                 />

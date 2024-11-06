@@ -9,7 +9,6 @@ import React from 'react';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
-import { Card } from 'theme-ui';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -87,10 +86,7 @@ const select = ({
         frontend.status === 'registered' ? frontend.kickbackRate : null,
 });
 
-export const SystemStats: React.FC<SystemStatsProps> = ({
-    variant = 'info',
-    showBalances,
-}) => {
+export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
     const {
         sfStablecoin: {
             connection: { version: contractsVersion, deploymentDate },
@@ -112,16 +108,19 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
     const borrowingFeePct = new Percent(borrowingRate);
 
     return (
-        <Card {...{ variant }}>
+        <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
+                <h2 className='typography-mobile-body-2 flex font-semibold laptop:hidden'>
+                    My Info
+                </h2>
                 {showBalances && <Balances />}
 
-                <span className='typography-mobile-body-2 laptop:typography-desktop-body-4 font-semibold text-neutral-900'>
+                <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base laptop:leading-6'>
                     SF Stablecoin Statistics
                 </span>
 
                 <div className='flex flex-col gap-1'>
-                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 font-semibold text-neutral-900'>
+                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
                         Protocol
                     </span>
 
@@ -186,6 +185,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
                     </div>
                 </div>
             </div>
-        </Card>
+        </div>
     );
 };

@@ -6,7 +6,7 @@ import { RiskyTrovesPage } from 'src/components//pages/RiskyTrovesPage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
-import { Container, Flex } from 'theme-ui';
+import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
 import { Header } from './components/Header';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
@@ -54,16 +54,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                         <SystemStatsPopup />
                                     </div>
                                 </Header>
-
-                                <Container
-                                    variant='main'
-                                    sx={{
-                                        display: 'flex',
-                                        flexGrow: 1,
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                    }}
-                                >
+                                <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>
                                     <Switch>
                                         <Route path='/' exact>
                                             <PageSwitcher />
@@ -72,7 +63,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                             <RiskyTrovesPage />
                                         </Route>
                                     </Switch>
-                                </Container>
+                                </div>
                             </Flex>
                         </StakingViewProvider>
                     </StabilityViewProvider>

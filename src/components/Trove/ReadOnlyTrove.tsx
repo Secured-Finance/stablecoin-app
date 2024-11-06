@@ -1,8 +1,8 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
-import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { CardComponent } from 'src/components/molecules';
-import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
+import { Button, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
@@ -19,7 +19,6 @@ export const ReadOnlyTrove: React.FC = () => {
     const handleCloseTrove = useCallback(() => {
         dispatchEvent('CLOSE_TROVE_PRESSED');
     }, [dispatchEvent]);
-    const isMobile = useBreakpoint('tablet');
 
     const { trove, price } = useSfStablecoinSelector(select);
 
@@ -32,14 +31,12 @@ export const ReadOnlyTrove: React.FC = () => {
                     <Button
                         variant={ButtonVariants.secondary}
                         onClick={handleCloseTrove}
-                        size={isMobile ? ButtonSizes.sm : undefined}
                     >
                         Close Trove
                     </Button>
                     <Button
                         variant={ButtonVariants.primary}
                         onClick={handleAdjustTrove}
-                        size={isMobile ? ButtonSizes.sm : undefined}
                     >
                         <Icon name='pen' size='sm' />
                         &nbsp;Adjust
@@ -47,22 +44,26 @@ export const ReadOnlyTrove: React.FC = () => {
                 </>
             }
         >
-            <DisabledEditableRow
-                label='Collateral'
-                inputId='trove-collateral'
-                amount={trove.collateral.prettify(4)}
-                unit='tFIL'
-            />
+            <div className='flex flex-col gap-3'>
+                <DisabledEditableRow
+                    label='Collateral'
+                    inputId='trove-collateral'
+                    amount={trove.collateral.prettify(4)}
+                    unit='tFIL'
+                />
 
-            <DisabledEditableRow
-                label='Debt'
-                inputId='trove-debt'
-                amount={trove.debt.prettify()}
-                unit={COIN}
-            />
+                <DisabledEditableRow
+                    label='Debt'
+                    inputId='trove-debt'
+                    amount={trove.debt.prettify()}
+                    unit={COIN}
+                />
 
-            <CollateralRatio value={trove.collateralRatio(price)} />
-            <CollateralRatioInfoBubble value={trove.collateralRatio(price)} />
+                <CollateralRatio value={trove.collateralRatio(price)} />
+                <CollateralRatioInfoBubble
+                    value={trove.collateralRatio(price)}
+                />
+            </div>
         </CardComponent>
     );
 };

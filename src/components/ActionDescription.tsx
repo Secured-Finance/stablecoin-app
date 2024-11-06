@@ -1,12 +1,10 @@
-import { Flex, Text } from 'theme-ui';
+import { Text } from 'theme-ui';
 
 export const ActionDescription: React.FC<React.PropsWithChildren> = ({
     children,
 }) => (
-    <div className=''>
-        <Flex sx={{ alignItems: 'center' }}>
-            <p className='typography-desktop-body-5'>{children}</p>
-        </Flex>
+    <div className='flex items-center'>
+        <p className='typography-desktop-body-5'>{children}</p>
     </div>
 );
 

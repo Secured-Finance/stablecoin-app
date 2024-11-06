@@ -1,7 +1,7 @@
 import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
-import { CardComponent } from 'src/components/molecules';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Transaction } from './Transaction';
 
@@ -28,7 +28,7 @@ export const PriceManager: React.FC = () => {
                 <div className='typography-desktop-body-5'>tFIL</div>
 
                 <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
-                    <span className='absolute left-2 top-1/2 -translate-y-1/2'>
+                    <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
                         $
                     </span>
                     <input
