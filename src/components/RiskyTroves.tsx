@@ -13,14 +13,13 @@ import CheckIcon from 'src/assets/icons/check.svg';
 import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import RedoIcon from 'src/assets/icons/refresh.svg';
 import TrashIcon from 'src/assets/icons/trash.svg';
+import { Tooltip } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { LoadingOverlay } from './LoadingOverlay';
-// import { Tooltip } from './Tooltip';
 import { Transaction } from './Transaction';
-import { Tooltip } from './atoms';
 
 const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
     [

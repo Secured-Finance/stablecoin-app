@@ -7,6 +7,7 @@ module.exports = {
             dropdown: '0px 16px 64px -48px rgba(31, 47, 70, 0.4)',
             sidenav: '0px 46px 64px 0px rgba(31, 47, 70, 0.4)',
             card: '0px 4px 32px 0px rgba(100, 116, 139, 0.1)',
+            stats: '0px 4px 32px 0px rgba(102, 109, 180, 0.15)',
         },
         extend: {
             lineHeight: {

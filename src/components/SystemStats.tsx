@@ -108,7 +108,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
     const borrowingFeePct = new Percent(borrowingRate);
 
     return (
-        <div className='w-full min-w-0 rounded-b-xl border-[1.5px] border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 drop-shadow-sm laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
+        <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
                 <h2 className='typography-mobile-body-2 flex font-semibold laptop:hidden'>
                     My Info

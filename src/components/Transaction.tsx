@@ -16,11 +16,10 @@ import {
 } from '@secured-finance/lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
+import { Tooltip } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
-// import { Tooltip } from './Tooltip';
 import { TransactionStatus } from './TransactionStatus';
-import { Tooltip } from './atoms';
 
 type TransactionIdle = {
     type: 'idle';
