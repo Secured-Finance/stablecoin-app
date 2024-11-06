@@ -262,7 +262,10 @@ export const Opening: React.FC = () => {
 
                 <InfoBubble>
                     Keep your collateral ratio above the{' '}
-                    <NavLink sx={{ variant: 'styles.a' }} to='/risky-troves'>
+                    <NavLink
+                        to='/risky-troves'
+                        className='font-semibold text-primary-500'
+                    >
                         riskiest Troves
                     </NavLink>{' '}
                     to avoid being{' '}
