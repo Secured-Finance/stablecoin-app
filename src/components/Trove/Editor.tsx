@@ -40,7 +40,7 @@ type PendingAmountProps = {
 };
 
 const PendingAmount: React.FC<PendingAmountProps> = ({ color, value }) => (
-    <div className={`typography-desktop-body-5 ${color}`}>
+    <div className={clsx('typography-desktop-body-5', color)}>
         (
         {value === '++' ? (
             <Icon name='angle-double-up' />

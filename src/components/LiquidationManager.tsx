@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Trash from 'src/assets/icons/trash.svg';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin } from 'src/hooks';
 import { Transaction } from './Transaction';
-import { CardComponent } from './templates';
 
 export const LiquidationManager: React.FC = () => {
     const {
@@ -22,7 +22,7 @@ export const LiquidationManager: React.FC = () => {
                     step='1'
                     value={numberOfTrovesToLiquidate}
                     onChange={e => setNumberOfTrovesToLiquidate(e.target.value)}
-                    className='typography-mobile-body-4 h-[38px] flex-1 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2'
+                    className='typography-desktop-body-3 h-10 flex-1 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2'
                 />
 
                 <span>Troves</span>
