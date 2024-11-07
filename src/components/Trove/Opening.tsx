@@ -269,7 +269,7 @@ export const Opening: React.FC = () => {
                         riskiest Troves
                     </NavLink>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption-and-peg-mechanism'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
                         redeemed.
                     </LearnMoreLink>
                 </InfoBubble>

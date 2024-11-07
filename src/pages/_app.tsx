@@ -72,7 +72,7 @@ const UnsupportedNetworkFallback: React.FC = () => (
             <Icon name='exclamation-triangle' /> This protocol is not supported
             on this network.
         </Heading>
-        Please switch to Filecoin or Filecoin Calibration.
+        Please switch to Filecoin Calibration.
     </Flex>
 );
 
@@ -94,9 +94,9 @@ if (typeof window !== 'undefined') {
 }
 
 const metadata = {
-    name: 'SF Stablecoin',
-    description: 'AppKit Example',
-    url: 'https://web3modal.com', // origin must match your domain & subdomain
+    name: 'Secured Finance',
+    description: 'Stablecoin',
+    url: 'https://usdfc.secured.finance/', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 

@@ -30,7 +30,7 @@ export const Tooltip = ({
             render={() => (
                 <div
                     className={clsx(
-                        'typography-desktop-body-6 laptop:typography-desktop-body-5 relative flex w-fit max-w-[320px] gap-2.5 overflow-hidden whitespace-normal rounded-lg border px-2 py-1 text-left text-neutral-50 shadow-dropdown laptop:px-3',
+                        'typography-desktop-body-6 laptop:typography-desktop-body-5 relative flex w-fit max-w-[340px] gap-2.5 overflow-hidden whitespace-normal rounded-lg border px-2 py-1 text-left text-neutral-50 shadow-dropdown laptop:px-3',
                         modeStyles[mode]
                     )}
                 >

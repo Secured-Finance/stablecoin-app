@@ -13,7 +13,7 @@ import {
     multiply,
     toCurrency,
     toCurrencySymbol,
-} from './currencyList';
+} from 'src/utils';
 
 const fil = currencyMap.FIL;
 const tfil = currencyMap.tFIL;

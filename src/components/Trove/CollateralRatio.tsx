@@ -87,7 +87,7 @@ export const CollateralRatioInfoBubble: React.FC<
             {value?.lt(1.5) && (
                 <InfoBubble>
                     Keep your collateral ratio above 150% to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#liquidation-process'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#what-are-liquidations'>
                         liquidated
                     </LearnMoreLink>{' '}
                     under{' '}
