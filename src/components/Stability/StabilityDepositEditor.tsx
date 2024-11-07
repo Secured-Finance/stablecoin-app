@@ -6,11 +6,10 @@ import {
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN } from '../../strings';
 import { Icon } from '../Icon';
-import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
 
@@ -66,21 +65,22 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         Difference.between(newPoolShare, originalPoolShare).nonZero;
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                {edited && !changePending && (
-                    <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
-                        onClick={() => dispatch({ type: 'revert' })}
-                    >
-                        <Icon name='history' size='lg' />
-                    </Button>
-                )}
-            </Heading>
-
-            <Box sx={{ p: [2, 3] }}>
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {edited && !changePending && (
+                        <button
+                            onClick={() => dispatch({ type: 'revert' })}
+                            className='hover:enabled:text-error-700'
+                        >
+                            <Icon name='history' size='lg' />
+                        </button>
+                    )}
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
                 <EditableRow
                     label='Deposit'
                     inputId='deposit-scr'
@@ -95,39 +95,46 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                     }
                 />
 
-                {newPoolShare.infinite ? (
-                    <StaticRow
-                        label='Pool share'
-                        inputId='deposit-share'
-                        amount='N/A'
-                    />
-                ) : (
-                    <StaticRow
-                        label='Pool share'
-                        inputId='deposit-share'
-                        amount={newPoolShare.prettify(4)}
-                        pendingAmount={poolShareChange?.prettify(4).concat('%')}
-                        pendingColor={
-                            poolShareChange?.positive ? 'success' : 'danger'
-                        }
-                        unit='%'
-                    />
-                )}
-
-                {!originalDeposit.isEmpty && (
-                    <>
+                <div className='flex flex-col gap-3 px-3'>
+                    {newPoolShare.infinite ? (
                         <StaticRow
-                            label='Liquidation gain'
-                            inputId='deposit-gain'
-                            amount={originalDeposit.collateralGain.prettify(4)}
-                            color={
-                                originalDeposit.collateralGain.nonZero &&
-                                'success'
-                            }
-                            unit='tFIL'
+                            label='Pool share'
+                            inputId='deposit-share'
+                            amount='N/A'
                         />
-
+                    ) : (
                         <StaticRow
+                            label='Pool share'
+                            inputId='deposit-share'
+                            amount={newPoolShare.prettify(4)}
+                            pendingAmount={poolShareChange
+                                ?.prettify(4)
+                                .concat('%')}
+                            pendingColor={
+                                poolShareChange?.positive
+                                    ? 'text-success-700'
+                                    : 'text-error-700'
+                            }
+                            unit='%'
+                        />
+                    )}
+
+                    {!originalDeposit.isEmpty && (
+                        <>
+                            <StaticRow
+                                label='Liquidation gain'
+                                inputId='deposit-gain'
+                                amount={originalDeposit.collateralGain.prettify(
+                                    4
+                                )}
+                                color={
+                                    originalDeposit.collateralGain.nonZero &&
+                                    'text-success-700'
+                                }
+                                unit='tFIL'
+                            />
+
+                            {/* <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
                             amount={originalDeposit.protocolTokenReward.prettify()}
@@ -138,7 +145,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                             unit={GT}
                             infoIcon={
                                 <InfoIcon
-                                    tooltip={
+                                    message={
                                         <Card
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
@@ -154,13 +161,13 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                     }
                                 />
                             }
-                        />
-                    </>
-                )}
+                        /> */}
+                        </>
+                    )}
+                </div>
                 {children}
-            </Box>
-
+            </div>
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

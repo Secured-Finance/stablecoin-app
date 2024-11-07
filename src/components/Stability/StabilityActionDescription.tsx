@@ -4,7 +4,7 @@ import {
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
 import React from 'react';
-import { COIN, GT } from '../../strings';
+import { COIN } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
 
 type StabilityActionDescriptionProps = {
@@ -18,9 +18,9 @@ export const StabilityActionDescription: React.FC<
     const collateralGain = originalDeposit.collateralGain.nonZero
         ?.prettify(4)
         .concat(' tFIL');
-    const protocolTokenReward = originalDeposit.protocolTokenReward.nonZero
-        ?.prettify()
-        .concat(' ', GT);
+    // const protocolTokenReward = originalDeposit.protocolTokenReward.nonZero
+    //     ?.prettify()
+    //     .concat(' ', GT);
 
     return (
         <ActionDescription>
@@ -41,7 +41,7 @@ export const StabilityActionDescription: React.FC<
                     to your wallet
                 </>
             )}
-            {(collateralGain || protocolTokenReward) && (
+            {/* {(collateralGain || protocolTokenReward) && (
                 <>
                     {' '}
                     and claiming at least{' '}
@@ -53,6 +53,12 @@ export const StabilityActionDescription: React.FC<
                     ) : (
                         <Amount>{collateralGain ?? protocolTokenReward}</Amount>
                     )}
+                </>
+            )} */}
+            {collateralGain && (
+                <>
+                    {' '}
+                    and claiming at least <Amount>{collateralGain}</Amount>
                 </>
             )}
             .

@@ -16,9 +16,9 @@ import {
 } from '@secured-finance/lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
+import { Tooltip } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
-import { Tooltip } from './Tooltip';
 import { TransactionStatus } from './TransactionStatus';
 
 type TransactionIdle = {
@@ -228,11 +228,12 @@ export function Transaction<C extends React.ReactElement<ButtonlikeProps>>({
     }
 
     return tooltip ? (
-        <>
-            <Tooltip message={tooltip} placement={tooltipPlacement || 'right'}>
-                {clonedTrigger}
-            </Tooltip>
-        </>
+        <Tooltip
+            iconElement={clonedTrigger}
+            placement={tooltipPlacement || 'right'}
+        >
+            {tooltip}
+        </Tooltip>
     ) : (
         clonedTrigger
     );

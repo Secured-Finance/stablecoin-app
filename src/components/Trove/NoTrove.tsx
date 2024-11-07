@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-import { InfoMessage } from '../InfoMessage';
+import InfoIcon from 'src/assets/icons/information-circle.svg';
+import { Button } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useTroveView } from './context/TroveViewContext';
 
 export const NoTrove: React.FC = () => {
@@ -11,17 +12,23 @@ export const NoTrove: React.FC = () => {
     }, [dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>Trove</Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title="You haven't borrowed any USDFC yet.">
-                    You can borrow USDFC by opening a Trove.
-                </InfoMessage>
-
-                <Flex variant='layout.actions'>
-                    <Button onClick={handleOpenTrove}>Open Trove</Button>
-                </Flex>
-            </Box>
-        </Card>
+        <CardComponent
+            title='Trove'
+            actionComponent={
+                <Button onClick={handleOpenTrove}>Open Trove</Button>
+            }
+        >
+            <div className='flex flex-col gap-1 laptop:gap-2'>
+                <div className='flex items-center gap-1'>
+                    <InfoIcon className='h-4 w-4' />
+                    <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
+                        You haven&apos;t borrowed any USDFC yet.
+                    </h3>
+                </div>
+                <p className='typography-desktop-body-4'>
+                    You can mint and borrow USDFC by opening a Trove.
+                </p>
+            </div>
+        </CardComponent>
     );
 };

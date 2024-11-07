@@ -1,26 +1,8 @@
-import { Box, Flex, Text } from 'theme-ui';
-import { Icon } from './Icon';
+import InfoIconFill from 'src/assets/icons/information-circle-fill.svg';
 
 export const InfoBubble: React.FC<React.PropsWithChildren> = ({ children }) => (
-    <Box
-        sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-
-            mb: [2, 3],
-            p: 3,
-
-            border: 1,
-            borderRadius: '8px',
-            borderColor: 'accent',
-            boxShadow: 2,
-            bg: 'rgba(46, 182, 234, 0.05)',
-        }}
-    >
-        <Flex sx={{ alignItems: 'center' }}>
-            <Icon name='info-circle' size='lg' />
-            <Text sx={{ ml: 2 }}>{children}</Text>
-        </Flex>
-    </Box>
+    <div className='typography-desktop-body-5 flex min-h-10 items-center gap-2 rounded-md border border-primary-300 bg-primary-500/10 px-2.5 py-1.5 text-neutral-900'>
+        <InfoIconFill className='h-4 w-4 flex-shrink-0 text-primary-700' />
+        <span>{children}</span>
+    </div>
 );

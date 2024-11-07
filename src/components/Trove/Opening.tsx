@@ -7,10 +7,12 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
-import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Button, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading, Spinner } from 'theme-ui';
+import { Card, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { InfoBubble } from '../InfoBubble';
@@ -103,21 +105,51 @@ export const Opening: React.FC = () => {
     }, [collateral, borrowAmount]);
 
     return (
-        <Card>
-            <Heading>
-                Trove
-                {isDirty && !isTransactionPending && (
+        <CardComponent
+            title={
+                <>
+                    Trove
+                    {isDirty && !isTransactionPending && (
+                        <button
+                            className='hover:enabled:text-error-700'
+                            onClick={reset}
+                        >
+                            <Icon name='history' size='lg' />
+                        </button>
+                    )}
+                </>
+            }
+            actionComponent={
+                <>
                     <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
-                        onClick={reset}
+                        onClick={handleCancelPressed}
+                        variant={ButtonVariants.tertiary}
                     >
-                        <Icon name='history' size='lg' />
+                        Cancel
                     </Button>
-                )}
-            </Heading>
 
-            <Box sx={{ p: [2, 3] }}>
+                    {gasEstimationState.type === 'inProgress' ? (
+                        <Button disabled>
+                            <Spinner size={24} sx={{ color: 'background' }} />
+                        </Button>
+                    ) : stableTroveChange ? (
+                        <TroveAction
+                            transactionId={TRANSACTION_ID}
+                            change={stableTroveChange}
+                            maxBorrowingRate={maxBorrowingRate}
+                            borrowingFeeDecayToleranceMinutes={60}
+                        >
+                            Confirm
+                        </TroveAction>
+                    ) : (
+                        <Button variant={ButtonVariants.secondary} disabled>
+                            Confirm
+                        </Button>
+                    )}
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
                 <EditableRow
                     label='Collateral'
                     inputId='trove-collateral'
@@ -144,83 +176,100 @@ export const Opening: React.FC = () => {
                     }
                 />
 
-                <StaticRow
-                    label='Liquidation Reserve'
-                    inputId='trove-liquidation-reserve'
-                    amount={`${LIQUIDATION_RESERVE}`}
-                    unit={COIN}
-                    infoIcon={
-                        <InfoIcon
-                            tooltip={
-                                <Card variant='tooltip' sx={{ width: '200px' }}>
-                                    An amount set aside to cover the
-                                    liquidator’s gas costs if your Trove needs
-                                    to be liquidated. The amount increases your
-                                    debt and is refunded if you close your Trove
-                                    by fully paying off its net debt.
-                                </Card>
-                            }
-                        />
-                    }
-                />
+                <div className='flex flex-col gap-3 px-3'>
+                    <StaticRow
+                        label='Liquidation Reserve'
+                        inputId='trove-liquidation-reserve'
+                        amount={`${LIQUIDATION_RESERVE}`}
+                        unit={COIN}
+                        infoIcon={
+                            <InfoIcon
+                                message={
+                                    <Card
+                                        variant='tooltip'
+                                        sx={{ width: '200px' }}
+                                    >
+                                        An amount set aside to cover the
+                                        liquidator’s gas costs if your Trove
+                                        needs to be liquidated. The amount
+                                        increases your debt and is refunded if
+                                        you close your Trove by fully paying off
+                                        its net debt.
+                                    </Card>
+                                }
+                            />
+                        }
+                    />
 
-                <StaticRow
-                    label='Borrowing Fee'
-                    inputId='trove-borrowing-fee'
-                    amount={fee.prettify(2)}
-                    pendingAmount={feePct.toString(2)}
-                    unit={COIN}
-                    infoIcon={
-                        <InfoIcon
-                            tooltip={
-                                <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    This amount is deducted from the borrowed
-                                    amount as a one-time fee. There are no
-                                    recurring fees for borrowing, which is thus
-                                    interest-free.
-                                </Card>
-                            }
-                        />
-                    }
-                />
+                    <StaticRow
+                        label='Borrowing Fee'
+                        inputId='trove-borrowing-fee'
+                        amount={fee.prettify(2)}
+                        pendingAmount={feePct.toString(2)}
+                        unit={COIN}
+                        infoIcon={
+                            <InfoIcon
+                                message={
+                                    <Card
+                                        variant='tooltip'
+                                        sx={{ width: '240px' }}
+                                    >
+                                        This amount is deducted from the
+                                        borrowed amount as a one-time fee. There
+                                        are no recurring fees for borrowing,
+                                        which is thus interest-free.
+                                    </Card>
+                                }
+                            />
+                        }
+                    />
 
-                <StaticRow
-                    label='Total debt'
-                    inputId='trove-total-debt'
-                    amount={totalDebt.prettify(2)}
-                    unit={COIN}
-                    infoIcon={
-                        <InfoIcon
-                            tooltip={
-                                <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    The total amount of USDFC your Trove will
-                                    hold.{' '}
-                                    {isDirty && (
-                                        <>
-                                            You will need to repay{' '}
-                                            {totalDebt
-                                                .sub(LIQUIDATION_RESERVE)
-                                                .prettify(2)}{' '}
-                                            USDFC to reclaim your collateral (
-                                            {LIQUIDATION_RESERVE.toString()}{' '}
-                                            USDFC Liquidation Reserve excluded).
-                                        </>
-                                    )}
-                                </Card>
-                            }
-                        />
-                    }
-                />
+                    <StaticRow
+                        label='Total debt'
+                        inputId='trove-total-debt'
+                        amount={totalDebt.prettify(2)}
+                        unit={COIN}
+                        infoIcon={
+                            <InfoIcon
+                                message={
+                                    <Card
+                                        variant='tooltip'
+                                        sx={{ width: '240px' }}
+                                    >
+                                        The total amount of USDFC your Trove
+                                        will hold.{' '}
+                                        {isDirty && (
+                                            <>
+                                                You will need to repay{' '}
+                                                {totalDebt
+                                                    .sub(LIQUIDATION_RESERVE)
+                                                    .prettify(2)}{' '}
+                                                USDFC to reclaim your collateral
+                                                (
+                                                {LIQUIDATION_RESERVE.toString()}{' '}
+                                                USDFC Liquidation Reserve
+                                                excluded).
+                                            </>
+                                        )}
+                                    </Card>
+                                }
+                            />
+                        }
+                    />
+                </div>
 
                 <CollateralRatio value={collateralRatio} />
 
                 <InfoBubble>
                     Keep your collateral ratio above the{' '}
-                    <Link sx={{ variant: 'styles.a' }} href='/risky-troves'>
+                    <NavLink
+                        to='/risky-troves'
+                        className='font-semibold text-primary-500'
+                    >
                         riskiest Troves
-                    </Link>{' '}
+                    </NavLink>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/usdfc-redemptions#how-can-i-avoid-being-redeemed-against'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
                         redeemed.
                     </LearnMoreLink>
                 </InfoBubble>
@@ -241,31 +290,8 @@ export const Opening: React.FC = () => {
                     gasEstimationState={gasEstimationState}
                     setGasEstimationState={setGasEstimationState}
                 />
-
-                <Flex variant='layout.actions'>
-                    <Button variant='cancel' onClick={handleCancelPressed}>
-                        Cancel
-                    </Button>
-
-                    {gasEstimationState.type === 'inProgress' ? (
-                        <Button disabled>
-                            <Spinner size={24} sx={{ color: 'background' }} />
-                        </Button>
-                    ) : stableTroveChange ? (
-                        <TroveAction
-                            transactionId={TRANSACTION_ID}
-                            change={stableTroveChange}
-                            maxBorrowingRate={maxBorrowingRate}
-                            borrowingFeeDecayToleranceMinutes={60}
-                        >
-                            Confirm
-                        </TroveAction>
-                    ) : (
-                        <Button disabled>Confirm</Button>
-                    )}
-                </Flex>
-            </Box>
-            {isTransactionPending && <LoadingOverlay />}
-        </Card>
+                {isTransactionPending && <LoadingOverlay />}
+            </div>
+        </CardComponent>
     );
 };

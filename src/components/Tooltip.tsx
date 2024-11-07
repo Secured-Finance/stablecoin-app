@@ -1,7 +1,7 @@
 import type { TippyProps } from '@tippyjs/react';
 import Tippy from '@tippyjs/react';
 import React from 'react';
-import { Box, Card, Link } from 'theme-ui';
+import { Box, Card } from 'theme-ui';
 
 export type TooltipProps = Pick<TippyProps, 'placement'> &
     React.PropsWithChildren<{
@@ -18,9 +18,14 @@ export const LearnMoreLink: React.FC<LearnMoreLinkProps> = ({
     children,
 }) => {
     return (
-        <Link href={link} target='_blank'>
+        <a
+            href={link}
+            target='_blank'
+            className='font-semibold text-primary-500'
+            rel='noreferrer'
+        >
             {children ?? <>Learn more</>}
-        </Link>
+        </a>
     );
 };
 
@@ -45,7 +50,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
                 </Card>
             }
         >
-            <span>{children}</span>
+            <span className='flex items-center'>{children}</span>
         </Tippy>
     );
 };

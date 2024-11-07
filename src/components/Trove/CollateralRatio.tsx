@@ -5,8 +5,8 @@ import {
     Percent,
 } from '@secured-finance/lib-base';
 import React from 'react';
-import { Box, Card, Flex } from 'theme-ui';
-import { Icon } from '../Icon';
+import HeartIcon from 'src/assets/icons/heart.svg';
+import { Card } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';
@@ -25,10 +25,8 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
     const changePct = change && new Percent(change);
     return (
         <>
-            <Flex>
-                <Box sx={{ mt: [2, 0], ml: 3, mr: -2, fontSize: '24px' }}>
-                    <Icon name='heartbeat' />
-                </Box>
+            <div className='flex items-center gap-2'>
+                <HeartIcon className='h-8 w-8' />
 
                 <StaticRow
                     label='Collateral ratio'
@@ -36,12 +34,12 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                     amount={collateralRatioPct.prettify()}
                     color={
                         value?.gt(CRITICAL_COLLATERAL_RATIO)
-                            ? 'success'
+                            ? 'text-success-700'
                             : value?.gt(1.2)
-                            ? 'warning'
+                            ? 'text-warning-700'
                             : value?.lte(1.2)
-                            ? 'danger'
-                            : 'muted'
+                            ? 'text-error-700'
+                            : 'text-neutral-300'
                     }
                     pendingAmount={
                         change?.positive?.absoluteValue?.gt(10)
@@ -50,10 +48,12 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                             ? '--'
                             : changePct?.nonZeroish(2)?.prettify()
                     }
-                    pendingColor={change?.positive ? 'success' : 'danger'}
+                    pendingColor={
+                        change?.positive ? 'text-success-700' : 'text-error-700'
+                    }
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '220px' }}>
                                     The ratio between the dollar value of the
                                     collateral and the debt (in USDFC) you are
@@ -69,7 +69,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                         />
                     }
                 />
-            </Flex>
+            </div>
         </>
     );
 };
@@ -87,11 +87,11 @@ export const CollateralRatioInfoBubble: React.FC<
             {value?.lt(1.5) && (
                 <InfoBubble>
                     Keep your collateral ratio above 150% to avoid being{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/stability-pool-and-liquidations#what-are-liquidations'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#what-are-liquidations'>
                         liquidated
                     </LearnMoreLink>{' '}
                     under{' '}
-                    <LearnMoreLink link='https://docs.liquity.org/faq/recovery-mode'>
+                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
                         Recovery Mode.
                     </LearnMoreLink>
                 </InfoBubble>

@@ -1,7 +1,8 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
+import { Button } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { CollateralSurplusAction } from '../CollateralSurplusAction';
 import { InfoMessage } from '../InfoMessage';
 import { useTroveView } from './context/TroveViewContext';
@@ -19,22 +20,22 @@ export const LiquidatedTrove: React.FC = () => {
     }, [dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>Trove</Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title='Your Trove has been liquidated.'>
-                    {hasSurplusCollateral
-                        ? 'Please reclaim your remaining collateral before opening a new Trove.'
-                        : 'You can borrow USDFC by opening a Trove.'}
-                </InfoMessage>
-
-                <Flex variant='layout.actions'>
+        <CardComponent
+            title='Trove'
+            actionComponent={
+                <>
                     {hasSurplusCollateral && <CollateralSurplusAction />}
                     {!hasSurplusCollateral && (
                         <Button onClick={handleOpenTrove}>Open Trove</Button>
                     )}
-                </Flex>
-            </Box>
-        </Card>
+                </>
+            }
+        >
+            <InfoMessage title='Your Trove has been liquidated.'>
+                {hasSurplusCollateral
+                    ? 'Please reclaim your remaining collateral before opening a new Trove.'
+                    : 'You can borrow USDFC by opening a Trove.'}
+            </InfoMessage>
+        </CardComponent>
     );
 };

@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-import { InfoMessage } from '../InfoMessage';
+import InfoIcon from 'src/assets/icons/information-circle.svg';
+import { Button } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useStabilityView } from './context/StabilityViewContext';
-import { RemainingProtocolToken } from './RemainingProtocolToken';
-import { Yield } from './Yield';
 
 export const NoDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
@@ -13,31 +12,40 @@ export const NoDeposit: React.FC = () => {
     }, [dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                <Flex sx={{ justifyContent: 'flex-end' }}>
-                    <RemainingProtocolToken />
-                </Flex>
-            </Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <InfoMessage title='You have no USDFC in the Stability Pool.'>
-                    You can earn tFIL and SCR rewards by depositing USDFC.
-                </InfoMessage>
-
-                <Flex variant='layout.actions'>
-                    <Flex
-                        sx={{
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {/* <div className='flex justify-end'>
+                        <RemainingProtocolToken />
+                    </div> */}
+                </>
+            }
+            actionComponent={
+                <>
+                    {/* <Flex sx={{
                             justifyContent: 'flex-start',
                             flex: 1,
                             alignItems: 'center',
                         }}
-                    >
+                >
                         <Yield />
-                    </Flex>
+                    </Flex> */}
                     <Button onClick={handleOpenTrove}>Deposit</Button>
-                </Flex>
-            </Box>
-        </Card>
+                </>
+            }
+        >
+            <div className='flex flex-col gap-1 laptop:gap-2'>
+                <div className='flex items-center gap-1'>
+                    <InfoIcon className='h-4 w-4' />
+                    <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
+                        You have no USDFC in the Stability Pool.
+                    </h3>
+                </div>
+                <p className='typography-desktop-body-4'>
+                    You can earn tFIL rewards by depositing USDFC.
+                </p>
+            </div>
+        </CardComponent>
     );
 };

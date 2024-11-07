@@ -3,8 +3,8 @@ import {
     SfStablecoinStoreState,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
+import { Button } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';
 
 type StabilityDepositActionProps = React.PropsWithChildren<{
@@ -21,6 +21,7 @@ export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
     change,
 }) => {
     const { config, sfStablecoin } = useSfStablecoin();
+
     const frontendRegistered = useSfStablecoinSelector(
         selectFrontendRegistered
     );

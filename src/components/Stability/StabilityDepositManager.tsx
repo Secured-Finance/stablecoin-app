@@ -5,12 +5,12 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
+import { Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { Button, Flex } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
@@ -166,8 +166,11 @@ export const StabilityDepositManager: React.FC = () => {
                     </InfoBubble>
                 ))}
 
-            <Flex variant='layout.actions'>
-                <Button variant='cancel' onClick={handleCancel}>
+            <div className='flex justify-end gap-2'>
+                <Button
+                    variant={ButtonVariants.tertiary}
+                    onClick={handleCancel}
+                >
                     Cancel
                 </Button>
 
@@ -181,7 +184,7 @@ export const StabilityDepositManager: React.FC = () => {
                 ) : (
                     <Button disabled>Confirm</Button>
                 )}
-            </Flex>
+            </div>
         </StabilityDepositEditor>
     );
 };

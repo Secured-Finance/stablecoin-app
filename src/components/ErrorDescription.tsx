@@ -1,28 +1,10 @@
-import { Box, Flex, Text } from 'theme-ui';
-import { Icon } from './Icon';
+import AlertIcon from 'src/assets/icons/alert-fill.svg';
 
 export const ErrorDescription: React.FC<React.PropsWithChildren> = ({
     children,
 }) => (
-    <Box
-        sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-
-            mb: [2, 3],
-            p: 3,
-
-            border: 1,
-            borderRadius: '8px',
-            borderColor: 'danger',
-            boxShadow: 2,
-            bg: 'rgba(220, 44, 16, 0.05)',
-        }}
-    >
-        <Flex sx={{ alignItems: 'center' }}>
-            <Icon name='exclamation-triangle' size='lg' />
-            <Text sx={{ ml: 2 }}>{children}</Text>
-        </Flex>
-    </Box>
+    <div className='typography-desktop-body-5 flex min-h-10 items-center gap-2 rounded-md border border-error-300 bg-error-500/10 px-2.5 py-1.5 text-neutral-900'>
+        <AlertIcon className='h-4 w-4 flex-shrink-0 text-error-700' />
+        <span>{children}</span>
+    </div>
 );

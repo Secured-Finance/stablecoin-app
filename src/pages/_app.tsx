@@ -22,7 +22,7 @@ import {
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
-import { Flex, Heading, Link, Paragraph, ThemeUIProvider } from 'theme-ui';
+import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
@@ -55,15 +55,6 @@ const UnsupportedMainnetFallback: React.FC = () => (
         <Paragraph sx={{ mb: 3 }}>
             Please change your network to Filecoin Calibration.
         </Paragraph>
-
-        <Paragraph>
-            If you would like to use this protocol on mainnet, please pick a
-            frontend{' '}
-            <Link href='https://www.liquity.org/frontend'>
-                here <Icon name='external-link-alt' size='xs' />
-            </Link>
-            .
-        </Paragraph>
     </Flex>
 );
 
@@ -81,7 +72,7 @@ const UnsupportedNetworkFallback: React.FC = () => (
             <Icon name='exclamation-triangle' /> This protocol is not supported
             on this network.
         </Heading>
-        Please switch to Filecoin or Filecoin Calibration.
+        Please switch to Filecoin Calibration.
     </Flex>
 );
 
@@ -103,9 +94,9 @@ if (typeof window !== 'undefined') {
 }
 
 const metadata = {
-    name: 'SfStablecoin',
-    description: 'AppKit Example',
-    url: 'https://web3modal.com', // origin must match your domain & subdomain
+    name: 'Secured Finance',
+    description: 'Stablecoin',
+    url: 'https://usdfc.secured.finance/', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
@@ -136,7 +127,6 @@ createWeb3Modal({
     enableAnalytics: true,
     enableSwaps: false,
     enableOnramp: false,
-    allowUnsupportedChain: true,
 });
 
 function App({ Component, pageProps }: AppProps) {

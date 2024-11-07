@@ -3,8 +3,15 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
     content: ['./src/**/*.{ts,tsx,js,jsx}', './public/index.html'],
     theme: {
+        boxShadow: {
+            dropdown: '0px 16px 64px -48px rgba(31, 47, 70, 0.4)',
+            sidenav: '0px 46px 64px 0px rgba(31, 47, 70, 0.4)',
+            card: '0px 4px 32px 0px rgba(100, 116, 139, 0.1)',
+            stats: '0px 4px 32px 0px rgba(102, 109, 180, 0.15)',
+        },
         extend: {
             lineHeight: {
+                '3.5': '14px',
                 '4.5': '18px',
                 '5.5': '22px',
                 '11': '44px',
@@ -99,6 +106,11 @@ module.exports = {
                     '90': 'rgba(255, 255, 255, 0.9)',
                     DEFAULT: '#FFFFFF',
                 },
+                tooltip: {
+                    success: '#0C474C',
+                    warning: '#422F09',
+                    error: '#4A1220',
+                },
             },
         },
         fontFamily: {
@@ -137,6 +149,9 @@ module.exports = {
             '22': '88px',
             '24': '96px',
             '26': '104px',
+            base: '16px',
+            sm: '14px',
+            xs: '12px',
         },
     },
 };

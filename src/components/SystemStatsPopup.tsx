@@ -1,8 +1,9 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
+import InfoIcon from 'src/assets/icons/information-circle-fill.svg';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Button, Container, Flex } from 'theme-ui';
-import { Icon } from './Icon';
+import { Container } from 'theme-ui';
 import { SystemStats } from './SystemStats';
 
 const select = ({ total, price }: SfStablecoinStoreState) => ({ total, price });
@@ -15,36 +16,17 @@ export const SystemStatsPopup: React.FC = () => {
 
     return (
         <>
-            <Button
+            <button
+                className='flex h-8 items-center rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:hidden'
                 onClick={() => setSystemStatsOpen(!systemStatsOpen)}
-                variant='icon'
-                sx={{
-                    position: 'relative',
-                    display: ['block', 'none'],
-                }}
             >
-                <Icon name='info-circle' size='2x' />
-
-                {total.collateralRatioIsBelowCritical(price) && (
-                    <Flex
-                        sx={{
-                            position: 'absolute',
-                            right: 0,
-                            top: 0,
-                            width: '100%',
-                            height: '100%',
-
-                            alignItems: 'flex-start',
-                            justifyContent: 'flex-end',
-                            pt: '2px',
-
-                            color: 'danger',
-                        }}
-                    >
-                        <Icon name='exclamation-circle' size='xs' />
-                    </Flex>
-                )}
-            </Button>
+                <InfoIcon
+                    className={clsx('text-primary-500', {
+                        'text-red-500':
+                            total.collateralRatioIsBelowCritical(price),
+                    })}
+                />
+            </button>
 
             {systemStatsOpen && (
                 <Container
@@ -55,8 +37,9 @@ export const SystemStatsPopup: React.FC = () => {
                             setSystemStatsOpen(false);
                         }
                     }}
+                    className='!flex items-center justify-center px-5'
                 >
-                    <SystemStats variant='infoPopup' showBalances />
+                    <SystemStats showBalances />
                 </Container>
             )}
         </>

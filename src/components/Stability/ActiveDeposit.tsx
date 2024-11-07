@@ -1,18 +1,16 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
+import { Button, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN } from '../../strings';
 import { Icon } from '../Icon';
-import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState } from '../Transaction';
 import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
 import { ClaimAndMove } from './actions/ClaimAndMove';
 import { ClaimRewards } from './actions/ClaimRewards';
 import { useStabilityView } from './context/StabilityViewContext';
-import { RemainingProtocolToken } from './RemainingProtocolToken';
-import { Yield } from './Yield';
 
 const selector = ({
     stabilityDeposit,
@@ -38,7 +36,7 @@ export const ActiveDeposit: React.FC = () => {
         dispatchEvent('ADJUST_DEPOSIT_PRESSED');
     }, [dispatchEvent]);
 
-    const hasReward = !stabilityDeposit.protocolTokenReward.isZero;
+    // const hasReward = !stabilityDeposit.protocolTokenReward.isZero;
     const hasGain = !stabilityDeposit.collateralGain.isZero;
     const hasTrove = !trove.isEmpty;
 
@@ -55,24 +53,40 @@ export const ActiveDeposit: React.FC = () => {
     }, [transactionState.type, dispatchEvent]);
 
     return (
-        <Card>
-            <Heading>
-                Stability Pool
-                {!isWaitingForTransaction && (
+        <CardComponent
+            title={
+                <>
+                    Stability Pool
+                    {/* {!isWaitingForTransaction && (
                     <Flex sx={{ justifyContent: 'flex-end' }}>
                         <RemainingProtocolToken />
                     </Flex>
-                )}
-            </Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <Box>
-                    <DisabledEditableRow
-                        label='Deposit'
-                        inputId='deposit-debt-token'
-                        amount={stabilityDeposit.currentDebtToken.prettify()}
-                        unit={COIN}
-                    />
+                )} */}
+                </>
+            }
+            actionComponent={
+                <>
+                    <Button
+                        variant={ButtonVariants.tertiary}
+                        onClick={handleAdjustDeposit}
+                    >
+                        <Icon name='pen' size='sm' />
+                        &nbsp;Adjust
+                    </Button>
 
+                    <ClaimRewards disabled={!hasGain}>Claim tFIL</ClaimRewards>
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
+                <DisabledEditableRow
+                    label='Deposit'
+                    inputId='deposit-debt-token'
+                    amount={stabilityDeposit.currentDebtToken.prettify()}
+                    unit={COIN}
+                />
+
+                <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
                         label='Pool share'
                         inputId='deposit-share'
@@ -85,12 +99,13 @@ export const ActiveDeposit: React.FC = () => {
                         inputId='deposit-gain'
                         amount={stabilityDeposit.collateralGain.prettify(4)}
                         color={
-                            stabilityDeposit.collateralGain.nonZero && 'success'
+                            stabilityDeposit.collateralGain.nonZero &&
+                            'text-success-700'
                         }
                         unit='tFIL'
                     />
-
-                    <Flex sx={{ alignItems: 'center' }}>
+                </div>
+                {/* <Flex sx={{ alignItems: 'center' }}>
                         <StaticRow
                             label='Reward'
                             inputId='deposit-reward'
@@ -102,7 +117,7 @@ export const ActiveDeposit: React.FC = () => {
                             unit={GT}
                             infoIcon={
                                 <InfoIcon
-                                    tooltip={
+                                    message={
                                         <Card
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
@@ -124,28 +139,14 @@ export const ActiveDeposit: React.FC = () => {
                         >
                             <Yield />
                         </Flex>
-                    </Flex>
-                </Box>
-
-                <Flex variant='layout.actions'>
-                    <Button variant='outline' onClick={handleAdjustDeposit}>
-                        <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
-                    </Button>
-
-                    <ClaimRewards disabled={!hasGain && !hasReward}>
-                        Claim tFIL and SCR
-                    </ClaimRewards>
-                </Flex>
-
+                    </Flex> */}
                 {hasTrove && (
                     <ClaimAndMove disabled={!hasGain}>
-                        Claim SCR and move tFIL to Trove
+                        Move tFIL to Trove
                     </ClaimAndMove>
                 )}
-            </Box>
-
+            </div>
             {isWaitingForTransaction && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

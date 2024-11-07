@@ -4,7 +4,7 @@ import {
     getEnvShort,
     prefixTilde,
     toBytes32,
-} from './strings';
+} from 'src/utils';
 
 describe('getEnvShort', () => {
     it('should return the correct environment in short', () => {

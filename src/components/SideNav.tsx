@@ -1,54 +1,75 @@
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
-import { Box, Button, Container, Flex } from 'theme-ui';
-import { Icon } from './Icon';
-import { Link } from './Link';
-import { LiquityLogo } from './LiquityLogo';
-
-const logoHeight = '32px';
+import { NavLink, useLocation } from 'react-router-dom';
+import MenuIcon from 'src/assets/icons/menu.svg';
+import XIcon from 'src/assets/icons/x.svg';
+import { LINKS } from 'src/constants';
+import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const overlay = useRef<HTMLDivElement>(null);
 
+    const { pathname } = useLocation();
+
+    const handleOutsideClick = (
+        e:
+            | React.MouseEvent<HTMLDivElement, MouseEvent>
+            | React.KeyboardEvent<HTMLDivElement>
+    ) => {
+        if (e.target === overlay.current) {
+            setIsVisible(false);
+        }
+    };
+
     if (!isVisible) {
         return (
-            <Button
-                sx={{ display: ['flex', 'none'] }}
-                variant='icon'
+            <button
                 onClick={() => setIsVisible(true)}
+                className='flex items-center justify-center laptop:hidden'
             >
-                <Icon name='bars' size='lg' />
-            </Button>
+                <MenuIcon className='h-6 w-6' />
+            </button>
         );
     }
     return (
-        <Container
-            variant='infoOverlay'
+        <div
             ref={overlay}
-            onClick={e => {
-                if (e.target === overlay.current) {
-                    setIsVisible(false);
+            tabIndex={0}
+            className='fixed inset-0 z-50 h-screen w-screen bg-neutral-600/50 laptop:hidden'
+            onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    handleOutsideClick(e);
                 }
             }}
+            role='button'
+            onClick={handleOutsideClick}
         >
-            <Flex variant='layout.sidenav'>
-                <Button
-                    sx={{ position: 'fixed', right: '25vw', m: 2 }}
-                    variant='icon'
-                    onClick={() => setIsVisible(false)}
-                >
-                    <Icon name='times' size='2x' />
-                </Button>
-                <LiquityLogo height={logoHeight} p={2} />
-                <Box
-                    as='nav'
-                    sx={{ m: 3, mt: 1, p: 0 }}
-                    onClick={() => setIsVisible(false)}
-                >
-                    <Link to='/'>Dashboard</Link>
-                    <Link to='/risky-troves'>Risky Troves</Link>
-                </Box>
-            </Flex>
-        </Container>
+            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'>
+                <div className='flex items-center justify-between'>
+                    <SecuredFinanceLogo />
+                    <button onClick={() => setIsVisible(false)}>
+                        <XIcon className='h-6 w-6 font-bold text-primary-500' />
+                    </button>
+                </div>
+                <div className='flex flex-col gap-4'>
+                    {LINKS.map(link => (
+                        <NavLink
+                            key={link.label}
+                            to={link.to}
+                            className={clsx(
+                                'text-4.5 font-semibold leading-7 text-neutral-900',
+                                {
+                                    'text-primary-500': pathname === link.to,
+                                }
+                            )}
+                            onClick={() => setIsVisible(false)}
+                        >
+                            {link.label}
+                        </NavLink>
+                    ))}
+                </div>
+            </aside>
+        </div>
     );
 };

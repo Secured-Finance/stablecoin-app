@@ -1,12 +1,13 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback } from 'react';
+import { Button, ButtonVariants } from 'src/components/atoms';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
-import { DisabledEditableRow } from './Editor';
 import { useTroveView } from './context/TroveViewContext';
+import { DisabledEditableRow } from './Editor';
 
 const select = ({ trove, price }: SfStablecoinStoreState) => ({ trove, price });
 
@@ -23,40 +24,46 @@ export const ReadOnlyTrove: React.FC = () => {
 
     // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (
-        <Card>
-            <Heading>Trove</Heading>
-            <Box sx={{ p: [2, 3] }}>
-                <Box>
-                    <DisabledEditableRow
-                        label='Collateral'
-                        inputId='trove-collateral'
-                        amount={trove.collateral.prettify(4)}
-                        unit='tFIL'
-                    />
-
-                    <DisabledEditableRow
-                        label='Debt'
-                        inputId='trove-debt'
-                        amount={trove.debt.prettify()}
-                        unit={COIN}
-                    />
-
-                    <CollateralRatio value={trove.collateralRatio(price)} />
-                    <CollateralRatioInfoBubble
-                        value={trove.collateralRatio(price)}
-                    />
-                </Box>
-
-                <Flex variant='layout.actions'>
-                    <Button variant='outline' onClick={handleCloseTrove}>
+        <CardComponent
+            title='Trove'
+            actionComponent={
+                <>
+                    <Button
+                        variant={ButtonVariants.secondary}
+                        onClick={handleCloseTrove}
+                    >
                         Close Trove
                     </Button>
-                    <Button onClick={handleAdjustTrove}>
+                    <Button
+                        variant={ButtonVariants.primary}
+                        onClick={handleAdjustTrove}
+                    >
                         <Icon name='pen' size='sm' />
                         &nbsp;Adjust
                     </Button>
-                </Flex>
-            </Box>
-        </Card>
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
+                <DisabledEditableRow
+                    label='Collateral'
+                    inputId='trove-collateral'
+                    amount={trove.collateral.prettify(4)}
+                    unit='tFIL'
+                />
+
+                <DisabledEditableRow
+                    label='Debt'
+                    inputId='trove-debt'
+                    amount={trove.debt.prettify()}
+                    unit={COIN}
+                />
+
+                <CollateralRatio value={trove.collateralRatio(price)} />
+                <CollateralRatioInfoBubble
+                    value={trove.collateralRatio(price)}
+                />
+            </div>
+        </CardComponent>
     );
 };

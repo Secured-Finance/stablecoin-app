@@ -1,8 +1,9 @@
 import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
+import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { Box, Button, Card, Flex, Heading, Input, Label } from 'theme-ui';
-import { Icon } from './Icon';
+import { getSetPriceEnabled } from 'src/utils';
 import { Transaction } from './Transaction';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
@@ -11,9 +12,11 @@ export const PriceManager: React.FC = () => {
     const {
         sfStablecoin: {
             send: sfStablecoin,
-            connection: { _priceFeedIsTestnet: canSetPrice },
+            connection: { _priceFeedIsTestnet },
         },
     } = useSfStablecoin();
+
+    const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
 
     const price = useSfStablecoinSelector(selectPrice);
     const [editedPrice, setEditedPrice] = useState(price.toString(2));
@@ -23,47 +26,52 @@ export const PriceManager: React.FC = () => {
     }, [price]);
 
     return (
-        <Card>
-            <Heading>Price feed</Heading>
-
-            <Box sx={{ p: [2, 3] }}>
-                <Flex sx={{ alignItems: 'stretch' }}>
-                    <Label>tFIL</Label>
-
-                    <Label variant='unit'>$</Label>
-
-                    <Input
-                        type={canSetPrice ? 'number' : 'text'}
-                        step='any'
-                        value={editedPrice}
-                        onChange={e => setEditedPrice(e.target.value)}
-                        disabled={!canSetPrice}
-                    />
-
-                    {canSetPrice && (
-                        <Flex sx={{ ml: 2, alignItems: 'center' }}>
-                            <Transaction
-                                id='set-price'
-                                tooltip='Set'
-                                tooltipPlacement='bottom'
-                                send={overrides => {
-                                    if (!editedPrice) {
-                                        throw new Error('Invalid price');
-                                    }
-                                    return sfStablecoin.setPrice(
-                                        Decimal.from(editedPrice),
-                                        overrides
-                                    );
-                                }}
-                            >
-                                <Button variant='icon'>
-                                    <Icon name='chart-line' size='lg' />
-                                </Button>
-                            </Transaction>
-                        </Flex>
-                    )}
-                </Flex>
-            </Box>
-        </Card>
+        <CardComponent title='Price feed'>
+            <div className='flex items-center gap-2'>
+                {canSetPrice ? (
+                    <>
+                        <div className='typography-desktop-body-5'>tFIL</div>
+                        <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
+                            <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
+                                $
+                            </span>
+                            <input
+                                type='number'
+                                step='any'
+                                value={editedPrice}
+                                onChange={e => setEditedPrice(e.target.value)}
+                                className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
+                            />
+                        </div>
+                    </>
+                ) : (
+                    <span className='typography-desktop-body-4 flex h-full flex-1 items-center bg-neutral-50 text-neutral-900'>
+                        {`1 tFIL = ${editedPrice} USD`}
+                    </span>
+                )}
+                {canSetPrice && (
+                    <div className='flex items-center'>
+                        <Transaction
+                            id='set-price'
+                            tooltip='Set'
+                            tooltipPlacement='bottom'
+                            send={overrides => {
+                                if (!editedPrice) {
+                                    throw new Error('Invalid price');
+                                }
+                                return sfStablecoin.setPrice(
+                                    Decimal.from(editedPrice),
+                                    overrides
+                                );
+                            }}
+                        >
+                            <button>
+                                <TrendingUpIcon />
+                            </button>
+                        </Transaction>
+                    </div>
+                )}
+            </div>
+        </CardComponent>
     );
 };

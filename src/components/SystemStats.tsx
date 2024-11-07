@@ -1,14 +1,14 @@
-import { AddressZero } from '@ethersproject/constants';
 import {
     Decimal,
     Percent,
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
+import Link from 'next/link';
 import packageJson from 'package.json';
 import React from 'react';
+import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
-import { Box, Card, Heading, Link, Text } from 'theme-ui';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -22,21 +22,26 @@ const selectBalances = ({
     protocolTokenBalance,
 });
 
-const Balances: React.FC = () => {
-    const { accountBalance, debtTokenBalance, protocolTokenBalance } =
+const Balances = () => {
+    const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(selectBalances);
 
     return (
-        <Box sx={{ mb: 3 }}>
-            <Heading>My Account Balances</Heading>
+        <div className='flex flex-col gap-1'>
+            <div className='flex items-center gap-1'>
+                <Wallet className='h-6 w-6' />
+                <span className='typography-mobile-body-3 font-semibold capitalize text-neutral-900'>
+                    My Account Balances
+                </span>
+            </div>
             <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
             <Statistic lexicon={l.DEBT_TOKEN}>
                 {debtTokenBalance.prettify()}
             </Statistic>
-            <Statistic lexicon={l.PROTOCOL_TOKEN}>
+            {/* <Statistic lexicon={l.PROTOCOL_TOKEN}>
                 {protocolTokenBalance.prettify()}
-            </Statistic>
-        </Box>
+            </Statistic> */}
+        </div>
     );
 };
 
@@ -44,6 +49,10 @@ const GitHubCommit: React.FC<{ children?: string }> = ({ children }) =>
     children?.match(/[0-9a-f]{40}/) ? (
         <Link
             href={`https://github.com/Secured-Finance/stablecoin-contracts/commit/${children}`}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Stablecoin Contracts Github'
+            className='ml-1 font-semibold text-primary-500'
         >
             {children.substr(0, 7)}
         </Link>
@@ -77,17 +86,10 @@ const select = ({
         frontend.status === 'registered' ? frontend.kickbackRate : null,
 });
 
-export const SystemStats: React.FC<SystemStatsProps> = ({
-    variant = 'info',
-    showBalances,
-}) => {
+export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
     const {
         sfStablecoin: {
-            connection: {
-                version: contractsVersion,
-                deploymentDate,
-                frontendTag,
-            },
+            connection: { version: contractsVersion, deploymentDate },
         },
     } = useSfStablecoin();
 
@@ -97,8 +99,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         debtTokenInStabilityPool,
         total,
         borrowingRate,
-        totalStakedProtocolToken,
-        kickbackRate,
     } = useSfStablecoinSelector(select);
 
     const debtTokenInStabilityPoolPct =
@@ -106,82 +106,85 @@ export const SystemStats: React.FC<SystemStatsProps> = ({
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
-    const kickbackRatePct =
-        frontendTag === AddressZero ? '100' : kickbackRate?.mul(100).prettify();
 
     return (
-        <Card {...{ variant }}>
-            {showBalances && <Balances />}
+        <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
+            <div className='flex flex-col gap-3 laptop:gap-4'>
+                <h2 className='typography-mobile-body-2 flex font-semibold laptop:hidden'>
+                    My Info
+                </h2>
+                {showBalances && <Balances />}
 
-            <Heading>Statistics</Heading>
+                <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base laptop:leading-6'>
+                    SF Stablecoin Statistics
+                </span>
 
-            <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
-                Protocol
-            </Heading>
+                <div className='flex flex-col gap-1'>
+                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
+                        Protocol
+                    </span>
 
-            <Statistic lexicon={l.BORROW_FEE}>
-                {borrowingFeePct.toString(2)}
-            </Statistic>
+                    <Statistic lexicon={l.BORROW_FEE}>
+                        {borrowingFeePct.toString(2)}
+                    </Statistic>
 
-            <Statistic lexicon={l.TVL}>
-                {total.collateral.shorten()}{' '}
-                <Text sx={{ fontSize: 1 }}>&nbsp;tFIL</Text>
-                <Text sx={{ fontSize: 1 }}>
-                    &nbsp;($
-                    {Decimal.from(total.collateral.mul(price)).shorten()})
-                </Text>
-            </Statistic>
-            <Statistic lexicon={l.TROVES}>
-                {Decimal.from(numberOfTroves).prettify(0)}
-            </Statistic>
-            <Statistic lexicon={l.DEBT_TOKEN_SUPPLY}>
-                {total.debt.shorten()}
-            </Statistic>
-            {debtTokenInStabilityPoolPct && (
-                <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
-                    {debtTokenInStabilityPool.shorten()}
-                    <Text sx={{ fontSize: 1 }}>
-                        &nbsp;({debtTokenInStabilityPoolPct.toString(1)})
-                    </Text>
-                </Statistic>
-            )}
-            <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
-                {totalStakedProtocolToken.shorten()}
-            </Statistic>
-            <Statistic lexicon={l.TCR}>
-                {totalCollateralRatioPct.prettify()}
-            </Statistic>
-            <Statistic lexicon={l.RECOVERY_MODE}>
-                {total.collateralRatioIsBelowCritical(price) ? (
-                    <Box color='danger'>Yes</Box>
-                ) : (
-                    'No'
-                )}
-            </Statistic>
-            {}
+                    <Statistic lexicon={l.TVL}>
+                        {total.collateral.shorten()}
+                        <span>&nbsp;tFIL</span>
+                        <span>
+                            &nbsp;($
+                            {Decimal.from(
+                                total.collateral.mul(price)
+                            ).shorten()}
+                            )
+                        </span>
+                    </Statistic>
+                    <Statistic lexicon={l.TROVES}>
+                        {Decimal.from(numberOfTroves).prettify(0)}
+                    </Statistic>
+                    <Statistic lexicon={l.DEBT_TOKEN_SUPPLY}>
+                        {total.debt.shorten()}
+                    </Statistic>
+                    {debtTokenInStabilityPoolPct && (
+                        <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
+                            {debtTokenInStabilityPool.shorten()}
+                            <span>
+                                &nbsp;({debtTokenInStabilityPoolPct.toString(1)}
+                                )
+                            </span>
+                        </Statistic>
+                    )}
+                    {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
+                        {totalStakedProtocolToken.shorten()}
+                    </Statistic> */}
+                    <Statistic lexicon={l.TCR}>
+                        {totalCollateralRatioPct.prettify()}
+                    </Statistic>
+                    <Statistic lexicon={l.RECOVERY_MODE}>
+                        {total.collateralRatioIsBelowCritical(price) ? (
+                            <span className='text-red-500'>Yes</span>
+                        ) : (
+                            'No'
+                        )}
+                    </Statistic>
+                </div>
 
-            <Heading as='h2' sx={{ mt: 3, fontWeight: 'body' }}>
-                Frontend
-            </Heading>
-            {kickbackRatePct && (
-                <Statistic lexicon={l.KICKBACK_RATE}>
-                    {kickbackRatePct}%
-                </Statistic>
-            )}
-
-            <Box sx={{ mt: 3, opacity: 0.66 }}>
-                <Box sx={{ fontSize: 0 }}>
-                    Contracts version:{' '}
-                    <GitHubCommit>{contractsVersion}</GitHubCommit>
-                </Box>
-                <Box sx={{ fontSize: 0 }}>
-                    Deployed: {deploymentDate.toLocaleString()}
-                </Box>
-                <Box sx={{ fontSize: 0 }}>
-                    Frontend version:{' '}
-                    {!isProdEnv() ? 'development' : packageJson.version}
-                </Box>
-            </Box>
-        </Card>
+                <div className='flex flex-col gap-1 text-2.5 leading-3.5 text-neutral-600'>
+                    <div>
+                        <span>Contracts version:</span>
+                        <GitHubCommit>{contractsVersion}</GitHubCommit>
+                    </div>
+                    <div>
+                        <span>Deployed: {deploymentDate.toLocaleString()}</span>
+                    </div>
+                    <div>
+                        <span>Frontend version:</span>
+                        <span className='ml-1 font-semibold text-primary-500'>
+                            {!isProdEnv() ? 'development' : packageJson.version}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };

@@ -1,43 +1,46 @@
-import { memo, useEffect, useState } from 'react';
-import {
-    buildStyles,
-    CircularProgressbarWithChildren,
-} from 'react-circular-progressbar';
+import clsx from 'clsx';
+// import {
+//     buildStyles,
+//     CircularProgressbarWithChildren,
+// } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { Box, Flex, Text, ThemeUIStyleObject } from 'theme-ui';
-import { Icon } from './Icon';
+import Check from 'src/assets/icons/check.svg';
+import Cog from 'src/assets/icons/cog.svg';
+import Cross from 'src/assets/icons/x.svg';
 import type { TransactionState } from './Transaction';
 
-const strokeWidth = 10;
+// const strokeWidth = 10;
 
-const circularProgressbarStyle = {
-    strokeLinecap: 'butt',
-    pathColor: 'white',
-    trailColor: 'rgba(255, 255, 255, 0.33)',
-};
+// const circularProgressbarStyle = {
+//     strokeLinecap: 'butt',
+//     pathColor: 'white',
+//     trailColor: 'rgba(255, 255, 255, 0.33)',
+// };
 
-const slowProgress = {
-    strokeWidth,
-    styles: buildStyles({
-        ...circularProgressbarStyle,
-        pathTransitionDuration: 30,
-    }),
-};
+// const slowProgress = {
+//     strokeWidth,
+//     styles: buildStyles({
+//         ...circularProgressbarStyle,
+//         pathTransitionDuration: 30,
+//     }),
+// };
 
-const fastProgress = {
-    strokeWidth,
-    styles: buildStyles({
-        ...circularProgressbarStyle,
-        pathTransitionDuration: 0.75,
-    }),
-};
+// const fastProgress = {
+//     strokeWidth,
+//     styles: buildStyles({
+//         ...circularProgressbarStyle,
+//         pathTransitionDuration: 0.75,
+//     }),
+// };
+
+const iconClassName = 'h-6 w-6 laptop:h-8 laptop:w-8';
 
 export type TransactionStateType = TransactionState['type'];
 
-const Donut = memo(
-    CircularProgressbarWithChildren,
-    ({ value: prev }, { value: next }) => prev === next
-);
+// const Donut = memo(
+//     CircularProgressbarWithChildren,
+//     ({ value: prev }, { value: next }) => prev === next
+// );
 
 type TransactionProgressDonutProps = {
     state: TransactionStateType;
@@ -46,81 +49,65 @@ type TransactionProgressDonutProps = {
 const TransactionProgressDonut: React.FC<TransactionProgressDonutProps> = ({
     state,
 }) => {
-    const [value, setValue] = useState(0);
-    const maxValue = 1;
+    // const [value, setValue] = useState(0);
+    // const maxValue = 1;
 
-    useEffect(() => {
-        if (state === 'confirmed') {
-            setTimeout(() => setValue(maxValue), 40);
-        } else {
-            setTimeout(() => setValue(maxValue * 0.67), 20);
-        }
-    }, [state]);
+    // useEffect(() => {
+    //     if (state === 'confirmed') {
+    //         setTimeout(() => setValue(maxValue), 40);
+    //     } else {
+    //         setTimeout(() => setValue(maxValue * 0.67), 20);
+    //     }
+    // }, [state]);
 
     return state === 'confirmed' ? (
-        <Donut {...{ value, maxValue, ...fastProgress }}>
-            <Icon name='check' color='white' size='lg' />
-        </Donut>
+        <Check className={iconClassName} />
     ) : state === 'failed' || state === 'cancelled' ? (
-        <Donut value={0} {...{ maxValue, ...fastProgress }}>
-            <Icon name='times' color='white' size='lg' />
-        </Donut>
+        <Cross className={iconClassName} />
     ) : (
-        <Donut {...{ value, maxValue, ...slowProgress }}>
-            <Icon name='cog' color='white' size='lg' spin />
-        </Donut>
+        <Cog className={clsx(iconClassName, 'animate-spin')} />
     );
 };
 
 type TransactionStatusProps = {
     state: TransactionStateType;
     message?: string;
-    style?: ThemeUIStyleObject;
 };
 
 export const TransactionStatus: React.FC<TransactionStatusProps> = ({
     state,
     message,
-    style,
 }) => {
     if (state === 'idle' || state === 'waitingForApproval') {
         return null;
     }
 
     return (
-        <Flex
-            sx={{
-                alignItems: 'center',
-                bg:
-                    state === 'confirmed'
-                        ? 'success'
-                        : state === 'cancelled'
-                        ? 'warning'
-                        : state === 'failed'
-                        ? 'danger'
-                        : 'primary',
-                p: 3,
-                pl: 4,
-                position: 'fixed',
-                width: '100vw',
-                bottom: 0,
-                overflow: 'hidden',
-                ...style,
-            }}
+        <div
+            className={clsx(
+                'fixed bottom-0 left-0 flex w-full items-center gap-2 overflow-hidden px-5 py-4',
+                {
+                    'bg-[#D4FCD8]': state === 'confirmed',
+                    'bg-warning-300': state === 'cancelled',
+                    'bg-[#FFDAE0]': state === 'failed',
+                    'bg-[#E8E9FD]':
+                        state !== 'confirmed' &&
+                        state !== 'cancelled' &&
+                        state !== 'failed',
+                }
+            )}
         >
-            <Box sx={{ mr: 3, width: '40px', height: '40px' }}>
-                <TransactionProgressDonut state={state} />
-            </Box>
+            <TransactionProgressDonut state={state} />
 
-            <Text sx={{ fontSize: 3, color: 'white' }}>
+            <p className='typography-desktop-body-4 laptop:typography-desktop-body-3 font-semibold text-neutral-700'>
                 {state === 'waitingForConfirmation'
-                    ? 'Waiting for confirmation'
+                    ? 'Transaction is pending... Please wait.'
                     : state === 'cancelled'
                     ? 'Cancelled'
                     : state === 'failed'
                     ? message || 'Transaction failed. Please try again.'
                     : 'Confirmed'}
-            </Text>
-        </Flex>
+            </p>
+        </div>
     );
 };

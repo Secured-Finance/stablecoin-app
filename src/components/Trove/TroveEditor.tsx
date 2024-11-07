@@ -8,8 +8,9 @@ import {
     Trove,
 } from '@secured-finance/lib-base';
 import React from 'react';
+import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { Box, Card, Heading } from 'theme-ui';
+import { Card } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -56,10 +57,8 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
     );
 
     return (
-        <Card>
-            <Heading>Trove</Heading>
-
-            <Box sx={{ p: [2, 3] }}>
+        <CardComponent title='Trove'>
+            <div className='flex flex-col gap-3'>
                 <StaticRow
                     label='Collateral'
                     inputId='trove-collateral'
@@ -82,7 +81,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                         unit={COIN}
                         infoIcon={
                             <InfoIcon
-                                tooltip={
+                                message={
                                     <Card
                                         variant='tooltip'
                                         sx={{ width: '200px' }}
@@ -108,7 +107,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                     unit={COIN}
                     infoIcon={
                         <InfoIcon
-                            tooltip={
+                            message={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
                                     This amount is deducted from the borrowed
                                     amount as a one-time fee. There are no
@@ -126,9 +125,8 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                 />
 
                 {children}
-            </Box>
-
+            </div>
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };
