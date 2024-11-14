@@ -367,8 +367,8 @@ const theme: Theme = {
             top: 0,
             zIndex: 1,
 
-            px: ['16px', '16px', '20px'],
-            py: ['12px', '12px', '8px'],
+            px: ['16px', '20px'],
+            py: ['12px', '8px'],
             bg: 'rgba(255, 255, 255, 1)',
         },
 
