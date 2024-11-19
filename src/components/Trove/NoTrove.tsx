@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
@@ -11,11 +12,15 @@ export const NoTrove: React.FC = () => {
         dispatchEvent('OPEN_TROVE_PRESSED');
     }, [dispatchEvent]);
 
+    const { t } = useTranslation();
+
     return (
         <CardComponent
-            title='Trove'
+            title={t('common.trove')}
             actionComponent={
-                <Button onClick={handleOpenTrove}>Open Trove</Button>
+                <Button onClick={handleOpenTrove}>
+                    Open {t('common.trove')}
+                </Button>
             }
         >
             <div className='flex flex-col gap-1 laptop:gap-2'>

@@ -14,6 +14,11 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
                     'stablecoin-stats': {
                         title: 'SF Stablecoin Statistics',
                         protocol: 'Protocol',
+                        footer: {
+                            contracts: 'Contracts version',
+                            deployed: 'Deployed',
+                            frontend: 'Frontend version',
+                        },
                         'borrowing-fee': {
                             term: 'Borrowing Fee',
                             description:
@@ -51,7 +56,16 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
                         },
                     },
                     common: {
+                        deposit: 'Deposit',
+                        liquidate: 'Liquidate',
+                        trove: 'Trove',
                         'connect-wallet': 'Connect Wallet',
+                        'card-component': {
+                            titles: {
+                                'price-feed': 'Price feed',
+                                'stability-pool': 'Stability Pool',
+                            },
+                        },
                     },
                     header: {
                         nav: {
@@ -72,6 +86,11 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
                     'stablecoin-stats': {
                         title: 'SF 稳定币统计',
                         protocol: '协议',
+                        footer: {
+                            contracts: '合约版本',
+                            deployed: '部署',
+                            frontend: '前端版本',
+                        },
                         'borrowing-fee': {
                             term: '借款费用',
                             description:
@@ -107,7 +126,16 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
                         },
                     },
                     common: {
+                        deposit: '订金',
+                        liquidate: '清算',
+                        trove: '宝库',
                         'connect-wallet': '连接钱包',
+                        'card-component': {
+                            titles: {
+                                'price-feed': '价格反馈',
+                                'stability-pool': '稳定池',
+                            },
+                        },
                     },
                     header: {
                         nav: {

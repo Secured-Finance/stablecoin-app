@@ -94,9 +94,12 @@ export const UserAccount: React.FC = () => {
                 <MenuButton className='flex h-8 w-8 items-center justify-center rounded-[8px] ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:w-10 laptop:rounded-[10px] laptop:ring-[1.5px]'>
                     <GlobeIcon className='h-4 w-4' />
                 </MenuButton>
-                <MenuItems anchor='bottom' className='z-10 mt-2'>
+                <MenuItems
+                    anchor='bottom'
+                    className='z-10 mt-2 shadow-dropdown'
+                >
                     <div className='typography-desktop-body-5 w-[200px] overflow-hidden rounded-md bg-neutral-50 pb-1.5 text-neutral-800'>
-                        <div className='flex items-center justify-between bg-white pb-[15px] pl-5 pr-4 pt-[7px]'>
+                        <div className='flex items-center justify-between border-b border-neutral-200 bg-white pb-[15px] pl-5 pr-4 pt-[13px]'>
                             <div className='flex items-center gap-2'>
                                 <GlobeIcon className='h-5 w-5' /> Language
                             </div>
@@ -104,7 +107,7 @@ export const UserAccount: React.FC = () => {
                         </div>
                         <MenuItem>
                             <button
-                                className='px-5 py-[11px]'
+                                className='w-full border-b border-neutral-200 px-5 py-[11px] text-left hover:text-primary-500'
                                 onClick={() => changeLanguage('en')}
                             >
                                 English
@@ -112,7 +115,7 @@ export const UserAccount: React.FC = () => {
                         </MenuItem>
                         <MenuItem>
                             <button
-                                className='px-5 py-[11px]'
+                                className='w-full px-5 py-[11px] text-left hover:text-primary-500'
                                 onClick={() => changeLanguage('zh')}
                             >
                                 Chinese (Simplified)

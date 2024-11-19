@@ -1,5 +1,6 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
@@ -52,11 +53,13 @@ export const ActiveDeposit: React.FC = () => {
         }
     }, [transactionState.type, dispatchEvent]);
 
+    const { t } = useTranslation();
+
     return (
         <CardComponent
             title={
                 <>
-                    Stability Pool
+                    {t('common.card-component.titles.stability-pool')}
                     {/* {!isWaitingForTransaction && (
                     <Flex sx={{ justifyContent: 'flex-end' }}>
                         <RemainingProtocolToken />

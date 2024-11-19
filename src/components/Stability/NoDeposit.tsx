@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
@@ -11,11 +12,13 @@ export const NoDeposit: React.FC = () => {
         dispatchEvent('DEPOSIT_PRESSED');
     }, [dispatchEvent]);
 
+    const { t } = useTranslation();
+
     return (
         <CardComponent
             title={
                 <>
-                    Stability Pool
+                    {t('common.card-component.titles.stability-pool')}
                     {/* <div className='flex justify-end'>
                         <RemainingProtocolToken />
                     </div> */}
@@ -31,7 +34,9 @@ export const NoDeposit: React.FC = () => {
                 >
                         <Yield />
                     </Flex> */}
-                    <Button onClick={handleOpenTrove}>Deposit</Button>
+                    <Button onClick={handleOpenTrove}>
+                        {t('common.deposit')}
+                    </Button>
                 </>
             }
         >

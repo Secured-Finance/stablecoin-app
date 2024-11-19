@@ -222,14 +222,17 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
 
                 <div className='flex flex-col gap-1 text-2.5 leading-3.5 text-neutral-600'>
                     <div>
-                        <span>Contracts version:</span>
+                        <span>{t('stablecoin-stats.footer.contracts')}:</span>
                         <GitHubCommit>{contractsVersion}</GitHubCommit>
                     </div>
                     <div>
-                        <span>Deployed: {deploymentDate.toLocaleString()}</span>
+                        <span>
+                            {t('stablecoin-stats.footer.deployed')}:{' '}
+                            {deploymentDate.toLocaleString()}
+                        </span>
                     </div>
                     <div>
-                        <span>Frontend version:</span>
+                        <span>{t('stablecoin-stats.footer.frontend')}:</span>
                         <span className='ml-1 font-semibold text-primary-500'>
                             {!isProdEnv() ? 'development' : packageJson.version}
                         </span>
