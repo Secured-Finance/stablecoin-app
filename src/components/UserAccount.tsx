@@ -1,8 +1,13 @@
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import ExternalLink from 'src/assets/icons/external-link.svg';
+import GlobeIcon from 'src/assets/icons/globe-alt.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
@@ -24,9 +29,22 @@ export const UserAccount: React.FC = () => {
     const { open } = useWeb3Modal();
     const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
+    const { t, i18n } = useTranslation();
+    const location = useLocation();
+
+    const changeLanguage = (newLang: string) => {
+        // Extract the current pathname and hash
+        const { hash } = location;
+        const currentPath = window.location.pathname.replace(/^\/(zh|en)/, '');
+        // Build the new URL with the language prefix
+        const newPath = `/${newLang}${currentPath}`;
+        // Update the browser URL
+        window.history.replaceState(null, '', `${newPath}${hash}`);
+        i18n.changeLanguage(newLang);
+    };
 
     return (
-        <div className='flex flex-row items-center gap-3 laptop:gap-2'>
+        <div className='flex flex-row items-center gap-2'>
             <Link
                 href={'https://app.secured.finance/'}
                 target='_blank'
@@ -35,7 +53,7 @@ export const UserAccount: React.FC = () => {
             >
                 <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
                     <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                        Fixed Income
+                        {t('header.fixed-income')}
                     </span>
                     <ExternalLink className='h-4 w-4' />
                 </div>
@@ -72,6 +90,37 @@ export const UserAccount: React.FC = () => {
                     </div>
                 ))}
             </div>
+            <Menu>
+                <MenuButton className='flex h-8 w-8 items-center justify-center rounded-[8px] ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:w-10 laptop:rounded-[10px] laptop:ring-[1.5px]'>
+                    <GlobeIcon className='h-4 w-4' />
+                </MenuButton>
+                <MenuItems anchor='bottom' className='z-10 mt-2'>
+                    <div className='typography-desktop-body-5 w-[200px] overflow-hidden rounded-md bg-neutral-50 pb-1.5 text-neutral-800'>
+                        <div className='flex items-center justify-between bg-white pb-[15px] pl-5 pr-4 pt-[7px]'>
+                            <div className='flex items-center gap-2'>
+                                <GlobeIcon className='h-5 w-5' /> Language
+                            </div>
+                            <ChevronDown className='h-4 w-4 text-neutral-400' />
+                        </div>
+                        <MenuItem>
+                            <button
+                                className='px-5 py-[11px]'
+                                onClick={() => changeLanguage('en')}
+                            >
+                                English
+                            </button>
+                        </MenuItem>
+                        <MenuItem>
+                            <button
+                                className='px-5 py-[11px]'
+                                onClick={() => changeLanguage('zh')}
+                            >
+                                Chinese (Simplified)
+                            </button>
+                        </MenuItem>
+                    </div>
+                </MenuItems>
+            </Menu>
         </div>
     );
 };

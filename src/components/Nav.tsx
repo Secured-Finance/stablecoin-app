@@ -1,27 +1,30 @@
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LINKS } from 'src/constants';
 
 export const Nav: React.FC = () => {
     const { pathname } = useLocation();
+    const { t } = useTranslation();
 
     return (
         <div className='hidden laptop:flex'>
-            {LINKS.map(link => (
-                <NavLink
-                    key={link.to}
-                    to={link.to}
-                    className={clsx(
-                        'px-4 text-3.5 leading-6 text-neutral-800',
-                        {
-                            'font-semibold text-primary-500':
-                                pathname === link.to,
-                        }
-                    )}
-                >
-                    {link.label}
-                </NavLink>
-            ))}
+            <NavLink
+                to={'/'}
+                className={clsx('px-4 text-3.5 leading-6 text-neutral-800', {
+                    'font-semibold text-primary-500': pathname === '/',
+                })}
+            >
+                {t('header.nav.stablecoin')}
+            </NavLink>
+            <NavLink
+                to={'/risky-troves'}
+                className={clsx('px-4 text-3.5 leading-6 text-neutral-800', {
+                    'font-semibold text-primary-500':
+                        pathname === '/risky-troves',
+                })}
+            >
+                {t('header.nav.risky-troves')}
+            </NavLink>
         </div>
     );
 };

@@ -6,6 +6,7 @@ import {
 import Link from 'next/link';
 import packageJson from 'package.json';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { isProdEnv } from 'src/utils';
@@ -106,6 +107,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
+    const { t } = useTranslation();
 
     return (
         <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
@@ -116,19 +118,31 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                 {showBalances && <Balances />}
 
                 <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base laptop:leading-6'>
-                    SF Stablecoin Statistics
+                    {t('stablecoin-stats.title')}
                 </span>
 
                 <div className='flex flex-col gap-1'>
                     <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
-                        Protocol
+                        {t('stablecoin-stats.protocol')}
                     </span>
 
-                    <Statistic lexicon={l.BORROW_FEE}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.borrowing-fee.term'),
+                            description: t(
+                                'stablecoin-stats.borrowing-fee.description'
+                            ),
+                        }}
+                    >
                         {borrowingFeePct.toString(2)}
                     </Statistic>
 
-                    <Statistic lexicon={l.TVL}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.tvl.term'),
+                            description: t('stablecoin-stats.tvl.description'),
+                        }}
+                    >
                         {total.collateral.shorten()}
                         <span>&nbsp;tFIL</span>
                         <span>
@@ -139,14 +153,37 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                             )
                         </span>
                     </Statistic>
-                    <Statistic lexicon={l.TROVES}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.troves.term'),
+                            description: t(
+                                'stablecoin-stats.troves.description'
+                            ),
+                        }}
+                    >
                         {Decimal.from(numberOfTroves).prettify(0)}
                     </Statistic>
-                    <Statistic lexicon={l.DEBT_TOKEN_SUPPLY}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.stablecoin-supply.term'),
+                            description: t(
+                                'stablecoin-stats.stablecoin-supply.description'
+                            ),
+                        }}
+                    >
                         {total.debt.shorten()}
                     </Statistic>
                     {debtTokenInStabilityPoolPct && (
-                        <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
+                        <Statistic
+                            lexicon={{
+                                term: t(
+                                    'stablecoin-stats.stablecoin-stability-pool.term'
+                                ),
+                                description: t(
+                                    'stablecoin-stats.stablecoin-stability-pool.description'
+                                ),
+                            }}
+                        >
                             {debtTokenInStabilityPool.shorten()}
                             <span>
                                 &nbsp;({debtTokenInStabilityPoolPct.toString(1)}
@@ -157,10 +194,24 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
                         {totalStakedProtocolToken.shorten()}
                     </Statistic> */}
-                    <Statistic lexicon={l.TCR}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.collateral-ratio.term'),
+                            description: t(
+                                'stablecoin-stats.collateral-ratio.description'
+                            ),
+                        }}
+                    >
                         {totalCollateralRatioPct.prettify()}
                     </Statistic>
-                    <Statistic lexicon={l.RECOVERY_MODE}>
+                    <Statistic
+                        lexicon={{
+                            term: t('stablecoin-stats.recovery-mode.term'),
+                            description: t(
+                                'stablecoin-stats.recovery-mode.description'
+                            ),
+                        }}
+                    >
                         {total.collateralRatioIsBelowCritical(price) ? (
                             <span className='text-red-500'>Yes</span>
                         ) : (
