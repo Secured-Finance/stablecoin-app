@@ -105,15 +105,19 @@ export const Opening: React.FC = () => {
 
     useEffect(() => {
         if (!collateral.isZero) {
-            const allowedDebt = collateral.mul(price).mulDiv(2, 3);
+            const stableDebt = collateral.mul(price).mulDiv(2, 3); // for 150% CR
 
-            const stableDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
-                ? allowedDebt
+            const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
+                ? stableDebt
                       .sub(LIQUIDATION_RESERVE)
                       .div(Decimal.ONE.add(borrowRate))
-                : MINIMUM_NET_DEBT;
+                : Decimal.ZERO;
 
-            setBorrowAmount(stableDebt);
+            setBorrowAmount(
+                allowedDebt.gt(MINIMUM_NET_DEBT)
+                    ? allowedDebt
+                    : MINIMUM_NET_DEBT
+            );
         }
     }, [borrowRate, collateral, price]);
 
