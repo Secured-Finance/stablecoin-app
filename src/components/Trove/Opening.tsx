@@ -60,6 +60,7 @@ export const Opening: React.FC = () => {
     const maxBorrowingRate = borrowingRate.add(0.005);
 
     const fee = borrowAmount.mul(borrowingRate);
+    const borrowRate = borrowingRate.prettify(4);
     const feePct = new Percent(borrowingRate);
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
@@ -98,11 +99,23 @@ export const Opening: React.FC = () => {
         setBorrowAmount(Decimal.ZERO);
     }, []);
 
+    const setCollateralAmount = useCallback((amount: string) => {
+        setCollateral(Decimal.from(amount));
+    }, []);
+
     useEffect(() => {
-        if (!collateral.isZero && borrowAmount.isZero) {
-            setBorrowAmount(MINIMUM_NET_DEBT);
+        if (!collateral.isZero) {
+            const allowedDebt = collateral.mul(price).mulDiv(2, 3);
+
+            const stableDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
+                ? allowedDebt
+                      .sub(LIQUIDATION_RESERVE)
+                      .div(Decimal.ONE.add(borrowRate))
+                : MINIMUM_NET_DEBT;
+
+            setBorrowAmount(stableDebt);
         }
-    }, [collateral, borrowAmount]);
+    }, [borrowRate, collateral, price]);
 
     return (
         <CardComponent
@@ -159,9 +172,7 @@ export const Opening: React.FC = () => {
                     editingState={editingState}
                     unit='tFIL'
                     editedAmount={collateral.toString(4)}
-                    setEditedAmount={(amount: string) =>
-                        setCollateral(Decimal.from(amount))
-                    }
+                    setEditedAmount={setCollateralAmount}
                 />
 
                 <EditableRow
