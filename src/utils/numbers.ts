@@ -2,6 +2,10 @@ import { Decimal } from '@secured-finance/lib-base';
 import { BigNumber } from 'ethers';
 import { lambertW0 } from 'lambert-w-function';
 
+const COLLATERAL_PRECISION = 2;
+
+const DEBT_TOKEN_PRECISION = 2;
+
 const milliseconds = (seconds: number) => seconds * 1000;
 
 const toFloat = (decimal: Decimal): number => parseFloat(decimal.toString());
@@ -207,8 +211,10 @@ const getRebondOrBreakEvenTimeWithControllerAdjustment = (
 };
 
 export {
+    COLLATERAL_PRECISION,
     dateWithoutHours,
     daysToMilliseconds,
+    DEBT_TOKEN_PRECISION,
     decimalify,
     getAverageBondAgeInSeconds,
     getBondAgeInDays,

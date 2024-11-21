@@ -10,6 +10,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card } from 'theme-ui';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
@@ -246,7 +247,7 @@ export const Adjusting: React.FC = () => {
                 <EditableRow
                     label='Collateral'
                     inputId='trove-collateral'
-                    amount={collateral.prettify(4)}
+                    amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
@@ -320,7 +321,7 @@ export const Adjusting: React.FC = () => {
                     <StaticRow
                         label='Total debt'
                         inputId='trove-total-debt'
-                        amount={totalDebt.prettify(2)}
+                        amount={totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                         unit={COIN}
                         infoIcon={
                             <InfoIcon
@@ -336,7 +337,9 @@ export const Adjusting: React.FC = () => {
                                                 You will need to repay{' '}
                                                 {totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
-                                                    .prettify(2)}{' '}
+                                                    .prettify(
+                                                        DEBT_TOKEN_PRECISION
+                                                    )}{' '}
                                                 USDFC to reclaim your collateral
                                                 (
                                                 {LIQUIDATION_RESERVE.toString()}{' '}
