@@ -16,7 +16,7 @@ export const MenuPopover = () => {
                             className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-6 text-neutral-800 outline-none'
                         >
                             <span>More</span>
-                            <ChevronDown className='h-4 w-4' />
+                            <ChevronDown className='h-4 w-4 text-neutral-800' />
                         </Popover.Button>
                         <Transition
                             as={Fragment}
@@ -31,7 +31,7 @@ export const MenuPopover = () => {
                                 className='absolute -left-6 z-10 mt-4 w-56'
                                 role='menu'
                             >
-                                <div className='relative flex flex-col overflow-hidden rounded-lg bg-neutral-800 px-2.5 py-2 shadow-dropdown'>
+                                <div className='relative flex flex-col overflow-hidden rounded-lg bg-neutral-800 px-2.5 py-3'>
                                     {LinkList.map((link, index) => {
                                         return (
                                             <button

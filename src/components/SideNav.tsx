@@ -93,7 +93,7 @@ export const SideNav: React.FC = () => {
                     >
                         More
                         <ChevronRight
-                            className={clsx('h-4 w-4', {
+                            className={clsx('h-4 w-4 text-neutral-900', {
                                 'rotate-90': showMore,
                             })}
                         />

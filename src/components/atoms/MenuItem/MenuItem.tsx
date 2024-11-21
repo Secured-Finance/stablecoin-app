@@ -25,9 +25,9 @@ export const MenuItem = ({
                 aria-label='Menu Item'
             >
                 <div className='flex w-full cursor-pointer items-center justify-between'>
-                    <div className='flex items-center gap-[10px]'>
+                    <div className='flex items-center gap-2.5'>
                         <div className='h-4 w-4'>{icon}</div>
-                        <p className='typography-desktop-body-4 text-white'>
+                        <p className='typography-mobile-body-5 text-white'>
                             {text}
                         </p>
                     </div>
