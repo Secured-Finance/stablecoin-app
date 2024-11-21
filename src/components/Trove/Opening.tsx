@@ -176,7 +176,7 @@ export const Opening: React.FC = () => {
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
                     unit='tFIL'
-                    editedAmount={collateral.toString(4)}
+                    editedAmount={collateral.toString(COLLATERAL_PRECISION)}
                     setEditedAmount={setCollateralAmount}
                 />
 
