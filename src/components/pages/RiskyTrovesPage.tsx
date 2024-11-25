@@ -12,10 +12,10 @@ export const RiskyTrovesPage: React.FC = () => {
         <section className='w-full'>
             <div className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
                 <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
-                    <PlainCard title={t('risky-troves.title')}>
+                    <PlainCard title={t('common.risky-troves')}>
                         <div className='typography-desktop-body-4'>
-                            <p>{t('risky-troves.body1')}</p>
-                            <p>{t('risky-troves.body2')}</p>
+                            <p>{t('card-component.bot-liquidation')}</p>
+                            <p>{t('card-component.bot-liquidation-desc')}</p>
                         </div>
                     </PlainCard>
                     <LiquidationManager />

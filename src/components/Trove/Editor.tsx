@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { t } from 'i18next';
 import React from 'react';
 import { Flex, Input, SxProp, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
@@ -283,7 +284,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                         }}
                         disabled={maxedOut}
                     >
-                        Max
+                        {t('common.max')}
                     </Button>
                 )}
             </StaticAmounts>

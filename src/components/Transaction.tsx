@@ -14,6 +14,7 @@ import {
     EthersTransactionCancelledError,
     EthersTransactionOverrides,
 } from '@secured-finance/lib-ethers';
+import { t } from 'i18next';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Tooltip } from 'src/components/atoms';
@@ -201,7 +202,7 @@ export function Transaction<C extends React.ReactElement<ButtonlikeProps>>({
         transactionState.type === 'waitingForApproval' ||
         transactionState.type === 'waitingForConfirmation'
     ) {
-        failureReasons.push('You must wait for confirmation');
+        failureReasons.push(t('common.wait-approval'));
     }
 
     showFailure =

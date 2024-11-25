@@ -4,12 +4,12 @@ import {
     Difference,
     Percent,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React from 'react';
 import HeartIcon from 'src/assets/icons/heart.svg';
 import { Card } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
-import { LearnMoreLink } from '../Tooltip';
 import { StaticRow } from './Editor';
 
 type CollateralRatioProps = {
@@ -29,7 +29,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                 <HeartIcon className='h-8 w-8' />
 
                 <StaticRow
-                    label='Collateral ratio'
+                    label={t('common.collateral-ratio')}
                     inputId='trove-collateral-ratio'
                     amount={collateralRatioPct.prettify()}
                     color={
@@ -55,15 +55,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                         <InfoIcon
                             message={
                                 <Card variant='tooltip' sx={{ width: '220px' }}>
-                                    The ratio between the dollar value of the
-                                    collateral and the debt (in USDFC) you are
-                                    depositing. While the Minimum Collateral
-                                    Ratio is 110% during normal operation, it is
-                                    recommended to keep the Collateral Ratio
-                                    always above 150% to avoid liquidation under
-                                    Recovery Mode. A Collateral Ratio above 200%
-                                    or 250% is recommended for additional
-                                    safety.
+                                    {t('tooltips.collateral-ratio')}
                                 </Card>
                             }
                         />
@@ -86,14 +78,7 @@ export const CollateralRatioInfoBubble: React.FC<
         <>
             {value?.lt(1.5) && (
                 <InfoBubble>
-                    Keep your collateral ratio above 150% to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#what-are-liquidations'>
-                        liquidated
-                    </LearnMoreLink>{' '}
-                    under{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
-                        Recovery Mode.
-                    </LearnMoreLink>
+                    {t('tooltips.collateral-ratio-warning')}
                 </InfoBubble>
             )}
         </>

@@ -19,7 +19,7 @@ export const NoTrove: React.FC = () => {
             title={t('common.trove')}
             actionComponent={
                 <Button onClick={handleOpenTrove}>
-                    Open {t('common.trove')}
+                    {t('common.open-trove')}
                 </Button>
             }
         >
@@ -27,11 +27,11 @@ export const NoTrove: React.FC = () => {
                 <div className='flex items-center gap-1'>
                     <InfoIcon className='h-4 w-4' />
                     <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
-                        You haven&apos;t borrowed any USDFC yet.
+                        {t('card-component.no-deposits')}
                     </h3>
                 </div>
                 <p className='typography-desktop-body-4'>
-                    You can mint and borrow USDFC by opening a Trove.
+                    {t('card-component.no-deposits-desc')}
                 </p>
             </div>
         </CardComponent>

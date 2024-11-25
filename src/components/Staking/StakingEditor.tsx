@@ -6,6 +6,7 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
@@ -65,6 +66,8 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
         originalStake.stakedProtocolToken.nonZero &&
         Difference.between(newPoolShare, originalPoolShare).nonZero;
 
+    const { t } = useTranslation();
+
     return (
         <Card>
             <Heading>
@@ -97,13 +100,13 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
 
                 {newPoolShare.infinite ? (
                     <StaticRow
-                        label='Pool share'
+                        label={t('common.pool-share')}
                         inputId='stake-share'
                         amount='N/A'
                     />
                 ) : (
                     <StaticRow
-                        label='Pool share'
+                        label={t('common.pool-share')}
                         inputId='stake-share'
                         amount={newPoolShare.prettify(4)}
                         pendingAmount={poolShareChange?.prettify(4).concat('%')}

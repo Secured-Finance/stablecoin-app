@@ -3,6 +3,7 @@ import {
     Percent,
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import Link from 'next/link';
 import packageJson from 'package.json';
 import React from 'react';
@@ -32,7 +33,7 @@ const Balances = () => {
             <div className='flex items-center gap-1'>
                 <Wallet className='h-6 w-6' />
                 <span className='typography-mobile-body-3 font-semibold capitalize text-neutral-900'>
-                    My Account Balances
+                    {t('common.my-account-balances')}
                 </span>
             </div>
             <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
@@ -113,7 +114,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
                 <h2 className='typography-mobile-body-2 flex font-semibold laptop:hidden'>
-                    My Info
+                    {t('common.my-info')}
                 </h2>
                 {showBalances && <Balances />}
 
@@ -123,14 +124,14 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
 
                 <div className='flex flex-col gap-1'>
                     <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
-                        {t('stablecoin-stats.protocol')}
+                        {t('common.protocol')}
                     </span>
 
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.borrowing-fee.term'),
+                            term: t('common.borrowing-fee'),
                             description: t(
-                                'stablecoin-stats.borrowing-fee.description'
+                                'stablecoin-stats.borrowing-fee-desc'
                             ),
                         }}
                     >
@@ -139,8 +140,8 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
 
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.tvl.term'),
-                            description: t('stablecoin-stats.tvl.description'),
+                            term: t('stablecoin-stats.tvl'),
+                            description: t('stablecoin-stats.tvl-desc'),
                         }}
                     >
                         {total.collateral.shorten()}
@@ -155,19 +156,17 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     </Statistic>
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.troves.term'),
-                            description: t(
-                                'stablecoin-stats.troves.description'
-                            ),
+                            term: 'Troves',
+                            description: t('stablecoin-stats.troves-desc'),
                         }}
                     >
                         {Decimal.from(numberOfTroves).prettify(0)}
                     </Statistic>
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.stablecoin-supply.term'),
+                            term: t('stablecoin-stats.stablecoin-supply'),
                             description: t(
-                                'stablecoin-stats.stablecoin-supply.description'
+                                'stablecoin-stats.stablecoin-supply-desc'
                             ),
                         }}
                     >
@@ -177,10 +176,10 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         <Statistic
                             lexicon={{
                                 term: t(
-                                    'stablecoin-stats.stablecoin-stability-pool.term'
+                                    'stablecoin-stats.stablecoin-stability-pool'
                                 ),
                                 description: t(
-                                    'stablecoin-stats.stablecoin-stability-pool.description'
+                                    'stablecoin-stats.stablecoin-stability-pool-desc'
                                 ),
                             }}
                         >
@@ -196,9 +195,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     </Statistic> */}
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.collateral-ratio.term'),
+                            term: t('stablecoin-stats.collateral-ratio'),
                             description: t(
-                                'stablecoin-stats.collateral-ratio.description'
+                                'stablecoin-stats.collateral-ratio-desc'
                             ),
                         }}
                     >
@@ -206,33 +205,35 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     </Statistic>
                     <Statistic
                         lexicon={{
-                            term: t('stablecoin-stats.recovery-mode.term'),
+                            term: t('stablecoin-stats.recovery-mode'),
                             description: t(
-                                'stablecoin-stats.recovery-mode.description'
+                                'stablecoin-stats.recovery-mode-desc'
                             ),
                         }}
                     >
                         {total.collateralRatioIsBelowCritical(price) ? (
-                            <span className='text-red-500'>Yes</span>
+                            <span className='text-red-500'>
+                                {t('common.yes')}
+                            </span>
                         ) : (
-                            'No'
+                            t('common.no')
                         )}
                     </Statistic>
                 </div>
 
                 <div className='flex flex-col gap-1 text-2.5 leading-3.5 text-neutral-600'>
                     <div>
-                        <span>{t('stablecoin-stats.footer.contracts')}:</span>
+                        <span>{t('stablecoin-stats.contracts')}:</span>
                         <GitHubCommit>{contractsVersion}</GitHubCommit>
                     </div>
                     <div>
                         <span>
-                            {t('stablecoin-stats.footer.deployed')}:{' '}
+                            {t('stablecoin-stats.deployed')}:{' '}
                             {deploymentDate.toLocaleString()}
                         </span>
                     </div>
                     <div>
-                        <span>{t('stablecoin-stats.footer.frontend')}:</span>
+                        <span>{t('stablecoin-stats.frontend')}:</span>
                         <span className='ml-1 font-semibold text-primary-500'>
                             {!isProdEnv() ? 'development' : packageJson.version}
                         </span>

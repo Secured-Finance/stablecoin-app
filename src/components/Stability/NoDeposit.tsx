@@ -18,7 +18,7 @@ export const NoDeposit: React.FC = () => {
         <CardComponent
             title={
                 <>
-                    {t('common.card-component.titles.stability-pool')}
+                    {t('card-component.stability-pool')}
                     {/* <div className='flex justify-end'>
                         <RemainingProtocolToken />
                     </div> */}
@@ -44,11 +44,11 @@ export const NoDeposit: React.FC = () => {
                 <div className='flex items-center gap-1'>
                     <InfoIcon className='h-4 w-4' />
                     <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
-                        You have no USDFC in the Stability Pool.
+                        {t('card-component.no-stability-pool')}
                     </h3>
                 </div>
                 <p className='typography-desktop-body-4'>
-                    You can earn tFIL rewards by depositing USDFC.
+                    {t('card-component.no-stability-pool-desc')}
                 </p>
             </div>
         </CardComponent>

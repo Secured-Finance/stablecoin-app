@@ -14,7 +14,7 @@ export const Nav: React.FC = () => {
                     'font-semibold text-primary-500': pathname === '/',
                 })}
             >
-                {t('header.nav.stablecoin')}
+                {t('common.stablecoin')}
             </NavLink>
             <NavLink
                 to={'/risky-troves'}
@@ -23,7 +23,7 @@ export const Nav: React.FC = () => {
                         pathname === '/risky-troves',
                 })}
             >
-                {t('header.nav.risky-troves')}
+                {t('common.risky-troves')}
             </NavLink>
         </div>
     );

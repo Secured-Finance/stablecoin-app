@@ -28,7 +28,7 @@ export const PriceManager: React.FC = () => {
     }, [price]);
 
     return (
-        <CardComponent title={t('common.card-component.titles.stability-pool')}>
+        <CardComponent title={t('card-component.stability-pool')}>
             <div className='flex items-center gap-2'>
                 {canSetPrice ? (
                     <>

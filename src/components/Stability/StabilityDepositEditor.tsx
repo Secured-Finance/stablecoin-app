@@ -71,7 +71,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         <CardComponent
             title={
                 <>
-                    {t('common.card-component.titles.stability-pool')}
+                    {t('card-component.stability-pool')}
                     {edited && !changePending && (
                         <button
                             onClick={() => dispatch({ type: 'revert' })}
@@ -85,7 +85,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         >
             <div className='flex flex-col gap-3'>
                 <EditableRow
-                    label='Deposit'
+                    label={t('common.deposit')}
                     inputId='deposit-scr'
                     amount={editedDebtToken.prettify()}
                     maxAmount={maxAmount.toString()}
@@ -101,13 +101,13 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                 <div className='flex flex-col gap-3 px-3'>
                     {newPoolShare.infinite ? (
                         <StaticRow
-                            label='Pool share'
+                            label={t('common.pool-share')}
                             inputId='deposit-share'
                             amount='N/A'
                         />
                     ) : (
                         <StaticRow
-                            label='Pool share'
+                            label={t('common.pool-share')}
                             inputId='deposit-share'
                             amount={newPoolShare.prettify(4)}
                             pendingAmount={poolShareChange

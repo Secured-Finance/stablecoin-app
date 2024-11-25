@@ -5,6 +5,7 @@ import {
     ProtocolTokenStakeChange,
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React from 'react';
 import {
     SfStablecoinStoreUpdate,
@@ -178,7 +179,7 @@ export const StakingManager: React.FC = () => {
 
     return (
         <StakingEditor
-            title={'Staking'}
+            title={t('common.staking')}
             {...{ originalStake, editedProtocolToken, dispatch }}
         >
             {description ??
@@ -199,15 +200,15 @@ export const StakingManager: React.FC = () => {
                         dispatchStakingViewAction({ type: 'cancelAdjusting' })
                     }
                 >
-                    Cancel
+                    {t('common.cancel')}
                 </Button>
 
                 {validChange ? (
                     <StakingManagerAction change={validChange}>
-                        Confirm
+                        {t('common.confirm')}
                     </StakingManagerAction>
                 ) : (
-                    <Button disabled>Confirm</Button>
+                    <Button disabled>{t('common.confirm')}</Button>
                 )}
             </Flex>
         </StakingEditor>

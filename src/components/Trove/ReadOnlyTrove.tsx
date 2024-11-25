@@ -25,7 +25,6 @@ export const ReadOnlyTrove: React.FC = () => {
 
     const { t } = useTranslation();
 
-    // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (
         <CardComponent
             title={t('common.trove')}
@@ -35,28 +34,28 @@ export const ReadOnlyTrove: React.FC = () => {
                         variant={ButtonVariants.secondary}
                         onClick={handleCloseTrove}
                     >
-                        Close Trove
+                        {t('card-component.close-trove')}
                     </Button>
                     <Button
                         variant={ButtonVariants.primary}
                         onClick={handleAdjustTrove}
                     >
                         <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
+                        &nbsp;{t('common.adjust')}
                     </Button>
                 </>
             }
         >
             <div className='flex flex-col gap-3'>
                 <DisabledEditableRow
-                    label='Collateral'
+                    label={t('common.collateral')}
                     inputId='trove-collateral'
                     amount={trove.collateral.prettify(4)}
                     unit='tFIL'
                 />
 
                 <DisabledEditableRow
-                    label='Debt'
+                    label={t('common.debt')}
                     inputId='trove-debt'
                     amount={trove.debt.prettify()}
                     unit={COIN}

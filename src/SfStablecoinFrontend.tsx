@@ -9,6 +9,7 @@ import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
 import { Header } from './components/Header';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { SystemStatsPopup } from './components/SystemStatsPopup';
@@ -52,6 +53,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     <div className='flex items-center gap-2'>
                                         <UserAccount />
                                         <SystemStatsPopup />
+                                        <LanguageSwitcher />
                                     </div>
                                 </Header>
                                 <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>

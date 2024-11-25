@@ -59,7 +59,7 @@ export const ActiveDeposit: React.FC = () => {
         <CardComponent
             title={
                 <>
-                    {t('common.card-component.titles.stability-pool')}
+                    {t('card-component.stability-pool')}
                     {/* {!isWaitingForTransaction && (
                     <Flex sx={{ justifyContent: 'flex-end' }}>
                         <RemainingProtocolToken />
@@ -74,16 +74,18 @@ export const ActiveDeposit: React.FC = () => {
                         onClick={handleAdjustDeposit}
                     >
                         <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
+                        &nbsp;{t('common.adjust')}
                     </Button>
 
-                    <ClaimRewards disabled={!hasGain}>Claim tFIL</ClaimRewards>
+                    <ClaimRewards disabled={!hasGain}>
+                        {t('common.claim')} tFIL
+                    </ClaimRewards>
                 </>
             }
         >
             <div className='flex flex-col gap-3'>
                 <DisabledEditableRow
-                    label='Deposit'
+                    label={t('common.deposit')}
                     inputId='deposit-debt-token'
                     amount={stabilityDeposit.currentDebtToken.prettify()}
                     unit={COIN}
@@ -91,14 +93,14 @@ export const ActiveDeposit: React.FC = () => {
 
                 <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
-                        label='Pool share'
+                        label={t('common.pool-share')}
                         inputId='deposit-share'
                         amount={poolShare.prettify(4)}
                         unit='%'
                     />
 
                     <StaticRow
-                        label='Liquidation gain'
+                        label={t('common.liquidation-gain')}
                         inputId='deposit-gain'
                         amount={stabilityDeposit.collateralGain.prettify(4)}
                         color={
@@ -145,7 +147,7 @@ export const ActiveDeposit: React.FC = () => {
                     </Flex> */}
                 {hasTrove && (
                     <ClaimAndMove disabled={!hasGain}>
-                        Move tFIL to Trove
+                        {t('card-component.move-to-trove', { COIN: 'tFIL' })}
                     </ClaimAndMove>
                 )}
             </div>
