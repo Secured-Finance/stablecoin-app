@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
@@ -48,7 +49,7 @@ export const ReadOnlyTrove: React.FC = () => {
                 <DisabledEditableRow
                     label='Collateral'
                     inputId='trove-collateral'
-                    amount={trove.collateral.prettify(4)}
+                    amount={trove.collateral.prettify(COLLATERAL_PRECISION)}
                     unit='tFIL'
                 />
 

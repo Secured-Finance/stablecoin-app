@@ -11,6 +11,7 @@ import {
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { Button, Flex } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
@@ -91,7 +92,7 @@ const StakingManagerActionDescription: React.FC<
         ?.prettify()
         .concat(' ', GT);
     const collateralGain = originalStake.collateralGain.nonZero
-        ?.prettify(4)
+        ?.prettify(COLLATERAL_PRECISION)
         .concat(' tFIL');
     const debtTokenGain = originalStake.debtTokenGain.nonZero
         ?.prettify()

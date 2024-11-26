@@ -3,6 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -97,7 +98,9 @@ export const ActiveDeposit: React.FC = () => {
                     <StaticRow
                         label='Liquidation gain'
                         inputId='deposit-gain'
-                        amount={stabilityDeposit.collateralGain.prettify(4)}
+                        amount={stabilityDeposit.collateralGain.prettify(
+                            COLLATERAL_PRECISION
+                        )}
                         color={
                             stabilityDeposit.collateralGain.nonZero &&
                             'text-success-700'

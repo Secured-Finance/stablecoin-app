@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { NavLink, useLocation } from 'react-router-dom';
+import { MenuPopover } from 'src/components/molecules';
 import { LINKS } from 'src/constants';
 
 export const Nav: React.FC = () => {
@@ -22,6 +23,7 @@ export const Nav: React.FC = () => {
                     {link.label}
                 </NavLink>
             ))}
+            <MenuPopover />
         </div>
     );
 };

@@ -7,6 +7,7 @@ import {
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
@@ -121,7 +122,9 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                         <StaticRow
                             label='Redemption gain'
                             inputId='stake-gain-eth'
-                            amount={originalStake.collateralGain.prettify(4)}
+                            amount={originalStake.collateralGain.prettify(
+                                COLLATERAL_PRECISION
+                            )}
                             color={
                                 originalStake.collateralGain.nonZero &&
                                 'text-success-700'

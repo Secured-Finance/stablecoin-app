@@ -1,13 +1,26 @@
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, {
+    HTMLAttributes,
+    Ref,
+    forwardRef,
+    useRef,
+    useState,
+} from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
 import { LINKS } from 'src/constants';
+import { LinkList } from 'src/utils';
+import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const [showMore, setShowMore] = useState(false);
+
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
@@ -52,7 +65,7 @@ export const SideNav: React.FC = () => {
                         <XIcon className='h-6 w-6 font-bold text-primary-500' />
                     </button>
                 </div>
-                <div className='flex flex-col gap-4'>
+                <div className='flex flex-col items-start gap-4'>
                     {LINKS.map(link => (
                         <NavLink
                             key={link.label}
@@ -68,8 +81,85 @@ export const SideNav: React.FC = () => {
                             {link.label}
                         </NavLink>
                     ))}
+                    <button
+                        onClick={e => {
+                            e.preventDefault();
+                            setShowMore(!showMore);
+                        }}
+                        aria-label='Show More'
+                        className={clsx(
+                            'flex items-center justify-between gap-2 text-center text-4.5 font-semibold leading-7 text-neutral-900 focus:outline-none'
+                        )}
+                    >
+                        More
+                        <ChevronRight
+                            className={clsx('h-4 w-4 text-neutral-900', {
+                                'rotate-90': showMore,
+                            })}
+                        />
+                    </button>
+                    {showMore && (
+                        <div className='w-full px-4'>
+                            {LinkList.map(link => (
+                                <MobileItemLink
+                                    key={link.text}
+                                    text={link.text}
+                                    href={link.href}
+                                    onClick={() => setIsVisible(false)}
+                                    target='_blank'
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </aside>
         </div>
+    );
+};
+
+const NextLink = forwardRef(
+    (
+        props: HTMLAttributes<HTMLAnchorElement> & {
+            href: string | UrlObject;
+            target?: string;
+        },
+        ref: Ref<HTMLAnchorElement>
+    ) => {
+        const { href, children, ...rest } = props;
+        return (
+            <Link href={href} {...rest} ref={ref}>
+                {children}
+            </Link>
+        );
+    }
+);
+NextLink.displayName = 'NextLink';
+
+const MobileItemLink = ({
+    text,
+    href,
+    onClick,
+    target,
+}: {
+    text: string;
+    href: string;
+    onClick: () => void;
+    target?: string;
+}) => {
+    const router = useRouter();
+    const isActive = router.pathname === href;
+    return (
+        <NextLink
+            className={clsx(
+                'flex w-full cursor-pointer flex-row items-center justify-start whitespace-nowrap pb-2 text-center text-4.5 font-semibold leading-7 text-neutral-900',
+                { underline: isActive }
+            )}
+            href={href}
+            target={target}
+            rel='noreferrer'
+            onClick={onClick}
+        >
+            {text}
+        </NextLink>
     );
 };
