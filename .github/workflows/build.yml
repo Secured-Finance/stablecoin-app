@@ -60,8 +60,6 @@ jobs:
           NEXT_PUBLIC_WALLET_CONNECT_ID=${{ secrets.WALLET_CONNECT_ID }}
           NEXT_PUBLIC_SET_PRICE_ENABLED=${{ vars.SET_PRICE_ENABLED }}
           SF_ENV=${{ vars.SF_ENV }}
-          LIQUIDATION_RESERVE=${{ vars.LIQUIDATION_RESERVE }}
-          MINIMUM_NET_DEBT=${{ vars.MINIMUM_NET_DEBT }}
           EOF
 
       - name: Check Syntax with Prettier
