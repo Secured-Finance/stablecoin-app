@@ -21,8 +21,4 @@ module.exports = withBundleAnalyzer({
         SF_ENV: process.env.SF_ENV,
         COMMIT_HASH: commitHash,
     },
-    i18n: {
-        locales: ['en', 'zh'],
-        defaultLocale: 'en',
-    },
 });
