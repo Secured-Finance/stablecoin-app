@@ -1,13 +1,27 @@
 import clsx from 'clsx';
 import { t } from 'i18next';
-import React, { useRef, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, {
+    HTMLAttributes,
+    Ref,
+    forwardRef,
+    useRef,
+    useState,
+} from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
+import { LINKS } from 'src/constants';
+import { LinkList } from 'src/utils';
+import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
+    const [showMore, setShowMore] = useState(false);
+
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
@@ -52,34 +66,105 @@ export const SideNav: React.FC = () => {
                         <XIcon className='h-6 w-6 font-bold text-primary-500' />
                     </button>
                 </div>
-                <div className='flex flex-col gap-4'>
-                    <NavLink
-                        to={'/'}
+
+                <div className='flex flex-col items-start gap-4'>
+                    {LINKS.map((link, index) => {
+                        return (
+                            <NavLink
+                                key={index}
+                                to={link.to}
+                                className={clsx(
+                                    'flex items-center gap-2 text-4.5 font-semibold leading-7 text-neutral-900',
+                                    {
+                                        'text-primary-500':
+                                            pathname === link.to,
+                                    }
+                                )}
+                                onClick={() => setIsVisible(false)}
+                            >
+                                {t(link.labelKey)}
+                            </NavLink>
+                        );
+                    })}
+                    <button
+                        onClick={e => {
+                            e.preventDefault();
+                            setShowMore(!showMore);
+                        }}
+                        aria-label='Show More'
                         className={clsx(
-                            'text-4.5 font-semibold leading-7 text-neutral-900',
-                            {
-                                'text-primary-500': pathname === '/',
-                            }
+                            'flex items-center justify-between gap-2 text-center text-4.5 font-semibold leading-7 text-neutral-900 focus:outline-none'
                         )}
-                        onClick={() => setIsVisible(false)}
                     >
-                        {t('common.stablecoin')}
-                    </NavLink>
-                    <NavLink
-                        to={'/risky-troves'}
-                        className={clsx(
-                            'text-4.5 font-semibold leading-7 text-neutral-900',
-                            {
-                                'text-primary-500':
-                                    pathname === '/risky-troves',
-                            }
-                        )}
-                        onClick={() => setIsVisible(false)}
-                    >
-                        {t('common.risky-troves')}
-                    </NavLink>
+                        {t('common.more')}
+                        <ChevronRight
+                            className={clsx('h-4 w-4 text-neutral-900', {
+                                'rotate-90': showMore,
+                            })}
+                        />
+                    </button>
+                    {showMore && (
+                        <div className='w-full px-4'>
+                            {LinkList.map(link => (
+                                <MobileItemLink
+                                    key={link.textKey}
+                                    textKey={link.textKey}
+                                    href={link.href}
+                                    onClick={() => setIsVisible(false)}
+                                    target='_blank'
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </aside>
         </div>
+    );
+};
+
+const NextLink = forwardRef(
+    (
+        props: HTMLAttributes<HTMLAnchorElement> & {
+            href: string | UrlObject;
+            target?: string;
+        },
+        ref: Ref<HTMLAnchorElement>
+    ) => {
+        const { href, children, ...rest } = props;
+        return (
+            <Link href={href} {...rest} ref={ref}>
+                {children}
+            </Link>
+        );
+    }
+);
+NextLink.displayName = 'NextLink';
+
+const MobileItemLink = ({
+    textKey,
+    href,
+    onClick,
+    target,
+}: {
+    textKey: string;
+    href: string;
+    onClick: () => void;
+    target?: string;
+}) => {
+    const router = useRouter();
+    const isActive = router.pathname === href;
+    return (
+        <NextLink
+            className={clsx(
+                'flex w-full cursor-pointer flex-row items-center justify-start whitespace-nowrap pb-2 text-center text-4.5 font-semibold leading-7 text-neutral-900',
+                { underline: isActive }
+            )}
+            href={href}
+            target={target}
+            rel='noreferrer'
+            onClick={onClick}
+        >
+            {t(textKey)}
+        </NextLink>
     );
 };

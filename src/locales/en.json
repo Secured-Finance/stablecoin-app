@@ -1,6 +1,8 @@
 {
   "translation": {
     "common": {
+      "more": "More",
+      "documentation": "Documentation",
       "deposit": "deposit",
       "liquidate": "Liquidate",
       "liquidated": "Liquidated",

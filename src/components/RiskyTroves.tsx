@@ -16,7 +16,11 @@ import RedoIcon from 'src/assets/icons/refresh.svg';
 import TrashIcon from 'src/assets/icons/trash.svg';
 import { Tooltip } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { AddressUtils } from 'src/utils';
+import {
+    AddressUtils,
+    COLLATERAL_PRECISION,
+    DEBT_TOKEN_PRECISION,
+} from 'src/utils';
 import { COIN } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { LoadingOverlay } from './LoadingOverlay';
@@ -316,7 +320,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                     short={trove.collateral.shorten()}
                                                 >
                                                     {trove.collateral.prettify(
-                                                        4
+                                                        COLLATERAL_PRECISION
                                                     )}
                                                 </Abbreviation>
                                             </td>
@@ -324,7 +328,9 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                 <Abbreviation
                                                     short={trove.debt.shorten()}
                                                 >
-                                                    {trove.debt.prettify()}
+                                                    {trove.debt.prettify(
+                                                        DEBT_TOKEN_PRECISION
+                                                    )}
                                                 </Abbreviation>
                                             </td>
                                             <td>

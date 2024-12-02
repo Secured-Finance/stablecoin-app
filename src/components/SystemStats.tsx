@@ -10,7 +10,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { isProdEnv } from 'src/utils';
+import {
+    COLLATERAL_PRECISION,
+    DEBT_TOKEN_PRECISION,
+    isProdEnv,
+} from 'src/utils';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -36,9 +40,11 @@ const Balances = () => {
                     {t('common.my-account-balances')}
                 </span>
             </div>
-            <Statistic lexicon={l.tFIL}>{accountBalance.prettify(4)}</Statistic>
+            <Statistic lexicon={l.tFIL}>
+                {accountBalance.prettify(COLLATERAL_PRECISION)}
+            </Statistic>
             <Statistic lexicon={l.DEBT_TOKEN}>
-                {debtTokenBalance.prettify()}
+                {debtTokenBalance.prettify(DEBT_TOKEN_PRECISION)}
             </Statistic>
             {/* <Statistic lexicon={l.PROTOCOL_TOKEN}>
                 {protocolTokenBalance.prettify()}

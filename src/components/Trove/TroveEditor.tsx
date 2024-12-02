@@ -11,6 +11,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { Card } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
@@ -63,7 +64,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                 <StaticRow
                     label={t('common.collateral')}
                     inputId='trove-collateral'
-                    amount={edited.collateral.prettify(4)}
+                    amount={edited.collateral.prettify(COLLATERAL_PRECISION)}
                     unit='tFIL'
                 />
 

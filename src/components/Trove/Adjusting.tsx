@@ -11,6 +11,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card } from 'theme-ui';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
@@ -247,12 +248,12 @@ export const Adjusting: React.FC = () => {
                 <EditableRow
                     label={t('common.collateral')}
                     inputId='trove-collateral'
-                    amount={collateral.prettify(4)}
+                    amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
                     unit='tFIL'
-                    editedAmount={collateral.toString(4)}
+                    editedAmount={collateral.toString(COLLATERAL_PRECISION)}
                     setEditedAmount={(amount: string) =>
                         setCollateral(Decimal.from(amount))
                     }
@@ -313,7 +314,7 @@ export const Adjusting: React.FC = () => {
                     <StaticRow
                         label={t('common.total-debt')}
                         inputId='trove-total-debt'
-                        amount={totalDebt.prettify(2)}
+                        amount={totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                         unit={COIN}
                         infoIcon={
                             <InfoIcon
@@ -330,7 +331,9 @@ export const Adjusting: React.FC = () => {
                                                 )}{' '}
                                                 {totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
-                                                    .prettify(2)}{' '}
+                                                    .prettify(
+                                                        DEBT_TOKEN_PRECISION
+                                                    )}{' '}
                                                 {t(
                                                     'card-component.to-reclaim-collateral'
                                                 )}

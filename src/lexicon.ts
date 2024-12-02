@@ -12,7 +12,7 @@ export const BORROW_FEE: Lexicon = {
 export const TVL: Lexicon = {
     term: 'TVL',
     description:
-        'The Total Value Locked (TVL) is the total value of Ether locked as collateral in the system, given in tFIL and USD.',
+        'The Total Value Locked (TVL) is the total value of Filecoin locked as collateral in the system, given in tFIL and USD.',
 };
 
 export const STAKED_PROTOCOL_TOKEN: Lexicon = {

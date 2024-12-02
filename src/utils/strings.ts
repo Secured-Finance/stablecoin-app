@@ -8,7 +8,7 @@ export enum Environment {
 }
 
 export const formatDataCy = (str: string): string => {
-    return str.replace(/\s+/g, '-').toLowerCase();
+    return str?.replace(/\s+/g, '-').toLowerCase();
 };
 
 export const getEnvShort = (): 'dev' | 'stg' | 'prod' | '' => {

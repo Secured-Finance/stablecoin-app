@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
@@ -59,6 +60,7 @@ export const Opening: React.FC = () => {
     const maxBorrowingRate = borrowingRate.add(0.005);
 
     const fee = borrowAmount.mul(borrowingRate);
+    const borrowRate = borrowingRate.prettify(4);
     const feePct = new Percent(borrowingRate);
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
@@ -97,11 +99,27 @@ export const Opening: React.FC = () => {
         setBorrowAmount(Decimal.ZERO);
     }, []);
 
+    const setCollateralAmount = useCallback((amount: string) => {
+        setCollateral(Decimal.from(amount));
+    }, []);
+
     useEffect(() => {
-        if (!collateral.isZero && borrowAmount.isZero) {
-            setBorrowAmount(MINIMUM_NET_DEBT);
+        if (!collateral.isZero) {
+            const stableDebt = collateral.mul(price).mulDiv(2, 3); // for 150% CR
+
+            const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
+                ? stableDebt
+                      .sub(LIQUIDATION_RESERVE)
+                      .div(Decimal.ONE.add(borrowRate))
+                : Decimal.ZERO;
+
+            setBorrowAmount(
+                allowedDebt.gt(MINIMUM_NET_DEBT)
+                    ? allowedDebt
+                    : MINIMUM_NET_DEBT
+            );
         }
-    }, [collateral, borrowAmount]);
+    }, [borrowRate, collateral, price]);
 
     return (
         <CardComponent
@@ -152,15 +170,13 @@ export const Opening: React.FC = () => {
                 <EditableRow
                     label={t('common.collateral')}
                     inputId='trove-collateral'
-                    amount={collateral.prettify(4)}
+                    amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
                     unit='tFIL'
-                    editedAmount={collateral.toString(4)}
-                    setEditedAmount={(amount: string) =>
-                        setCollateral(Decimal.from(amount))
-                    }
+                    editedAmount={collateral.toString(COLLATERAL_PRECISION)}
+                    setEditedAmount={setCollateralAmount}
                 />
 
                 <EditableRow
@@ -218,7 +234,7 @@ export const Opening: React.FC = () => {
                     <StaticRow
                         label={t('common.total-debt')}
                         inputId='trove-total-debt'
-                        amount={totalDebt.prettify(2)}
+                        amount={totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                         unit={COIN}
                         infoIcon={
                             <InfoIcon
@@ -235,7 +251,9 @@ export const Opening: React.FC = () => {
                                                 )}{' '}
                                                 {totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
-                                                    .prettify(2)}{' '}
+                                                    .prettify(
+                                                        DEBT_TOKEN_PRECISION
+                                                    )}{' '}
                                                 {t(
                                                     'card-component.to-reclaim-collateral'
                                                 )}

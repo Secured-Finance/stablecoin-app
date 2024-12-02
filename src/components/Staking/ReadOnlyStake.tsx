@@ -1,6 +1,7 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { t } from 'i18next';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
@@ -49,7 +50,9 @@ export const ReadOnlyStake: React.FC = () => {
                 <StaticRow
                     label='Redemption gain'
                     inputId='stake-gain-eth'
-                    amount={protocolTokenStake.collateralGain.prettify(4)}
+                    amount={protocolTokenStake.collateralGain.prettify(
+                        COLLATERAL_PRECISION
+                    )}
                     color={
                         protocolTokenStake.collateralGain.nonZero &&
                         'text-success-700'
