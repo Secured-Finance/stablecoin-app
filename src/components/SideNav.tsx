@@ -1,9 +1,9 @@
 import clsx from 'clsx';
+import { t } from 'i18next';
 import React, { useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS } from 'src/constants';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
@@ -53,21 +53,31 @@ export const SideNav: React.FC = () => {
                     </button>
                 </div>
                 <div className='flex flex-col gap-4'>
-                    {LINKS.map(link => (
-                        <NavLink
-                            key={link.label}
-                            to={link.to}
-                            className={clsx(
-                                'text-4.5 font-semibold leading-7 text-neutral-900',
-                                {
-                                    'text-primary-500': pathname === link.to,
-                                }
-                            )}
-                            onClick={() => setIsVisible(false)}
-                        >
-                            {link.label}
-                        </NavLink>
-                    ))}
+                    <NavLink
+                        to={'/'}
+                        className={clsx(
+                            'text-4.5 font-semibold leading-7 text-neutral-900',
+                            {
+                                'text-primary-500': pathname === '/',
+                            }
+                        )}
+                        onClick={() => setIsVisible(false)}
+                    >
+                        {t('common.stablecoin')}
+                    </NavLink>
+                    <NavLink
+                        to={'/risky-troves'}
+                        className={clsx(
+                            'text-4.5 font-semibold leading-7 text-neutral-900',
+                            {
+                                'text-primary-500':
+                                    pathname === '/risky-troves',
+                            }
+                        )}
+                        onClick={() => setIsVisible(false)}
+                    >
+                        {t('common.risky-troves')}
+                    </NavLink>
                 </div>
             </aside>
         </div>

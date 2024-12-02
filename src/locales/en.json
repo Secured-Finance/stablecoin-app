@@ -1,7 +1,7 @@
 {
   "translation": {
     "common": {
-      "deposit": "Deposit",
+      "deposit": "deposit",
       "liquidate": "Liquidate",
       "liquidated": "Liquidated",
       "trove": "Trove",
