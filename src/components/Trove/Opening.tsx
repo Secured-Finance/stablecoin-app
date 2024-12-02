@@ -9,7 +9,6 @@ import {
 } from '@secured-finance/lib-base';
 import { t } from 'i18next';
 import React, { useCallback, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
@@ -19,7 +18,6 @@ import { Icon } from '../Icon';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
-import { LearnMoreLink } from '../Tooltip';
 import { useMyTransactionState } from '../Transaction';
 import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
 import { EditableRow, StaticRow } from './Editor';
@@ -258,7 +256,7 @@ export const Opening: React.FC = () => {
 
                 <CollateralRatio value={collateralRatio} />
 
-                <InfoBubble>
+                {/* <InfoBubble>
                     Keep your collateral ratio above the{' '}
                     <NavLink
                         to='/risky-troves'
@@ -270,7 +268,7 @@ export const Opening: React.FC = () => {
                     <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
                         {t('common.redeemed')}
                     </LearnMoreLink>
-                </InfoBubble>
+                </InfoBubble> */}
 
                 <CollateralRatioInfoBubble value={collateralRatio} />
 

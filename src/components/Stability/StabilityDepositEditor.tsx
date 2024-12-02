@@ -125,7 +125,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                     {!originalDeposit.isEmpty && (
                         <>
                             <StaticRow
-                                label='Liquidation gain'
+                                label={t('common.liquidation-gain')}
                                 inputId='deposit-gain'
                                 amount={originalDeposit.collateralGain.prettify(
                                     4

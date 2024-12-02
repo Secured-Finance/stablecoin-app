@@ -170,7 +170,7 @@ export const useTransactionFunction = (
                 setTransactionState({
                     type: 'failed',
                     id,
-                    error: new Error('Failed to send transaction (try again)'),
+                    error: new Error(t('common.transaction-failed')),
                 });
             }
         }
@@ -324,9 +324,7 @@ export const TransactionMonitor: React.FC = () => {
                         setTransactionState({
                             type: 'failed',
                             id,
-                            error: new Error(
-                                reason ? `Reverted: ${reason}` : 'Failed'
-                            ),
+                            error: new Error(t('common.transaction-failed')),
                         });
                     }
                 } catch (rawError) {
@@ -346,7 +344,7 @@ export const TransactionMonitor: React.FC = () => {
                         setTransactionState({
                             type: 'failed',
                             id,
-                            error: new Error('Failed'),
+                            error: new Error(t('common.transaction-failed')),
                         });
                     }
                 }

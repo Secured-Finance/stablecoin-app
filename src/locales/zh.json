@@ -22,6 +22,7 @@
       "max": "最大限度",
       "cancel": "取消",
       "confirm": "确认",
+      "confirmed": "确认的",
       "pool-share": "资金池份额",
       "owner": "所有者",
       "yes": "是",
@@ -38,7 +39,20 @@
       "net-debt": "净债务",
       "liquidation-gain": "清算收益",
       "my-info": "信息",
-      "my-account-balances": "我的账户余额"
+      "my-account-balances": "我的账户余额",
+      "transaction-failed": "发送交易失败。请再试一次。",
+      "transaction-pending": "交易正在处理中...请稍候。",
+      "and": "并",
+      "pay": "支付",
+      "receive": "收到",
+      "you-will": "你将",
+      "total-debt-notice": "债务总额必须至少为 {{AMOUNT}} {{COIN}}。",
+      "min-borrow-notice": "您必须至少借入 {{AMOUNT}} {{COIN}}。",
+      "withdrawal-disabled": "在恢复模式期间您不得提取抵押品。",
+      "restrict-collateral-ratio": "在恢复模式期间，您不得降低抵押品比例。",
+      "total-collateral-ratio-breach": "您尝试进行的调整将导致总抵押比率降至 {{AMOUNT}} 以下。请增加您的 Troves 抵押比率。",
+      "exceeds-balance-limit": "您尝试存入的金额超出您的余额 {{AMOUNT}} {{COIN}}。",
+      "minimum-collateral-ratio-required": "您的抵押品比率必须至少为 {{PERCENT}} 才能在恢复模式下借款。请提高您的抵押比例。"
     },
     "card-component": {
       "price-feed": "价格反馈",
@@ -56,7 +70,7 @@
       "no-deposits": "您尚未借入任何 USDFC。",
       "no-deposits-desc": "您可以通过开设 Trove 来铸造和借用 USDFC。",
       "start-deposit-instruction": "请先输入您想要作为抵押品存入的tFIL数量。",
-      "collateral-warning": "抵押比例必须至少为 110%。",
+      "collateral-warning": "抵押比例必须至少为 {{AMOUNT}}。",
       "go-to-market": "",
       "lend-instructions": "借出 USDFC 以获得固定回报并购买零息债券。",
       "ratio-not-low": "抵押比例不够低",
@@ -76,7 +90,11 @@
       "recovery-mode-trove": "您不能在恢复模式期间关闭您的 Trove。",
       "no-other-troves": "当系统中没有其他 Trove 时，您不能关闭您的 Trove。",
       "repay-exceed": "您尝试偿还的金额超出您的余额 {{AMOUNT}} {{COIN}}。",
-      "increase-collateral-ratio": "在恢复模式期间，您不能打开抵押品比率低于 {{PERCENT}} 的 Trove。请增加您的 Troves 抵押比率。"
+      "increase-collateral-ratio": "在恢复模式期间，您不能打开抵押品比率低于 {{PERCENT}} 的 Trove。请增加您的 Troves 抵押比率。",
+      "depositing-info": "您正在将 {{AMOUNT}} {{COIN}} 存入稳定池。",
+      "withdrawing-info": "您正在将 {{AMOUNT}} {{COIN}} 提取到您的钱包。",
+      "claiming-info": "并声称至少 {{COLLARERAL}}",
+      "increase-coll-ratio": "您不得打开会导致总抵押品比率低于 {{AMOUNT}} 的 Trove。请增加您的 Troves 抵押比率。"
     },
     "stablecoin-stats": {
       "title": "SF 稳定币统计",

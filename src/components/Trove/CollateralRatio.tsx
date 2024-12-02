@@ -78,7 +78,7 @@ export const CollateralRatioInfoBubble: React.FC<
         <>
             {value?.lt(1.5) && (
                 <InfoBubble>
-                    {t('tooltips.collateral-ratio-warning')}
+                    {t('card-component.collateral-ratio-warning')}
                 </InfoBubble>
             )}
         </>
