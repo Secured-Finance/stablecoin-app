@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 interface SeparatorProps {
-    color?: 'neutral-700' | 'default';
+    color?: 'neutral-100' | 'default';
     orientation?: 'horizontal' | 'vertical';
 }
 
@@ -17,7 +17,7 @@ export const Separator = ({
                     'border-l': orientation === 'vertical',
                 },
                 {
-                    'border-neutral-700': color === 'neutral-700',
+                    'border-neutral-100': color === 'neutral-100',
                     'border-white-5': color === 'default',
                 }
             )}

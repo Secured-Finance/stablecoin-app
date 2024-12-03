@@ -8,7 +8,7 @@ export default {
     argTypes: {
         color: {
             control: 'select',
-            options: ['neutral-700', 'default'],
+            options: ['neutral-100', 'default'],
         },
         orientation: {
             control: 'select',
@@ -22,6 +22,6 @@ const Template: StoryFn<typeof Separator> = args => <Separator {...args} />;
 export const Default = Template.bind({});
 export const Primary = Template.bind({});
 Primary.args = {
-    color: 'neutral-700',
+    color: 'neutral-100',
     orientation: 'vertical',
 };
