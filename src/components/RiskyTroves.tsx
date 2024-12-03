@@ -29,7 +29,7 @@ import { Transaction } from './Transaction';
 const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
     [
         trove.collateralRatioIsBelowMinimum(price),
-        'Collateral ratio not low enough',
+        t('card-component.ratio-not-low'),
     ] as const;
 
 const liquidatableInRecoveryMode = (
