@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Decimal, TroveChange } from '@secured-finance/lib-base';
 import { PopulatedEthersTransaction } from '@secured-finance/lib-ethers';
+import { t } from 'i18next';
 import React, { useEffect } from 'react';
 import { useSfStablecoin } from 'src/hooks';
 import { WarningBubble } from '../WarningBubble';
@@ -73,17 +74,9 @@ export const ExpensiveTroveChangeWarning: React.FC<
         gasEstimationState.populatedTx.gasHeadroom >= 200000
     ) {
         return troveChange.type === 'creation' ? (
-            <WarningBubble>
-                The cost of opening a Trove in this collateral ratio range is
-                rather high. To lower it, choose a slightly different collateral
-                ratio.
-            </WarningBubble>
+            <WarningBubble>{t('card-component.high-cost-trove')}</WarningBubble>
         ) : (
-            <WarningBubble>
-                The cost of adjusting a Trove into this collateral ratio range
-                is rather high. To lower it, choose a slightly different
-                collateral ratio.
-            </WarningBubble>
+            <WarningBubble>{t('card-component.high-cost-trove')}</WarningBubble>
         );
     }
 

@@ -7,6 +7,7 @@ import {
 } from '@secured-finance/lib-base';
 import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
 import clsx from 'clsx';
+import { t } from 'i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import CheckIcon from 'src/assets/icons/check.svg';
@@ -28,7 +29,7 @@ import { Transaction } from './Transaction';
 const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
     [
         trove.collateralRatioIsBelowMinimum(price),
-        'Collateral ratio not low enough',
+        t('card-component.ratio-not-low'),
     ] as const;
 
 const liquidatableInRecoveryMode = (
@@ -45,7 +46,7 @@ const liquidatableInRecoveryMode = (
     ) {
         return [
             trove.debt.lte(debtTokenInStabilityPool),
-            "There's not enough token in the Stability pool to cover the debt",
+            t('card-component.not-enough-token'),
         ] as const;
     } else {
         return liquidatableInNormalMode(trove, price);
@@ -168,7 +169,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
     return (
         <div className='relative flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
             <div className='flex h-10 items-center justify-between border-t-2 border-primary-500 bg-neutral-200 px-3.5 py-2 text-3.5 font-semibold leading-5.5 tablet:border-t-4 laptop:h-[42px] laptop:px-3.5 laptop:text-base'>
-                <h2>Risky Troves</h2>
+                <h2>{t('common.risky-troves')}</h2>
                 <div className='flex items-center gap-1'>
                     {numberOfTroves !== 0 && (
                         <>
@@ -213,7 +214,9 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
             <div className='px-3 pb-4 pt-3 text-neutral-800 laptop:px-4'>
                 {!troves || troves.length === 0 ? (
                     <div>
-                        {!troves ? 'Loading...' : 'There are no Troves yet'}
+                        {!troves
+                            ? `${t('common.loading')}...`
+                            : t('card-component.no-troves')}
                     </div>
                 ) : (
                     <table className='w-full'>
@@ -233,7 +236,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         'text-left laptop:text-center'
                                     )}
                                 >
-                                    Owner
+                                    {t('common.owner')}
                                 </th>
                                 <th
                                     className={clsx(
@@ -242,10 +245,10 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                     )}
                                 >
                                     <span className='flex justify-center laptop:hidden'>
-                                        Coll.
+                                        {t('common.coll')}
                                     </span>
                                     <span className='hidden justify-center laptop:flex'>
-                                        Collateral
+                                        {t('common.collateral')}
                                     </span>
                                     <span className='text-xs font-normal leading-4 text-neutral-500'>
                                         tFIL
@@ -253,7 +256,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                 </th>
                                 <th className={colClassName}>
                                     <span className='flex justify-center'>
-                                        Debt
+                                        {t('common.debt')}
                                     </span>
                                     <span className='text-xs font-normal leading-4 text-neutral-500'>
                                         {COIN}
@@ -265,9 +268,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         'pr-2 text-right laptop:pr-0 laptop:text-center'
                                     )}
                                 >
-                                    Coll.
-                                    <br />
-                                    Ratio
+                                    {t('common.collateral-ratio')}
                                 </th>
                                 <th className='text-3.5 leading-4.5 laptop:text-xs laptop:leading-5'></th>
                             </tr>
@@ -360,7 +361,9 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                 <div className='flex justify-center laptop:justify-end'>
                                                     <Transaction
                                                         id={`liquidate-${trove.ownerAddress}`}
-                                                        tooltip='Liquidate'
+                                                        tooltip={t(
+                                                            'common.liquidate'
+                                                        )}
                                                         requires={[
                                                             recoveryMode
                                                                 ? liquidatableInRecoveryMode(

@@ -1,14 +1,14 @@
 import GitBook from 'src/assets/icons/gitbook.svg';
 
 type MoreLink = {
-    text: string;
+    textKey: string;
     href: string;
     icon: React.ReactNode;
 };
 
 export const LinkList: MoreLink[] = [
     {
-        text: 'Documentation',
+        textKey: 'common.documentation',
         href: 'https://docs.secured.finance/stablecoin-protocol-guide/',
         icon: <GitBook className='h-4 w-4 text-white' />,
     },

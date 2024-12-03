@@ -6,6 +6,7 @@ import {
     StabilityDeposit,
 } from '@secured-finance/lib-base';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
@@ -64,11 +65,13 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         originalDeposit.currentDebtToken.nonZero &&
         Difference.between(newPoolShare, originalPoolShare).nonZero;
 
+    const { t } = useTranslation();
+
     return (
         <CardComponent
             title={
                 <>
-                    Stability Pool
+                    {t('card-component.stability-pool')}
                     {edited && !changePending && (
                         <button
                             onClick={() => dispatch({ type: 'revert' })}
@@ -82,7 +85,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         >
             <div className='flex flex-col gap-3'>
                 <EditableRow
-                    label='Deposit'
+                    label={t('common.deposit')}
                     inputId='deposit-scr'
                     amount={editedDebtToken.prettify()}
                     maxAmount={maxAmount.toString()}
@@ -98,13 +101,13 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                 <div className='flex flex-col gap-3 px-3'>
                     {newPoolShare.infinite ? (
                         <StaticRow
-                            label='Pool share'
+                            label={t('common.pool-share')}
                             inputId='deposit-share'
                             amount='N/A'
                         />
                     ) : (
                         <StaticRow
-                            label='Pool share'
+                            label={t('common.pool-share')}
                             inputId='deposit-share'
                             amount={newPoolShare.prettify(4)}
                             pendingAmount={poolShareChange
@@ -122,7 +125,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                     {!originalDeposit.isEmpty && (
                         <>
                             <StaticRow
-                                label='Liquidation gain'
+                                label={t('common.liquidation-gain')}
                                 inputId='deposit-gain'
                                 amount={originalDeposit.collateralGain.prettify(
                                     4

@@ -1,4 +1,5 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
@@ -29,18 +30,18 @@ export const ReadOnlyStake: React.FC = () => {
 
     return (
         <Card>
-            <Heading>Staking</Heading>
+            <Heading>{t('common.staking')}</Heading>
 
             <Box sx={{ p: [2, 3] }}>
                 <DisabledEditableRow
-                    label='Stake'
+                    label={t('common.stake')}
                     inputId='stake-scr'
                     amount={protocolTokenStake.stakedProtocolToken.prettify()}
                     unit={GT}
                 />
 
                 <StaticRow
-                    label='Pool share'
+                    label={t('common.pool-share')}
                     inputId='stake-share'
                     amount={poolShare.prettify(4)}
                     unit='%'
@@ -76,7 +77,7 @@ export const ReadOnlyStake: React.FC = () => {
                         onClick={() => dispatch({ type: 'startAdjusting' })}
                     >
                         <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
+                        &nbsp;{t('common.adjust')}
                     </Button>
 
                     <StakingGainsAction />

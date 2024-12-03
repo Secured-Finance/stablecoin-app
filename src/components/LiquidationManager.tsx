@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Trash from 'src/assets/icons/trash.svg';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin } from 'src/hooks';
@@ -10,11 +11,14 @@ export const LiquidationManager: React.FC = () => {
     } = useSfStablecoin();
     const [numberOfTrovesToLiquidate, setNumberOfTrovesToLiquidate] =
         useState('90');
+    const { t } = useTranslation();
 
     return (
-        <CardComponent title='Liquidate'>
+        <CardComponent title={t('common.liquidate')}>
             <div className='typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800'>
-                <span className='whitespace-nowrap'>Up to</span>
+                <span className='whitespace-nowrap'>
+                    {t('card-component.up-to')}
+                </span>
 
                 <input
                     type='number'
@@ -29,7 +33,7 @@ export const LiquidationManager: React.FC = () => {
 
                 <Transaction
                     id='batch-liquidate'
-                    tooltip='Liquidate'
+                    tooltip={t('common.liquidate')}
                     tooltipPlacement='bottom'
                     send={overrides => {
                         if (!numberOfTrovesToLiquidate) {

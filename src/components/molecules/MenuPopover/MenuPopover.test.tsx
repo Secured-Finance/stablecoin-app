@@ -8,7 +8,7 @@ const { Default } = composeStories(stories);
 describe('MenuPopover component', () => {
     it('should have a button with text More', () => {
         render(<Default />);
-        const button = screen.getByRole('button', { name: 'More' });
+        const button = screen.getByTestId('more-button');
         expect(button).toBeInTheDocument();
     });
 

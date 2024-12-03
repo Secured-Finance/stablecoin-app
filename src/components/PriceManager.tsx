@@ -1,5 +1,6 @@
 import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
@@ -15,6 +16,7 @@ export const PriceManager: React.FC = () => {
             connection: { _priceFeedIsTestnet },
         },
     } = useSfStablecoin();
+    const { t } = useTranslation();
 
     const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
 
@@ -26,7 +28,7 @@ export const PriceManager: React.FC = () => {
     }, [price]);
 
     return (
-        <CardComponent title='Price feed'>
+        <CardComponent title={t('card-component.stability-pool')}>
             <div className='flex items-center gap-2'>
                 {canSetPrice ? (
                     <>

@@ -12,6 +12,7 @@ import {
     TroveClosureParams,
     TroveCreationParams,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import { COIN } from '../../../strings';
 import { ActionDescription, Amount } from '../../ActionDescription';
 import { ErrorDescription } from '../../ErrorDescription';
@@ -29,59 +30,62 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
     <ActionDescription>
         {params.depositCollateral && params.borrowDebtToken ? (
             <>
-                You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
-                receive{' '}
+                {t('common.you-will')} {t('common.deposit')}{' '}
+                <Amount>{params.depositCollateral.prettify()} tFIL</Amount>{' '}
+                {t('common.and')}
+                {t('common.receive')}{' '}
                 <Amount>
                     {params.borrowDebtToken.prettify()} {COIN}
                 </Amount>
             </>
         ) : params.repayDebtToken && params.withdrawCollateral ? (
             <>
-                You will pay{' '}
+                {t('common.you-will')} {t('common.pay')}{' '}
                 <Amount>
                     {params.repayDebtToken.prettify()} {COIN}
                 </Amount>{' '}
-                and receive{' '}
+                {t('common.and')} {t('common.receive')}{' '}
                 <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
             </>
         ) : params.depositCollateral && params.repayDebtToken ? (
             <>
-                You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
-                pay{' '}
+                {t('common.you-will')} {t('common.deposit')}{' '}
+                <Amount>{params.depositCollateral.prettify()} tFIL</Amount>{' '}
+                {t('common.and')}
+                {t('common.pay')}{' '}
                 <Amount>
                     {params.repayDebtToken.prettify()} {COIN}
                 </Amount>
             </>
         ) : params.borrowDebtToken && params.withdrawCollateral ? (
             <>
-                You will receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount> and{' '}
+                {t('common.you-will')} {t('common.receive')}{' '}
+                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>{' '}
+                {t('common.and')}{' '}
                 <Amount>
                     {params.borrowDebtToken.prettify()} {COIN}
                 </Amount>
             </>
         ) : params.depositCollateral ? (
             <>
-                You will deposit{' '}
+                {t('common.you-will')} {t('common.deposit')}{' '}
                 <Amount>{params.depositCollateral.prettify()} tFIL</Amount>
             </>
         ) : params.withdrawCollateral ? (
             <>
-                You will receive{' '}
+                {t('common.you-will')} {t('common.receive')}{' '}
                 <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
             </>
         ) : params.borrowDebtToken ? (
             <>
-                You will receive{' '}
+                {t('common.you-will')} {t('common.receive')}{' '}
                 <Amount>
                     {params.borrowDebtToken.prettify()} {COIN}
                 </Amount>
             </>
         ) : (
             <>
-                You will pay{' '}
+                {t('common.you-will')} {t('common.deposit')}{' '}
                 <Amount>
                     {params.repayDebtToken.prettify()} {COIN}
                 </Amount>
@@ -157,11 +161,10 @@ export const validateTroveChange = (
         return [
             undefined,
             <ErrorDescription key={0}>
-                Total debt must be at least{' '}
-                <Amount>
-                    {MINIMUM_DEBT.toString()} {COIN}
-                </Amount>
-                .
+                {t('common.total-debt-notice', {
+                    COIN,
+                    AMOUNT: MINIMUM_DEBT.toString(),
+                })}
             </ErrorDescription>,
         ];
     }
@@ -193,11 +196,10 @@ const validateTroveCreation = (
     if (borrowDebtToken.lt(MINIMUM_NET_DEBT)) {
         return (
             <ErrorDescription>
-                You must borrow at least{' '}
-                <Amount>
-                    {MINIMUM_NET_DEBT.toString()} {COIN}
-                </Amount>
-                .
+                {t('common.min-borrow-notice', {
+                    COIN,
+                    AMOUNT: MINIMUM_NET_DEBT.toString(),
+                })}
             </ErrorDescription>
         );
     }
@@ -206,9 +208,9 @@ const validateTroveCreation = (
         if (!resultingTrove.isOpenableInRecoveryMode(price)) {
             return (
                 <ErrorDescription>
-                    You are not allowed to open a Trove with less than{' '}
-                    <Amount>{ccrPercent}</Amount> Collateral Ratio during
-                    recovery mode. Please increase your Troves Collateral Ratio.
+                    {t('card-component.increase-collateral-ratio', {
+                        PERCENT: ccrPercent,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -216,8 +218,9 @@ const validateTroveCreation = (
         if (resultingTrove.collateralRatioIsBelowMinimum(price)) {
             return (
                 <ErrorDescription>
-                    Collateral ratio must be at least{' '}
-                    <Amount>{mcrPercent}</Amount>.
+                    {t('card-component.collateral-warning', {
+                        AMOUNT: mcrPercent,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -225,10 +228,9 @@ const validateTroveCreation = (
         if (wouldTriggerRecoveryMode) {
             return (
                 <ErrorDescription>
-                    You are not allowed to open a Trove that would cause the
-                    Total Collateral Ratio to fall below{' '}
-                    <Amount>{ccrPercent}</Amount>. Please increase your Troves
-                    Collateral Ratio.
+                    {t('card-component.increase-coll-ratio', {
+                        PERCENT: ccrPercent,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -237,11 +239,10 @@ const validateTroveCreation = (
     if (depositCollateral.gt(accountBalance)) {
         return (
             <ErrorDescription>
-                The amount you are trying to deposit exceeds your balance by{' '}
-                <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
-                </Amount>
-                .
+                {t('common.exceeds-balance-limit', {
+                    COIN: 'tFIL',
+                    AMOUNT: depositCollateral.sub(accountBalance).prettify(),
+                })}
             </ErrorDescription>
         );
     }
@@ -270,8 +271,7 @@ const validateTroveAdjustment = (
         if (withdrawCollateral) {
             return (
                 <ErrorDescription>
-                    You are not allowed to withdraw collateral during recovery
-                    mode.
+                    {t('common.withdrawal-disabled')}
                 </ErrorDescription>
             );
         }
@@ -280,9 +280,9 @@ const validateTroveAdjustment = (
             if (resultingTrove.collateralRatioIsBelowCritical(price)) {
                 return (
                     <ErrorDescription>
-                        Your collateral ratio must be at least{' '}
-                        <Amount>{ccrPercent}</Amount> to borrow during recovery
-                        mode. Please improve your collateral ratio.
+                        {t('common.minimum-collateral-ratio-required', {
+                            PERCENT: ccrPercent,
+                        })}
                     </ErrorDescription>
                 );
             }
@@ -294,8 +294,7 @@ const validateTroveAdjustment = (
             ) {
                 return (
                     <ErrorDescription>
-                        You are not allowed to decrease your collateral ratio
-                        during recovery mode.
+                        {t('common.restrict-collateral-ratio')}
                     </ErrorDescription>
                 );
             }
@@ -304,8 +303,9 @@ const validateTroveAdjustment = (
         if (resultingTrove.collateralRatioIsBelowMinimum(price)) {
             return (
                 <ErrorDescription>
-                    Collateral ratio must be at least{' '}
-                    <Amount>{mcrPercent}</Amount>.
+                    {t('card-component.collateral-warning', {
+                        AMOUNT: mcrPercent,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -313,9 +313,9 @@ const validateTroveAdjustment = (
         if (wouldTriggerRecoveryMode) {
             return (
                 <ErrorDescription>
-                    The adjustment you are trying to make would cause the Total
-                    Collateral Ratio to fall below <Amount>{ccrPercent}</Amount>
-                    . Please increase your Troves Collateral Ratio.
+                    {t('common.total-collateral-ratio-breach', {
+                        AMOUNT: ccrPercent,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -325,11 +325,10 @@ const validateTroveAdjustment = (
         if (resultingTrove.debt.lt(MINIMUM_DEBT)) {
             return (
                 <ErrorDescription>
-                    Total debt must be at least{' '}
-                    <Amount>
-                        {MINIMUM_DEBT.toString()} {COIN}
-                    </Amount>
-                    .
+                    {t('common.total-debt-notice', {
+                        COIN,
+                        AMOUNT: MINIMUM_DEBT.toString(),
+                    })}
                 </ErrorDescription>
             );
         }
@@ -337,11 +336,10 @@ const validateTroveAdjustment = (
         if (repayDebtToken.gt(debtTokenBalance)) {
             return (
                 <ErrorDescription>
-                    The amount you are trying to repay exceeds your balance by{' '}
-                    <Amount>
-                        {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
-                    </Amount>
-                    .
+                    {t('card-component.repay-exceed', {
+                        AMOUNT: repayDebtToken.sub(debtTokenBalance).prettify(),
+                        COIN,
+                    })}
                 </ErrorDescription>
             );
         }
@@ -350,11 +348,10 @@ const validateTroveAdjustment = (
     if (depositCollateral?.gt(accountBalance)) {
         return (
             <ErrorDescription>
-                The amount you are trying to deposit exceeds your balance by{' '}
-                <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
-                </Amount>
-                .
+                {t('card-component.repay-exceed', {
+                    AMOUNT: depositCollateral.sub(debtTokenBalance).prettify(),
+                    COIN: 'tFIL',
+                })}
             </ErrorDescription>
         );
     }
@@ -374,8 +371,7 @@ const validateTroveClosure = (
     if (numberOfTroves === 1) {
         return (
             <ErrorDescription>
-                You are not allowed to close your Trove when there are no other
-                Troves in the system.
+                {t('card-component.no-other-troves')}
             </ErrorDescription>
         );
     }
@@ -383,7 +379,7 @@ const validateTroveClosure = (
     if (recoveryMode) {
         return (
             <ErrorDescription>
-                You are not allowed to close your Trove during recovery mode.
+                {t('card-component.recovery-mode-trove')}
             </ErrorDescription>
         );
     }
@@ -391,11 +387,10 @@ const validateTroveClosure = (
     if (repayDebtToken?.gt(debtTokenBalance)) {
         return (
             <ErrorDescription>
-                You need{' '}
-                <Amount>
-                    {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
-                </Amount>{' '}
-                more to close your Trove.
+                {t('stablecoin-stats.close-trove-alert', {
+                    COIN,
+                    AMOUNT: repayDebtToken.sub(debtTokenBalance).prettify(),
+                })}
             </ErrorDescription>
         );
     }
@@ -403,10 +398,9 @@ const validateTroveClosure = (
     if (wouldTriggerRecoveryMode) {
         return (
             <ErrorDescription>
-                You are not allowed to close a Trove if it would cause the Total
-                Collateralization Ratio to fall below{' '}
-                <Amount>{ccrPercent}</Amount>. Please wait until the Total
-                Collateral Ratio increases.
+                {t('card-component.trigger-recovery-mode', {
+                    PERCENT: ccrPercent,
+                })}
             </ErrorDescription>
         );
     }

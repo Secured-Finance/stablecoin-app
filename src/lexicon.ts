@@ -1,7 +1,6 @@
 export type Lexicon = {
     term: string;
     description?: string;
-    link?: string;
 };
 
 export const BORROW_FEE: Lexicon = {

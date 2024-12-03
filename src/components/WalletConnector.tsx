@@ -1,4 +1,5 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useTranslation } from 'react-i18next';
 import SFLogoLight from 'src/assets/img/logo-light.svg';
 import { Button, ButtonSizes } from 'src/components/atoms';
 import { useAccount } from 'wagmi';
@@ -20,13 +21,14 @@ export const WalletConnector: React.FC<{
 }> = ({ children }) => {
     const { isConnected } = useAccount();
     const { open } = useWeb3Modal();
+    const { t } = useTranslation();
 
     return isConnected ? (
         children
     ) : (
         <div className='relative flex h-screen w-full items-center justify-center bg-neutral-100'>
             <Button onClick={() => open()} size={ButtonSizes.lg}>
-                Connect Wallet
+                {t('common.connect-wallet')}
             </Button>
             <NavBar />
         </div>

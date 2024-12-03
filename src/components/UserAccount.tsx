@@ -2,6 +2,7 @@ import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import Link from 'next/link';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { Identicon } from 'src/components/atoms';
@@ -24,9 +25,10 @@ export const UserAccount: React.FC = () => {
     const { open } = useWeb3Modal();
     const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
+    const { t } = useTranslation();
 
     return (
-        <div className='flex flex-row items-center gap-3 laptop:gap-2'>
+        <div className='flex flex-row items-center gap-2'>
             <Link
                 href={'https://app.secured.finance/'}
                 target='_blank'
@@ -35,7 +37,7 @@ export const UserAccount: React.FC = () => {
             >
                 <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
                     <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                        Fixed Income
+                        {t('common.fixed-income')}
                     </span>
                     <ExternalLink className='h-4 w-4' />
                 </div>

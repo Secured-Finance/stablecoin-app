@@ -6,6 +6,7 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import { useCallback, useEffect } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import {
@@ -252,13 +253,11 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
             {description ??
                 (openingNewTrove ? (
                     <InfoBubble>
-                        Start by entering the amount of tFIL you would like to
-                        deposit as collateral.
+                        {t('card-component.start-deposit-instruction')}
                     </InfoBubble>
                 ) : (
                     <InfoBubble>
-                        Adjust your Trove by modifying its collateral, debt, or
-                        both.
+                        {t('card-component.adjust-trove-desc')}
                     </InfoBubble>
                 ))}
 
@@ -267,7 +266,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                     variant={ButtonVariants.tertiary}
                     onClick={handleCancel}
                 >
-                    Cancel
+                    {t('common.cancel')}
                 </Button>
                 {validChange ? (
                     <TroveAction
@@ -276,10 +275,10 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                         maxBorrowingRate={maxBorrowingRate}
                         borrowingFeeDecayToleranceMinutes={60}
                     >
-                        Confirm
+                        {t('common.confirm')}
                     </TroveAction>
                 ) : (
-                    <Button disabled>Confirm</Button>
+                    <Button disabled>{t('common.confirm')}</Button>
                 )}
             </div>
         </TroveEditor>

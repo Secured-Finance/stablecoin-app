@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { t } from 'i18next';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -65,22 +66,26 @@ export const SideNav: React.FC = () => {
                         <XIcon className='h-6 w-6 font-bold text-primary-500' />
                     </button>
                 </div>
+
                 <div className='flex flex-col items-start gap-4'>
-                    {LINKS.map(link => (
-                        <NavLink
-                            key={link.label}
-                            to={link.to}
-                            className={clsx(
-                                'text-4.5 font-semibold leading-7 text-neutral-900',
-                                {
-                                    'text-primary-500': pathname === link.to,
-                                }
-                            )}
-                            onClick={() => setIsVisible(false)}
-                        >
-                            {link.label}
-                        </NavLink>
-                    ))}
+                    {LINKS.map((link, index) => {
+                        return (
+                            <NavLink
+                                key={index}
+                                to={link.to}
+                                className={clsx(
+                                    'flex items-center gap-2 text-4.5 font-semibold leading-7 text-neutral-900',
+                                    {
+                                        'text-primary-500':
+                                            pathname === link.to,
+                                    }
+                                )}
+                                onClick={() => setIsVisible(false)}
+                            >
+                                {t(link.labelKey)}
+                            </NavLink>
+                        );
+                    })}
                     <button
                         onClick={e => {
                             e.preventDefault();
@@ -91,7 +96,7 @@ export const SideNav: React.FC = () => {
                             'flex items-center justify-between gap-2 text-center text-4.5 font-semibold leading-7 text-neutral-900 focus:outline-none'
                         )}
                     >
-                        More
+                        {t('common.more')}
                         <ChevronRight
                             className={clsx('h-4 w-4 text-neutral-900', {
                                 'rotate-90': showMore,
@@ -102,8 +107,8 @@ export const SideNav: React.FC = () => {
                         <div className='w-full px-4'>
                             {LinkList.map(link => (
                                 <MobileItemLink
-                                    key={link.text}
-                                    text={link.text}
+                                    key={link.textKey}
+                                    textKey={link.textKey}
                                     href={link.href}
                                     onClick={() => setIsVisible(false)}
                                     target='_blank'
@@ -136,12 +141,12 @@ const NextLink = forwardRef(
 NextLink.displayName = 'NextLink';
 
 const MobileItemLink = ({
-    text,
+    textKey,
     href,
     onClick,
     target,
 }: {
-    text: string;
+    textKey: string;
     href: string;
     onClick: () => void;
     target?: string;
@@ -159,7 +164,7 @@ const MobileItemLink = ({
             rel='noreferrer'
             onClick={onClick}
         >
-            {text}
+            {t(textKey)}
         </NextLink>
     );
 };

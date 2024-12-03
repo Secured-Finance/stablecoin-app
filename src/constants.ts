@@ -1,10 +1,15 @@
 export const LINKS = [
     {
         to: '/',
-        label: 'Stablecoin',
+        labelKey: 'common.stablecoin',
     },
     {
         to: '/risky-troves',
-        label: 'Risky Troves',
+        labelKey: 'common.risky-troves',
     },
+];
+
+export const languages = [
+    { code: 'en', label: 'EN' },
+    { code: 'zh', label: 'CH' },
 ];

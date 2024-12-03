@@ -3,10 +3,11 @@ import {
     StabilityDeposit,
     StabilityDepositChange,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React from 'react';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { COIN } from '../../strings';
-import { ActionDescription, Amount } from '../ActionDescription';
+import { ActionDescription } from '../ActionDescription';
 
 type StabilityActionDescriptionProps = {
     originalDeposit: StabilityDeposit;
@@ -25,23 +26,15 @@ export const StabilityActionDescription: React.FC<
 
     return (
         <ActionDescription>
-            {change.depositDebtToken ? (
-                <>
-                    You are depositing{' '}
-                    <Amount>
-                        {change.depositDebtToken.prettify()} {COIN}
-                    </Amount>{' '}
-                    in the Stability Pool
-                </>
-            ) : (
-                <>
-                    You are withdrawing{' '}
-                    <Amount>
-                        {change.withdrawDebtToken.prettify()} {COIN}
-                    </Amount>{' '}
-                    to your wallet
-                </>
-            )}
+            {change.depositDebtToken
+                ? t('card-component.depositing-info', {
+                      COIN,
+                      AMOUNT: change.depositDebtToken.prettify(),
+                  })
+                : t('card-component.withdrawing-info', {
+                      COIN,
+                      AMOUNT: change.withdrawDebtToken.prettify(),
+                  })}
             {/* {(collateralGain || protocolTokenReward) && (
                 <>
                     {' '}
@@ -59,10 +52,11 @@ export const StabilityActionDescription: React.FC<
             {collateralGain && (
                 <>
                     {' '}
-                    and claiming at least <Amount>{collateralGain}</Amount>
+                    {t('card-component.claiming-info', {
+                        COLLARERAL: collateralGain,
+                    })}
                 </>
             )}
-            .
         </ActionDescription>
     );
 };

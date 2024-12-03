@@ -4,6 +4,7 @@ import {
     Decimalish,
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useCallback, useEffect } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import {
@@ -158,11 +159,11 @@ export const StabilityDepositManager: React.FC = () => {
             {description ??
                 (makingNewDeposit ? (
                     <InfoBubble>
-                        Enter the amount of {COIN} you would like to deposit.
+                        {t('card-component.deposit-instruction', { COIN })}
                     </InfoBubble>
                 ) : (
                     <InfoBubble>
-                        Adjust the {COIN} amount to deposit or withdraw.
+                        {t('card-component.adjust-amount', { COIN })}
                     </InfoBubble>
                 ))}
 
@@ -171,7 +172,7 @@ export const StabilityDepositManager: React.FC = () => {
                     variant={ButtonVariants.tertiary}
                     onClick={handleCancel}
                 >
-                    Cancel
+                    {t('common.cancel')}
                 </Button>
 
                 {validChange ? (
@@ -179,10 +180,10 @@ export const StabilityDepositManager: React.FC = () => {
                         transactionId={transactionId}
                         change={validChange}
                     >
-                        Confirm
+                        {t('common.confirm')}
                     </StabilityDepositAction>
                 ) : (
-                    <Button disabled>Confirm</Button>
+                    <Button disabled>{t('common.confirm')}</Button>
                 )}
             </div>
         </StabilityDepositEditor>

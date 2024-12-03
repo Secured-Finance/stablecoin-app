@@ -6,6 +6,7 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
@@ -225,7 +226,7 @@ export const Adjusting: React.FC = () => {
                         variant={ButtonVariants.tertiary}
                         onClick={handleCancelPressed}
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </Button>
 
                     {stableTroveChange ? (
@@ -235,17 +236,17 @@ export const Adjusting: React.FC = () => {
                             maxBorrowingRate={maxBorrowingRate}
                             borrowingFeeDecayToleranceMinutes={60}
                         >
-                            Confirm
+                            {t('common.confirm')}
                         </TroveAction>
                     ) : (
-                        <Button disabled>Confirm</Button>
+                        <Button disabled>{t('common.confirm')}</Button>
                     )}
                 </>
             }
         >
             <div className='flex flex-col gap-3'>
                 <EditableRow
-                    label='Collateral'
+                    label={t('common.collateral')}
                     inputId='trove-collateral'
                     amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
@@ -259,7 +260,7 @@ export const Adjusting: React.FC = () => {
                 />
 
                 <EditableRow
-                    label='Net debt'
+                    label={t('common.net-debt')}
                     inputId='trove-net-debt-amount'
                     amount={netDebt.prettify()}
                     unit={COIN}
@@ -272,7 +273,7 @@ export const Adjusting: React.FC = () => {
 
                 <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
-                        label='Liquidation Reserve'
+                        label={t('common.liquidation-reserve')}
                         inputId='trove-liquidation-reserve'
                         amount={`${LIQUIDATION_RESERVE}`}
                         unit={COIN}
@@ -283,12 +284,7 @@ export const Adjusting: React.FC = () => {
                                         variant='tooltip'
                                         sx={{ width: '200px' }}
                                     >
-                                        An amount set aside to cover the
-                                        liquidator’s gas costs if your Trove
-                                        needs to be liquidated. The amount
-                                        increases your debt and is refunded if
-                                        you close your Trove by fully paying off
-                                        its net debt.
+                                        {t('tooltips.liquidation-reserve')}
                                     </Card>
                                 }
                             />
@@ -296,7 +292,7 @@ export const Adjusting: React.FC = () => {
                     />
 
                     <StaticRow
-                        label='Borrowing Fee'
+                        label={t('common.borrowing-fee')}
                         inputId='trove-borrowing-fee'
                         amount={fee.prettify(2)}
                         pendingAmount={feePct.toString(2)}
@@ -308,10 +304,7 @@ export const Adjusting: React.FC = () => {
                                         variant='tooltip'
                                         sx={{ width: '240px' }}
                                     >
-                                        This amount is deducted from the
-                                        borrowed amount as a one-time fee. There
-                                        are no recurring fees for borrowing,
-                                        which is thus interest-free.
+                                        {t('tooltips.borrowing-fee')}
                                     </Card>
                                 }
                             />
@@ -319,7 +312,7 @@ export const Adjusting: React.FC = () => {
                     />
 
                     <StaticRow
-                        label='Total debt'
+                        label={t('common.total-debt')}
                         inputId='trove-total-debt'
                         amount={totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                         unit={COIN}
@@ -330,21 +323,26 @@ export const Adjusting: React.FC = () => {
                                         variant='tooltip'
                                         sx={{ width: '240px' }}
                                     >
-                                        The total amount of USDFC your Trove
-                                        will hold.{' '}
+                                        {t('card-component.total-hold')}{' '}
                                         {isDirty && (
                                             <>
-                                                You will need to repay{' '}
+                                                {t(
+                                                    'card-component.need-to-repay'
+                                                )}{' '}
                                                 {totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
                                                     )}{' '}
-                                                USDFC to reclaim your collateral
+                                                {t(
+                                                    'card-component.to-reclaim-collateral'
+                                                )}
                                                 (
                                                 {LIQUIDATION_RESERVE.toString()}{' '}
-                                                USDFC Liquidation Reserve
-                                                excluded).
+                                                {t(
+                                                    'card-component.reserve-excluded'
+                                                )}
+                                                ).
                                             </>
                                         )}
                                     </Card>
@@ -362,8 +360,7 @@ export const Adjusting: React.FC = () => {
 
                 {description ?? (
                     <InfoBubble>
-                        Adjust your Trove by modifying its collateral, debt, or
-                        both.
+                        {t('card-component.adjust-trove-desc')}
                     </InfoBubble>
                 )}
 

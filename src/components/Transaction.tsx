@@ -14,6 +14,7 @@ import {
     EthersTransactionCancelledError,
     EthersTransactionOverrides,
 } from '@secured-finance/lib-ethers';
+import { t } from 'i18next';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Tooltip } from 'src/components/atoms';
@@ -169,7 +170,7 @@ export const useTransactionFunction = (
                 setTransactionState({
                     type: 'failed',
                     id,
-                    error: new Error('Failed to send transaction (try again)'),
+                    error: new Error(t('common.transaction-failed')),
                 });
             }
         }
@@ -201,7 +202,7 @@ export function Transaction<C extends React.ReactElement<ButtonlikeProps>>({
         transactionState.type === 'waitingForApproval' ||
         transactionState.type === 'waitingForConfirmation'
     ) {
-        failureReasons.push('You must wait for confirmation');
+        failureReasons.push(t('common.wait-approval'));
     }
 
     showFailure =
@@ -323,9 +324,7 @@ export const TransactionMonitor: React.FC = () => {
                         setTransactionState({
                             type: 'failed',
                             id,
-                            error: new Error(
-                                reason ? `Reverted: ${reason}` : 'Failed'
-                            ),
+                            error: new Error(t('common.transaction-failed')),
                         });
                     }
                 } catch (rawError) {
@@ -345,7 +344,7 @@ export const TransactionMonitor: React.FC = () => {
                         setTransactionState({
                             type: 'failed',
                             id,
-                            error: new Error('Failed'),
+                            error: new Error(t('common.transaction-failed')),
                         });
                     }
                 }

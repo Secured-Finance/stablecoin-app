@@ -7,6 +7,7 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React from 'react';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
@@ -61,14 +62,14 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
         <CardComponent title='Trove'>
             <div className='flex flex-col gap-3'>
                 <StaticRow
-                    label='Collateral'
+                    label={t('common.collateral')}
                     inputId='trove-collateral'
                     amount={edited.collateral.prettify(COLLATERAL_PRECISION)}
                     unit='tFIL'
                 />
 
                 <StaticRow
-                    label='Debt'
+                    label={t('common.debt')}
                     inputId='trove-debt'
                     amount={edited.debt.prettify()}
                     unit={COIN}
@@ -76,7 +77,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
 
                 {original.isEmpty && (
                     <StaticRow
-                        label='Liquidation Reserve'
+                        label={t('common.liquidation-reserve')}
                         inputId='trove-liquidation-reserve'
                         amount={`${LIQUIDATION_RESERVE}`}
                         unit={COIN}
@@ -87,12 +88,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                                         variant='tooltip'
                                         sx={{ width: '200px' }}
                                     >
-                                        An amount set aside to cover the
-                                        liquidator’s gas costs if your Trove
-                                        needs to be liquidated. The amount
-                                        increases your debt and is refunded if
-                                        you close your Trove by fully paying off
-                                        its net debt.
+                                        {t('tooltips.liquidation-reserve')}
                                     </Card>
                                 }
                             />
@@ -101,7 +97,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                 )}
 
                 <StaticRow
-                    label='Borrowing Fee'
+                    label={t('common.borrowing-fee')}
                     inputId='trove-borrowing-fee'
                     amount={fee.toString(2)}
                     pendingAmount={feePct.toString(2)}
@@ -110,10 +106,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                         <InfoIcon
                             message={
                                 <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    This amount is deducted from the borrowed
-                                    amount as a one-time fee. There are no
-                                    recurring fees for borrowing, which is thus
-                                    interest-free.
+                                    {t('tooltips.borrowing-fee')}
                                 </Card>
                             }
                         />

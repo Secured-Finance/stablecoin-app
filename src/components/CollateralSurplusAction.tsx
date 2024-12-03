@@ -1,4 +1,5 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useEffect } from 'react';
 import { Button } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
@@ -31,7 +32,7 @@ export const CollateralSurplusAction: React.FC = () => {
         <div className='flex justify-end gap-2'>
             <Button disabled>
                 <Spinner sx={{ mr: 2, color: 'white' }} size={20} />
-                Waiting for your approval
+                {t('card-component.waiting-approval')}
             </Button>
         </div>
     ) : myTransactionState.type !== 'waitingForConfirmation' &&
@@ -45,7 +46,8 @@ export const CollateralSurplusAction: React.FC = () => {
                 )}
             >
                 <Button>
-                    Claim {collateralSurplusBalance.prettify()} tFIL
+                    {t('common.claim')} {collateralSurplusBalance.prettify()}{' '}
+                    tFIL
                 </Button>
             </Transaction>
         </div>

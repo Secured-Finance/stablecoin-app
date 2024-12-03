@@ -60,7 +60,14 @@ export const Button = ({
                     <StartIcon className='h-4 w-4' role='img' />
                 </span>
             )}
-            <p className={clsx('whitespace-nowrap', textStyle[size])}>{text}</p>
+            <p
+                className={clsx(
+                    'flex items-center whitespace-nowrap',
+                    textStyle[size]
+                )}
+            >
+                {text}
+            </p>
             {EndIcon && (
                 <span className='ml-1.5'>
                     <EndIcon className='h-4 w-4' role='img' />

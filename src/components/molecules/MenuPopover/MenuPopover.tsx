@@ -1,4 +1,5 @@
 import { Popover, Transition } from '@headlessui/react';
+import { t } from 'i18next';
 import { ChevronDown, ExternalLinkIcon } from 'lucide-react';
 import { Fragment } from 'react';
 import { MenuItem, Separator } from 'src/components/atoms';
@@ -12,10 +13,11 @@ export const MenuPopover = () => {
                     <>
                         <Popover.Button
                             as='button'
+                            data-testid='more-button'
                             data-cy='popover-button'
                             className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-6 text-neutral-800 outline-none'
                         >
-                            <span>More</span>
+                            <span>{t('common.more')}</span>
                             <ChevronDown className='h-4 w-4 text-neutral-800' />
                         </Popover.Button>
                         <Transition
@@ -40,7 +42,7 @@ export const MenuPopover = () => {
                                                 onClick={close}
                                             >
                                                 <MenuItem
-                                                    text={link.text}
+                                                    text={t(link.textKey)}
                                                     icon={link.icon}
                                                     link={link.href}
                                                     badge={<ExternalIcon />}
