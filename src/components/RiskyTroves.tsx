@@ -46,7 +46,7 @@ const liquidatableInRecoveryMode = (
     ) {
         return [
             trove.debt.lte(debtTokenInStabilityPool),
-            "There's not enough token in the Stability pool to cover the debt",
+            t('card-component.not-enough-token'),
         ] as const;
     } else {
         return liquidatableInNormalMode(trove, price);
@@ -216,7 +216,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                     <div>
                         {!troves
                             ? `${t('common.loading')}...`
-                            : 'There are no Troves yet'}
+                            : t('card-component.no-troves')}
                     </div>
                 ) : (
                     <table className='w-full'>
@@ -245,7 +245,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                     )}
                                 >
                                     <span className='flex justify-center laptop:hidden'>
-                                        Coll.
+                                        {t('common.coll')}
                                     </span>
                                     <span className='hidden justify-center laptop:flex'>
                                         {t('common.collateral')}

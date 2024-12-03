@@ -15,6 +15,7 @@
       "protocol": "协议",
       "debt": "债务",
       "collateral": "抵押品",
+      "coll": "抵押品",
       "collateral-ratio": "抵押比例",
       "coll-ratio": "抵押比例",
       "adjust": "调整",
@@ -96,7 +97,9 @@
       "depositing-info": "您正在将 {{AMOUNT}} {{COIN}} 存入稳定池。",
       "withdrawing-info": "您正在将 {{AMOUNT}} {{COIN}} 提取到您的钱包。",
       "claiming-info": "并声称至少 {{COLLARERAL}}",
-      "increase-coll-ratio": "您不得打开会导致总抵押品比率低于 {{AMOUNT}} 的 Trove。请增加您的 Troves 抵押比率。"
+      "increase-coll-ratio": "您不得打开会导致总抵押品比率低于 {{AMOUNT}} 的 Trove。请增加您的 Troves 抵押比率。",
+      "not-enough-token": "稳定池中没有足够的代币来偿还债务",
+      "no-troves": "还没有 Troves"
     },
     "stablecoin-stats": {
       "title": "SF 稳定币统计",

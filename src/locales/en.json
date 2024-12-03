@@ -15,6 +15,7 @@
       "protocol": "Protocol",
       "debt": "Debt",
       "collateral": "Collateral",
+      "coll": "Coll.",
       "collateral-ratio": "Collateral ratio",
       "coll-ratio": "Coll. Ratio",
       "adjust": "Adjust",
@@ -96,7 +97,9 @@
       "depositing-info": "You are depositing {{AMOUNT}} {{COIN}} in the Stability Pool.",
       "withdrawing-info": "You are withdrawing {{AMOUNT}} {{COIN}} to your wallet",
       "claiming-info": "and claiming at least {{COLLARERAL}}",
-      "increase-coll-ratio": "You are not allowed to open a Trove that would cause the Total Collateral Ratio to fall below {{AMOUNT}}. Please increase your Troves Collateral Ratio."
+      "increase-coll-ratio": "You are not allowed to open a Trove that would cause the Total Collateral Ratio to fall below {{AMOUNT}}. Please increase your Troves Collateral Ratio.",
+      "not-enough-token": "There's not enough token in the Stability pool to cover the debt",
+      "no-troves": "There are no Troves yet"
     },
     "stablecoin-stats": {
       "title": "SF Stablecoin Statistics",
