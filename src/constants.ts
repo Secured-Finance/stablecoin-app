@@ -7,4 +7,8 @@ export const LINKS = [
         to: '/risky-troves',
         label: 'Risky Troves',
     },
+    {
+        to: '/bridge',
+        label: 'Bridge',
+    },
 ];

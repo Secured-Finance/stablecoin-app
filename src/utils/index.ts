@@ -1,4 +1,5 @@
 export * from './address';
+export * from './bridge';
 export * from './currencyList';
 export * from './env';
 export * from './equals';
