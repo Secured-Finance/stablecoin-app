@@ -60,6 +60,7 @@ jobs:
           NEXT_PUBLIC_WALLET_CONNECT_ID=${{ secrets.WALLET_CONNECT_ID }}
           NEXT_PUBLIC_SET_PRICE_ENABLED=${{ vars.SET_PRICE_ENABLED }}
           SF_ENV=${{ vars.SF_ENV }}
+          NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID=${{ vars.SQUID_WIDGET_INTEGRATOR_ID }}
           EOF
 
       - name: Check Syntax with Prettier

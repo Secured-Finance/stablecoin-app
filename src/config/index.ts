@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { getAddress, isAddress } from '@ethersproject/address';
+import { getSquidWidgetIntegratorId } from 'src/utils';
 
 export type FrontendConfig = {
     frontendTag: string;
@@ -77,8 +78,7 @@ export const getConfig = (): Promise<FrontendConfig> => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const squidConfig: any = {
-    integratorId:
-        'usdfc-stablecoin-by-secured-finance-ef74ede5-0693-460c-acad-a994198d9dca',
+    integratorId: getSquidWidgetIntegratorId(),
     theme: {
         borderRadius: {
             'button-lg-primary': '1rem',
