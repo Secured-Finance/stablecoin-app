@@ -1,7 +1,5 @@
 import clsx from 'clsx';
-import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, {
     HTMLAttributes,
     Ref,
@@ -10,6 +8,7 @@ import React, {
     useState,
 } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
 import { LINKS } from 'src/constants';
@@ -88,23 +87,24 @@ export const SideNav: React.FC = () => {
                         }}
                         aria-label='Show More'
                         className={clsx(
-                            'flex items-center justify-between gap-2 text-center text-4.5 font-semibold leading-7 text-neutral-900 focus:outline-none'
+                            'flex items-center justify-between gap-1 text-center text-4.5 font-semibold leading-7 text-neutral-900 focus:outline-none'
                         )}
                     >
                         More
-                        <ChevronRight
-                            className={clsx('h-4 w-4 text-neutral-900', {
-                                'rotate-90': showMore,
+                        <ArrowDownSimple
+                            className={clsx('h-6 w-6 text-neutral-600', {
+                                'rotate-180': showMore,
                             })}
                         />
                     </button>
                     {showMore && (
-                        <div className='w-full px-4'>
+                        <div className='w-full'>
                             {LinkList.map(link => (
                                 <MobileItemLink
                                     key={link.text}
                                     text={link.text}
-                                    href={link.href}
+                                    icon={link.icon}
+                                    link={link.href}
                                     onClick={() => setIsVisible(false)}
                                     target='_blank'
                                 />
@@ -137,29 +137,33 @@ NextLink.displayName = 'NextLink';
 
 const MobileItemLink = ({
     text,
-    href,
+    icon,
+    link,
     onClick,
     target,
 }: {
     text: string;
-    href: string;
+    icon: React.ReactNode;
+    link: string;
     onClick: () => void;
     target?: string;
 }) => {
-    const router = useRouter();
-    const isActive = router.pathname === href;
     return (
         <NextLink
             className={clsx(
-                'flex w-full cursor-pointer flex-row items-center justify-start whitespace-nowrap pb-2 text-center text-4.5 font-semibold leading-7 text-neutral-900',
-                { underline: isActive }
+                'flex w-full cursor-pointer items-center px-3 py-[11px] focus:outline-none'
             )}
-            href={href}
+            href={link}
             target={target}
             rel='noreferrer'
             onClick={onClick}
         >
-            {text}
+            <div className='flex w-full cursor-pointer items-center gap-2'>
+                <div className='h-5 w-5'>{icon}</div>
+                <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
+                    {text}
+                </p>
+            </div>
         </NextLink>
     );
 };

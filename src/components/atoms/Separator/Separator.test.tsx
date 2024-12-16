@@ -15,7 +15,7 @@ describe('Separator Component', () => {
     it('should render custom color Separator with vertical orientation', () => {
         render(<Primary />);
         expect(screen.getByTestId('separator')).toHaveClass(
-            'border-l border-neutral-700'
+            'border-l border-neutral-100'
         );
     });
 });
