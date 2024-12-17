@@ -58,6 +58,7 @@ jobs:
           cat <<EOF > .env.local
           NEXT_PUBLIC_ANKER_API_KEY=${{ secrets.ANKER_API_KEY }}
           NEXT_PUBLIC_WALLET_CONNECT_ID=${{ secrets.WALLET_CONNECT_ID }}
+          NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG=${{ vars.GOOGLE_ANALYTICS_TAG }}
           NEXT_PUBLIC_SET_PRICE_ENABLED=${{ vars.SET_PRICE_ENABLED }}
           SF_ENV=${{ vars.SF_ENV }}
           EOF

@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import Script from 'next/script';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
@@ -19,6 +20,7 @@ import { SfStablecoinFrontend } from 'src/SfStablecoinFrontend';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
+    getGoogleAnalyticsTag,
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
@@ -129,7 +131,28 @@ createWeb3Modal({
     enableOnramp: false,
 });
 
+const TrackingCode = ({ gaTag }: { gaTag: string }) => {
+    return (
+        <>
+            <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaTag}`}
+            />
+            <Script id='google-analytics' strategy='afterInteractive'>
+                {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+
+                    gtag('config', '${gaTag}');
+                    `}
+            </Script>
+        </>
+    );
+};
+
 function App({ Component, pageProps }: AppProps) {
+    const gaTag = getGoogleAnalyticsTag();
+
     return (
         <>
             <Head>
@@ -139,6 +162,7 @@ function App({ Component, pageProps }: AppProps) {
                     content='width=device-width, initial-scale=1.0'
                 />
             </Head>
+            {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
                 <Providers>
                     <Component {...pageProps} />

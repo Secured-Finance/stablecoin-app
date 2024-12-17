@@ -20,6 +20,21 @@ export const getAmplitudeApiKey = () => {
     return NEXT_PUBLIC_AMPLITUDE_API_KEY;
 };
 
+export const getGoogleAnalyticsTag = () => {
+    const NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG =
+        process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG;
+
+    if (!NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG) {
+        // eslint-disable-next-line no-console
+        console.warn(
+            'Google Analytics Tag is not set: No analytics will be sent'
+        );
+        return '';
+    }
+
+    return NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG;
+};
+
 export const getEnvironment = () => {
     const SF_ENV = process.env.SF_ENV;
 
