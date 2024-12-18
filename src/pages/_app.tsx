@@ -144,6 +144,12 @@ const TrackingCode = ({ gaTag }: { gaTag: string }) => {
                     gtag('js', new Date());
 
                     gtag('config', '${gaTag}');
+
+                    window.addEventListener('hashchange', () => {
+                        gtag('config', '${gaTag}', {
+                            page_path: window.location.pathname + window.location.hash,
+                        });
+                    });
                     `}
             </Script>
         </>
