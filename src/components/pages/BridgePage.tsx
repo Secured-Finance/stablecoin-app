@@ -1,5 +1,5 @@
 import React from 'react';
-import { squidConfig } from 'src/config';
+import { squidConfig } from 'src/configs';
 import { useBreakpoint } from 'src/hooks';
 
 export const BridgePage: React.FC = () => {

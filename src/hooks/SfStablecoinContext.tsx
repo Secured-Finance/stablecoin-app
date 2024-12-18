@@ -14,7 +14,7 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import { FrontendConfig, getConfig } from 'src/config';
+import { FrontendConfig, getConfig } from 'src/configs';
 import { BatchedProvider } from 'src/contexts';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
