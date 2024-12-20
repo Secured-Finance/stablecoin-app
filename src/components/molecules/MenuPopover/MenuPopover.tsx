@@ -1,22 +1,27 @@
 import { Popover, Transition } from '@headlessui/react';
-import { ChevronDown, ExternalLinkIcon } from 'lucide-react';
+import clsx from 'clsx';
+import { ChevronDown } from 'lucide-react';
 import { Fragment } from 'react';
 import { MenuItem, Separator } from 'src/components/atoms';
 import { LinkList } from 'src/utils';
 
 export const MenuPopover = () => {
     return (
-        <div className='flex h-full items-center justify-center px-4'>
+        <div className='flex items-center justify-center px-4'>
             <Popover className='relative'>
-                {({ close }) => (
+                {({ close, open }) => (
                     <>
                         <Popover.Button
                             as='button'
                             data-cy='popover-button'
-                            className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-6 text-neutral-800 outline-none'
+                            className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
                         >
                             <span>More</span>
-                            <ChevronDown className='h-4 w-4 text-neutral-800' />
+                            <ChevronDown
+                                className={clsx('h-4 w-4 text-neutral-600', {
+                                    'rotate-180': open,
+                                })}
+                            />
                         </Popover.Button>
                         <Transition
                             as={Fragment}
@@ -28,10 +33,10 @@ export const MenuPopover = () => {
                             leaveTo='opacity-0 translate-y-5'
                         >
                             <Popover.Panel
-                                className='absolute -left-6 z-10 mt-4 w-56'
+                                className='absolute -left-4 z-10 mt-5 w-[200px]'
                                 role='menu'
                             >
-                                <div className='relative flex flex-col overflow-hidden rounded-lg bg-neutral-800 px-2.5 py-3'>
+                                <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
                                     {LinkList.map((link, index) => {
                                         return (
                                             <button
@@ -43,13 +48,10 @@ export const MenuPopover = () => {
                                                     text={link.text}
                                                     icon={link.icon}
                                                     link={link.href}
-                                                    badge={<ExternalIcon />}
                                                 />
                                                 {index !==
                                                     LinkList.length - 1 && (
-                                                    <div className='py-1.5'>
-                                                        <Separator color='neutral-700' />
-                                                    </div>
+                                                    <Separator color='neutral-100' />
                                                 )}
                                             </button>
                                         );
@@ -63,5 +65,3 @@ export const MenuPopover = () => {
         </div>
     );
 };
-
-const ExternalIcon = () => <ExternalLinkIcon className='h-4 w-4 text-white' />;
