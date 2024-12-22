@@ -22,6 +22,8 @@ on:
         required: true
       CODECOV_TOKEN:
         required: true
+      SQUID_WIDGET_INTEGRATOR_ID:
+        required: true
 
 jobs:
   build-and-test-all:
@@ -58,6 +60,7 @@ jobs:
           cat <<EOF > .env.local
           NEXT_PUBLIC_ANKER_API_KEY=${{ secrets.ANKER_API_KEY }}
           NEXT_PUBLIC_WALLET_CONNECT_ID=${{ secrets.WALLET_CONNECT_ID }}
+          NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID=${{ secrets.SQUID_WIDGET_INTEGRATOR_ID }}
           NEXT_PUBLIC_SET_PRICE_ENABLED=${{ vars.SET_PRICE_ENABLED }}
           SF_ENV=${{ vars.SF_ENV }}
           EOF

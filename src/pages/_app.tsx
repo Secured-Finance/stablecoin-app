@@ -12,7 +12,7 @@ import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
 import { WalletConnector } from 'src/components/WalletConnector';
-import { getConfig } from 'src/config';
+import { getConfig } from 'src/configs';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
 import { SfStablecoinProvider } from 'src/hooks/SfStablecoinContext';
 import { SfStablecoinFrontend } from 'src/SfStablecoinFrontend';

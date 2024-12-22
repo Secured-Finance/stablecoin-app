@@ -3,6 +3,7 @@ import {
     getAmplitudeApiKey,
     getEnvironment,
     getSetPriceEnabled,
+    getSquidWidgetIntegratorId,
     getWalletConnectId,
 } from 'src/utils';
 
@@ -73,5 +74,21 @@ describe('getSetPriceEnabled ', () => {
         const useCommitHash = getSetPriceEnabled();
         expect(useCommitHash).toBe(false);
         expect(typeof useCommitHash).toBe('boolean');
+    });
+});
+
+describe('getSquidWidgetIntegratorId ', () => {
+    it('should return the value of the environment variable', () => {
+        process.env.NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID = 'test';
+        const useCommitHash = getSquidWidgetIntegratorId();
+        expect(useCommitHash).toBe('test');
+        expect(typeof useCommitHash).toBe('string');
+    });
+
+    it('should return empty string if variable is not set', () => {
+        process.env.NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID = '';
+        const useCommitHash = getSquidWidgetIntegratorId();
+        expect(useCommitHash).toBe('');
+        expect(typeof useCommitHash).toBe('string');
     });
 });
