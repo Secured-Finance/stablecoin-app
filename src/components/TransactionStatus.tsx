@@ -60,7 +60,7 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
                 {state === 'waitingForConfirmation'
                     ? t('common.transaction-pending')
                     : state === 'cancelled'
-                    ? t('common.cancel')
+                    ? t('common.cancelled')
                     : state === 'failed'
                     ? message || t('common.transaction-failed')
                     : t('common.confirmed')}

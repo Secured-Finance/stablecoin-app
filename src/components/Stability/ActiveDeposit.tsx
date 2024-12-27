@@ -86,7 +86,7 @@ export const ActiveDeposit: React.FC = () => {
         >
             <div className='flex flex-col gap-3'>
                 <DisabledEditableRow
-                    label={t('common.deposit')}
+                    label={t('common.deposit-title')}
                     inputId='deposit-debt-token'
                     amount={stabilityDeposit.currentDebtToken.prettify()}
                     unit={COIN}

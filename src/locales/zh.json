@@ -24,6 +24,7 @@
       "total-debt": "债务总额",
       "max": "最大限度",
       "cancel": "取消",
+      "cancelled": "取消",
       "confirm": "确认",
       "confirmed": "确认的",
       "pool-share": "资金池份额",
@@ -96,7 +97,7 @@
       "increase-collateral-ratio": "在恢复模式期间，您不能打开抵押品比率低于 {{PERCENT}} 的 Trove。请增加您的 Troves 抵押比率。",
       "depositing-info": "您正在将 {{AMOUNT}} {{COIN}} 存入稳定池。",
       "withdrawing-info": "您正在将 {{AMOUNT}} {{COIN}} 提取到您的钱包。",
-      "claiming-info": "并声称至少 {{COLLARERAL}}",
+      "claiming-info": "并声称至少 {{COLLARERAL}}。",
       "increase-coll-ratio": "您不得打开会导致总抵押品比率低于 {{AMOUNT}} 的 Trove。请增加您的 Troves 抵押比率。",
       "not-enough-token": "稳定池中没有足够的代币来偿还债务",
       "no-troves": "还没有 Troves"

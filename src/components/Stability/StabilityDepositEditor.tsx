@@ -85,7 +85,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
         >
             <div className='flex flex-col gap-3'>
                 <EditableRow
-                    label={t('common.deposit')}
+                    label={t('common.deposit-title')}
                     inputId='deposit-scr'
                     amount={editedDebtToken.prettify()}
                     maxAmount={maxAmount.toString()}
