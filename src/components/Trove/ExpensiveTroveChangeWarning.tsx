@@ -76,7 +76,9 @@ export const ExpensiveTroveChangeWarning: React.FC<
         return troveChange.type === 'creation' ? (
             <WarningBubble>{t('card-component.high-cost-trove')}</WarningBubble>
         ) : (
-            <WarningBubble>{t('card-component.high-cost-trove')}</WarningBubble>
+            <WarningBubble>
+                {t('card-component.high-cost-trove-adjust')}
+            </WarningBubble>
         );
     }
 

@@ -33,9 +33,7 @@ export const NoDeposit: React.FC = () => {
                         <Yield />
                     </Flex> */}
                     <Button onClick={handleOpenTrove}>
-                        <span className='capitalize'>
-                            {t('common.deposit')}
-                        </span>
+                        {t('common.deposit-title')}
                     </Button>
                 </>
             }
