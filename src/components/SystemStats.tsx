@@ -131,23 +131,11 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         {t('common.protocol')}
                     </span>
 
-                    <Statistic
-                        lexicon={{
-                            term: t('common.borrowing-fee'),
-                            description: t(
-                                'stablecoin-stats.borrowing-fee-desc'
-                            ),
-                        }}
-                    >
+                    <Statistic lexicon={l.BORROW_FEE}>
                         {borrowingFeePct.toString(2)}
                     </Statistic>
 
-                    <Statistic
-                        lexicon={{
-                            term: t('stablecoin-stats.tvl'),
-                            description: t('stablecoin-stats.tvl-desc'),
-                        }}
-                    >
+                    <Statistic lexicon={l.TVL}>
                         {total.collateral.shorten()}
                         <span>&nbsp;tFIL</span>
                         <span>
@@ -158,35 +146,14 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                             )
                         </span>
                     </Statistic>
-                    <Statistic
-                        lexicon={{
-                            term: 'Troves',
-                            description: t('stablecoin-stats.troves-desc'),
-                        }}
-                    >
+                    <Statistic lexicon={l.TROVES}>
                         {Decimal.from(numberOfTroves).prettify(0)}
                     </Statistic>
-                    <Statistic
-                        lexicon={{
-                            term: t('stablecoin-stats.stablecoin-supply'),
-                            description: t(
-                                'stablecoin-stats.stablecoin-supply-desc'
-                            ),
-                        }}
-                    >
+                    <Statistic lexicon={l.DEBT_TOKEN_SUPPLY}>
                         {total.debt.shorten()}
                     </Statistic>
                     {debtTokenInStabilityPoolPct && (
-                        <Statistic
-                            lexicon={{
-                                term: t(
-                                    'stablecoin-stats.stablecoin-stability-pool'
-                                ),
-                                description: t(
-                                    'stablecoin-stats.stablecoin-stability-pool-desc'
-                                ),
-                            }}
-                        >
+                        <Statistic lexicon={l.STABILITY_POOL_DEBT_TOKEN}>
                             {debtTokenInStabilityPool.shorten()}
                             <span>
                                 &nbsp;({debtTokenInStabilityPoolPct.toString(1)}
@@ -197,24 +164,10 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     {/* <Statistic lexicon={l.STAKED_PROTOCOL_TOKEN}>
                         {totalStakedProtocolToken.shorten()}
                     </Statistic> */}
-                    <Statistic
-                        lexicon={{
-                            term: t('stablecoin-stats.collateral-ratio'),
-                            description: t(
-                                'stablecoin-stats.collateral-ratio-desc'
-                            ),
-                        }}
-                    >
+                    <Statistic lexicon={l.TCR}>
                         {totalCollateralRatioPct.prettify()}
                     </Statistic>
-                    <Statistic
-                        lexicon={{
-                            term: t('stablecoin-stats.recovery-mode'),
-                            description: t(
-                                'stablecoin-stats.recovery-mode-desc'
-                            ),
-                        }}
-                    >
+                    <Statistic lexicon={l.RECOVERY_MODE}>
                         {total.collateralRatioIsBelowCritical(price) ? (
                             <span className='text-red-500'>
                                 {t('common.yes')}

@@ -324,7 +324,11 @@ export const TransactionMonitor: React.FC = () => {
                         setTransactionState({
                             type: 'failed',
                             id,
-                            error: new Error(t('common.transaction-failed')),
+                            error: new Error(
+                                reason
+                                    ? `${t('common.reverted')}: ${reason}`
+                                    : t('common.failed')
+                            ),
                         });
                     }
                 } catch (rawError) {

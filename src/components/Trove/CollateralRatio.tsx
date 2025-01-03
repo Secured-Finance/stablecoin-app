@@ -6,10 +6,12 @@ import {
 } from '@secured-finance/lib-base';
 import { t } from 'i18next';
 import React from 'react';
+import { Trans } from 'react-i18next';
 import HeartIcon from 'src/assets/icons/heart.svg';
 import { Card } from 'theme-ui';
 import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
+import { LearnMoreLink } from '../Tooltip';
 import { StaticRow } from './Editor';
 
 type CollateralRatioProps = {
@@ -78,7 +80,16 @@ export const CollateralRatioInfoBubble: React.FC<
         <>
             {value?.lt(1.5) && (
                 <InfoBubble>
-                    {t('card-component.collateral-ratio-warning')}
+                    <Trans i18nKey='card-component.collateral-ratio-warning'>
+                        Keep your collateral ratio above 150% to avoid being{' '}
+                        <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#what-are-liquidations'>
+                            liquidated
+                        </LearnMoreLink>{' '}
+                        under{' '}
+                        <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
+                            Recovery Mode.
+                        </LearnMoreLink>
+                    </Trans>
                 </InfoBubble>
             )}
         </>

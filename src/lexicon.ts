@@ -1,18 +1,18 @@
+import { t } from 'i18next';
+
 export type Lexicon = {
     term: string;
     description?: string;
 };
 
 export const BORROW_FEE: Lexicon = {
-    term: 'Borrowing Fee',
-    description:
-        "The Borrowing Fee is a one-off fee charged as a percentage of the borrowed amount (in USDFC) and is part of a Trove's debt. The fee varies between 0.5% and 5% depending on USDFC redemption volumes.",
+    term: t('common.borrowing-fee'),
+    description: t('stablecoin-stats.borrowing-fee-desc'),
 };
 
 export const TVL: Lexicon = {
-    term: 'TVL',
-    description:
-        'The Total Value Locked (TVL) is the total value of Filecoin locked as collateral in the system, given in tFIL and USD.',
+    term: t('stablecoin-stats.tvl'),
+    description: t('stablecoin-stats.tvl-desc'),
 };
 
 export const STAKED_PROTOCOL_TOKEN: Lexicon = {
@@ -22,21 +22,18 @@ export const STAKED_PROTOCOL_TOKEN: Lexicon = {
 };
 
 export const TCR: Lexicon = {
-    term: 'Total Collateral Ratio',
-    description:
-        'The ratio of the Dollar value of the entire system collateral at the current tFIL:USD price, to the entire system debt.',
+    term: t('stablecoin-stats.collateral-ratio'),
+    description: t('stablecoin-stats.collateral-ratio-desc'),
 };
 
 export const RECOVERY_MODE: Lexicon = {
-    term: 'Recovery Mode',
-    description:
-        "Recovery Mode is activated when the Total Collateral Ratio (TCR) falls below 150%. When active, your Trove can be liquidated if its collateral ratio is below the TCR. The maximum collateral you can lose from liquidation is capped at 110% of your Trove's debt. Operations are also restricted that would negatively impact the TCR.",
+    term: t('stablecoin-stats.recovery-mode'),
+    description: t('stablecoin-stats.recovery-mode-desc'),
 };
 
 export const STABILITY_POOL_DEBT_TOKEN: Lexicon = {
-    term: 'USDFC in Stability Pool',
-    description:
-        'The total USDFC currently held in the Stability Pool, expressed as an amount and a fraction of the USDFC supply.',
+    term: t('stablecoin-stats.stablecoin-stability-pool'),
+    description: t('stablecoin-stats.stablecoin-stability-pool-desc'),
 };
 
 export const KICKBACK_RATE: Lexicon = {
@@ -59,10 +56,10 @@ export const PROTOCOL_TOKEN: Lexicon = {
 
 export const TROVES: Lexicon = {
     term: 'Troves',
-    description: 'The total number of active Troves in the system.',
+    description: t('stablecoin-stats.troves-desc'),
 };
 
 export const DEBT_TOKEN_SUPPLY: Lexicon = {
-    term: 'USDFC supply',
-    description: 'The total USDFC minted by this protocol.',
+    term: t('stablecoin-stats.stablecoin-supply'),
+    description: t('stablecoin-stats.stablecoin-supply-desc'),
 };
