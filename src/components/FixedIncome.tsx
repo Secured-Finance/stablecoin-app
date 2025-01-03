@@ -1,15 +1,13 @@
+import { t } from 'i18next';
 import Link from 'next/link';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import { CardComponent } from 'src/components/templates';
 
 export const FixedIncome: React.FC = () => {
-    const { t } = useTranslation();
-
     return (
         <CardComponent
-            title={t('common.fixed-income')}
+            title={t('common.fixed-income-market')}
             actionComponent={
                 <Link
                     href={'https://app.secured.finance/'}

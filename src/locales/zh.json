@@ -1,6 +1,7 @@
 {
   "translation": {
     "common": {
+      "period": "。",
       "more": "更多",
       "documentation": "文档",
       "deposit": "存款",
@@ -12,6 +13,7 @@
       "risky-troves": "高风险 Troves",
       "riskiest-troves": "最高风险 Troves",
       "fixed-income": "固定收益",
+      "fixed-income-market": "固定收益市场",
       "protocol": "协议",
       "debt": "债务",
       "collateral": "抵押品",

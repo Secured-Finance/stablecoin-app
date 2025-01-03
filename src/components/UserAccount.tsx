@@ -1,8 +1,8 @@
 import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { t } from 'i18next';
 import Link from 'next/link';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { Identicon } from 'src/components/atoms';
@@ -25,7 +25,6 @@ export const UserAccount: React.FC = () => {
     const { open } = useWeb3Modal();
     const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
-    const { t } = useTranslation();
 
     return (
         <div className='flex flex-row items-center gap-2'>

@@ -68,13 +68,13 @@ export const SideNav: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-start gap-4'>
-                    {LINKS.map((link, index) => {
+                    {LINKS.map(link => {
                         return (
                             <NavLink
-                                key={index}
+                                key={link.labelKey}
                                 to={link.to}
                                 className={clsx(
-                                    'flex items-center gap-2 text-4.5 font-semibold leading-7 text-neutral-900',
+                                    'text-4.5 font-semibold leading-7 text-neutral-900',
                                     {
                                         'text-primary-500':
                                             pathname === link.to,

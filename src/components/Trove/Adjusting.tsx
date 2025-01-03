@@ -342,7 +342,7 @@ export const Adjusting: React.FC = () => {
                                                 {t(
                                                     'card-component.reserve-excluded'
                                                 )}
-                                                ).
+                                                ){t('common.period')}
                                             </>
                                         )}
                                     </Card>

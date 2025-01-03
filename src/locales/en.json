@@ -1,6 +1,7 @@
 {
   "translation": {
     "common": {
+      "period": ".",
       "more": "More",
       "documentation": "Documentation",
       "deposit": "deposit",
@@ -13,6 +14,7 @@
       "risky-troves": "Risky Troves",
       "riskiest-troves": "Riskiest Troves",
       "fixed-income": "Fixed Income",
+      "fixed-income-market": "Fixed Income Market",
       "protocol": "Protocol",
       "debt": "Debt",
       "collateral": "Collateral",

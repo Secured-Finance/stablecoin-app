@@ -1,6 +1,6 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
@@ -19,8 +19,6 @@ export const LiquidatedTrove: React.FC = () => {
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('OPEN_TROVE_PRESSED');
     }, [dispatchEvent]);
-
-    const { t } = useTranslation();
 
     return (
         <CardComponent

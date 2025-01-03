@@ -1,12 +1,11 @@
 import clsx from 'clsx';
-import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 import { MenuPopover } from 'src/components/molecules';
 import { LINKS } from 'src/constants';
 
 export const Nav: React.FC = () => {
     const { pathname } = useLocation();
-    const { t } = useTranslation();
 
     return (
         <div className='hidden laptop:flex'>

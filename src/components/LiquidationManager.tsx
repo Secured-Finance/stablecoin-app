@@ -1,5 +1,5 @@
+import { t } from 'i18next';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Trash from 'src/assets/icons/trash.svg';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin } from 'src/hooks';
@@ -11,7 +11,6 @@ export const LiquidationManager: React.FC = () => {
     } = useSfStablecoin();
     const [numberOfTrovesToLiquidate, setNumberOfTrovesToLiquidate] =
         useState('90');
-    const { t } = useTranslation();
 
     return (
         <CardComponent title={t('common.liquidate')}>

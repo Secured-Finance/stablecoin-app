@@ -5,8 +5,8 @@ import {
     SfStablecoinStoreState,
     StabilityDeposit,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from '../../strings';
@@ -64,8 +64,6 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
     const poolShareChange =
         originalDeposit.currentDebtToken.nonZero &&
         Difference.between(newPoolShare, originalPoolShare).nonZero;
-
-    const { t } = useTranslation();
 
     return (
         <CardComponent

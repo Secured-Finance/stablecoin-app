@@ -5,8 +5,8 @@ import {
     ProtocolTokenStake,
     SfStablecoinStoreState,
 } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Heading } from 'theme-ui';
@@ -66,8 +66,6 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
     const poolShareChange =
         originalStake.stakedProtocolToken.nonZero &&
         Difference.between(newPoolShare, originalPoolShare).nonZero;
-
-    const { t } = useTranslation();
 
     return (
         <Card>

@@ -1,6 +1,6 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
@@ -53,8 +53,6 @@ export const ActiveDeposit: React.FC = () => {
             dispatchEvent('REWARDS_CLAIMED');
         }
     }, [transactionState.type, dispatchEvent]);
-
-    const { t } = useTranslation();
 
     return (
         <CardComponent

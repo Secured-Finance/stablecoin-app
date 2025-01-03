@@ -1,6 +1,6 @@
 import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { t } from 'i18next';
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
@@ -23,8 +23,6 @@ export const ReadOnlyTrove: React.FC = () => {
     }, [dispatchEvent]);
 
     const { trove, price } = useSfStablecoinSelector(select);
-
-    const { t } = useTranslation();
 
     return (
         <CardComponent

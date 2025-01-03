@@ -268,7 +268,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         'pr-2 text-right laptop:pr-0 laptop:text-center'
                                     )}
                                 >
-                                    {t('common.collateral-ratio')}
+                                    {t('common.coll-ratio')}
                                 </th>
                                 <th className='text-3.5 leading-4.5 laptop:text-xs laptop:leading-5'></th>
                             </tr>

@@ -262,7 +262,7 @@ export const Opening: React.FC = () => {
                                                 {t(
                                                     'card-component.reserve-excluded'
                                                 )}
-                                                ).
+                                                ){t('common.period')}
                                             </>
                                         )}
                                     </Card>
