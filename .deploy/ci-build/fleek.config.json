@@ -1,9 +1,0 @@
-{
-    "sites": [
-      {
-        "slug": "ci-stablecoin",
-        "distDir": ".deploy/ci-build/build",
-        "buildCommand": ""
-      }
-    ]
-  }
