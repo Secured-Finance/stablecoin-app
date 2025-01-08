@@ -4,7 +4,7 @@ import {
     ProtocolTokenStake,
     ProtocolTokenStakeChange,
     SfStablecoinStoreState,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import {
     SfStablecoinStoreUpdate,

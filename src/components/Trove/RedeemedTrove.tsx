@@ -1,4 +1,4 @@
-import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';

@@ -2,7 +2,7 @@ import {
     Decimal,
     SfStablecoinStoreState,
     StabilityDepositChange,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import { Button } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useTransactionFunction } from '../Transaction';
