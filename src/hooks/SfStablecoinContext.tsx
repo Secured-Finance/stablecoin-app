@@ -6,7 +6,7 @@ import {
     EthersSfStablecoin,
     EthersSfStablecoinWithStore,
     _connectByChainId,
-} from '@secured-finance/lib-ethers';
+} from '@secured-finance/stablecoin-lib-ethers';
 import React, {
     createContext,
     useContext,

@@ -1,4 +1,4 @@
-import { SfStablecoinStore } from '@secured-finance/lib-base';
+import { SfStablecoinStore } from '@secured-finance/stablecoin-lib-base';
 import { useContext } from 'react';
 import { SfStablecoinStoreContext } from 'src/contexts';
 

@@ -5,7 +5,7 @@ import {
     MINIMUM_DEBT,
     SfStablecoinStoreState,
     Trove,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import { useCallback, useEffect } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import {

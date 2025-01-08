@@ -5,7 +5,7 @@ export type SvgIcon = React.ForwardRefExoticComponent<
     } & React.RefAttributes<SVGSVGElement>
 >;
 
-import { Decimal } from '@secured-finance/lib-base';
+import { Decimal } from '@secured-finance/stablecoin-lib-base';
 
 type Idle = 'IDLE';
 type Creating = 'CREATING';

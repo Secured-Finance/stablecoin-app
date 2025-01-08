@@ -1,4 +1,7 @@
-import { Decimal, ProtocolTokenStakeChange } from '@secured-finance/lib-base';
+import {
+    Decimal,
+    ProtocolTokenStakeChange,
+} from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoin } from 'src/hooks';
 import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';

@@ -6,7 +6,7 @@ import {
     Percent,
     SfStablecoinStoreState,
     Trove,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button, ButtonVariants } from 'src/components/atoms';

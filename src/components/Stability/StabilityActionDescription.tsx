@@ -2,7 +2,7 @@ import {
     Decimal,
     StabilityDeposit,
     StabilityDepositChange,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { COIN } from '../../strings';

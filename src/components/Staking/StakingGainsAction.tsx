@@ -1,4 +1,4 @@
-import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Button } from 'theme-ui';
 import { useTransactionFunction } from '../Transaction';

@@ -4,8 +4,8 @@ import {
     MINIMUM_COLLATERAL_RATIO,
     Percent,
     UserTrove,
-} from '@secured-finance/lib-base';
-import { BlockPolledSfStablecoinStoreState } from '@secured-finance/lib-ethers';
+} from '@secured-finance/stablecoin-lib-base';
+import { BlockPolledSfStablecoinStoreState } from '@secured-finance/stablecoin-lib-ethers';
 import clsx from 'clsx';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';

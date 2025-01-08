@@ -9,11 +9,11 @@ import { hexDataLength, hexDataSlice } from '@ethersproject/bytes';
 import {
     ProtocolReceipt,
     SentProtocolTransaction,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import {
     EthersTransactionCancelledError,
     EthersTransactionOverrides,
-} from '@secured-finance/lib-ethers';
+} from '@secured-finance/stablecoin-lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Tooltip } from 'src/components/atoms';

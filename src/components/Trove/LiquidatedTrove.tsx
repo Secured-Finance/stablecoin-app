@@ -1,4 +1,4 @@
-import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback } from 'react';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';

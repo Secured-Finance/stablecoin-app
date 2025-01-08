@@ -4,7 +4,7 @@ import {
     Difference,
     SfStablecoinStoreState,
     StabilityDeposit,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React, { useState } from 'react';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
