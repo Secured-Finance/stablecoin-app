@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { Decimal, TroveChange } from '@secured-finance/lib-base';
-import { PopulatedEthersTransaction } from '@secured-finance/lib-ethers';
+import { Decimal, TroveChange } from '@secured-finance/stablecoin-lib-base';
+import { PopulatedEthersTransaction } from '@secured-finance/stablecoin-lib-ethers';
 import React, { useEffect } from 'react';
 import { useSfStablecoin } from 'src/hooks';
 import { WarningBubble } from '../WarningBubble';

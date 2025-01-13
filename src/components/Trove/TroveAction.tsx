@@ -1,4 +1,4 @@
-import { Decimal, TroveChange } from '@secured-finance/lib-base';
+import { Decimal, TroveChange } from '@secured-finance/stablecoin-lib-base';
 import { Button } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
 import { useTransactionFunction } from '../Transaction';

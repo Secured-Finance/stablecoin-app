@@ -1,4 +1,4 @@
-import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useEffect, useReducer } from 'react';
 import { equals } from 'src/utils';
 import { useSfStablecoinStore } from './useSfStablecoinStore';

@@ -3,7 +3,7 @@ import {
     Decimal,
     Difference,
     Percent,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import HeartIcon from 'src/assets/icons/heart.svg';
 import { Card } from 'theme-ui';

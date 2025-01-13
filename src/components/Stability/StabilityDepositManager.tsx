@@ -3,7 +3,7 @@ import {
     Decimal,
     Decimalish,
     SfStablecoinStoreState,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import {

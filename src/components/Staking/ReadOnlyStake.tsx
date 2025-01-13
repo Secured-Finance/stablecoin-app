@@ -1,4 +1,4 @@
-import { SfStablecoinStoreState } from '@secured-finance/lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';

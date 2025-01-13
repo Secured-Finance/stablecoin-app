@@ -1,7 +1,7 @@
 import {
     SfStablecoinStoreState,
     UserTroveStatus,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { TroveViewContext } from './TroveViewContext';

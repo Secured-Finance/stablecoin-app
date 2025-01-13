@@ -2,7 +2,7 @@ import {
     Decimal,
     Percent,
     SfStablecoinStoreState,
-} from '@secured-finance/lib-base';
+} from '@secured-finance/stablecoin-lib-base';
 import Link from 'next/link';
 import packageJson from 'package.json';
 import React from 'react';

@@ -57,3 +57,14 @@ export const getSetPriceEnabled = () => {
 
     return NEXT_PUBLIC_SET_PRICE_ENABLED === 'true';
 };
+
+export const getSquidWidgetIntegratorId = () => {
+    const SQUID_WIDGET_INTEGRATOR_ID =
+        process.env.NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID;
+
+    if (!SQUID_WIDGET_INTEGRATOR_ID) {
+        return '';
+    }
+
+    return SQUID_WIDGET_INTEGRATOR_ID;
+};

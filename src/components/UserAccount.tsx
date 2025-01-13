@@ -1,4 +1,7 @@
-import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
+import {
+    Decimal,
+    SfStablecoinStoreState,
+} from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import Link from 'next/link';
 import React from 'react';

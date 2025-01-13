@@ -1,6 +1,6 @@
 {
   "name": "stablecoin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -17,8 +17,8 @@
     "@headlessui/react": "^1.7.15",
     "@next/third-parties": "^15.1.0",
     "@reduxjs/toolkit": "^1.8.1",
-    "@secured-finance/lib-base": "^0.0.3-beta.1",
-    "@secured-finance/lib-ethers": "^0.0.3-beta.1",
+    "@secured-finance/stablecoin-lib-base": "0.0.3",
+    "@secured-finance/stablecoin-lib-ethers": "0.0.3",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.20.5",
     "@tanstack/react-table": "^8.20.5",

@@ -1,9 +1,14 @@
 import { Wallet } from '@ethersproject/wallet';
-import { Decimal, Difference, Trove } from '@secured-finance/lib-base';
+import {
+    Decimal,
+    Difference,
+    Trove,
+} from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import { Route, HashRouter as Router, Switch } from 'react-router-dom';
-import { RiskyTrovesPage } from 'src/components//pages/RiskyTrovesPage';
+import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
+import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
 import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
@@ -61,6 +66,9 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                         </Route>
                                         <Route path='/risky-troves'>
                                             <RiskyTrovesPage />
+                                        </Route>
+                                        <Route path='/bridge'>
+                                            <BridgePage />
                                         </Route>
                                     </Switch>
                                 </div>

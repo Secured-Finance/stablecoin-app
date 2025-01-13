@@ -1,4 +1,7 @@
-import { Decimal, SfStablecoinStoreState } from '@secured-finance/lib-base';
+import {
+    Decimal,
+    SfStablecoinStoreState,
+} from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { CardComponent } from 'src/components/templates';
