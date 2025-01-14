@@ -3,7 +3,6 @@ import { pageViewTrackingPlugin } from '@amplitude/plugin-page-view-tracking-bro
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
-import 'global.d.ts';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
