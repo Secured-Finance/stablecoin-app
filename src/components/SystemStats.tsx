@@ -8,11 +8,7 @@ import packageJson from 'package.json';
 import React from 'react';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import {
-    COLLATERAL_PRECISION,
-    DEBT_TOKEN_PRECISION,
-    isProdEnv,
-} from 'src/utils';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -186,7 +182,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     <div>
                         <span>Frontend version:</span>
                         <span className='ml-1 font-semibold text-primary-500'>
-                            {!isProdEnv() ? 'development' : packageJson.version}
+                            {/* {!isProdEnv() ? 'development' : packageJson.version} */}
+                            {/* TODO: FIX before production launch */}
+                            {packageJson.version}
                         </span>
                     </div>
                 </div>
