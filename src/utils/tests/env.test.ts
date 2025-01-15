@@ -2,6 +2,7 @@ import {
     Environment,
     getAmplitudeApiKey,
     getEnvironment,
+    getGoogleAnalyticsTag,
     getSetPriceEnabled,
     getSquidWidgetIntegratorId,
     getWalletConnectId,
@@ -36,6 +37,25 @@ describe('getAmplitudeApiKey', () => {
         const spy = jest.spyOn(console, 'warn').mockImplementation();
 
         const apiKey = getAmplitudeApiKey();
+        expect(apiKey).toBe('');
+        expect(typeof apiKey).toBe('string');
+        expect(spy).toHaveBeenCalled();
+    });
+});
+
+describe('getGoogleAnalyticsTag', () => {
+    it('should return the value of the environment variable', () => {
+        process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG = 'test';
+        const apiKey = getGoogleAnalyticsTag();
+        expect(apiKey).toBe('test');
+        expect(typeof apiKey).toBe('string');
+    });
+
+    it('should return empty string if variable is not set', () => {
+        process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG = '';
+        const spy = jest.spyOn(console, 'warn').mockImplementation();
+
+        const apiKey = getGoogleAnalyticsTag();
         expect(apiKey).toBe('');
         expect(typeof apiKey).toBe('string');
         expect(spy).toHaveBeenCalled();

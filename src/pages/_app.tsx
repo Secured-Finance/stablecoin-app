@@ -5,8 +5,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import Script from 'next/script';
+import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
@@ -19,9 +22,11 @@ import { SfStablecoinFrontend } from 'src/SfStablecoinFrontend';
 import store from 'src/store';
 import {
     getAmplitudeApiKey,
+    getGoogleAnalyticsTag,
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
+import * as gtag from 'src/utils/gtag';
 import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
@@ -29,6 +34,7 @@ import '../assets/css/index.css';
 import theme from '../theme';
 
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
+const gaTag = getGoogleAnalyticsTag();
 
 // Start pre-fetching the config
 // getConfig().then(config => {
@@ -129,6 +135,49 @@ createWeb3Modal({
     enableOnramp: false,
 });
 
+const TrackingCode = ({ gaTag }: { gaTag: string }) => {
+    return (
+        <>
+            <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaTag}`}
+            />
+            <Script id='google-analytics' strategy='afterInteractive'>
+                {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+
+                    gtag('config', '${gaTag}');
+
+                    window.addEventListener('hashchange', () => {
+                        gtag('config', '${gaTag}', {
+                            page_path: window.location.pathname + window.location.hash,
+                        });
+                    });
+                    `}
+            </Script>
+        </>
+    );
+};
+
+const RouteChangeTracker = ({ gaTag }: { gaTag: string }) => {
+    const location = useLocation();
+
+    useEffect(() => {
+        const handleRouteChange = (path: string) => {
+            try {
+                gtag.pageView(path, gaTag);
+            } catch (error) {
+                console.error('Failed to track page view:', error);
+            }
+        };
+
+        handleRouteChange(location.pathname);
+    }, [location.pathname, gaTag]);
+
+    return null;
+};
+
 function App({ Component, pageProps }: AppProps) {
     return (
         <>
@@ -139,8 +188,10 @@ function App({ Component, pageProps }: AppProps) {
                     content='width=device-width, initial-scale=1.0'
                 />
             </Head>
+            {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
                 <Providers>
+                    <RouteChangeTracker gaTag={gaTag} />
                     <Component {...pageProps} />
                 </Providers>
             </Provider>

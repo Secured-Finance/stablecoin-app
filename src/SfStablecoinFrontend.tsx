@@ -5,7 +5,7 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
-import { Route, HashRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
