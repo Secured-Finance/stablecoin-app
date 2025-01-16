@@ -8,6 +8,7 @@ import {
     UnregisteredFrontend,
 } from 'src/components/pages';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { Page } from '../templates';
 
 const selectFrontend = ({ frontend }: SfStablecoinStoreState) => frontend;
 
@@ -29,19 +30,23 @@ export const PageSwitcher: React.FC = () => {
         }
     }, [unregistered]);
 
+    let component;
+
     if (registering || unregistered) {
         if (frontend.status === 'registered') {
-            return (
+            component = (
                 <FrontendRegistrationSuccess
                     onDismiss={() => setRegistering(false)}
                 />
             );
         } else if (account === frontendTag) {
-            return <FrontendRegistration />;
+            component = <FrontendRegistration />;
         } else {
-            return <UnregisteredFrontend />;
+            component = <UnregisteredFrontend />;
         }
     } else {
-        return <Dashboard />;
+        component = <Dashboard />;
     }
+
+    return <Page name='page-switcher'>{component}</Page>;
 };

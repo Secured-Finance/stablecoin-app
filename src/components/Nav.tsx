@@ -1,17 +1,18 @@
 import clsx from 'clsx';
-import { NavLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { MenuPopover } from 'src/components/molecules';
 import { LINKS } from 'src/constants';
 
 export const Nav: React.FC = () => {
-    const { pathname } = useLocation();
+    const { pathname } = useRouter();
 
     return (
         <div className='hidden laptop:flex'>
             {LINKS.map(link => (
-                <NavLink
+                <Link
                     key={link.to}
-                    to={link.to}
+                    href={link.to}
                     className={clsx(
                         'px-4 text-3.5 leading-6 text-neutral-800',
                         {
@@ -21,7 +22,7 @@ export const Nav: React.FC = () => {
                     )}
                 >
                     {link.label}
-                </NavLink>
+                </Link>
             ))}
             <MenuPopover />
         </div>

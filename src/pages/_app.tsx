@@ -6,14 +6,16 @@ import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Script from 'next/script';
-import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
+import { Header } from 'src/components/Header';
 import { Icon } from 'src/components/Icon';
+import { SystemStatsPopup } from 'src/components/SystemStatsPopup';
+import { Layout } from 'src/components/templates';
 import { TransactionProvider } from 'src/components/Transaction';
+import { UserAccount } from 'src/components/UserAccount';
 import { WalletConnector } from 'src/components/WalletConnector';
 import { getConfig } from 'src/configs';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
@@ -26,7 +28,6 @@ import {
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
-import * as gtag from 'src/utils/gtag';
 import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
@@ -160,24 +161,6 @@ const TrackingCode = ({ gaTag }: { gaTag: string }) => {
     );
 };
 
-const RouteChangeTracker = ({ gaTag }: { gaTag: string }) => {
-    const location = useLocation();
-
-    useEffect(() => {
-        const handleRouteChange = (path: string) => {
-            try {
-                gtag.pageView(path, gaTag);
-            } catch (error) {
-                console.error('Failed to track page view:', error);
-            }
-        };
-
-        handleRouteChange(location.pathname);
-    }, [location.pathname, gaTag]);
-
-    return null;
-};
-
 function App({ Component, pageProps }: AppProps) {
     return (
         <>
@@ -191,15 +174,25 @@ function App({ Component, pageProps }: AppProps) {
             {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
                 <Providers>
-                    <RouteChangeTracker gaTag={gaTag} />
-                    <Component {...pageProps} />
+                    <Layout
+                        navBar={
+                            <Header>
+                                <div className='flex items-center gap-2'>
+                                    <UserAccount />
+                                    <SystemStatsPopup />
+                                </div>
+                            </Header>
+                        }
+                    >
+                        <Component {...pageProps} />
+                    </Layout>
                 </Providers>
             </Provider>
         </>
     );
 }
 
-const Providers: React.FC<{ children: React.ReactNode }> = () => {
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const config = useAsyncValue(getConfig);
     const loader = <AppLoader />;
 
@@ -220,7 +213,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                                     }
                                 >
                                     <TransactionProvider>
-                                        <SfStablecoinFrontend loader={loader} />
+                                        <SfStablecoinFrontend loader={loader}>
+                                            {children}
+                                        </SfStablecoinFrontend>
                                     </TransactionProvider>
                                 </SfStablecoinProvider>
                             </WalletConnector>
