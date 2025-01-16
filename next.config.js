@@ -20,5 +20,7 @@ module.exports = withBundleAnalyzer({
     env: {
         SF_ENV: process.env.SF_ENV,
         COMMIT_HASH: commitHash,
+        LIQUIDATION_RESERVE: process.env.LIQUIDATION_RESERVE,
+        MINIMUM_NET_DEBT: process.env.MINIMUM_NET_DEBT,
     },
 });
