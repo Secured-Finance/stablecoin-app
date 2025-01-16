@@ -5,7 +5,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
+import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import 'src/bigIntPatch';
@@ -28,6 +30,7 @@ import {
     getSupportedChains,
     getWalletConnectId,
 } from 'src/utils';
+import * as gtag from 'src/utils/gtag';
 import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
@@ -36,13 +39,6 @@ import theme from '../theme';
 
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 const gaTag = getGoogleAnalyticsTag();
-
-// Start pre-fetching the config
-// getConfig().then(config => {
-//     // console.log("Frontend config:");
-//     // console.log(config);
-//     Object.assign(window, { config });
-// });
 
 const UnsupportedMainnetFallback: React.FC = () => (
     <Flex
@@ -162,6 +158,19 @@ const TrackingCode = ({ gaTag }: { gaTag: string }) => {
 };
 
 function App({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+
+    useEffect(() => {
+        const handleRouteChange = (url: string) => {
+            gtag.pageView(url, gaTag);
+        };
+
+        router.events.on('routeChangeComplete', handleRouteChange);
+        return () => {
+            router.events.off('routeChangeComplete', handleRouteChange);
+        };
+    }, [router.events]);
+
     return (
         <>
             <Head>
