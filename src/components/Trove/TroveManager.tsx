@@ -58,9 +58,6 @@ const reduce = (
     state: TroveManagerState,
     action: TroveManagerAction
 ): TroveManagerState => {
-    // console.log(state);
-    // console.log(action);
-
     const { original, edited, changePending, debtDirty, addedMinimumDebt } =
         state;
 
@@ -151,24 +148,6 @@ const reduce = (
     }
 };
 
-const feeFrom = (
-    original: Trove,
-    edited: Trove,
-    borrowingRate: Decimal
-): Decimal => {
-    const change = original.whatChanged(edited, borrowingRate);
-
-    if (
-        change &&
-        change.type !== 'invalidCreation' &&
-        change.params.borrowDebtToken
-    ) {
-        return change.params.borrowDebtToken.mul(borrowingRate);
-    } else {
-        return Decimal.ZERO;
-    }
-};
-
 const select = (state: SfStablecoinStoreState) => ({
     fees: state.fees,
     validationContext: selectForTroveChangeValidation(state),
@@ -244,8 +223,6 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
         <TroveEditor
             original={original}
             edited={edited}
-            fee={feeFrom(original, edited, borrowingRate)}
-            borrowingRate={borrowingRate}
             changePending={changePending}
             dispatch={dispatch}
         >
