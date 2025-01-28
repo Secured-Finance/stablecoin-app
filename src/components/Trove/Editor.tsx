@@ -315,7 +315,8 @@ export const AmountChange: React.FC<AmountChangeProps> = ({
                     )}
                 >
                     {to}
-                </span>{' '}
+                </span>
+                &nbsp;
                 {unit ?? unit}
             </span>
         </Flex>
