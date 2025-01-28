@@ -1,9 +1,7 @@
 import {
     Decimal,
     Decimalish,
-    Difference,
     LIQUIDATION_RESERVE,
-    Percent,
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
@@ -15,14 +13,11 @@ import { Card } from 'theme-ui';
 import { COIN } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
-import { CollateralRatio } from './CollateralRatio';
-import { StaticRow } from './Editor';
+import { AmountChange, StaticRow } from './Editor';
 
 type TroveEditorProps = React.PropsWithChildren<{
     original: Trove;
     edited: Trove;
-    fee: Decimal;
-    borrowingRate: Decimal;
     changePending: boolean;
     dispatch: (
         action:
@@ -31,100 +26,69 @@ type TroveEditorProps = React.PropsWithChildren<{
     ) => void;
 }>;
 
-const select = ({ price }: SfStablecoinStoreState) => ({ price });
+const select = ({ debtTokenBalance }: SfStablecoinStoreState) => ({
+    debtTokenBalance,
+});
 
 // XXX Only used for closing Troves now
 export const TroveEditor: React.FC<TroveEditorProps> = ({
     children,
     original,
     edited,
-    fee,
-    borrowingRate,
     changePending,
 }) => {
-    const { price } = useSfStablecoinSelector(select);
-
-    const feePct = new Percent(borrowingRate);
-
-    const originalCollateralRatio = !original.isEmpty
-        ? original.collateralRatio(price)
-        : undefined;
-    const collateralRatio = !edited.isEmpty
-        ? edited.collateralRatio(price)
-        : undefined;
-    const collateralRatioChange = Difference.between(
-        collateralRatio,
-        originalCollateralRatio
-    );
+    const { debtTokenBalance } = useSfStablecoinSelector(select);
 
     return (
         <CardComponent title='Trove'>
             <div className='flex flex-col gap-3'>
-                <StaticRow
-                    label='Collateral'
-                    inputId='trove-collateral'
-                    amount={edited.collateral.prettify(COLLATERAL_PRECISION)}
-                    unit='tFIL'
-                />
-
-                <StaticRow
-                    label='Debt'
-                    inputId='trove-debt'
-                    amount={edited.debt.prettify()}
-                    unit={COIN}
-                />
-
-                {original.isEmpty && (
-                    <StaticRow
-                        label='Liquidation Reserve'
-                        inputId='trove-liquidation-reserve'
-                        amount={`${LIQUIDATION_RESERVE}`}
-                        unit={COIN}
-                        infoIcon={
-                            <InfoIcon
-                                message={
-                                    <Card
-                                        variant='tooltip'
-                                        sx={{ width: '200px' }}
-                                    >
-                                        An amount set aside to cover the
-                                        liquidator’s gas costs if your Trove
-                                        needs to be liquidated. The amount
-                                        increases your debt and is refunded if
-                                        you close your Trove by fully paying off
-                                        its net debt.
-                                    </Card>
-                                }
-                            />
-                        }
+                <StaticRow label='Collateral' inputId='trove-collateral'>
+                    <AmountChange
+                        from={original.collateral.prettify(
+                            COLLATERAL_PRECISION
+                        )}
+                        to={edited.collateral.prettify(COLLATERAL_PRECISION)}
+                        unit='tFIL'
                     />
-                )}
+                </StaticRow>
+
+                <StaticRow label='Net debt' inputId='trove-net-debt'>
+                    <AmountChange
+                        from={original.netDebt.prettify(COLLATERAL_PRECISION)}
+                        to={
+                            original.netDebt.gte(debtTokenBalance)
+                                ? original.netDebt
+                                      .sub(debtTokenBalance)
+                                      .prettify(COLLATERAL_PRECISION)
+                                : Decimal.ZERO.prettify(COLLATERAL_PRECISION)
+                        }
+                        unit={COIN}
+                    />
+                </StaticRow>
 
                 <StaticRow
-                    label='Borrowing Fee'
-                    inputId='trove-borrowing-fee'
-                    amount={fee.toString(2)}
-                    pendingAmount={feePct.toString(2)}
-                    unit={COIN}
+                    label='Liquidation Reserve'
+                    inputId='trove-liquidation-reserve'
                     infoIcon={
                         <InfoIcon
                             message={
-                                <Card variant='tooltip' sx={{ width: '240px' }}>
-                                    This amount is deducted from the borrowed
-                                    amount as a one-time fee. There are no
-                                    recurring fees for borrowing, which is thus
-                                    interest-free.
+                                <Card variant='tooltip' sx={{ width: '200px' }}>
+                                    An amount set aside to cover the
+                                    liquidator’s gas costs if your Trove needs
+                                    to be liquidated. The amount increases your
+                                    debt and is refunded if you close your Trove
+                                    by fully paying off its net debt.
                                 </Card>
                             }
                         />
                     }
-                />
-
-                <CollateralRatio
-                    value={collateralRatio}
-                    change={collateralRatioChange}
-                />
-
+                >
+                    <AmountChange
+                        from={`${LIQUIDATION_RESERVE}`}
+                        to={`${original.isEmpty ? LIQUIDATION_RESERVE : '0'}`}
+                        unit={COIN}
+                    />
+                </StaticRow>
                 {children}
             </div>
             {changePending && <LoadingOverlay />}

@@ -391,7 +391,11 @@ const validateTroveClosure = (
     if (repayDebtToken?.gt(debtTokenBalance)) {
         return (
             <ErrorDescription>
-                You need{' '}
+                You only have{' '}
+                <Amount>
+                    {debtTokenBalance.prettify()} {COIN}
+                </Amount>{' '}
+                in your wallet. You need{' '}
                 <Amount>
                     {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
                 </Amount>{' '}

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
+import ArrowRight from 'src/assets/icons/arrow-right.svg';
 import { Flex, Input, SxProp, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
 import { Button, ButtonSizes } from '../atoms';
@@ -288,5 +289,36 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                 )}
             </StaticAmounts>
         </Row>
+    );
+};
+
+type AmountChangeProps = {
+    from: string;
+    to: string;
+    unit?: string;
+};
+
+export const AmountChange: React.FC<AmountChangeProps> = ({
+    from,
+    to,
+    unit,
+}) => {
+    return (
+        <Flex sx={{ alignItems: 'center' }}>
+            <span className='typography-desktop-body-2 flex items-center'>
+                {from}
+                <ArrowRight className='inline h-5 w-5 text-neutral-600' />
+                <span
+                    className={clsx(
+                        'font-semibold',
+                        Number(to) !== 0 ? 'text-error-700' : ''
+                    )}
+                >
+                    {to}
+                </span>
+                &nbsp;
+                {unit ?? unit}
+            </span>
+        </Flex>
     );
 };
