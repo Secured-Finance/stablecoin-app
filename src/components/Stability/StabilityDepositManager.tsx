@@ -5,18 +5,17 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect } from 'react';
-import { Button, ButtonVariants } from 'src/components/atoms';
+import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { COIN } from '../../strings';
-import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
+import { useStabilityView } from './context/StabilityViewContext';
 import { StabilityDepositAction } from './StabilityDepositAction';
 import { StabilityDepositEditor } from './StabilityDepositEditor';
-import { useStabilityView } from './context/StabilityViewContext';
 import {
     selectForStabilityDepositChangeValidation,
     validateStabilityDepositChange,
@@ -157,13 +156,13 @@ export const StabilityDepositManager: React.FC = () => {
         >
             {description ??
                 (makingNewDeposit ? (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Enter the amount of {COIN} you would like to deposit.
-                    </InfoBubble>
+                    </Alert>
                 ) : (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Adjust the {COIN} amount to deposit or withdraw.
-                    </InfoBubble>
+                    </Alert>
                 ))}
 
             <div className='flex justify-end gap-2'>

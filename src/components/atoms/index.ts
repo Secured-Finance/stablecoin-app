@@ -1,3 +1,4 @@
+export * from './Alert';
 export * from './Button';
 export * from './Identicon';
 export * from './InputBase';

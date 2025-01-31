@@ -23,7 +23,7 @@ export const Nav: React.FC = () => {
                     {link.label}
                 </NavLink>
             ))}
-            <MenuPopover />
+            <MenuPopover currentPath={pathname} />
         </div>
     );
 };

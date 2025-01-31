@@ -63,6 +63,7 @@ jobs:
           NEXT_PUBLIC_SQUID_WIDGET_INTEGRATOR_ID=${{ secrets.SQUID_WIDGET_INTEGRATOR_ID }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG=${{ vars.GOOGLE_ANALYTICS_TAG }}
           NEXT_PUBLIC_SET_PRICE_ENABLED=${{ vars.SET_PRICE_ENABLED }}
+          NEXT_PUBLIC_REDEMPTION_DOCUMENT_URL=${{ vars.REDEMPTION_DOCUMENT_URL }}
           SF_ENV=${{ vars.SF_ENV }}
           EOF
 
@@ -86,7 +87,7 @@ jobs:
         run: npm run build
 
       - name: Publish Web App
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact_name }}
           path: build

@@ -1,7 +1,7 @@
 export const LINKS = [
     {
         to: '/',
-        label: 'Stablecoin',
+        label: 'Dashboard',
     },
     {
         to: '/risky-troves',

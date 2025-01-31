@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { MenuItem, Separator } from 'src/components/atoms';
 import { LinkList } from 'src/utils';
 
-export const MenuPopover = () => {
+export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     return (
         <div className='flex items-center justify-center px-4'>
             <Popover className='relative'>
@@ -48,6 +48,11 @@ export const MenuPopover = () => {
                                                     text={link.text}
                                                     icon={link.icon}
                                                     link={link.href}
+                                                    isExternal={link.isExternal}
+                                                    isActive={
+                                                        currentPath ===
+                                                        link.href
+                                                    }
                                                 />
                                                 {index !==
                                                     LinkList.length - 1 && (

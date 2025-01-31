@@ -7,17 +7,16 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import { useCallback, useEffect } from 'react';
-import { Button, ButtonVariants } from 'src/components/atoms';
+import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { InfoBubble } from '../InfoBubble';
 import { useMyTransactionState } from '../Transaction';
+import { useTroveView } from './context/TroveViewContext';
 import { TroveAction } from './TroveAction';
 import { TroveEditor } from './TroveEditor';
-import { useTroveView } from './context/TroveViewContext';
 import {
     selectForTroveChangeValidation,
     validateTroveChange,
@@ -228,15 +227,15 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
         >
             {description ??
                 (openingNewTrove ? (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Start by entering the amount of tFIL you would like to
                         deposit as collateral.
-                    </InfoBubble>
+                    </Alert>
                 ) : (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Adjust your Trove by modifying its collateral, debt, or
                         both.
-                    </InfoBubble>
+                    </Alert>
                 ))}
 
             <div className='flex justify-end gap-2'>
