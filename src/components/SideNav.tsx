@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, {
     HTMLAttributes,
     Ref,
@@ -7,7 +8,6 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
@@ -22,7 +22,7 @@ export const SideNav: React.FC = () => {
 
     const overlay = useRef<HTMLDivElement>(null);
 
-    const { pathname } = useLocation();
+    const { pathname } = useRouter();
 
     const handleOutsideClick = (
         e:
@@ -66,9 +66,9 @@ export const SideNav: React.FC = () => {
                 </div>
                 <div className='flex flex-col items-start gap-4'>
                     {LINKS.map(link => (
-                        <NavLink
+                        <Link
                             key={link.label}
-                            to={link.to}
+                            href={link.to}
                             className={clsx(
                                 'text-4.5 font-semibold leading-7 text-neutral-900',
                                 {
@@ -78,7 +78,7 @@ export const SideNav: React.FC = () => {
                             onClick={() => setIsVisible(false)}
                         >
                             {link.label}
-                        </NavLink>
+                        </Link>
                     ))}
                     <button
                         onClick={e => {

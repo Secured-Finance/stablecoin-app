@@ -5,15 +5,19 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
+import { Header } from 'src/components/Header';
 import { Icon } from 'src/components/Icon';
+import { SystemStatsPopup } from 'src/components/SystemStatsPopup';
+import { Layout } from 'src/components/templates';
 import { TransactionProvider } from 'src/components/Transaction';
+import { UserAccount } from 'src/components/UserAccount';
 import { WalletConnector } from 'src/components/WalletConnector';
 import { getConfig } from 'src/configs';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
@@ -35,13 +39,6 @@ import theme from '../theme';
 
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 const gaTag = getGoogleAnalyticsTag();
-
-// Start pre-fetching the config
-// getConfig().then(config => {
-//     // console.log("Frontend config:");
-//     // console.log(config);
-//     Object.assign(window, { config });
-// });
 
 const UnsupportedMainnetFallback: React.FC = () => (
     <Flex
@@ -160,25 +157,20 @@ const TrackingCode = ({ gaTag }: { gaTag: string }) => {
     );
 };
 
-const RouteChangeTracker = ({ gaTag }: { gaTag: string }) => {
-    const location = useLocation();
+function App({ Component, pageProps }: AppProps) {
+    const router = useRouter();
 
     useEffect(() => {
-        const handleRouteChange = (path: string) => {
-            try {
-                gtag.pageView(path, gaTag);
-            } catch (error) {
-                console.error('Failed to track page view:', error);
-            }
+        const handleRouteChange = (url: string) => {
+            gtag.pageView(url, gaTag);
         };
 
-        handleRouteChange(location.pathname);
-    }, [location.pathname, gaTag]);
+        router.events.on('routeChangeComplete', handleRouteChange);
+        return () => {
+            router.events.off('routeChangeComplete', handleRouteChange);
+        };
+    }, [router.events]);
 
-    return null;
-};
-
-function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
@@ -191,15 +183,25 @@ function App({ Component, pageProps }: AppProps) {
             {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
                 <Providers>
-                    <RouteChangeTracker gaTag={gaTag} />
-                    <Component {...pageProps} />
+                    <Layout
+                        navBar={
+                            <Header>
+                                <div className='flex items-center gap-2'>
+                                    <UserAccount />
+                                    <SystemStatsPopup />
+                                </div>
+                            </Header>
+                        }
+                    >
+                        <Component {...pageProps} />
+                    </Layout>
                 </Providers>
             </Provider>
         </>
     );
 }
 
-const Providers: React.FC<{ children: React.ReactNode }> = () => {
+const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const config = useAsyncValue(getConfig);
     const loader = <AppLoader />;
 
@@ -220,7 +222,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                                     }
                                 >
                                     <TransactionProvider>
-                                        <SfStablecoinFrontend loader={loader} />
+                                        <SfStablecoinFrontend loader={loader}>
+                                            {children}
+                                        </SfStablecoinFrontend>
                                     </TransactionProvider>
                                 </SfStablecoinProvider>
                             </WalletConnector>

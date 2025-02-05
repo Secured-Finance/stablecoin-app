@@ -7,8 +7,8 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
+import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
@@ -280,12 +280,12 @@ export const Opening: React.FC = () => {
 
                 <InfoBubble>
                     Keep your collateral ratio above the{' '}
-                    <NavLink
-                        to='/risky-troves'
+                    <Link
+                        href='/risky-troves'
                         className='font-semibold text-primary-500'
                     >
                         riskiest Troves
-                    </NavLink>{' '}
+                    </Link>{' '}
                     to avoid being{' '}
                     <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
                         redeemed.
