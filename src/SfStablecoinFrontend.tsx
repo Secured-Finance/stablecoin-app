@@ -5,7 +5,7 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
-import { Route, HashRouter as Router, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
@@ -43,40 +43,38 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
 
     return (
         <SfStablecoinStoreProvider {...{ loader }} store={sfStablecoin.store}>
-            <Router>
-                <TroveViewProvider>
-                    <StabilityViewProvider>
-                        <StakingViewProvider>
-                            <Flex
-                                sx={{
-                                    flexDirection: 'column',
-                                    minHeight: '100%',
-                                }}
-                            >
-                                <Header>
-                                    <div className='flex items-center gap-2'>
-                                        <UserAccount />
-                                        <SystemStatsPopup />
-                                    </div>
-                                </Header>
-                                <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>
-                                    <Switch>
-                                        <Route path='/' exact>
-                                            <PageSwitcher />
-                                        </Route>
-                                        <Route path='/risky-troves'>
-                                            <RiskyTrovesPage />
-                                        </Route>
-                                        <Route path='/bridge'>
-                                            <BridgePage />
-                                        </Route>
-                                    </Switch>
+            <TroveViewProvider>
+                <StabilityViewProvider>
+                    <StakingViewProvider>
+                        <Flex
+                            sx={{
+                                flexDirection: 'column',
+                                minHeight: '100%',
+                            }}
+                        >
+                            <Header>
+                                <div className='flex items-center gap-2'>
+                                    <UserAccount />
+                                    <SystemStatsPopup />
                                 </div>
-                            </Flex>
-                        </StakingViewProvider>
-                    </StabilityViewProvider>
-                </TroveViewProvider>
-            </Router>
+                            </Header>
+                            <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>
+                                <Switch>
+                                    <Route path='/' exact>
+                                        <PageSwitcher />
+                                    </Route>
+                                    <Route path='/risky-troves'>
+                                        <RiskyTrovesPage />
+                                    </Route>
+                                    <Route path='/bridge'>
+                                        <BridgePage />
+                                    </Route>
+                                </Switch>
+                            </div>
+                        </Flex>
+                    </StakingViewProvider>
+                </StabilityViewProvider>
+            </TroveViewProvider>
             <TransactionMonitor />
         </SfStablecoinStoreProvider>
     );

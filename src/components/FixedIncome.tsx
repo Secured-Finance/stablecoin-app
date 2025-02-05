@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import { CardComponent } from 'src/components/templates';
+import { getFixedIncomeMarketLink } from 'src/utils';
 
 export const FixedIncome: React.FC = () => {
     return (
@@ -9,7 +10,7 @@ export const FixedIncome: React.FC = () => {
             title='Fixed Income Market'
             actionComponent={
                 <Link
-                    href={'https://app.secured.finance/'}
+                    href={getFixedIncomeMarketLink()}
                     target='_blank'
                     rel='noopener noreferrer'
                     aria-label='Fixed Income'

@@ -10,7 +10,7 @@ import Wallet from 'src/assets/icons/wallet.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from 'src/strings';
-import { AddressUtils } from 'src/utils';
+import { AddressUtils, getFixedIncomeMarketLink } from 'src/utils';
 
 const select = ({
     accountBalance,
@@ -31,7 +31,7 @@ export const UserAccount: React.FC = () => {
     return (
         <div className='flex flex-row items-center gap-3 laptop:gap-2'>
             <Link
-                href={'https://app.secured.finance/'}
+                href={getFixedIncomeMarketLink()}
                 target='_blank'
                 rel='noopener noreferrer'
                 aria-label='Fixed Income'

@@ -1,17 +1,20 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import SFLogoLight from 'src/assets/img/logo-light.svg';
 import { Button, ButtonSizes } from 'src/components/atoms';
+import { Container } from 'theme-ui';
 import { useAccount } from 'wagmi';
+import { Nav } from './Nav';
+import { SecuredFinanceLogo } from './SecuredFinanceLogo';
+import { SideNav } from './SideNav';
 
 const NavBar = () => {
     return (
-        <div className='absolute top-0 w-full'>
-            <nav data-cy='header' className='h-14 w-full bg-white'>
-                <div className='flex h-full items-center px-5'>
-                    <SFLogoLight className='inline h-4 w-40' />
-                </div>
-            </nav>
-        </div>
+        <Container variant='header'>
+            <div className='flex h-8 items-center gap-3 laptop:h-10 laptop:gap-8'>
+                <SecuredFinanceLogo />
+                <SideNav />
+                <Nav />
+            </div>
+        </Container>
     );
 };
 

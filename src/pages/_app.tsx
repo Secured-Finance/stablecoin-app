@@ -9,7 +9,7 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { HashRouter as Router, useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
@@ -190,10 +190,12 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
-                <Providers>
-                    <RouteChangeTracker gaTag={gaTag} />
-                    <Component {...pageProps} />
-                </Providers>
+                <Router>
+                    <Providers>
+                        <RouteChangeTracker gaTag={gaTag} />
+                        <Component {...pageProps} />
+                    </Providers>
+                </Router>
             </Provider>
         </>
     );

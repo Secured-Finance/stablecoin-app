@@ -38,13 +38,13 @@ export const getGoogleAnalyticsTag = () => {
 export const getEnvironment = () => {
     const SF_ENV = process.env.SF_ENV;
 
-    if (!SF_ENV) {
+    if (SF_ENV && Object.values(Environment).includes(SF_ENV as Environment)) {
+        return SF_ENV as Environment;
+    } else {
         // eslint-disable-next-line no-console
         console.warn('SF_ENV is not set, defaulting to development');
         return Environment.DEVELOPMENT;
     }
-
-    return SF_ENV;
 };
 
 export const getSetPriceEnabled = () => {

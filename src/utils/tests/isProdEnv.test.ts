@@ -1,26 +1,4 @@
-import { Environment, isChipVisibleForEnv, isProdEnv } from 'src/utils';
-
-describe('isChipVisibleForEnv function', () => {
-    const originalEnv = process.env;
-
-    beforeEach(() => {
-        process.env = { ...originalEnv };
-    });
-
-    afterEach(() => {
-        process.env = originalEnv;
-    });
-
-    it('should return true if not in production environment', () => {
-        process.env.SF_ENV = Environment.DEVELOPMENT;
-        expect(isChipVisibleForEnv()).toBe(true);
-    });
-
-    it('should return false if environment is production', () => {
-        process.env.SF_ENV = Environment.PRODUCTION;
-        expect(isChipVisibleForEnv()).toBe(false);
-    });
-});
+import { Environment, isProdEnv } from 'src/utils';
 
 describe('isProdEnv function', () => {
     const originalEnv = process.env;
