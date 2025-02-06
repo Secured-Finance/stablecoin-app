@@ -68,14 +68,3 @@ export const getSquidWidgetIntegratorId = () => {
 
     return SQUID_WIDGET_INTEGRATOR_ID;
 };
-
-export const getRedemptionDocumentUrl = () => {
-    const REDEMPTION_DOCUMENT_URL =
-        process.env.NEXT_PUBLIC_REDEMPTION_DOCUMENT_URL;
-
-    if (!REDEMPTION_DOCUMENT_URL) {
-        return '';
-    }
-
-    return REDEMPTION_DOCUMENT_URL;
-};

@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from 'src/test-utils.js';
 import * as stories from './MenuItem.stories';
 
-const { Default, External } = composeStories(stories);
+const { Default } = composeStories(stories);
 
 describe('MenuItem component', () => {
     it('should render with correct text', async () => {
@@ -13,18 +13,5 @@ describe('MenuItem component', () => {
             </BrowserRouter>
         );
         expect(screen.getByText('Example')).toBeInTheDocument();
-    });
-
-    it('should have the correct href attribute', async () => {
-        render(
-            <BrowserRouter>
-                <External />
-            </BrowserRouter>
-        );
-        expect(screen.getByText('External Link')).toBeInTheDocument();
-        expect(screen.getByRole('link')).toHaveAttribute(
-            'href',
-            'https://secured.finance/'
-        );
     });
 });

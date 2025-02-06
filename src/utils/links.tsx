@@ -1,5 +1,6 @@
 import GitBook from 'src/assets/icons/gitbook.svg';
 import SF from 'src/assets/icons/sf-logo-light.svg';
+import { DOCUMENTATION_LINK } from 'src/constants';
 
 type MoreLink = {
     text: string;
@@ -22,7 +23,7 @@ export const LinkList: MoreLink[] = [
     },
     {
         text: 'Documentation',
-        href: 'https://docs.secured.finance/stablecoin-protocol-guide/',
+        href: DOCUMENTATION_LINK,
         icon: <GitBook className='h-5 w-5' />,
         isExternal: true,
     },

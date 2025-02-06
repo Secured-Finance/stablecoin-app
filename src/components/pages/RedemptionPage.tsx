@@ -6,8 +6,8 @@ import { PriceManager } from 'src/components/PriceManager';
 import { Redemption } from 'src/components/Redemption/Redemption';
 import { SystemStats } from 'src/components/SystemStats';
 import { PlainCard } from 'src/components/templates';
+import { DOCUMENTATION_LINKS } from 'src/constants';
 import { COIN } from 'src/strings';
-import { getRedemptionDocumentUrl } from 'src/utils';
 
 export const RedemptionPage: React.FC = () => (
     <section className='w-full'>
@@ -34,7 +34,7 @@ export const RedemptionPage: React.FC = () => (
                             . Learn more about redemptions at the{' '}
                             <Link
                                 className='font-semibold text-primary-500'
-                                href={getRedemptionDocumentUrl()}
+                                href={DOCUMENTATION_LINKS.redemption}
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 aria-label='USDFC Redemption'

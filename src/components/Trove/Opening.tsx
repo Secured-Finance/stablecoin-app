@@ -11,6 +11,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
+import { DOCUMENTATION_LINKS } from 'src/constants';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card, Spinner } from 'theme-ui';
@@ -286,7 +287,7 @@ export const Opening: React.FC = () => {
                         riskiest Troves
                     </NavLink>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
+                    <LearnMoreLink link={DOCUMENTATION_LINKS.redemption}>
                         redeemed.
                     </LearnMoreLink>
                 </Alert>

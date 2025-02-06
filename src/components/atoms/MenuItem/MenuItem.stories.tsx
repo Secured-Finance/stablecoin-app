@@ -1,5 +1,4 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import GitBook from 'src/assets/icons/gitbook.svg';
 import { MenuItem } from './MenuItem';
 
 export default {
@@ -24,12 +23,4 @@ export const Active = Template.bind({});
 Active.args = {
     text: 'Active',
     isActive: true,
-};
-
-export const External = Template.bind({});
-External.args = {
-    text: 'External Link',
-    icon: <GitBook className='h-4 w-4 rounded-full' />,
-    link: 'https://secured.finance/',
-    isExternal: true,
 };

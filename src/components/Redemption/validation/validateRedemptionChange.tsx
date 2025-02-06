@@ -4,10 +4,10 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import Link from 'next/link';
+import { ActionDescription, Amount } from 'src/components/ActionDescription';
 import { Alert } from 'src/components/atoms';
-import { getRedemptionDocumentUrl } from 'src/utils';
-import { COIN } from '../../../strings';
-import { ActionDescription, Amount } from '../../ActionDescription';
+import { DOCUMENTATION_LINKS } from 'src/constants';
+import { COIN } from 'src/strings';
 
 export const selectForRedemptionChangeValidation = ({
     debtTokenBalance,
@@ -56,13 +56,14 @@ export const validateRedemptionChange = (
                         or more. Learn more about redemption limits at the{' '}
                         <Link
                             className='font-semibold text-primary-500'
-                            href={getRedemptionDocumentUrl()}
+                            href={DOCUMENTATION_LINKS.redemption}
                             target='_blank'
                             rel='noopener noreferrer'
                             aria-label='USDFC Redemption'
                         >
                             Secured Finance Docs
                         </Link>
+                        .
                     </Alert>,
                 ];
             } else {
@@ -72,7 +73,7 @@ export const validateRedemptionChange = (
                         <Alert color='warning' key={0}>
                             Your redemption amount was adjusted to{' '}
                             <Amount>
-                                {estimatedDebtToken.prettify(2)} {COIN}{' '}
+                                {estimatedDebtToken.prettify(2)} {COIN}
                             </Amount>
                             . Under current redemption limits, amounts between{' '}
                             <Amount>{estimatedDebtToken.prettify(2)} </Amount>
@@ -80,23 +81,24 @@ export const validateRedemptionChange = (
                             <Amount>
                                 {estimatedDebtToken
                                     .add(MINIMUM_NET_DEBT)
-                                    .prettify(2)}
+                                    .prettify(2)}{' '}
                                 {COIN}{' '}
                             </Amount>
                             are not allowed. Learn more about redemption limits
                             at the{' '}
                             <Link
                                 className='font-semibold text-primary-500'
-                                href={getRedemptionDocumentUrl()}
+                                href={DOCUMENTATION_LINKS.redemption}
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 aria-label='USDFC Redemption'
                             >
                                 Secured Finance Docs
                             </Link>
+                            .
                         </Alert>
                         <ActionDescription key={1}>
-                            You will redeem.{' '}
+                            You will redeem{' '}
                             <Amount>
                                 {estimatedDebtToken.prettify(2)} {COIN}
                             </Amount>{' '}
