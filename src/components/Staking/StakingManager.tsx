@@ -6,6 +6,7 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
+import { Alert } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
@@ -15,8 +16,6 @@ import { COLLATERAL_PRECISION } from 'src/utils';
 import { Button, Flex } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
-import { ErrorDescription } from '../ErrorDescription';
-import { InfoBubble } from '../InfoBubble';
 import { useStakingView } from './context/StakingViewContext';
 import { StakingEditor } from './StakingEditor';
 import { StakingManagerAction } from './StakingManagerAction';
@@ -155,7 +154,7 @@ export const StakingManager: React.FC = () => {
         : change.stakeProtocolToken?.gt(protocolTokenBalance)
         ? [
               undefined,
-              <ErrorDescription key={0}>
+              <Alert key={0}>
                   The amount you are trying to stake exceeds your balance by{' '}
                   <Amount>
                       {change.stakeProtocolToken
@@ -164,7 +163,7 @@ export const StakingManager: React.FC = () => {
                       {GT}
                   </Amount>
                   .
-              </ErrorDescription>,
+              </Alert>,
           ]
         : [
               change,
@@ -184,13 +183,13 @@ export const StakingManager: React.FC = () => {
         >
             {description ??
                 (makingNewStake ? (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Enter the amount of {GT} you would like to stake.
-                    </InfoBubble>
+                    </Alert>
                 ) : (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Adjust the {GT} amount to stake or withdraw.
-                    </InfoBubble>
+                    </Alert>
                 ))}
 
             <Flex variant='layout.actions'>

@@ -6,8 +6,9 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import HeartIcon from 'src/assets/icons/heart.svg';
+import { Alert } from 'src/components/atoms';
+import { DOCUMENTATION_LINKS } from 'src/constants';
 import { Card } from 'theme-ui';
-import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';
 import { StaticRow } from './Editor';
@@ -85,16 +86,16 @@ export const CollateralRatioInfoBubble: React.FC<
     return (
         <>
             {value?.lt(1.5) && (
-                <InfoBubble>
+                <Alert color='info'>
                     Keep your collateral ratio above 150% to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/stability-pool-and-liquidation#what-are-liquidations'>
+                    <LearnMoreLink link={DOCUMENTATION_LINKS.liquidation}>
                         liquidated
                     </LearnMoreLink>{' '}
                     under{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/recovery-mode'>
+                    <LearnMoreLink link={DOCUMENTATION_LINKS.recoveryMode}>
                         Recovery Mode.
                     </LearnMoreLink>
-                </InfoBubble>
+                </Alert>
             )}
         </>
     );

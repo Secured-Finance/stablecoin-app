@@ -2,10 +2,10 @@ import { Popover, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 import { Fragment } from 'react';
-import { MenuItem, Separator } from 'src/components/atoms';
+import { MenuExternalLink, MenuItem, Separator } from 'src/components/atoms';
 import { LinkList } from 'src/utils';
 
-export const MenuPopover = () => {
+export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     return (
         <div className='flex items-center justify-center px-4'>
             <Popover className='relative'>
@@ -44,11 +44,22 @@ export const MenuPopover = () => {
                                                 role='menuitem'
                                                 onClick={close}
                                             >
-                                                <MenuItem
-                                                    text={link.text}
-                                                    icon={link.icon}
-                                                    link={link.href}
-                                                />
+                                                {link.isExternal ? (
+                                                    <MenuExternalLink
+                                                        text={link.text}
+                                                        icon={link.icon}
+                                                        link={link.href}
+                                                    />
+                                                ) : (
+                                                    <MenuItem
+                                                        text={link.text}
+                                                        link={link.href}
+                                                        isActive={
+                                                            currentPath ===
+                                                            link.href
+                                                        }
+                                                    />
+                                                )}
                                                 {index !==
                                                     LinkList.length - 1 && (
                                                     <Separator color='neutral-100' />

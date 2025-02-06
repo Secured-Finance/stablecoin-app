@@ -7,7 +7,7 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, ButtonVariants } from 'src/components/atoms';
+import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
@@ -15,7 +15,6 @@ import { Card } from 'theme-ui';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
-import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState } from '../Transaction';
@@ -361,10 +360,10 @@ export const Adjusting: React.FC = () => {
                 <CollateralRatioInfoBubble value={collateralRatio} />
 
                 {description ?? (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Adjust your Trove by modifying its collateral, debt, or
                         both.
-                    </InfoBubble>
+                    </Alert>
                 )}
 
                 <ExpensiveTroveChangeWarning

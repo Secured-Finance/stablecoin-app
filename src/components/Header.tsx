@@ -21,7 +21,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return (
         <Container variant='header'>
-            <div className='flex items-center gap-3 laptop:gap-8'>
+            <div className='flex items-center gap-3 desktop:gap-8'>
                 <SecuredFinanceLogo />
                 {isFrontendRegistered && (
                     <>

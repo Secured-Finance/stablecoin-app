@@ -99,16 +99,26 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
-                            {LinkList.map(link => (
-                                <MobileItemLink
-                                    key={link.text}
-                                    text={link.text}
-                                    icon={link.icon}
-                                    link={link.href}
-                                    onClick={() => setIsVisible(false)}
-                                    target='_blank'
-                                />
-                            ))}
+                            {LinkList.map(link =>
+                                link.isExternal ? (
+                                    <MobileItemExternalLink
+                                        key={link.text}
+                                        text={link.text}
+                                        icon={link.icon}
+                                        link={link.href}
+                                        onClick={() => setIsVisible(false)}
+                                    />
+                                ) : (
+                                    <MobileItemLink
+                                        key={link.text}
+                                        text={link.text}
+                                        label={link.text}
+                                        link={link.href}
+                                        onClick={() => setIsVisible(false)}
+                                        isActive={pathname === link.href}
+                                    />
+                                )
+                            )}
                         </div>
                     )}
                 </div>
@@ -135,18 +145,16 @@ const NextLink = forwardRef(
 );
 NextLink.displayName = 'NextLink';
 
-const MobileItemLink = ({
+const MobileItemExternalLink = ({
     text,
     icon,
     link,
     onClick,
-    target,
 }: {
     text: string;
     icon: React.ReactNode;
     link: string;
     onClick: () => void;
-    target?: string;
 }) => {
     return (
         <NextLink
@@ -154,7 +162,7 @@ const MobileItemLink = ({
                 'flex w-full cursor-pointer items-center px-3 py-[11px] focus:outline-none'
             )}
             href={link}
-            target={target}
+            target='_blank'
             rel='noreferrer'
             onClick={onClick}
         >
@@ -165,5 +173,39 @@ const MobileItemLink = ({
                 </p>
             </div>
         </NextLink>
+    );
+};
+
+const MobileItemLink = ({
+    text,
+    label,
+    link,
+    onClick,
+    isActive,
+}: {
+    text: string;
+    label: string;
+    link: string;
+    onClick: () => void;
+    isActive: boolean;
+}) => {
+    return (
+        <NavLink
+            key={label}
+            to={link}
+            className='flex w-full cursor-pointer items-center px-3 py-[11px] focus:outline-none'
+            onClick={onClick}
+        >
+            <div className='flex w-full cursor-pointer items-center gap-2'>
+                <p
+                    className={clsx(
+                        'typography-desktop-body-3 font-semibold text-neutral-800',
+                        { 'text-primary-500': isActive }
+                    )}
+                >
+                    {text}
+                </p>
+            </div>
+        </NavLink>
     );
 };

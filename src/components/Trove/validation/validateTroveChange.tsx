@@ -12,9 +12,9 @@ import {
     TroveClosureParams,
     TroveCreationParams,
 } from '@secured-finance/stablecoin-lib-base';
+import { Alert } from 'src/components/atoms';
 import { COIN } from '../../../strings';
 import { ActionDescription, Amount } from '../../ActionDescription';
-import { ErrorDescription } from '../../ErrorDescription';
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
 const ccrPercent = new Percent(CRITICAL_COLLATERAL_RATIO).toString(0);
@@ -156,13 +156,13 @@ export const validateTroveChange = (
         // Trying to create a Trove with negative net debt
         return [
             undefined,
-            <ErrorDescription key={0}>
+            <Alert key={0}>
                 Total debt must be at least{' '}
                 <Amount>
                     {MINIMUM_DEBT.toString()} {COIN}
                 </Amount>
                 .
-            </ErrorDescription>,
+            </Alert>,
         ];
     }
 
@@ -192,57 +192,57 @@ const validateTroveCreation = (
 ): JSX.Element | null => {
     if (borrowDebtToken.lt(MINIMUM_NET_DEBT)) {
         return (
-            <ErrorDescription>
+            <Alert>
                 You must borrow at least{' '}
                 <Amount>
                     {MINIMUM_NET_DEBT.toString()} {COIN}
                 </Amount>
                 .
-            </ErrorDescription>
+            </Alert>
         );
     }
 
     if (recoveryMode) {
         if (!resultingTrove.isOpenableInRecoveryMode(price)) {
             return (
-                <ErrorDescription>
+                <Alert>
                     You are not allowed to open a Trove with less than{' '}
                     <Amount>{ccrPercent}</Amount> Collateral Ratio during
                     recovery mode. Please increase your Troves Collateral Ratio.
-                </ErrorDescription>
+                </Alert>
             );
         }
     } else {
         if (resultingTrove.collateralRatioIsBelowMinimum(price)) {
             return (
-                <ErrorDescription>
+                <Alert>
                     Collateral ratio must be at least{' '}
                     <Amount>{mcrPercent}</Amount>.
-                </ErrorDescription>
+                </Alert>
             );
         }
 
         if (wouldTriggerRecoveryMode) {
             return (
-                <ErrorDescription>
+                <Alert>
                     You are not allowed to open a Trove that would cause the
                     Total Collateral Ratio to fall below{' '}
                     <Amount>{ccrPercent}</Amount>. Please increase your Troves
                     Collateral Ratio.
-                </ErrorDescription>
+                </Alert>
             );
         }
     }
 
     if (depositCollateral.gt(accountBalance)) {
         return (
-            <ErrorDescription>
+            <Alert>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
                     {depositCollateral.sub(accountBalance).prettify()} tFIL
                 </Amount>
                 .
-            </ErrorDescription>
+            </Alert>
         );
     }
 
@@ -269,21 +269,21 @@ const validateTroveAdjustment = (
     if (recoveryMode) {
         if (withdrawCollateral) {
             return (
-                <ErrorDescription>
+                <Alert>
                     You are not allowed to withdraw collateral during recovery
                     mode.
-                </ErrorDescription>
+                </Alert>
             );
         }
 
         if (borrowDebtToken) {
             if (resultingTrove.collateralRatioIsBelowCritical(price)) {
                 return (
-                    <ErrorDescription>
+                    <Alert>
                         Your collateral ratio must be at least{' '}
                         <Amount>{ccrPercent}</Amount> to borrow during recovery
                         mode. Please improve your collateral ratio.
-                    </ErrorDescription>
+                    </Alert>
                 );
             }
 
@@ -293,30 +293,30 @@ const validateTroveAdjustment = (
                     .lt(originalTrove.collateralRatio(price))
             ) {
                 return (
-                    <ErrorDescription>
+                    <Alert>
                         You are not allowed to decrease your collateral ratio
                         during recovery mode.
-                    </ErrorDescription>
+                    </Alert>
                 );
             }
         }
     } else {
         if (resultingTrove.collateralRatioIsBelowMinimum(price)) {
             return (
-                <ErrorDescription>
+                <Alert>
                     Collateral ratio must be at least{' '}
                     <Amount>{mcrPercent}</Amount>.
-                </ErrorDescription>
+                </Alert>
             );
         }
 
         if (wouldTriggerRecoveryMode) {
             return (
-                <ErrorDescription>
+                <Alert>
                     The adjustment you are trying to make would cause the Total
                     Collateral Ratio to fall below <Amount>{ccrPercent}</Amount>
                     . Please increase your Troves Collateral Ratio.
-                </ErrorDescription>
+                </Alert>
             );
         }
     }
@@ -324,38 +324,38 @@ const validateTroveAdjustment = (
     if (repayDebtToken) {
         if (resultingTrove.debt.lt(MINIMUM_DEBT)) {
             return (
-                <ErrorDescription>
+                <Alert>
                     Total debt must be at least{' '}
                     <Amount>
                         {MINIMUM_DEBT.toString()} {COIN}
                     </Amount>
                     .
-                </ErrorDescription>
+                </Alert>
             );
         }
 
         if (repayDebtToken.gt(debtTokenBalance)) {
             return (
-                <ErrorDescription>
+                <Alert>
                     The amount you are trying to repay exceeds your balance by{' '}
                     <Amount>
                         {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
                     </Amount>
                     .
-                </ErrorDescription>
+                </Alert>
             );
         }
     }
 
     if (depositCollateral?.gt(accountBalance)) {
         return (
-            <ErrorDescription>
+            <Alert>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
                     {depositCollateral.sub(accountBalance).prettify()} tFIL
                 </Amount>
                 .
-            </ErrorDescription>
+            </Alert>
         );
     }
 
@@ -373,24 +373,24 @@ const validateTroveClosure = (
 ): JSX.Element | null => {
     if (numberOfTroves === 1) {
         return (
-            <ErrorDescription>
+            <Alert>
                 You are not allowed to close your Trove when there are no other
                 Troves in the system.
-            </ErrorDescription>
+            </Alert>
         );
     }
 
     if (recoveryMode) {
         return (
-            <ErrorDescription>
+            <Alert>
                 You are not allowed to close your Trove during recovery mode.
-            </ErrorDescription>
+            </Alert>
         );
     }
 
     if (repayDebtToken?.gt(debtTokenBalance)) {
         return (
-            <ErrorDescription>
+            <Alert>
                 You only have{' '}
                 <Amount>
                     {debtTokenBalance.prettify()} {COIN}
@@ -400,18 +400,18 @@ const validateTroveClosure = (
                     {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
                 </Amount>{' '}
                 more to close your Trove.
-            </ErrorDescription>
+            </Alert>
         );
     }
 
     if (wouldTriggerRecoveryMode) {
         return (
-            <ErrorDescription>
+            <Alert>
                 You are not allowed to close a Trove if it would cause the Total
                 Collateralization Ratio to fall below{' '}
                 <Amount>{ccrPercent}</Amount>. Please wait until the Total
                 Collateral Ratio increases.
-            </ErrorDescription>
+            </Alert>
         );
     }
 
