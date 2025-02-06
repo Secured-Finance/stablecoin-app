@@ -4,9 +4,9 @@ import {
     StabilityDeposit,
     StabilityDepositChange,
 } from '@secured-finance/stablecoin-lib-base';
+import { Alert } from 'src/components/atoms';
 import { COIN } from '../../../strings';
 import { Amount } from '../../ActionDescription';
-import { ErrorDescription } from '../../ErrorDescription';
 import { StabilityActionDescription } from '../StabilityActionDescription';
 
 export const selectForStabilityDepositChangeValidation = ({
@@ -42,10 +42,10 @@ export const validateStabilityDepositChange = (
     if (haveOwnFrontend) {
         return [
             undefined,
-            <ErrorDescription key={0}>
+            <Alert key={0}>
                 You can’t deposit using a wallet address that is registered as a
                 frontend.
-            </ErrorDescription>,
+            </Alert>,
         ];
     }
 
@@ -56,25 +56,25 @@ export const validateStabilityDepositChange = (
     if (change.depositDebtToken?.gt(debtTokenBalance)) {
         return [
             undefined,
-            <ErrorDescription key={1}>
+            <Alert key={1}>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
                     {change.depositDebtToken.sub(debtTokenBalance).prettify()}{' '}
                     {COIN}
                 </Amount>
                 .
-            </ErrorDescription>,
+            </Alert>,
         ];
     }
 
     if (change.withdrawDebtToken && haveUndercollateralizedTroves) {
         return [
             undefined,
-            <ErrorDescription key={2}>
+            <Alert key={2}>
                 You are not allowed to withdraw USDFC from your Stability
                 Deposit when there are undercollateralized Troves. Please
                 liquidate those Troves or try again later.
-            </ErrorDescription>,
+            </Alert>,
         ];
     }
 

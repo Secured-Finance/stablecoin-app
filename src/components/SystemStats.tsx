@@ -118,14 +118,10 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                 {showBalances && <Balances />}
 
                 <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base laptop:leading-6'>
-                    SF Stablecoin Statistics
+                    Protocol Statistics
                 </span>
 
                 <div className='flex flex-col gap-1'>
-                    <span className='typography-mobile-body-3 laptop:typography-desktop-body-4 text-neutral-900'>
-                        Protocol
-                    </span>
-
                     <Statistic lexicon={l.BORROW_FEE}>
                         {borrowingFeePct.toString(2)}
                     </Statistic>

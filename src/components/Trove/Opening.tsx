@@ -9,14 +9,14 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Button, ButtonVariants } from 'src/components/atoms';
+import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
+import { DOCUMENTATION_LINKS } from 'src/constants';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card, Spinner } from 'theme-ui';
 import { COIN } from '../../strings';
 import { Icon } from '../Icon';
-import { InfoBubble } from '../InfoBubble';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { LearnMoreLink } from '../Tooltip';
@@ -278,7 +278,7 @@ export const Opening: React.FC = () => {
 
                 <CollateralRatio value={collateralRatio} />
 
-                <InfoBubble>
+                <Alert color='info'>
                     Keep your collateral ratio above the{' '}
                     <NavLink
                         to='/risky-troves'
@@ -287,18 +287,18 @@ export const Opening: React.FC = () => {
                         riskiest Troves
                     </NavLink>{' '}
                     to avoid being{' '}
-                    <LearnMoreLink link='https://docs.secured.finance/stablecoin-protocol-guide/key-features/redemption'>
+                    <LearnMoreLink link={DOCUMENTATION_LINKS.redemption}>
                         redeemed.
                     </LearnMoreLink>
-                </InfoBubble>
+                </Alert>
 
                 <CollateralRatioInfoBubble value={collateralRatio} />
 
                 {description ?? (
-                    <InfoBubble>
+                    <Alert color='info'>
                         Start by entering the amount of tFIL you would like to
                         deposit as collateral.
-                    </InfoBubble>
+                    </Alert>
                 )}
 
                 <ExpensiveTroveChangeWarning

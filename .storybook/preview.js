@@ -3,6 +3,7 @@ import '@storybook/addon-console';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import isChromatic from 'chromatic/isChromatic';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import 'src/assets/css/index.css';
 import { mockStore } from './../src/stories/mocks/mockStore';
 import { withMockDate } from './decorators';
@@ -58,7 +59,9 @@ export const decorators = [
     Story => (
         <Provider store={mockStore}>
             <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
                     <Story />
+                </BrowserRouter>
             </QueryClientProvider>
         </Provider>
     ),

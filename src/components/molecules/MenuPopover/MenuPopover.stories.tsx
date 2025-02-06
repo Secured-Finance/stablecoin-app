@@ -14,7 +14,7 @@ export default {
 
 const Template: StoryFn<typeof MenuPopover> = () => (
     <div className='w-fit'>
-        <MenuPopover />
+        <MenuPopover currentPath='/mock' />
     </div>
 );
 

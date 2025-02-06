@@ -4,7 +4,7 @@ import SFLogoSmall from 'src/assets/img/small-logo.svg';
 
 export const SecuredFinanceLogo = () => (
     <NavLink to='/'>
-        <SFLogo className='hidden h-4 w-40 laptop:flex' />
-        <SFLogoSmall className='flex h-[25px] w-7 laptop:hidden' />
+        <SFLogo className='hidden h-4 w-40 desktop:flex' />
+        <SFLogoSmall className='flex h-[25px] w-7 desktop:hidden' />
     </NavLink>
 );
