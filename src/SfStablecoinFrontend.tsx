@@ -8,6 +8,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
+import { RedemptionPage } from 'src/components/pages/RedemptionPage';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
 import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
@@ -65,6 +66,9 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     </Route>
                                     <Route path='/risky-troves'>
                                         <RiskyTrovesPage />
+                                    </Route>
+                                    <Route path='/redemption'>
+                                        <RedemptionPage />
                                     </Route>
                                     <Route path='/bridge'>
                                         <BridgePage />
