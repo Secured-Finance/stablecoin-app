@@ -43,7 +43,7 @@ export const PriceManager: React.FC = () => {
                                 step='any'
                                 value={editedPrice}
                                 onChange={e => setEditedPrice(e.target.value)}
-                                className='h-full flex-1 rounded-lg border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
+                                className='h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold'
                             />
                         </div>
                     </>

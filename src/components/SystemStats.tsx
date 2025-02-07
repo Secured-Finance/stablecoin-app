@@ -5,10 +5,17 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import Link from 'next/link';
 import packageJson from 'package.json';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CheckIcon from 'src/assets/icons/check.svg';
+import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
+import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
+import {
+    AddressUtils,
+    COLLATERAL_PRECISION,
+    DEBT_TOKEN_PRECISION,
+} from 'src/utils';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -29,7 +36,7 @@ const Balances = () => {
     return (
         <div className='flex flex-col gap-1'>
             <div className='flex items-center gap-1'>
-                <Wallet className='h-6 w-6' />
+                <Wallet className='h-5 w-5' />
                 <span className='typography-mobile-body-3 font-semibold capitalize text-neutral-900'>
                     My Account Balances
                 </span>
@@ -91,7 +98,12 @@ const select = ({
 export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
     const {
         sfStablecoin: {
-            connection: { version: contractsVersion, deploymentDate },
+            connection: {
+                version: contractsVersion,
+                deploymentDate,
+                addresses,
+                chainId,
+            },
         },
     } = useSfStablecoin();
 
@@ -103,6 +115,26 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         borrowingRate,
     } = useSfStablecoinSelector(select);
 
+    const [copied, setCopied] = useState<string>();
+
+    useEffect(() => {
+        if (copied !== undefined) {
+            let cancelled = false;
+
+            navigator.clipboard.writeText(copied);
+
+            setTimeout(() => {
+                if (!cancelled) {
+                    setCopied(undefined);
+                }
+            }, 2000);
+
+            return () => {
+                cancelled = true;
+            };
+        }
+    }, [copied]);
+
     const debtTokenInStabilityPoolPct =
         total.debt.nonZero &&
         new Percent(debtTokenInStabilityPool.div(total.debt));
@@ -110,16 +142,16 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
     const borrowingFeePct = new Percent(borrowingRate);
 
     return (
-        <div className='w-full min-w-0 rounded-b-xl border border-t-2 border-primary-300 border-t-primary-500 bg-[linear-gradient(112deg,_#fff,_#f2f3fc)] px-3 pb-3 pt-2.5 text-neutral-900 shadow-stats laptop:border-[1.5px] laptop:border-t-4 laptop:px-4 laptop:pb-4 laptop:pt-3'>
+        <div className='w-full min-w-0 rounded-lg bg-neutral-50 p-3 text-neutral-900 shadow-card laptop:px-4 laptop:pb-4 laptop:pt-3'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
-                <h2 className='typography-mobile-body-2 flex font-semibold laptop:hidden'>
+                <h2 className='typography-mobile-body-1 flex font-light laptop:hidden'>
                     My Info
                 </h2>
                 {showBalances && <Balances />}
 
-                <span className='typography-mobile-body-2 font-semibold text-neutral-900 laptop:text-base laptop:leading-6'>
+                <h2 className='typography-mobile-body-1 flex items-center justify-between font-light text-neutral-800'>
                     Protocol Statistics
-                </span>
+                </h2>
 
                 <div className='flex flex-col gap-1'>
                     <Statistic lexicon={l.BORROW_FEE}>
@@ -173,11 +205,41 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         <GitHubCommit>{contractsVersion}</GitHubCommit>
                     </div>
                     <div>
-                        <span>Deployed: {deploymentDate.toLocaleString()}</span>
+                        <span>USDFC contract:</span>
+                        <span className='relative ml-1 font-semibold text-primary-500'>
+                            <Link
+                                href={`${
+                                    chainId === 314
+                                        ? BLOCKCHAIN_EXPLORER_LINKS.mainnet
+                                        : BLOCKCHAIN_EXPLORER_LINKS.testnet
+                                }/en/address/${addresses.debtToken}`}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                aria-label='USDFC contract'
+                            >
+                                {AddressUtils.format(addresses.debtToken, 8)}
+                            </Link>
+                            <button
+                                className='absolute -right-5 top-1/2 -translate-y-1/2 transform'
+                                onClick={() => setCopied(addresses.debtToken)}
+                            >
+                                {copied === addresses.debtToken ? (
+                                    <CheckIcon className='h-4 w-4 text-success-700' />
+                                ) : (
+                                    <Clipboard className='h-4 w-4 text-primary-500' />
+                                )}
+                            </button>
+                        </span>
+                    </div>
+                    <div>
+                        <span>Deployed:</span>
+                        <span className='ml-1 font-semibold'>
+                            {deploymentDate.toLocaleString()}
+                        </span>
                     </div>
                     <div>
                         <span>Frontend version:</span>
-                        <span className='ml-1 font-semibold text-primary-500'>
+                        <span className='ml-1 font-semibold'>
                             {/* {!isProdEnv() ? 'development' : packageJson.version} */}
                             {/* TODO: FIX before production launch */}
                             {packageJson.version}

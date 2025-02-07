@@ -9,7 +9,7 @@ type StatisticProps = React.PropsWithChildren<{
 
 export const Statistic: React.FC<StatisticProps> = ({ lexicon, children }) => {
     return (
-        <div className='laptop:typography-desktop-body-4 typography-mobile-body-4 flex items-center justify-between border-b border-primary-300 text-neutral-900'>
+        <div className='laptop:typography-desktop-body-4 typography-mobile-body-4 flex items-center justify-between border-b border-neutral-300 text-neutral-900'>
             <div className='flex items-center gap-0.5'>
                 <span>{lexicon.term}</span>
                 {lexicon.term && lexicon.description && (

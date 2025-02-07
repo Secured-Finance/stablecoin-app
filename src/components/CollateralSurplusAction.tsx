@@ -30,7 +30,11 @@ export const CollateralSurplusAction: React.FC = () => {
     return myTransactionState.type === 'waitingForApproval' ? (
         <div className='flex justify-end gap-2'>
             <Button disabled>
-                <Spinner sx={{ mr: 2, color: 'white' }} size={20} />
+                <Spinner
+                    sx={{ mr: 2, color: 'white' }}
+                    size={20}
+                    className='inline-block'
+                />
                 Waiting for your approval
             </Button>
         </div>

@@ -129,10 +129,13 @@ export const Opening: React.FC = () => {
                     Trove
                     {isDirty && !isTransactionPending && (
                         <button
-                            className='hover:enabled:text-error-700'
+                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
                             onClick={reset}
                         >
-                            <Icon name='history' size='lg' />
+                            <span className='typography-mobile-body-4 pr-1 font-semibold'>
+                                Reset
+                            </span>
+                            <Icon name='history' size='sm' />
                         </button>
                     )}
                 </>

@@ -5,7 +5,8 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { RedemptionPage } from 'src/components/pages/RedemptionPage';
@@ -24,6 +25,24 @@ import { UserAccount } from './components/UserAccount';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
+};
+
+const AnimatedSwitch: React.FC<{ children: React.ReactNode }> = ({
+    children,
+}) => {
+    const location = useLocation();
+
+    return (
+        <TransitionGroup className='relative w-full'>
+            <CSSTransition
+                key={location.pathname}
+                classNames='fade'
+                timeout={300}
+            >
+                <Switch location={location}>{children}</Switch>
+            </CSSTransition>
+        </TransitionGroup>
+    );
 };
 
 export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
@@ -60,7 +79,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                 </div>
                             </Header>
                             <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>
-                                <Switch>
+                                <AnimatedSwitch>
                                     <Route path='/' exact>
                                         <PageSwitcher />
                                     </Route>
@@ -73,7 +92,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     <Route path='/bridge'>
                                         <BridgePage />
                                     </Route>
-                                </Switch>
+                                </AnimatedSwitch>
                             </div>
                         </Flex>
                     </StakingViewProvider>

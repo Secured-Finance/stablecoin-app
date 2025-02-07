@@ -7,13 +7,16 @@ export const BridgePage: React.FC = () => {
     const configQueryParam = encodeURIComponent(JSON.stringify(squidConfig));
 
     return (
-        <section className='border-red relative mt-5 flex justify-center overflow-hidden rounded-[1.875rem] border bg-[#F8FAFC] tablet:h-[660px]'>
-            <iframe
-                title='squid_widget'
-                width={isMobile ? '370' : '480'}
-                height='694'
-                src={`https://studio.squidrouter.com/iframe?config=${configQueryParam}`}
-            />
+        <section className='w-full'>
+            <div className='border-red relative mt-5 flex justify-center'>
+                <iframe
+                    className='rounded-xl border border-transparent bg-neutral-50 shadow-card'
+                    title='squid_widget'
+                    width={isMobile ? '370' : '480'}
+                    height='694'
+                    src={`https://studio.squidrouter.com/iframe?config=${configQueryParam}`}
+                />
+            </div>
         </section>
     );
 };

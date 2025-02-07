@@ -21,3 +21,8 @@ export const DOCUMENTATION_LINKS = {
     redemption: `${DOCUMENTATION_LINK}/key-features/redemption`,
     recoveryMode: `${DOCUMENTATION_LINK}/key-features/recovery-mode`,
 };
+
+export const BLOCKCHAIN_EXPLORER_LINKS = {
+    mainnet: 'https://filfox.info',
+    testnet: 'https://calibration.filfox.info',
+};

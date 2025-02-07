@@ -38,6 +38,7 @@ export const SystemStatsPopup: React.FC = () => {
                         }
                     }}
                     className='!flex items-center justify-center px-5'
+                    backgroundColor='rgba(241, 245, 249, 0.8)'
                 >
                     <SystemStats showBalances />
                 </Container>
