@@ -190,12 +190,10 @@ function App({ Component, pageProps }: AppProps) {
             </Head>
             {gaTag && <TrackingCode gaTag={gaTag} />}
             <Provider store={store}>
-                <Router>
-                    <Providers>
-                        <RouteChangeTracker gaTag={gaTag} />
-                        <Component {...pageProps} />
-                    </Providers>
-                </Router>
+                <Providers>
+                    <RouteChangeTracker gaTag={gaTag} />
+                    <Component {...pageProps} />
+                </Providers>
             </Provider>
         </>
     );
@@ -211,21 +209,25 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                 <CookiesProvider>
                     <QueryClientProvider client={queryClient}>
                         <WagmiProvider config={wagmiConfig}>
-                            <WalletConnector>
-                                <SfStablecoinProvider
-                                    loader={loader}
-                                    unsupportedNetworkFallback={
-                                        <UnsupportedNetworkFallback />
-                                    }
-                                    unsupportedMainnetFallback={
-                                        <UnsupportedMainnetFallback />
-                                    }
-                                >
-                                    <TransactionProvider>
-                                        <SfStablecoinFrontend loader={loader} />
-                                    </TransactionProvider>
-                                </SfStablecoinProvider>
-                            </WalletConnector>
+                            <Router>
+                                <WalletConnector>
+                                    <SfStablecoinProvider
+                                        loader={loader}
+                                        unsupportedNetworkFallback={
+                                            <UnsupportedNetworkFallback />
+                                        }
+                                        unsupportedMainnetFallback={
+                                            <UnsupportedMainnetFallback />
+                                        }
+                                    >
+                                        <TransactionProvider>
+                                            <SfStablecoinFrontend
+                                                loader={loader}
+                                            />
+                                        </TransactionProvider>
+                                    </SfStablecoinProvider>
+                                </WalletConnector>
+                            </Router>
                         </WagmiProvider>
                         <ReactQueryDevtools initialIsOpen={false} />
                     </QueryClientProvider>
