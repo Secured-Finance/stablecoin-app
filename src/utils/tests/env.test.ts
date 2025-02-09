@@ -63,11 +63,14 @@ describe('getGoogleAnalyticsTag', () => {
 });
 
 describe('getEnvironment', () => {
-    it('should return the value of the environment variable', () => {
+    it('should return the default value of the environment variable', () => {
         process.env.SF_ENV = 'testnet';
+        const spy = jest.spyOn(console, 'warn').mockImplementation();
+
         const env = getEnvironment();
-        expect(env).toBe('testnet');
+        expect(env).toBe(Environment.DEVELOPMENT);
         expect(typeof env).toBe('string');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should return development if variable is not set', () => {

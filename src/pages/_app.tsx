@@ -9,7 +9,7 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { HashRouter as Router, useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
@@ -209,21 +209,25 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                 <CookiesProvider>
                     <QueryClientProvider client={queryClient}>
                         <WagmiProvider config={wagmiConfig}>
-                            <WalletConnector>
-                                <SfStablecoinProvider
-                                    loader={loader}
-                                    unsupportedNetworkFallback={
-                                        <UnsupportedNetworkFallback />
-                                    }
-                                    unsupportedMainnetFallback={
-                                        <UnsupportedMainnetFallback />
-                                    }
-                                >
-                                    <TransactionProvider>
-                                        <SfStablecoinFrontend loader={loader} />
-                                    </TransactionProvider>
-                                </SfStablecoinProvider>
-                            </WalletConnector>
+                            <Router>
+                                <WalletConnector>
+                                    <SfStablecoinProvider
+                                        loader={loader}
+                                        unsupportedNetworkFallback={
+                                            <UnsupportedNetworkFallback />
+                                        }
+                                        unsupportedMainnetFallback={
+                                            <UnsupportedMainnetFallback />
+                                        }
+                                    >
+                                        <TransactionProvider>
+                                            <SfStablecoinFrontend
+                                                loader={loader}
+                                            />
+                                        </TransactionProvider>
+                                    </SfStablecoinProvider>
+                                </WalletConnector>
+                            </Router>
                         </WagmiProvider>
                         <ReactQueryDevtools initialIsOpen={false} />
                     </QueryClientProvider>

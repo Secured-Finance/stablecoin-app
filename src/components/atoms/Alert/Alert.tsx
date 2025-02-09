@@ -8,7 +8,7 @@ const BORDER_STYLES: Record<AlertColors, string> = {
     ['warning']: 'border-warning-300 bg-warning-500/10',
     ['info']: 'border-primary-300 bg-primary-500/10',
 };
-const ICON_STYLES = {
+const ICON_STYLES: Record<AlertColors, string> = {
     ['error']: 'fill-error-700 text-error-700',
     ['warning']: 'fill-warning-700 text-warning-700',
     ['info']: 'fill-primary-700 text-primary-700',

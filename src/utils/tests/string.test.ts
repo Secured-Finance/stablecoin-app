@@ -2,12 +2,15 @@ import {
     Environment,
     fromBytes32,
     getEnvShort,
+    getFixedIncomeMarketLink,
     prefixTilde,
     toBytes32,
 } from 'src/utils';
 
 describe('getEnvShort', () => {
     it('should return the correct environment in short', () => {
+        jest.spyOn(console, 'warn').mockImplementation();
+
         process.env.SF_ENV = Environment.DEVELOPMENT;
         expect(getEnvShort()).toEqual('dev');
         process.env.SF_ENV = Environment.STAGING;
@@ -15,7 +18,30 @@ describe('getEnvShort', () => {
         process.env.SF_ENV = Environment.PRODUCTION;
         expect(getEnvShort()).toEqual('prod');
         process.env.SF_ENV = 'random';
-        expect(getEnvShort()).toEqual('');
+        expect(getEnvShort()).toEqual('dev');
+    });
+});
+
+describe('getFixedIncomeMarketLink', () => {
+    it('should return the correct fixed income market link', () => {
+        jest.spyOn(console, 'warn').mockImplementation();
+
+        process.env.SF_ENV = Environment.DEVELOPMENT;
+        expect(getFixedIncomeMarketLink()).toEqual(
+            'https://dev.secured.finance/'
+        );
+        process.env.SF_ENV = Environment.STAGING;
+        expect(getFixedIncomeMarketLink()).toEqual(
+            'https://stg.secured.finance/'
+        );
+        process.env.SF_ENV = Environment.PRODUCTION;
+        expect(getFixedIncomeMarketLink()).toEqual(
+            'https://app.secured.finance/'
+        );
+        process.env.SF_ENV = 'random';
+        expect(getFixedIncomeMarketLink()).toEqual(
+            'https://dev.secured.finance/'
+        );
     });
 });
 
