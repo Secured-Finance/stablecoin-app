@@ -14,7 +14,8 @@ export const FIXED_INCOME_MARKET_LINKS = {
 };
 
 export type EnvShort = 'dev' | 'stg' | 'prod';
-export const ENV_SHORTS: Record<string, EnvShort> = {
+
+export const ENV_SHORTS: Record<Environment, EnvShort> = {
     [Environment.DEVELOPMENT]: 'dev',
     [Environment.STAGING]: 'stg',
     [Environment.PRODUCTION]: 'prod',
