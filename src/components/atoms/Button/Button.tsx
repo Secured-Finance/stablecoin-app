@@ -43,7 +43,7 @@ export const Button = ({
             {...tagProps}
             aria-label={label}
             className={clsx(
-                'flex items-center justify-center rounded-md border',
+                'flex items-center justify-center border',
                 props?.className,
                 sizeStyle[size],
                 variantStyle[variant],

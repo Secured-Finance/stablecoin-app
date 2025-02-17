@@ -5,6 +5,7 @@ import { SystemStats } from 'src/components/SystemStats';
 import { Trove } from 'src/components/Trove/Trove';
 import { Alert } from 'src/components/atoms';
 import { COIN } from 'src/strings';
+import { getFixedIncomeMarketLink } from 'src/utils';
 
 export const Dashboard: React.FC = () => (
     <section className='w-full'>
@@ -13,10 +14,10 @@ export const Dashboard: React.FC = () => (
                 Use {COIN} to earn stable yield in the{' '}
                 <Link
                     className='font-semibold text-primary-500'
-                    href='https://app.secured.finance/'
+                    href={getFixedIncomeMarketLink()}
                     target='_blank'
                     rel='noopener noreferrer'
-                    aria-label='Secured Finance Docs'
+                    aria-label='Fixed Income'
                 >
                     Fixed Income market
                 </Link>
