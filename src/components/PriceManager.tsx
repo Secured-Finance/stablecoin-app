@@ -8,6 +8,7 @@ import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { CardComponent } from 'src/components/templates';
 import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { getSetPriceEnabled } from 'src/utils';
 import { Transaction } from './Transaction';
 
@@ -37,7 +38,7 @@ export const PriceManager: React.FC = () => {
                     {canSetPrice ? (
                         <>
                             <div className='typography-desktop-body-5'>
-                                tFIL
+                                {CURRENCY}
                             </div>
                             <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
                                 <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
@@ -56,7 +57,7 @@ export const PriceManager: React.FC = () => {
                         </>
                     ) : (
                         <span className='typography-desktop-body-4 flex h-full flex-1 items-center bg-neutral-50 text-neutral-900'>
-                            {`1 tFIL = ${editedPrice} USD`}
+                            {`1 ${CURRENCY} = ${editedPrice} USD`}
                         </span>
                     )}
                     {canSetPrice && (

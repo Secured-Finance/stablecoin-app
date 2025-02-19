@@ -7,7 +7,7 @@ import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { COIN } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
     getFixedIncomeMarketLink,
@@ -63,7 +63,7 @@ export const UserAccount: React.FC = () => {
                 {(
                     [
                         [
-                            'tFIL',
+                            CURRENCY,
                             ordinaryFormat(
                                 Number(accountBalance.toString()),
                                 0,

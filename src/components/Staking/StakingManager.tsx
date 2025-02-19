@@ -14,7 +14,7 @@ import {
 } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Button, Flex } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
 import { useStakingView } from './context/StakingViewContext';
 import { StakingEditor } from './StakingEditor';
@@ -92,7 +92,7 @@ const StakingManagerActionDescription: React.FC<
         .concat(' ', GT);
     const collateralGain = originalStake.collateralGain.nonZero
         ?.prettify(COLLATERAL_PRECISION)
-        .concat(' tFIL');
+        .concat(' ', CURRENCY);
     const debtTokenGain = originalStake.debtTokenGain.nonZero
         ?.prettify()
         .concat(' ', COIN);

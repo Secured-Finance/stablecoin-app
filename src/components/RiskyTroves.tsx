@@ -20,7 +20,7 @@ import {
     COLLATERAL_PRECISION,
     DEBT_TOKEN_PRECISION,
 } from 'src/utils';
-import { COIN } from '../strings';
+import { COIN, CURRENCY } from '../strings';
 import { Abbreviation } from './Abbreviation';
 import { LoadingOverlay } from './LoadingOverlay';
 import { Transaction } from './Transaction';
@@ -250,7 +250,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         Collateral
                                     </span>
                                     <span className='text-xs font-normal leading-4 text-neutral-500'>
-                                        tFIL
+                                        {CURRENCY}
                                     </span>
                                 </th>
                                 <th className={colClassName}>

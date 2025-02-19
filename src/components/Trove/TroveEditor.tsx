@@ -10,7 +10,7 @@ import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Card } from 'theme-ui';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { AmountChange, StaticRow } from './Editor';
@@ -51,7 +51,7 @@ export const TroveEditor: React.FC<TroveEditorProps> = ({
                             to={edited.collateral.prettify(
                                 COLLATERAL_PRECISION
                             )}
-                            unit='tFIL'
+                            unit={CURRENCY}
                         />
                     </StaticRow>
 

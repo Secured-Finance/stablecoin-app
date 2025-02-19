@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Card, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
@@ -131,7 +131,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                                 originalStake.collateralGain.nonZero &&
                                 'text-success-700'
                             }
-                            unit='tFIL'
+                            unit={CURRENCY}
                         />
 
                         <StaticRow
