@@ -7,7 +7,7 @@ import { Redemption } from 'src/components/Redemption/Redemption';
 import { SystemStats } from 'src/components/SystemStats';
 import { CardComponent } from 'src/components/templates';
 import { DOCUMENTATION_LINKS } from 'src/constants';
-import { COIN } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
 
 export const RedemptionPage: React.FC = () => (
     <section className='w-full'>
@@ -22,7 +22,8 @@ export const RedemptionPage: React.FC = () => (
                             </p>
                             <p>
                                 Most of the time you will get a better rate for
-                                converting {COIN} to tFIL on other exchanges.
+                                converting {COIN} to {CURRENCY} on other
+                                exchanges.
                             </p>
                         </div>
                         <Alert color='warning'>
@@ -37,7 +38,7 @@ export const RedemptionPage: React.FC = () => (
                                 href={DOCUMENTATION_LINKS.redemption}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                aria-label='USDFC Redemption'
+                                aria-label={`${COIN} Redemption`}
                             >
                                 Secured Finance Docs
                             </Link>

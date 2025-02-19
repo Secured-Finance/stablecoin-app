@@ -2,7 +2,7 @@ import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
 import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
@@ -56,7 +56,7 @@ export const ReadOnlyStake: React.FC = () => {
                         protocolTokenStake.collateralGain.nonZero &&
                         'text-success-700'
                     }
-                    unit='tFIL'
+                    unit={CURRENCY}
                 />
 
                 <StaticRow

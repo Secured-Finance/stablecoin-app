@@ -1,3 +1,5 @@
+import { COIN, CURRENCY } from './strings';
+
 export type Lexicon = {
     term: string;
     description?: string;
@@ -6,14 +8,12 @@ export type Lexicon = {
 
 export const BORROW_FEE: Lexicon = {
     term: 'Borrowing Fee',
-    description:
-        "The Borrowing Fee is a one-off fee charged as a percentage of the borrowed amount (in USDFC) and is part of a Trove's debt. The fee varies between 0.5% and 5% depending on USDFC redemption volumes.",
+    description: `The Borrowing Fee is a one-off fee charged as a percentage of the borrowed amount (in ${COIN}) and is part of a Trove's debt. The fee varies between 0.5% and 5% depending on ${COIN} redemption volumes.`,
 };
 
 export const TVL: Lexicon = {
     term: 'TVL',
-    description:
-        'The Total Value Locked (TVL) is the total value of Filecoin locked as collateral in the system, given in tFIL and USD.',
+    description: `The Total Value Locked (TVL) is the total value of Filecoin locked as collateral in the system, given in ${CURRENCY} and USD.`,
 };
 
 export const STAKED_PROTOCOL_TOKEN: Lexicon = {
@@ -24,8 +24,7 @@ export const STAKED_PROTOCOL_TOKEN: Lexicon = {
 
 export const TCR: Lexicon = {
     term: 'Total Collateral Ratio',
-    description:
-        'The ratio of the Dollar value of the entire system collateral at the current tFIL:USD price, to the entire system debt.',
+    description: `The ratio of the Dollar value of the entire system collateral at the current ${CURRENCY}:USD price, to the entire system debt.`,
 };
 
 export const RECOVERY_MODE: Lexicon = {
@@ -35,9 +34,8 @@ export const RECOVERY_MODE: Lexicon = {
 };
 
 export const STABILITY_POOL_DEBT_TOKEN: Lexicon = {
-    term: 'USDFC in Stability Pool',
-    description:
-        'The total USDFC currently held in the Stability Pool, expressed as an amount and a fraction of the USDFC supply.',
+    term: `${COIN} in Stability Pool`,
+    description: `The total ${COIN} currently held in the Stability Pool, expressed as an amount and a fraction of the ${COIN} supply.`,
 };
 
 export const KICKBACK_RATE: Lexicon = {
@@ -46,12 +44,12 @@ export const KICKBACK_RATE: Lexicon = {
         'A rate between 0 and 100% set by the Frontend Operator that determines the fraction of SCR that will be paid out as a kickback to the Stability Providers using the frontend.',
 };
 
-export const tFIL: Lexicon = {
-    term: 'tFIL',
+export const FIL: Lexicon = {
+    term: CURRENCY,
 };
 
 export const DEBT_TOKEN: Lexicon = {
-    term: 'USDFC',
+    term: COIN,
 };
 
 export const PROTOCOL_TOKEN: Lexicon = {
@@ -64,6 +62,6 @@ export const TROVES: Lexicon = {
 };
 
 export const DEBT_TOKEN_SUPPLY: Lexicon = {
-    term: 'USDFC supply',
-    description: 'The total USDFC minted by this protocol.',
+    term: `${COIN} supply`,
+    description: `The total ${COIN} minted by this protocol.`,
 };

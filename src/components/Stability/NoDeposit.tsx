@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
+import { COIN, CURRENCY } from 'src/strings';
 import { useStabilityView } from './context/StabilityViewContext';
 
 export const NoDeposit: React.FC = () => {
@@ -39,11 +40,11 @@ export const NoDeposit: React.FC = () => {
                 <div className='flex items-center gap-1'>
                     <InfoIcon className='h-4 w-4' />
                     <h3 className='laptop:typography-desktop-body-3 typography-desktop-body-4 font-semibold'>
-                        You have no USDFC in the Stability Pool.
+                        You have no {COIN} in the Stability Pool.
                     </h3>
                 </div>
                 <p className='typography-desktop-body-4'>
-                    You can earn tFIL rewards by depositing USDFC.
+                    You can earn {CURRENCY} rewards by depositing {COIN}.
                 </p>
             </div>
         </CardComponent>

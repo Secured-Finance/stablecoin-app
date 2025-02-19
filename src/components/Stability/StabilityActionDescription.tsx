@@ -5,7 +5,7 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
 
 type StabilityActionDescriptionProps = {
@@ -18,7 +18,7 @@ export const StabilityActionDescription: React.FC<
 > = ({ originalDeposit, change }) => {
     const collateralGain = originalDeposit.collateralGain.nonZero
         ?.prettify(COLLATERAL_PRECISION)
-        .concat(' tFIL');
+        .concat(' ', CURRENCY);
     // const protocolTokenReward = originalDeposit.protocolTokenReward.nonZero
     //     ?.prettify()
     //     .concat(' ', GT);

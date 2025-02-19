@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
@@ -134,7 +134,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                     originalDeposit.collateralGain.nonZero &&
                                     'text-success-700'
                                 }
-                                unit='tFIL'
+                                unit={CURRENCY}
                             />
 
                             {/* <StaticRow

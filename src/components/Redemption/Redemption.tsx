@@ -8,7 +8,7 @@ import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Card, Spinner } from 'theme-ui';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
@@ -123,7 +123,7 @@ export const Redemption: React.FC = ({}) => {
                         inputId='redemption-fee'
                         amount={fee.prettify(2)}
                         pendingAmount={feePct.toString(2)}
-                        unit='tFIL'
+                        unit={CURRENCY}
                         infoIcon={
                             <InfoIcon
                                 message={
@@ -132,8 +132,8 @@ export const Redemption: React.FC = ({}) => {
                                         sx={{ width: '240px' }}
                                     >
                                         The Redemption Fee is charged as a
-                                        percentage of the redeemed tFIL. The
-                                        Redemption Fee depends on {COIN}{' '}
+                                        percentage of the redeemed {CURRENCY}.
+                                        The Redemption Fee depends on {COIN}{' '}
                                         redemption volumes and is 0.5% at
                                         minimum.
                                     </Card>

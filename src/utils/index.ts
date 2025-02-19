@@ -1,5 +1,4 @@
 export * from './address';
-export * from './currencyList';
 export * from './env';
 export * from './equals';
 export * from './formatNumbers';

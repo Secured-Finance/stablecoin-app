@@ -15,7 +15,7 @@ import { DOCUMENTATION_LINKS } from 'src/constants';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card, Spinner } from 'theme-ui';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { Icon } from '../Icon';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -178,7 +178,7 @@ export const Opening: React.FC = () => {
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
-                    unit='tFIL'
+                    unit={CURRENCY}
                     editedAmount={collateral.toString(COLLATERAL_PRECISION)}
                     setEditedAmount={setCollateralAmount}
                 />
@@ -255,21 +255,14 @@ export const Opening: React.FC = () => {
                                         variant='tooltip'
                                         sx={{ width: '240px' }}
                                     >
-                                        The total amount of USDFC your Trove
-                                        will hold.{' '}
+                                        {`The total amount of ${COIN} your Trove will hold.`}
                                         {isDirty && (
                                             <>
-                                                You will need to repay{' '}
-                                                {totalDebt
+                                                {` You will need to repay ${totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )}{' '}
-                                                USDFC to reclaim your collateral
-                                                (
-                                                {LIQUIDATION_RESERVE.toString()}{' '}
-                                                USDFC Liquidation Reserve
-                                                excluded).
+                                                    )} ${COIN} to reclaim your collateral ${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.`}
                                             </>
                                         )}
                                     </Card>
@@ -299,8 +292,8 @@ export const Opening: React.FC = () => {
 
                 {description ?? (
                     <Alert color='info'>
-                        Start by entering the amount of tFIL you would like to
-                        deposit as collateral.
+                        Start by entering the amount of {CURRENCY} you would
+                        like to deposit as collateral.
                     </Alert>
                 )}
 

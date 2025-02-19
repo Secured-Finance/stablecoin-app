@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { ActionDescription, Amount } from 'src/components/ActionDescription';
 import { Alert } from 'src/components/atoms';
 import { DOCUMENTATION_LINKS } from 'src/constants';
-import { COIN } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
 
 export const selectForRedemptionChangeValidation = ({
     debtTokenBalance,
@@ -33,7 +33,10 @@ export const validateRedemptionChange = (
             false,
             <Alert color='error' key={0}>
                 The amount you&apos;re trying to redeem exceeds your balance by{' '}
-                {debtToken.sub(debtTokenBalance).prettify(2)} {COIN}.
+                <Amount>{`${debtToken
+                    .sub(debtTokenBalance)
+                    .prettify(2)} ${COIN}`}</Amount>
+                .
             </Alert>,
         ];
     }
@@ -47,11 +50,11 @@ export const validateRedemptionChange = (
                         Under current redemption limits, the minimum redemption
                         is{' '}
                         <Amount>
-                            {MINIMUM_NET_DEBT.prettify(0)} {COIN}
+                            {`${MINIMUM_NET_DEBT.prettify(0)} ${COIN}`}
                         </Amount>
                         . Please enter{' '}
                         <Amount>
-                            {MINIMUM_NET_DEBT.prettify(0)} {COIN}
+                            {`${MINIMUM_NET_DEBT.prettify(0)} ${COIN}`}
                         </Amount>{' '}
                         or more. Learn more about redemption limits at the{' '}
                         <Link
@@ -59,7 +62,7 @@ export const validateRedemptionChange = (
                             href={DOCUMENTATION_LINKS.redemption}
                             target='_blank'
                             rel='noopener noreferrer'
-                            aria-label='USDFC Redemption'
+                            aria-label={`${COIN} Redemption`}
                         >
                             Secured Finance Docs
                         </Link>
@@ -73,17 +76,16 @@ export const validateRedemptionChange = (
                         <Alert color='warning' key={0}>
                             Your redemption amount was adjusted to{' '}
                             <Amount>
-                                {estimatedDebtToken.prettify(2)} {COIN}
+                                {`${estimatedDebtToken.prettify(2)} ${COIN}`}
                             </Amount>
                             . Under current redemption limits, amounts between{' '}
                             <Amount>{estimatedDebtToken.prettify(2)} </Amount>
                             and{' '}
                             <Amount>
-                                {estimatedDebtToken
+                                {`${estimatedDebtToken
                                     .add(MINIMUM_NET_DEBT)
-                                    .prettify(2)}{' '}
-                                {COIN}{' '}
-                            </Amount>
+                                    .prettify(2)} ${COIN}`}
+                            </Amount>{' '}
                             are not allowed. Learn more about redemption limits
                             at the{' '}
                             <Link
@@ -91,7 +93,7 @@ export const validateRedemptionChange = (
                                 href={DOCUMENTATION_LINKS.redemption}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                aria-label='USDFC Redemption'
+                                aria-label={`${COIN} Redemption`}
                             >
                                 Secured Finance Docs
                             </Link>
@@ -104,11 +106,10 @@ export const validateRedemptionChange = (
                             </Amount>{' '}
                             and receive{' '}
                             <Amount>
-                                {estimatedDebtToken
+                                {`${estimatedDebtToken
                                     .div(price)
                                     .sub(fee)
-                                    .prettify()}{' '}
-                                tFIL
+                                    .prettify()} ${CURRENCY}`}
                             </Amount>{' '}
                             in return.
                         </ActionDescription>
@@ -128,7 +129,10 @@ export const validateRedemptionChange = (
                         </Amount>{' '}
                         and receive{' '}
                         <Amount>
-                            {debtToken.div(price).sub(fee).prettify()} tFIL
+                            {`${debtToken
+                                .div(price)
+                                .sub(fee)
+                                .prettify()} ${CURRENCY}`}
                         </Amount>{' '}
                         in return.
                     </>

@@ -11,6 +11,7 @@ import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
     COLLATERAL_PRECISION,
@@ -41,7 +42,7 @@ const Balances = () => {
                     My Account Balances
                 </span>
             </div>
-            <Statistic lexicon={l.tFIL}>
+            <Statistic lexicon={l.FIL}>
                 {accountBalance.prettify(COLLATERAL_PRECISION)}
             </Statistic>
             <Statistic lexicon={l.DEBT_TOKEN}>
@@ -160,7 +161,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
 
                     <Statistic lexicon={l.TVL}>
                         {total.collateral.shorten()}
-                        <span>&nbsp;tFIL</span>
+                        <span>&nbsp;{CURRENCY}</span>
                         <span>
                             &nbsp;($
                             {Decimal.from(
@@ -205,7 +206,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         <GitHubCommit>{contractsVersion}</GitHubCommit>
                     </div>
                     <div>
-                        <span>USDFC contract:</span>
+                        <span>{COIN} contract:</span>
                         <span className='relative ml-1 font-semibold text-primary-500'>
                             <Link
                                 href={`${
@@ -215,7 +216,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                                 }/en/address/${addresses.debtToken}`}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                aria-label='USDFC contract'
+                                aria-label={`${COIN} contract`}
                             >
                                 {AddressUtils.format(addresses.debtToken, 8)}
                             </Link>
