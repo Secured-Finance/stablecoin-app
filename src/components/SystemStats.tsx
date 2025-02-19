@@ -16,6 +16,7 @@ import {
     AddressUtils,
     COLLATERAL_PRECISION,
     DEBT_TOKEN_PRECISION,
+    isProdEnv,
 } from 'src/utils';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
@@ -241,9 +242,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     <div>
                         <span>Frontend version:</span>
                         <span className='ml-1 font-semibold'>
-                            {/* {!isProdEnv() ? 'development' : packageJson.version} */}
-                            {/* TODO: FIX before production launch */}
-                            {packageJson.version}
+                            {isProdEnv() ? packageJson.version : 'development'}
                         </span>
                     </div>
                 </div>
