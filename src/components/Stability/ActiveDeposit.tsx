@@ -68,7 +68,7 @@ export const ActiveDeposit: React.FC = () => {
             actionComponent={
                 <>
                     <Button
-                        variant={ButtonVariants.tertiary}
+                        variant={ButtonVariants.secondary}
                         onClick={handleAdjustDeposit}
                     >
                         <Icon name='pen' size='sm' />
