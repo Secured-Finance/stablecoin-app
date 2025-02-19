@@ -166,9 +166,11 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
         'w-1/4 text-3.5 leading-4.5 laptop:text-xs laptop:leading-3.5 laptop:w-[21%] h-full table-cell align-middle';
 
     return (
-        <div className='relative flex flex-col rounded-b-xl bg-neutral-50 text-neutral-900 shadow-card'>
-            <div className='flex h-10 items-center justify-between border-t-2 border-primary-500 bg-neutral-200 px-3.5 py-2 text-3.5 font-semibold leading-5.5 tablet:border-t-4 laptop:h-[42px] laptop:px-3.5 laptop:text-base'>
-                <h2>Risky Troves</h2>
+        <div className='relative flex flex-col rounded-lg bg-neutral-50 text-neutral-900 shadow-card'>
+            <div className='flex items-center justify-between border-b border-neutral-300 px-3 py-3 laptop:px-4 laptop:pt-4'>
+                <h2 className='typography-mobile-body-1 font-light text-neutral-800'>
+                    Risky Troves
+                </h2>
                 <div className='flex items-center gap-1'>
                     {numberOfTroves !== 0 && (
                         <>
@@ -200,7 +202,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                     )}
 
                     <button
-                        className={clsx({
+                        className={clsx('px-[5px]', {
                             'opacity-0': loading,
                         })}
                         onClick={forceReload}
@@ -280,13 +282,13 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                         // (WONT-FIX: remove check after we can fetch multiple Troves in one call)
                                         <tr
                                             key={trove.ownerAddress}
-                                            className='typography-mobile-body-4 laptop:typography-desktop-body-5 h-[30px] laptop:h-8'
+                                            className='typography-mobile-body-4 h-[30px] laptop:h-8'
                                         >
                                             <td>
                                                 <div className='flex items-center gap-1 laptop:justify-center'>
                                                     <Tooltip
                                                         iconElement={
-                                                            <span className='min-w-[100px] font-numerical font-medium'>
+                                                            <span className='min-w-[100px] font-numerical'>
                                                                 {AddressUtils.format(
                                                                     trove.ownerAddress,
                                                                     6
@@ -307,9 +309,9 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                     >
                                                         {copied ===
                                                         trove.ownerAddress ? (
-                                                            <CheckIcon className='text-success-700' />
+                                                            <CheckIcon className='h-5 w-5 text-success-700' />
                                                         ) : (
-                                                            <Clipboard />
+                                                            <Clipboard className='h-5 w-5 text-primary-500' />
                                                         )}
                                                     </button>
                                                 </div>
@@ -380,7 +382,7 @@ export const RiskyTroves: React.FC<RiskyTrovesProps> = ({ pageSize }) => {
                                                         )}
                                                     >
                                                         <button className='text-error-500 disabled:text-neutral-400'>
-                                                            <TrashIcon className='h-4 w-4' />
+                                                            <TrashIcon className='h-5 w-5' />
                                                         </button>
                                                     </Transaction>
                                                 </div>

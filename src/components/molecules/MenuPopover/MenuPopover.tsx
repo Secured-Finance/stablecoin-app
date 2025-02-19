@@ -7,7 +7,7 @@ import { LinkList } from 'src/utils';
 
 export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     return (
-        <div className='flex items-center justify-center px-4'>
+        <div className='flex w-[120px] items-center justify-center'>
             <Popover className='relative'>
                 {({ close, open }) => (
                     <>
@@ -18,9 +18,12 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                         >
                             <span>More</span>
                             <ChevronDown
-                                className={clsx('h-4 w-4 text-neutral-600', {
-                                    'rotate-180': open,
-                                })}
+                                className={clsx(
+                                    'h-4 w-4 text-neutral-600 transition',
+                                    {
+                                        'rotate-180': open,
+                                    }
+                                )}
                             />
                         </Popover.Button>
                         <Transition
@@ -33,7 +36,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                             leaveTo='opacity-0 translate-y-5'
                         >
                             <Popover.Panel
-                                className='absolute -left-4 z-10 mt-5 w-[200px]'
+                                className='absolute -left-4 z-10 mt-5 w-[200px] shadow-card'
                                 role='menu'
                             >
                                 <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>

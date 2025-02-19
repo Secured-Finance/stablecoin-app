@@ -72,9 +72,12 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                     {edited && !changePending && (
                         <button
                             onClick={() => dispatch({ type: 'revert' })}
-                            className='hover:enabled:text-error-700'
+                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
                         >
-                            <Icon name='history' size='lg' />
+                            <span className='typography-mobile-body-4 pr-1 font-semibold'>
+                                Reset
+                            </span>
+                            <Icon name='history' size='sm' />
                         </button>
                     )}
                 </>

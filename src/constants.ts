@@ -21,3 +21,18 @@ export const DOCUMENTATION_LINKS = {
     redemption: `${DOCUMENTATION_LINK}/key-features/redemption`,
     recoveryMode: `${DOCUMENTATION_LINK}/key-features/recovery-mode`,
 };
+
+export const BLOCKCHAIN_EXPLORER_LINKS = {
+    mainnet: 'https://filfox.info',
+    testnet: 'https://calibration.filfox.info',
+};
+
+export const PYTH_ORACLE_LINK =
+    'https://www.pyth.network/price-feeds/crypto-fil-usd';
+
+export const TELLOR_ORACLE_LINKS = {
+    mainnet:
+        'https://filfox.info/en/address/0x8cFc184c877154a8F9ffE0fe75649dbe5e2DBEbf?t=3',
+    testnet:
+        'https://calibration.filfox.info/en/address/0xb2CB696fE5244fB9004877e58dcB680cB86Ba444?t=3',
+};

@@ -25,18 +25,19 @@ module.exports = {
             },
             transitionProperty: {
                 width: 'width',
+                height: 'height',
             },
             colors: {
                 primary: {
-                    '50': '#F5F6FF',
-                    '300': '#B9BDEA',
-                    '500': '#5162FF',
-                    '700': '#3555AC',
+                    '50': '#E5F4FF',
+                    '300': '#66BDFF',
+                    '500': '#0091FF',
+                    '700': '#005799',
                 },
                 secondary: {
-                    '300': '#96EAF1',
-                    '500': '#15D6E8',
-                    '700': '#09A8B7',
+                    '300': '#FFD35A',
+                    '500': '#EACC00',
+                    '700': '#8D6700',
                 },
                 tertiary: {
                     '300': '#EDCBFF',
@@ -154,4 +155,10 @@ module.exports = {
             xs: '12px',
         },
     },
+    safelist: [
+        'fade-enter',
+        'fade-enter-active',
+        'fade-exit',
+        'fade-exit-active',
+    ],
 };

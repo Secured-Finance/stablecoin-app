@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { Box, Button, Card, Heading } from 'theme-ui';
+import { Box, Card, Heading } from 'theme-ui';
 import { COIN, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -71,13 +71,15 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
             <Heading>
                 {title}
                 {edited && !changePending && (
-                    <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
+                    <button
                         onClick={() => dispatch({ type: 'revert' })}
+                        className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
                     >
-                        <Icon name='history' size='lg' />
-                    </Button>
+                        <span className='typography-mobile-body-4 pr-1 font-semibold'>
+                            Reset
+                        </span>
+                        <Icon name='history' size='sm' />
+                    </button>
                 )}
             </Heading>
 

@@ -11,6 +11,7 @@ type RowProps = SxProp &
         labelId?: string;
         labelFor?: string;
         infoIcon?: React.ReactNode;
+        showBorder?: boolean;
     }>;
 
 export const Row: React.FC<RowProps> = ({
@@ -19,9 +20,15 @@ export const Row: React.FC<RowProps> = ({
     labelFor,
     children,
     infoIcon,
+    showBorder,
 }) => {
     return (
-        <div className='flex flex-col gap-0.5 rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2'>
+        <div
+            className={clsx(
+                'flex flex-col rounded-md bg-neutral-50 px-3',
+                showBorder ? 'border border-neutral-300 py-2' : ''
+            )}
+        >
             <label
                 id={labelId}
                 htmlFor={labelFor}
@@ -91,7 +98,7 @@ export const StaticAmounts: React.FC<StaticAmountsProps & SxProp> = ({
             onClick={onClick}
             className={clsx(
                 'flex items-center justify-between',
-                onClick ? 'cursor-text' : ''
+                onClick ? 'cursor-text' : 'cursor-default'
             )}
         >
             {amount && (
@@ -239,7 +246,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
-        <Row {...{ label, labelFor: inputId, unit }}>
+        <Row showBorder {...{ label, labelFor: inputId, unit }}>
             <Input
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
@@ -264,7 +271,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
             />
         </Row>
     ) : (
-        <Row labelId={`${inputId}-label`} {...{ label, unit }}>
+        <Row showBorder labelId={`${inputId}-label`} {...{ label, unit }}>
             <StaticAmounts
                 labelledBy={`${inputId}-label`}
                 onClick={() => setEditing(inputId)}

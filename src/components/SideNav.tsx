@@ -92,9 +92,12 @@ export const SideNav: React.FC = () => {
                     >
                         More
                         <ArrowDownSimple
-                            className={clsx('h-6 w-6 text-neutral-600', {
-                                'rotate-180': showMore,
-                            })}
+                            className={clsx(
+                                'h-6 w-6 text-neutral-600 transition',
+                                {
+                                    'rotate-180': showMore,
+                                }
+                            )}
                         />
                     </button>
                     {showMore && (
