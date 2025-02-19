@@ -8,10 +8,10 @@ import {
 import React, { useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { Box, Button, Card, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
+import { CardComponent } from '../templates';
 import { EditableRow, StaticRow } from '../Trove/Editor';
 import { useStakingView } from './context/StakingViewContext';
 
@@ -67,21 +67,25 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
         Difference.between(newPoolShare, originalPoolShare).nonZero;
 
     return (
-        <Card>
-            <Heading>
-                {title}
-                {edited && !changePending && (
-                    <Button
-                        variant='titleIcon'
-                        sx={{ ':enabled:hover': { color: 'danger' } }}
-                        onClick={() => dispatch({ type: 'revert' })}
-                    >
-                        <Icon name='history' size='lg' />
-                    </Button>
-                )}
-            </Heading>
-
-            <Box sx={{ p: [2, 3] }}>
+        <CardComponent
+            title={
+                <>
+                    {title}
+                    {edited && !changePending && (
+                        <button
+                            onClick={() => dispatch({ type: 'revert' })}
+                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
+                        >
+                            <span className='typography-mobile-body-4 pr-1 font-semibold'>
+                                Reset
+                            </span>
+                            <Icon name='history' size='sm' />
+                        </button>
+                    )}
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
                 <EditableRow
                     label='Stake'
                     inputId='stake-scr'
@@ -129,7 +133,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                                 originalStake.collateralGain.nonZero &&
                                 'text-success-700'
                             }
-                            unit='tFIL'
+                            unit={CURRENCY}
                         />
 
                         <StaticRow
@@ -146,9 +150,9 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
                 )}
 
                 {children}
-            </Box>
+            </div>
 
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

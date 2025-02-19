@@ -4,7 +4,7 @@ import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState } from '../Transaction';
@@ -68,14 +68,16 @@ export const ActiveDeposit: React.FC = () => {
             actionComponent={
                 <>
                     <Button
-                        variant={ButtonVariants.tertiary}
+                        variant={ButtonVariants.secondary}
                         onClick={handleAdjustDeposit}
                     >
                         <Icon name='pen' size='sm' />
                         &nbsp;Adjust
                     </Button>
 
-                    <ClaimRewards disabled={!hasGain}>Claim tFIL</ClaimRewards>
+                    <ClaimRewards disabled={!hasGain}>
+                        Claim {CURRENCY}
+                    </ClaimRewards>
                 </>
             }
         >
@@ -105,7 +107,7 @@ export const ActiveDeposit: React.FC = () => {
                             stabilityDeposit.collateralGain.nonZero &&
                             'text-success-700'
                         }
-                        unit='tFIL'
+                        unit={CURRENCY}
                     />
                 </div>
                 {/* <Flex sx={{ alignItems: 'center' }}>
@@ -145,7 +147,7 @@ export const ActiveDeposit: React.FC = () => {
                     </Flex> */}
                 {hasTrove && (
                     <ClaimAndMove disabled={!hasGain}>
-                        Move tFIL to Trove
+                        Move {CURRENCY} to Trove
                     </ClaimAndMove>
                 )}
             </div>

@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COIN } from 'src/strings';
 import { CollateralSurplusAction } from '../CollateralSurplusAction';
 import { InfoMessage } from '../InfoMessage';
 import { useTroveView } from './context/TroveViewContext';
@@ -34,7 +35,7 @@ export const LiquidatedTrove: React.FC = () => {
             <InfoMessage title='Your Trove has been liquidated.'>
                 {hasSurplusCollateral
                     ? 'Please reclaim your remaining collateral before opening a new Trove.'
-                    : 'You can borrow USDFC by opening a Trove.'}
+                    : `You can borrow ${COIN} by opening a Trove.`}
             </InfoMessage>
         </CardComponent>
     );

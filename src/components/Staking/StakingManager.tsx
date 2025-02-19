@@ -6,15 +6,14 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
-import { Alert } from 'src/components/atoms';
+import { Alert, Button, ButtonVariants } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { Button, Flex } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { ActionDescription, Amount } from '../ActionDescription';
 import { useStakingView } from './context/StakingViewContext';
 import { StakingEditor } from './StakingEditor';
@@ -92,7 +91,7 @@ const StakingManagerActionDescription: React.FC<
         .concat(' ', GT);
     const collateralGain = originalStake.collateralGain.nonZero
         ?.prettify(COLLATERAL_PRECISION)
-        .concat(' tFIL');
+        .concat(' ', CURRENCY);
     const debtTokenGain = originalStake.debtTokenGain.nonZero
         ?.prettify()
         .concat(' ', COIN);
@@ -192,9 +191,9 @@ export const StakingManager: React.FC = () => {
                     </Alert>
                 ))}
 
-            <Flex variant='layout.actions'>
+            <div className='flex justify-end gap-2'>
                 <Button
-                    variant='cancel'
+                    variant={ButtonVariants.tertiary}
                     onClick={() =>
                         dispatchStakingViewAction({ type: 'cancelAdjusting' })
                     }
@@ -209,7 +208,7 @@ export const StakingManager: React.FC = () => {
                 ) : (
                     <Button disabled>Confirm</Button>
                 )}
-            </Flex>
+            </div>
         </StakingEditor>
     );
 };

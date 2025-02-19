@@ -13,7 +13,7 @@ import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Card } from 'theme-ui';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
-import { COIN } from '../../strings';
+import { COIN, CURRENCY } from '../../strings';
 import { Icon } from '../Icon';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -211,9 +211,12 @@ export const Adjusting: React.FC = () => {
                     {isDirty && !isTransactionPending && (
                         <button
                             onClick={reset}
-                            className='hover:enabled:text-error-700'
+                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
                         >
-                            <Icon name='history' size='lg' />
+                            <span className='typography-mobile-body-4 pr-1 font-semibold'>
+                                Reset
+                            </span>
+                            <Icon name='history' size='sm' />
                         </button>
                     )}
                 </>
@@ -250,7 +253,7 @@ export const Adjusting: React.FC = () => {
                     maxAmount={maxCollateral.toString()}
                     maxedOut={collateralMaxedOut}
                     editingState={editingState}
-                    unit='tFIL'
+                    unit={CURRENCY}
                     editedAmount={collateral.toString(COLLATERAL_PRECISION)}
                     setEditedAmount={(amount: string) =>
                         setCollateral(Decimal.from(amount))
@@ -329,21 +332,14 @@ export const Adjusting: React.FC = () => {
                                         variant='tooltip'
                                         sx={{ width: '240px' }}
                                     >
-                                        The total amount of USDFC your Trove
-                                        will hold.{' '}
+                                        {`The total amount of ${COIN} your Trove will hold.`}
                                         {isDirty && (
                                             <>
-                                                You will need to repay{' '}
-                                                {totalDebt
+                                                {` You will need to repay ${totalDebt
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )}{' '}
-                                                USDFC to reclaim your collateral
-                                                (
-                                                {LIQUIDATION_RESERVE.toString()}{' '}
-                                                USDFC Liquidation Reserve
-                                                excluded).
+                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.)`}
                                             </>
                                         )}
                                     </Card>

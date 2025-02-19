@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import SFLogo from 'src/assets/img/logo-light.svg';
-import SFLogoSmall from 'src/assets/img/small-logo.svg';
+import USDFCLogoSmall from 'src/assets/img/usdfc-logo-small.svg';
+import USDFCLogo from 'src/assets/img/usdfc-logo.svg';
 
 export const SecuredFinanceLogo = () => (
     <NavLink to='/'>
-        <SFLogo className='hidden h-4 w-40 desktop:flex' />
-        <SFLogoSmall className='flex h-[25px] w-7 desktop:hidden' />
+        <USDFCLogo className='hidden h-[25px] w-[90px] desktop:flex' />
+        <USDFCLogoSmall className='flex h-[25px] w-[25px] desktop:hidden' />
     </NavLink>
 );

@@ -2,6 +2,7 @@ import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect } from 'react';
 import { Button } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { Spinner } from 'theme-ui';
 import { Transaction, useMyTransactionState } from './Transaction';
 import { useTroveView } from './Trove/context/TroveViewContext';
@@ -30,7 +31,11 @@ export const CollateralSurplusAction: React.FC = () => {
     return myTransactionState.type === 'waitingForApproval' ? (
         <div className='flex justify-end gap-2'>
             <Button disabled>
-                <Spinner sx={{ mr: 2, color: 'white' }} size={20} />
+                <Spinner
+                    sx={{ mr: 2, color: 'white' }}
+                    size={20}
+                    className='inline-block'
+                />
                 Waiting for your approval
             </Button>
         </div>
@@ -45,7 +50,7 @@ export const CollateralSurplusAction: React.FC = () => {
                 )}
             >
                 <Button>
-                    Claim {collateralSurplusBalance.prettify()} tFIL
+                    Claim {collateralSurplusBalance.prettify()} {CURRENCY}
                 </Button>
             </Transaction>
         </div>

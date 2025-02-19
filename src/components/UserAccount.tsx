@@ -1,16 +1,18 @@
-import {
-    Decimal,
-    SfStablecoinStoreState,
-} from '@secured-finance/stablecoin-lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import Link from 'next/link';
 import React from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
-import Wallet from 'src/assets/icons/wallet.svg';
+import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
+import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { COIN } from 'src/strings';
-import { AddressUtils, getFixedIncomeMarketLink } from 'src/utils';
+import { COIN, CURRENCY } from 'src/strings';
+import {
+    AddressUtils,
+    getFixedIncomeMarketLink,
+    ordinaryFormat,
+} from 'src/utils';
 
 const select = ({
     accountBalance,
@@ -36,7 +38,7 @@ export const UserAccount: React.FC = () => {
                 rel='noopener noreferrer'
                 aria-label='Fixed Income'
             >
-                <div className='flex h-8 items-center gap-x-1.5 rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'>
+                <div className='flex h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
                     <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                         Fixed Income
                     </span>
@@ -44,7 +46,7 @@ export const UserAccount: React.FC = () => {
                 </div>
             </Link>
             <button
-                className='flex h-8 items-center gap-x-1 rounded-[8px] px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:rounded-[10px] laptop:px-3.5 laptop:ring-[1.5px]'
+                className='flex h-8 items-center gap-x-1 rounded-md px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
                 onClick={() => open()}
             >
                 <span>
@@ -57,21 +59,41 @@ export const UserAccount: React.FC = () => {
                     {AddressUtils.format(account.toLowerCase(), 6)}
                 </span>
             </button>
-            <div className='hidden flex-row items-center gap-1 px-2 laptop:flex'>
-                <Wallet className='h-5 w-5' />
+            <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [
-                        ['tFIL', accountBalance],
-                        [COIN, Decimal.from(debtTokenBalance || 0)],
+                        [
+                            CURRENCY,
+                            ordinaryFormat(
+                                Number(accountBalance.toString()),
+                                0,
+                                2,
+                                'compact'
+                            ),
+                            FilecoinLogo,
+                        ],
+                        [
+                            COIN,
+                            ordinaryFormat(
+                                Number(debtTokenBalance.toString()) || 0,
+                                0,
+                                2,
+                                'compact'
+                            ),
+                            USDFCLogo,
+                        ],
                         // [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
-                ).map(([currency, balance], i) => (
+                ).map(([currency, balance, Logo], i) => (
                     <div
-                        className='flex flex-col gap-0.5 px-2 text-3.5 leading-3.5 text-neutral-800'
+                        className='flex flex-col gap-0.5 text-right text-3.5 leading-3.5 text-neutral-800'
                         key={i}
                     >
-                        <span className='font-semibold'>{currency}</span>
-                        <span>{balance.prettify()}</span>
+                        <div className='flex items-center gap-1'>
+                            <Logo className='h-4 w-4' />
+                            <span className='font-semibold'>{currency}</span>
+                        </div>
+                        <span>{balance}</span>
                     </div>
                 ))}
             </div>

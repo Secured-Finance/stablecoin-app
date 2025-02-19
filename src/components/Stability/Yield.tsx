@@ -4,6 +4,7 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { COIN, CURRENCY } from 'src/strings';
 import { Card, Paragraph, Text } from 'theme-ui';
 import { InfoIcon } from '../InfoIcon';
 import { fetchLqtyPrice } from './context/fetchLqtyPrice';
@@ -69,9 +70,9 @@ export const Yield: React.FC = () => {
                     <Card variant='tooltip' sx={{ width: ['220px', '518px'] }}>
                         <Paragraph>
                             An <Text sx={{ fontWeight: 'bold' }}>estimate</Text>{' '}
-                            of the SCR return on the USDFC deposited to the
+                            of the SCR return on the {COIN} deposited to the
                             Stability Pool over the next year, not including
-                            your tFIL gains from liquidations.
+                            your {CURRENCY} gains from liquidations.
                         </Paragraph>
                         <Paragraph
                             sx={{

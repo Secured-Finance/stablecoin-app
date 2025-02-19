@@ -1,10 +1,11 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
+import { Button, ButtonVariants } from 'src/components/atoms';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
-import { Box, Button, Card, Flex, Heading } from 'theme-ui';
-import { COIN, GT } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
+import { CardComponent } from '../templates';
 import { DisabledEditableRow, StaticRow } from '../Trove/Editor';
 import { useStakingView } from './context/StakingViewContext';
 import { StakingGainsAction } from './StakingGainsAction';
@@ -28,10 +29,23 @@ export const ReadOnlyStake: React.FC = () => {
     );
 
     return (
-        <Card>
-            <Heading>Staking</Heading>
+        <CardComponent
+            title='Staking'
+            actionComponent={
+                <>
+                    <Button
+                        variant={ButtonVariants.secondary}
+                        onClick={() => dispatch({ type: 'startAdjusting' })}
+                    >
+                        <Icon name='pen' size='sm' />
+                        &nbsp;Adjust
+                    </Button>
 
-            <Box sx={{ p: [2, 3] }}>
+                    <StakingGainsAction />
+                </>
+            }
+        >
+            <div className='flex flex-col gap-3'>
                 <DisabledEditableRow
                     label='Stake'
                     inputId='stake-scr'
@@ -56,7 +70,7 @@ export const ReadOnlyStake: React.FC = () => {
                         protocolTokenStake.collateralGain.nonZero &&
                         'text-success-700'
                     }
-                    unit='tFIL'
+                    unit={CURRENCY}
                 />
 
                 <StaticRow
@@ -69,21 +83,9 @@ export const ReadOnlyStake: React.FC = () => {
                     }
                     unit={COIN}
                 />
-
-                <Flex variant='layout.actions'>
-                    <Button
-                        variant='outline'
-                        onClick={() => dispatch({ type: 'startAdjusting' })}
-                    >
-                        <Icon name='pen' size='sm' />
-                        &nbsp;Adjust
-                    </Button>
-
-                    <StakingGainsAction />
-                </Flex>
-            </Box>
+            </div>
 
             {changePending && <LoadingOverlay />}
-        </Card>
+        </CardComponent>
     );
 };

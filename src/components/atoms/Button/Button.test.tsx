@@ -17,7 +17,7 @@ describe('test Button component', () => {
     it('should render a medium button by default', () => {
         render(<Primary />);
         const button = screen.getByRole('button');
-        expect(button).toHaveClass('rounded-[0.625rem] px-3.5 py-2.5');
+        expect(button).toHaveClass('rounded-md px-3.5 py-2.5');
     });
 
     it('should render as an anchor when used with a href', () => {

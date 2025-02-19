@@ -24,6 +24,6 @@ export const InfoMessage: React.FC<InfoMessageProps> = ({
             </Flex>
         )}
 
-        <Text sx={{ fontSize: 2 }}>{children}</Text>
+        <Text sx={{ fontSize: 1 }}>{children}</Text>
     </Box>
 );

@@ -13,6 +13,7 @@ import {
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { useMyTransactionState } from '../Transaction';
 import { useTroveView } from './context/TroveViewContext';
 import { TroveAction } from './TroveAction';
@@ -228,8 +229,8 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
             {description ??
                 (openingNewTrove ? (
                     <Alert color='info'>
-                        Start by entering the amount of tFIL you would like to
-                        deposit as collateral.
+                        Start by entering the amount of {CURRENCY} you would
+                        like to deposit as collateral.
                     </Alert>
                 ) : (
                     <Alert color='info'>

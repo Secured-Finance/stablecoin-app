@@ -13,7 +13,7 @@ import {
     TroveCreationParams,
 } from '@secured-finance/stablecoin-lib-base';
 import { Alert } from 'src/components/atoms';
-import { COIN } from '../../../strings';
+import { COIN, CURRENCY } from 'src/strings';
 import { ActionDescription, Amount } from '../../ActionDescription';
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
@@ -30,8 +30,10 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         {params.depositCollateral && params.borrowDebtToken ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
-                receive{' '}
+                <Amount>
+                    {params.depositCollateral.prettify()} {CURRENCY}
+                </Amount>{' '}
+                and receive{' '}
                 <Amount>
                     {params.borrowDebtToken.prettify()} {COIN}
                 </Amount>
@@ -43,13 +45,17 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
                     {params.repayDebtToken.prettify()} {COIN}
                 </Amount>{' '}
                 and receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
+                <Amount>
+                    {params.withdrawCollateral.prettify()} {CURRENCY}
+                </Amount>
             </>
         ) : params.depositCollateral && params.repayDebtToken ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount> and
-                pay{' '}
+                <Amount>
+                    {params.depositCollateral.prettify()} {CURRENCY}
+                </Amount>{' '}
+                and pay{' '}
                 <Amount>
                     {params.repayDebtToken.prettify()} {COIN}
                 </Amount>
@@ -57,7 +63,10 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         ) : params.borrowDebtToken && params.withdrawCollateral ? (
             <>
                 You will receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount> and{' '}
+                <Amount>
+                    {params.withdrawCollateral.prettify()} {CURRENCY}
+                </Amount>{' '}
+                and{' '}
                 <Amount>
                     {params.borrowDebtToken.prettify()} {COIN}
                 </Amount>
@@ -65,12 +74,16 @@ const TroveChangeDescription: React.FC<TroveAdjustmentDescriptionParams> = ({
         ) : params.depositCollateral ? (
             <>
                 You will deposit{' '}
-                <Amount>{params.depositCollateral.prettify()} tFIL</Amount>
+                <Amount>
+                    {params.depositCollateral.prettify()} {CURRENCY}
+                </Amount>
             </>
         ) : params.withdrawCollateral ? (
             <>
                 You will receive{' '}
-                <Amount>{params.withdrawCollateral.prettify()} tFIL</Amount>
+                <Amount>
+                    {params.withdrawCollateral.prettify()} {CURRENCY}
+                </Amount>
             </>
         ) : params.borrowDebtToken ? (
             <>
@@ -239,7 +252,9 @@ const validateTroveCreation = (
             <Alert>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
+                    {`${depositCollateral
+                        .sub(accountBalance)
+                        .prettify()} ${CURRENCY}`}
                 </Amount>
                 .
             </Alert>
@@ -352,7 +367,9 @@ const validateTroveAdjustment = (
             <Alert>
                 The amount you are trying to deposit exceeds your balance by{' '}
                 <Amount>
-                    {depositCollateral.sub(accountBalance).prettify()} tFIL
+                    {`${depositCollateral
+                        .sub(accountBalance)
+                        .prettify()} ${CURRENCY}`}
                 </Amount>
                 .
             </Alert>

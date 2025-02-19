@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import { CardComponent } from 'src/components/templates';
+import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
 
 export const FixedIncome: React.FC = () => {
@@ -25,7 +26,7 @@ export const FixedIncome: React.FC = () => {
             }
         >
             <p className='typography-desktop-body-5'>
-                Lend USDFC to earn fixed returns and acquire zero-coupon bonds.
+                Lend {COIN} to earn fixed returns and acquire zero-coupon bonds.
             </p>
         </CardComponent>
     );

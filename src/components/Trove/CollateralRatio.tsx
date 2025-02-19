@@ -4,10 +4,13 @@ import {
     Difference,
     Percent,
 } from '@secured-finance/stablecoin-lib-base';
+import clsx from 'clsx';
 import React from 'react';
-import HeartIcon from 'src/assets/icons/heart.svg';
+import AlertIcon from 'src/assets/icons/alert-fill.svg';
+import CheckIcon from 'src/assets/icons/check.svg';
 import { Alert } from 'src/components/atoms';
 import { DOCUMENTATION_LINKS } from 'src/constants';
+import { COIN } from 'src/strings';
 import { Card } from 'theme-ui';
 import { InfoIcon } from '../InfoIcon';
 import { LearnMoreLink } from '../Tooltip';
@@ -24,24 +27,26 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
 }) => {
     const collateralRatioPct = new Percent(value ?? { toString: () => 'N/A' });
     const changePct = change && new Percent(change);
+    const color = value?.gt(CRITICAL_COLLATERAL_RATIO)
+        ? 'text-success-700'
+        : value?.gt(1.2)
+        ? 'text-warning-700'
+        : value?.lte(1.2)
+        ? 'text-error-700'
+        : 'text-neutral-300';
     return (
         <>
-            <div className='flex items-center gap-2'>
-                <HeartIcon className='h-8 w-8' />
-
+            <div className='flex items-center gap-2 px-3'>
+                {!value || value?.gt(CRITICAL_COLLATERAL_RATIO) ? (
+                    <CheckIcon className={clsx('h-7 w-7', color)} />
+                ) : (
+                    <AlertIcon className={clsx('h-7 w-7', color)} />
+                )}
                 <StaticRow
                     label='Collateral ratio'
                     inputId='trove-collateral-ratio'
                     amount={collateralRatioPct.prettify()}
-                    color={
-                        value?.gt(CRITICAL_COLLATERAL_RATIO)
-                            ? 'text-success-700'
-                            : value?.gt(1.2)
-                            ? 'text-warning-700'
-                            : value?.lte(1.2)
-                            ? 'text-error-700'
-                            : 'text-neutral-300'
-                    }
+                    color={color}
                     pendingAmount={
                         change?.positive?.absoluteValue?.gt(10)
                             ? '++'
@@ -57,7 +62,7 @@ export const CollateralRatio: React.FC<CollateralRatioProps> = ({
                             message={
                                 <Card variant='tooltip' sx={{ width: '220px' }}>
                                     The ratio between the dollar value of the
-                                    collateral and the debt (in USDFC) you are
+                                    collateral and the debt (in {COIN}) you are
                                     depositing. While the Minimum Collateral
                                     Ratio is 110% during normal operation, it is
                                     recommended to keep the Collateral Ratio
