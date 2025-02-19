@@ -163,9 +163,7 @@ export const Opening: React.FC = () => {
                             Confirm
                         </TroveAction>
                     ) : (
-                        <Button variant={ButtonVariants.secondary} disabled>
-                            Confirm
-                        </Button>
+                        <Button disabled>Confirm</Button>
                     )}
                 </>
             }
