@@ -5,7 +5,7 @@ import { Alert } from 'src/components/atoms';
 import { PriceManager } from 'src/components/PriceManager';
 import { Redemption } from 'src/components/Redemption/Redemption';
 import { SystemStats } from 'src/components/SystemStats';
-import { PlainCard } from 'src/components/templates';
+import { CardComponent } from 'src/components/templates';
 import { DOCUMENTATION_LINKS } from 'src/constants';
 import { COIN } from 'src/strings';
 
@@ -13,7 +13,7 @@ export const RedemptionPage: React.FC = () => (
     <section className='w-full'>
         <div className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
             <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
-                <PlainCard title='Bot functionality'>
+                <CardComponent title='Bot functionality'>
                     <div className='typography-desktop-body-4 flex flex-col gap-3'>
                         <div>
                             <p>
@@ -44,7 +44,7 @@ export const RedemptionPage: React.FC = () => (
                             .
                         </Alert>
                     </div>
-                </PlainCard>
+                </CardComponent>
                 <Redemption />
             </div>
 

@@ -1,7 +1,4 @@
-import {
-    Decimal,
-    SfStablecoinStoreState,
-} from '@secured-finance/stablecoin-lib-base';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import Link from 'next/link';
 import React from 'react';
@@ -11,7 +8,11 @@ import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
 import { Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { COIN } from 'src/strings';
-import { AddressUtils, getFixedIncomeMarketLink } from 'src/utils';
+import {
+    AddressUtils,
+    getFixedIncomeMarketLink,
+    ordinaryFormat,
+} from 'src/utils';
 
 const select = ({
     accountBalance,
@@ -61,8 +62,26 @@ export const UserAccount: React.FC = () => {
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [
-                        ['tFIL', accountBalance, FilecoinLogo],
-                        [COIN, Decimal.from(debtTokenBalance || 0), USDFCLogo],
+                        [
+                            'tFIL',
+                            ordinaryFormat(
+                                Number(accountBalance.toString()),
+                                0,
+                                2,
+                                'compact'
+                            ),
+                            FilecoinLogo,
+                        ],
+                        [
+                            COIN,
+                            ordinaryFormat(
+                                Number(debtTokenBalance.toString()) || 0,
+                                0,
+                                2,
+                                'compact'
+                            ),
+                            USDFCLogo,
+                        ],
                         // [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
                 ).map(([currency, balance, Logo], i) => (
@@ -74,7 +93,7 @@ export const UserAccount: React.FC = () => {
                             <Logo className='h-4 w-4' />
                             <span className='font-semibold'>{currency}</span>
                         </div>
-                        <span>{balance.prettify()}</span>
+                        <span>{balance}</span>
                     </div>
                 ))}
             </div>
