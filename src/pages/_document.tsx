@@ -7,7 +7,7 @@ export default function Document() {
                 <meta charSet='UTF-8' />
                 <meta
                     name='description'
-                    content='Secured Finance - Interbank-grade financial transaction platform'
+                    content='USDFC - USD-pegged stablecoin minted using Filecoin as collateral on the Filecoin Virtual Machine (FVM)'
                 />
                 <link rel='shortcut icon' href='/favicon.ico' />
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
