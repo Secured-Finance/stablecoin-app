@@ -1,7 +1,7 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
@@ -11,8 +11,10 @@ import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
     getFixedIncomeMarketLink,
+    getSupportedChains,
     ordinaryFormat,
 } from 'src/utils';
+import { useWalletClient } from 'wagmi';
 
 const select = ({
     accountBalance,
@@ -27,8 +29,22 @@ const select = ({
 export const UserAccount: React.FC = () => {
     const { account } = useSfStablecoin();
     const { open } = useWeb3Modal();
+    const { open: isOpen } = useWeb3ModalState();
     const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
+    const wallet = useWalletClient();
+
+    const networks = getSupportedChains();
+
+    useEffect(() => {
+        if (!isOpen) {
+            wallet.data?.getChainId().then(chainId => {
+                if (!networks.map(({ id }) => id).includes(chainId)) {
+                    setTimeout(() => open({ view: 'Networks' }), 100);
+                }
+            });
+        }
+    }, [isOpen, networks, open, wallet.data]);
 
     return (
         <div className='flex flex-row items-center gap-3 laptop:gap-2'>
