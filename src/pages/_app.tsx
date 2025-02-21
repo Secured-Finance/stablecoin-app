@@ -100,9 +100,9 @@ if (typeof window !== 'undefined') {
 }
 
 const metadata = {
-    name: 'Secured Finance',
+    name: 'USDFC',
     description: 'Stablecoin',
-    url: 'https://usdfc.secured.finance/', // origin must match your domain & subdomain
+    url: 'https://app.usdfc.net/', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
@@ -182,7 +182,7 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>Secured Finance</title>
+                <title>USDFC</title>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
