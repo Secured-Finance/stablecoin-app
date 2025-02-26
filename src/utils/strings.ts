@@ -8,9 +8,9 @@ export enum Environment {
 }
 
 export const FIXED_INCOME_MARKET_LINKS = {
-    [Environment.DEVELOPMENT]: 'https://dev.secured.finance/',
-    [Environment.STAGING]: 'https://stg.secured.finance/',
-    [Environment.PRODUCTION]: 'https://app.secured.finance/',
+    [Environment.DEVELOPMENT]: 'https://dev.secured.finance/?chain_id=314159',
+    [Environment.STAGING]: 'https://stg.secured.finance/?chain_id=314159',
+    [Environment.PRODUCTION]: 'https://app.secured.finance/?chain_id=314',
 };
 
 export type EnvShort = 'dev' | 'stg' | 'prod';
