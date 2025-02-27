@@ -22,7 +22,7 @@ export const LiquidationManager: React.FC = () => {
                     step='1'
                     value={numberOfTrovesToLiquidate}
                     onChange={e => setNumberOfTrovesToLiquidate(e.target.value)}
-                    className='typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2'
+                    className='typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 focus:border-primary-500 focus:outline-none'
                 />
 
                 <span className='flex-1'>Troves</span>

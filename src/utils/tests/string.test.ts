@@ -28,19 +28,19 @@ describe('getFixedIncomeMarketLink', () => {
 
         process.env.SF_ENV = Environment.DEVELOPMENT;
         expect(getFixedIncomeMarketLink()).toEqual(
-            'https://dev.secured.finance/'
+            'https://dev.secured.finance/?chain_id=314159'
         );
         process.env.SF_ENV = Environment.STAGING;
         expect(getFixedIncomeMarketLink()).toEqual(
-            'https://stg.secured.finance/'
+            'https://stg.secured.finance/?chain_id=314159'
         );
         process.env.SF_ENV = Environment.PRODUCTION;
         expect(getFixedIncomeMarketLink()).toEqual(
-            'https://app.secured.finance/'
+            'https://app.secured.finance/?chain_id=314'
         );
         process.env.SF_ENV = 'random';
         expect(getFixedIncomeMarketLink()).toEqual(
-            'https://dev.secured.finance/'
+            'https://dev.secured.finance/?chain_id=314159'
         );
     });
 });

@@ -12,6 +12,7 @@ type RowProps = SxProp &
         labelFor?: string;
         infoIcon?: React.ReactNode;
         showBorder?: boolean;
+        isActive?: boolean;
     }>;
 
 export const Row: React.FC<RowProps> = ({
@@ -21,12 +22,14 @@ export const Row: React.FC<RowProps> = ({
     children,
     infoIcon,
     showBorder,
+    isActive,
 }) => {
     return (
         <div
             className={clsx(
                 'flex flex-col rounded-md bg-neutral-50 px-3',
-                showBorder ? 'border border-neutral-300 py-2' : ''
+                showBorder ? 'border py-2' : '',
+                isActive ? 'border-primary-500' : 'border-neutral-300'
             )}
         >
             <label
@@ -246,7 +249,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
-        <Row showBorder {...{ label, labelFor: inputId, unit }}>
+        <Row showBorder isActive {...{ label, labelFor: inputId, unit }}>
             <Input
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
@@ -267,7 +270,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                     // setInvalid(false);
                 }}
                 variant='editor'
-                className=''
+                className='!border-none !p-0 outline-none'
             />
         </Row>
     ) : (
@@ -284,7 +287,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
             >
                 {maxAmount && (
                     <Button
-                        size={ButtonSizes.sm}
+                        size={ButtonSizes.xs}
                         onClick={event => {
                             setEditedAmount(maxAmount);
                             event.stopPropagation();
