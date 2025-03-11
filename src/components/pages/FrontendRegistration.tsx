@@ -1,20 +1,11 @@
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { useState } from 'react';
-import { Icon } from 'src/components/Icon';
 import { Transaction, useMyTransactionState } from 'src/components/Transaction';
 import { useSfStablecoin } from 'src/hooks';
 import { AddressUtils } from 'src/utils';
-import {
-    Box,
-    Button,
-    Card,
-    Flex,
-    Heading,
-    Input,
-    Label,
-    Paragraph,
-    Spinner,
-} from 'theme-ui';
+import { Button, Input, Label, Spinner } from 'theme-ui';
+import { Alert } from '../atoms';
+import { CardComponent } from '../templates';
 
 type FrontendRegistrationActionProps = {
     kickbackRate: Decimal;
@@ -61,17 +52,15 @@ export const FrontendRegistration: React.FC = () => {
     const [kickbackRateString, setKickbackRateString] = useState('80');
 
     return (
-        <>
-            <Card>
-                <Heading>Choose a kickback rate</Heading>
-
-                <Box sx={{ p: [2, 3] }}>
-                    <Flex>
+        <section className='flex flex-col gap-6 pt-5 laptop:pt-6'>
+            <CardComponent title='Choose a kickback rate'>
+                <div className='typography-desktop-body-4 flex flex-col gap-3'>
+                    <div className='flex'>
                         <Label>Kickback rate</Label>
                         <Label variant='unit'>%</Label>
 
                         <Input
-                            sx={{ maxWidth: '200px' }}
+                            className='shadow-none max-w-[200px]'
                             type='number'
                             step='any'
                             value={kickbackRateString}
@@ -94,55 +83,29 @@ export const FrontendRegistration: React.FC = () => {
                                 );
                             }}
                         />
-                    </Flex>
-                </Box>
-            </Card>
+                    </div>
 
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-around',
-
-                    m: 3,
-                    mt: [3, null, 4],
-                    mb: 4,
-                    p: 3,
-                    maxWidth: '450px',
-
-                    border: 1,
-                    borderRadius: '8px',
-                    borderColor: 'danger',
-                    boxShadow: 2,
-                }}
-            >
-                <Flex sx={{ alignItems: 'center', mx: 3, fontSize: 4 }}>
-                    <Icon name='hand-paper' />
-                    <Heading sx={{ ml: 3, fontSize: '18px' }}>
-                        Before you proceed
-                    </Heading>
-                </Flex>
-
-                <Paragraph sx={{ fontSize: 1, mt: 3 }}>
-                    You are about to register{' '}
-                    <b>{AddressUtils.format(account, 6)}</b> to receive{' '}
-                    <b>{cut.mul(100).toString()}%</b> of the SCR rewards earned
-                    through this frontend.
-                </Paragraph>
-
-                <Paragraph sx={{ fontSize: 1, mt: 3, fontWeight: 'bold' }}>
-                    You will not be able to change the kickback rate for this
-                    address later.
-                </Paragraph>
-
-                <Paragraph sx={{ fontSize: 1, mt: 3 }}>
-                    If you would like to use a different kickback rate in the
-                    future, you will need to repeat this registration with a
-                    different address.
-                </Paragraph>
-            </Box>
+                    <Alert color='warning'>
+                        <p>
+                            You are about to register{' '}
+                            <b>{AddressUtils.format(account, 6)}</b> to receive{' '}
+                            <b>{cut.mul(100).toString()}%</b> of the SCR rewards
+                            earned through this frontend.
+                        </p>
+                        <p>
+                            You will not be able to change the kickback rate for
+                            this address later.
+                        </p>
+                        <p>
+                            If you would like to use a different kickback rate
+                            in the future, you will need to repeat this
+                            registration with a different address.
+                        </p>
+                    </Alert>
+                </div>
+            </CardComponent>
 
             <FrontendRegistrationAction {...{ kickbackRate }} />
-        </>
+        </section>
     );
 };
