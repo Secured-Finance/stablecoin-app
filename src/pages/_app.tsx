@@ -182,7 +182,7 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>USDFC</title>
+                <title>USDFC: FIL-Backed Stablecoin | Secured Finance</title>
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1.0'
