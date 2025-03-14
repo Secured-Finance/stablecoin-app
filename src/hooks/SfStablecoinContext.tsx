@@ -75,6 +75,7 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         if (config && provider && signer && account.address) {
             const batchedProvider = new BatchedProvider(provider, chainId);
             // batchedProvider._debugLog = true;
+            batchedProvider.pollingInterval = 12_000;
 
             try {
                 return _connectByChainId(batchedProvider, signer, chainId, {
