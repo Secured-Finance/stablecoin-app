@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { getAddress, isAddress } from '@ethersproject/address';
+import { getFrontendTag, isProdEnv } from 'src/utils';
 
 export type FrontendConfig = {
     frontendTag: string;
@@ -7,8 +8,8 @@ export type FrontendConfig = {
 };
 
 const defaultConfig: FrontendConfig = {
-    frontendTag: '0xDBA767F3DFF3835BEf5dE1eDEe91A9901402AB21',
-    testnetOnly: true,
+    frontendTag: getFrontendTag(),
+    testnetOnly: !isProdEnv(),
 };
 
 function hasKey<K extends string>(o: object, k: K): o is Record<K, unknown> {
