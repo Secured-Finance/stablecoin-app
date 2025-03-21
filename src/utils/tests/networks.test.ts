@@ -8,10 +8,10 @@ describe('networks', () => {
         expect(supportedNetworks[0]).toEqual(filecoinCalibration);
     });
 
-    it('should have one testnet and one mainnet supported chain', () => {
+    it('should have one mainnet supported chain', () => {
         process.env.SF_ENV = 'production';
         const supportedNetworks = getSupportedChains();
-        expect(supportedNetworks).toHaveLength(2);
+        expect(supportedNetworks).toHaveLength(1);
         expect(supportedNetworks[0]).toEqual(filecoin);
     });
 });

@@ -2,11 +2,29 @@ import {
     Environment,
     getAmplitudeApiKey,
     getEnvironment,
+    getFrontendTag,
     getGoogleAnalyticsTag,
     getSetPriceEnabled,
     getSquidWidgetIntegratorId,
     getWalletConnectId,
 } from 'src/utils';
+
+describe('getFrontendTag', () => {
+    it('should return the value of the environment variable', () => {
+        process.env.NEXT_PUBLIC_FRONTEND_TAG =
+            '0xDBA767F3DFF3835BEf5dE1eDEe91A9901402AB21';
+        const frontendTag = getFrontendTag();
+        expect(frontendTag).toBe('0xDBA767F3DFF3835BEf5dE1eDEe91A9901402AB21');
+        expect(typeof frontendTag).toBe('string');
+    });
+
+    it('should throw error if variable is not set', () => {
+        process.env.NEXT_PUBLIC_FRONTEND_TAG = '';
+        expect(() => getFrontendTag()).toThrowError(
+            'NEXT_PUBLIC_FRONTEND_TAG is not set'
+        );
+    });
+});
 
 describe('getWalletConnectId', () => {
     it('should return the value of the environment variable', () => {
