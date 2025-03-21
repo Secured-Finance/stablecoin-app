@@ -1,6 +1,12 @@
 import assert from 'assert';
 import { Environment } from './strings';
 
+export const getFrontendTag = () => {
+    const FRONTEND_TAG = process.env.NEXT_PUBLIC_FRONTEND_TAG;
+    assert(FRONTEND_TAG, 'NEXT_PUBLIC_FRONTEND_TAG is not set');
+    return FRONTEND_TAG;
+};
+
 export const getWalletConnectId = () => {
     const walletConnectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID;
     assert(walletConnectId, 'NEXT_PUBLIC_WALLET_CONNECT_ID is not set');

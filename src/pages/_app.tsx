@@ -25,6 +25,7 @@ import {
     getGoogleAnalyticsTag,
     getSupportedChains,
     getWalletConnectId,
+    isProdEnv,
 } from 'src/utils';
 import * as gtag from 'src/utils/gtag';
 import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
@@ -64,23 +65,26 @@ const UnsupportedMainnetFallback: React.FC = () => (
     </Flex>
 );
 
-const UnsupportedNetworkFallback: React.FC = () => (
-    <Flex
-        sx={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            textAlign: 'center',
-        }}
-    >
-        <Heading sx={{ mb: 3 }}>
-            <Icon name='exclamation-triangle' /> This protocol is not supported
-            on this network.
-        </Heading>
-        Please switch to Filecoin Calibration.
-    </Flex>
-);
+const UnsupportedNetworkFallback: React.FC = () => {
+    return (
+        <Flex
+            sx={{
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100vh',
+                textAlign: 'center',
+            }}
+        >
+            <Heading sx={{ mb: 3 }}>
+                <Icon name='exclamation-triangle' /> This protocol is not
+                supported on this network.
+            </Heading>
+            Please switch to{' '}
+            {isProdEnv() ? 'Filecoin Mainnet' : 'Filecoin Calibration'}.
+        </Flex>
+    );
+};
 
 const projectId = getWalletConnectId();
 

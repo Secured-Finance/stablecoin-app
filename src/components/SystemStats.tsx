@@ -3,9 +3,10 @@ import {
     Percent,
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
+import { WalletCardsIcon } from 'lucide-react';
 import Link from 'next/link';
 import packageJson from 'package.json';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CheckIcon from 'src/assets/icons/check.svg';
 import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
@@ -18,6 +19,7 @@ import {
     DEBT_TOKEN_PRECISION,
     isProdEnv,
 } from 'src/utils';
+import { useWalletClient } from 'wagmi';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 
@@ -98,6 +100,8 @@ const select = ({
 });
 
 export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
+    const { data: client } = useWalletClient();
+
     const {
         sfStablecoin: {
             connection: {
@@ -136,6 +140,22 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
             };
         }
     }, [copied]);
+
+    const addToMetamask = useCallback(
+        async (address: string | null) => {
+            if (!client || !address) return;
+
+            client.watchAsset({
+                type: 'ERC20',
+                options: {
+                    address: address,
+                    symbol: COIN,
+                    decimals: 18,
+                },
+            });
+        },
+        [client]
+    );
 
     const debtTokenInStabilityPoolPct =
         total.debt.nonZero &&
@@ -230,6 +250,14 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                                 ) : (
                                     <Clipboard className='h-4 w-4 text-primary-500' />
                                 )}
+                            </button>
+                            <button
+                                className='absolute -right-10 top-1/2 -translate-y-1/2 transform'
+                                onClick={() =>
+                                    addToMetamask(addresses.debtToken)
+                                }
+                            >
+                                <WalletCardsIcon className='h-[14px] w-[14px] text-primary-500' />
                             </button>
                         </span>
                     </div>
