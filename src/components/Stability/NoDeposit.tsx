@@ -3,10 +3,12 @@ import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { COIN, CURRENCY } from 'src/strings';
+import { useAccount } from 'wagmi';
 import { useStabilityView } from './context/StabilityViewContext';
 
 export const NoDeposit: React.FC = () => {
     const { dispatchEvent } = useStabilityView();
+    const { isConnected } = useAccount();
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('DEPOSIT_PRESSED');
@@ -32,7 +34,9 @@ export const NoDeposit: React.FC = () => {
                 >
                         <Yield />
                     </Flex> */}
-                    <Button onClick={handleOpenTrove}>Deposit</Button>
+                    <Button disabled={!isConnected} onClick={handleOpenTrove}>
+                        Deposit
+                    </Button>
                 </>
             }
         >

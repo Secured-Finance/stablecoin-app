@@ -229,6 +229,7 @@ type EditableRowProps = DisabledEditableRowProps & {
     setEditedAmount: (editedAmount: string) => void;
     maxAmount?: string;
     maxedOut?: boolean;
+    isConnected?: boolean;
 };
 
 export const EditableRow: React.FC<EditableRowProps> = ({
@@ -244,61 +245,63 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     setEditedAmount,
     maxAmount,
     maxedOut,
+    isConnected,
 }) => {
     const [editing, setEditing] = editingState;
     // const [invalid, setInvalid] = useState(false);
 
-    return editing === inputId ? (
-        <Row showBorder isActive {...{ label, labelFor: inputId, unit }}>
-            <Input
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
-                id={inputId}
-                type='number'
-                step='any'
-                defaultValue={editedAmount}
-                onChange={e => {
-                    try {
-                        setEditedAmount(e.target.value);
-                        // setInvalid(false);
-                    } catch {
-                        // setInvalid(true);
-                    }
-                }}
-                onBlur={() => {
-                    setEditing(undefined);
-                    // setInvalid(false);
-                }}
-                variant='editor'
-                className='!border-none !p-0 outline-none'
-            />
-        </Row>
-    ) : (
-        <Row showBorder labelId={`${inputId}-label`} {...{ label, unit }}>
-            <StaticAmounts
-                labelledBy={`${inputId}-label`}
-                onClick={() => setEditing(inputId)}
-                inputId={inputId}
-                amount={amount}
-                unit={unit}
-                color={color}
-                pendingAmount={pendingAmount}
-                pendingColor={pendingColor}
-            >
-                {maxAmount && (
-                    <Button
-                        size={ButtonSizes.xs}
-                        onClick={event => {
-                            setEditedAmount(maxAmount);
-                            event.stopPropagation();
-                        }}
-                        disabled={maxedOut}
+    return (
+        <div className={!isConnected ? 'pointer-events-none' : ''}>
+            {editing === inputId ? (
+                <Row
+                    showBorder
+                    isActive
+                    {...{ label, labelFor: inputId, unit }}
+                >
+                    <Input
+                        id={inputId}
+                        type='number'
+                        step='any'
+                        defaultValue={editedAmount}
+                        disabled={!isConnected}
+                        onChange={e => setEditedAmount(e.target.value)}
+                        onBlur={() => setEditing(undefined)}
+                        variant='editor'
+                        className='!border-none !p-0 outline-none'
+                    />
+                </Row>
+            ) : (
+                <Row
+                    showBorder
+                    labelId={`${inputId}-label`}
+                    {...{ label, unit }}
+                >
+                    <StaticAmounts
+                        labelledBy={`${inputId}-label`}
+                        onClick={() => isConnected && setEditing(inputId)}
+                        inputId={inputId}
+                        amount={amount}
+                        unit={unit}
+                        color={color}
+                        pendingAmount={pendingAmount}
+                        pendingColor={pendingColor}
                     >
-                        Max
-                    </Button>
-                )}
-            </StaticAmounts>
-        </Row>
+                        {maxAmount && (
+                            <Button
+                                size={ButtonSizes.xs}
+                                onClick={event => {
+                                    setEditedAmount(maxAmount);
+                                    event.stopPropagation();
+                                }}
+                                disabled={maxedOut || !isConnected}
+                            >
+                                Max
+                            </Button>
+                        )}
+                    </StaticAmounts>
+                </Row>
+            )}
+        </div>
     );
 };
 

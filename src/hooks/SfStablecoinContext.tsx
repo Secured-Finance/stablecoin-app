@@ -2,11 +2,12 @@
 import { Provider } from '@ethersproject/abstract-provider';
 import { Web3Provider } from '@ethersproject/providers';
 import {
+    _connectByChainId,
     BlockPolledSfStablecoinStore,
     EthersSfStablecoin,
     EthersSfStablecoinWithStore,
-    _connectByChainId,
 } from '@secured-finance/stablecoin-lib-ethers';
+import { ethers } from 'ethers';
 import React, {
     createContext,
     useContext,
@@ -15,7 +16,9 @@ import React, {
     useState,
 } from 'react';
 import { FrontendConfig, getConfig } from 'src/configs';
+import { rpcUrls } from 'src/constants';
 import { BatchedProvider } from 'src/contexts';
+import { filecoinCalibration } from 'viem/chains';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
 type ContextValue = {
@@ -43,16 +46,23 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
     const client = useClient();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const provider =
-        client &&
-        new Web3Provider(
-            (method, params) =>
-                client.request({
-                    method: method as any,
-                    params: params as any,
-                }),
-            chainId
-        );
+    const provider = useMemo(() => {
+        if (client) {
+            return new Web3Provider(
+                (method, params) =>
+                    client.request({
+                        method: method as any,
+                        params: params as any,
+                    }),
+                chainId
+            );
+        }
+        // Default to Filecoin Calibration RPC if no wallet
+        const rpcUrl =
+            chainId === 314 ? rpcUrls.filecoin : rpcUrls.filecoinCalibration;
+
+        return new ethers.providers.JsonRpcProvider(rpcUrl, chainId);
+    }, [client, chainId]);
 
     const account = useAccount();
     const walletClient = useWalletClient();
@@ -72,33 +82,60 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
     const [config, setConfig] = useState<FrontendConfig>();
 
     const connection = useMemo(() => {
-        if (config && provider && signer && account.address) {
-            const batchedProvider = new BatchedProvider(provider, chainId);
-            // batchedProvider._debugLog = true;
-            batchedProvider.pollingInterval = 12_000;
+        if (!config || !provider) return null;
+        const effectiveChainId = account.isConnected
+            ? chainId
+            : filecoinCalibration.id;
+        const batchedProvider = new BatchedProvider(provider, effectiveChainId);
+        batchedProvider.pollingInterval = 12_000;
 
-            try {
-                return _connectByChainId(batchedProvider, signer, chainId, {
+        try {
+            return _connectByChainId(
+                batchedProvider,
+                signer,
+                effectiveChainId,
+                {
                     userAddress: account.address,
                     frontendTag: config.frontendTag,
                     useStore: 'blockPolled',
-                });
-            } catch (err) {
-                console.error(err);
-            }
+                }
+            );
+        } catch (err) {
+            return _connectByChainId(
+                batchedProvider,
+                undefined,
+                filecoinCalibration.id,
+                {
+                    userAddress: '0x0000000000000000000000000000000000000000',
+                    frontendTag: config.frontendTag,
+                    useStore: 'blockPolled',
+                }
+            );
         }
-    }, [config, provider, signer, account.address, chainId]);
+    }, [
+        config,
+        provider,
+        signer,
+        account.address,
+        account.isConnected,
+        chainId,
+    ]);
 
     useEffect(() => {
         getConfig().then(setConfig);
     }, []);
 
-    if (!config || !provider || !signer || !account.address) {
+    if (!config || !provider) {
         return <>{loader}</>;
     }
 
-    if (config.testnetOnly && chainId === 314) {
-        return <>{unsupportedMainnetFallback}</>;
+    if (account.isConnected) {
+        const isSupportedNetwork = config.testnetOnly
+            ? chainId === filecoinCalibration.id
+            : chainId === filecoinCalibration.id || chainId === 314;
+        const isMainnetBlocked = config.testnetOnly && chainId === 314;
+        if (isMainnetBlocked) return <>{unsupportedMainnetFallback}</>;
+        if (!isSupportedNetwork) return <>{unsupportedNetworkFallback}</>;
     }
 
     if (!connection) {
@@ -112,7 +149,7 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         <SfStablecoinContext.Provider
             value={{
                 config,
-                account: account.address,
+                account: account.address || '',
                 provider: connection.provider,
                 sfStablecoin,
             }}

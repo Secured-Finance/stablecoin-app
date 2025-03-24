@@ -2,6 +2,7 @@ import {
     Decimal,
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
+import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
@@ -10,6 +11,7 @@ import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { getSetPriceEnabled } from 'src/utils';
+import { useAccount } from 'wagmi';
 import { Transaction } from './Transaction';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
@@ -23,6 +25,7 @@ export const PriceManager: React.FC = () => {
     } = useSfStablecoin();
 
     const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
+    const { isConnected } = useAccount();
 
     const price = useSfStablecoinSelector(selectPrice);
     const [editedPrice, setEditedPrice] = useState(price.toString(2));
@@ -48,6 +51,7 @@ export const PriceManager: React.FC = () => {
                                     type='number'
                                     step='any'
                                     value={editedPrice}
+                                    disabled={!isConnected}
                                     onChange={e =>
                                         setEditedPrice(e.target.value)
                                     }
@@ -61,7 +65,11 @@ export const PriceManager: React.FC = () => {
                         </span>
                     )}
                     {canSetPrice && (
-                        <div className='flex items-center'>
+                        <div
+                            className={clsx('flex items-center', {
+                                'pointer-events-none opacity-50': !isConnected,
+                            })}
+                        >
                             <Transaction
                                 id='set-price'
                                 tooltip='Set'

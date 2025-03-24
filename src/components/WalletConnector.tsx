@@ -1,8 +1,5 @@
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import USDFCLogo from 'src/assets/img/usdfc-logo.svg';
-import { Button } from 'src/components/atoms';
 import { Container } from 'theme-ui';
-import { useAccount } from 'wagmi';
 import { Nav } from './Nav';
 import { SideNav } from './SideNav';
 
@@ -21,15 +18,10 @@ const NavBar = () => {
 export const WalletConnector: React.FC<{
     children: React.ReactNode;
 }> = ({ children }) => {
-    const { isConnected } = useAccount();
-    const { open } = useWeb3Modal();
-
-    return isConnected ? (
-        children
-    ) : (
-        <div className='relative flex h-screen w-full items-center justify-center bg-neutral-100'>
-            <Button onClick={() => open()}>Connect Wallet</Button>
+    return (
+        <div className='relative flex h-screen w-full flex-col bg-neutral-100'>
             <NavBar />
+            {children}
         </div>
     );
 };

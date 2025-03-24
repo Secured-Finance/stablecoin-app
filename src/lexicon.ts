@@ -65,3 +65,8 @@ export const DEBT_TOKEN_SUPPLY: Lexicon = {
     term: `${COIN} supply`,
     description: `The total ${COIN} minted by this protocol.`,
 };
+
+export const ADD_TO_WALLET: Lexicon = {
+    term: '',
+    description: 'Add the icon into the wallet',
+};
