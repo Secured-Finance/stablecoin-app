@@ -60,7 +60,7 @@ export const PriceManager: React.FC = () => {
                                     onChange={e =>
                                         setEditedPrice(e.target.value)
                                     }
-                                    className={`h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none`}
+                                    className='h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none disabled:text-neutral-400'
                                 />
                             </div>
                         </>
@@ -69,12 +69,8 @@ export const PriceManager: React.FC = () => {
                             {`1 ${CURRENCY} = ${editedPrice} USD`}
                         </span>
                     )}
-                    {canSetPrice && (
-                        <div
-                            className={clsx('flex items-center', {
-                                'opacity-50': !isConnected,
-                            })}
-                        >
+                    {canSetPrice && isConnected && (
+                        <div className='flex items-center'>
                             <Transaction
                                 id='set-price'
                                 tooltip='Set'
@@ -89,7 +85,7 @@ export const PriceManager: React.FC = () => {
                                     );
                                 }}
                             >
-                                <button disabled={!isConnected}>
+                                <button>
                                     <TrendingUpIcon />
                                 </button>
                             </Transaction>
