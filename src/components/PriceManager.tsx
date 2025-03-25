@@ -43,7 +43,12 @@ export const PriceManager: React.FC = () => {
                             <div className='typography-desktop-body-5'>
                                 {CURRENCY}
                             </div>
-                            <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
+                            <div
+                                className={clsx(
+                                    `typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden`,
+                                    { 'text-neutral-400': !isConnected }
+                                )}
+                            >
                                 <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
                                     $
                                 </span>
@@ -55,7 +60,7 @@ export const PriceManager: React.FC = () => {
                                     onChange={e =>
                                         setEditedPrice(e.target.value)
                                     }
-                                    className='h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none'
+                                    className={`h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none`}
                                 />
                             </div>
                         </>
@@ -67,7 +72,7 @@ export const PriceManager: React.FC = () => {
                     {canSetPrice && (
                         <div
                             className={clsx('flex items-center', {
-                                'pointer-events-none opacity-50': !isConnected,
+                                'opacity-50': !isConnected,
                             })}
                         >
                             <Transaction
@@ -84,7 +89,7 @@ export const PriceManager: React.FC = () => {
                                     );
                                 }}
                             >
-                                <button>
+                                <button disabled={!isConnected}>
                                     <TrendingUpIcon />
                                 </button>
                             </Transaction>

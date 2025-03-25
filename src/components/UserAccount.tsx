@@ -82,7 +82,7 @@ export const UserAccount: React.FC = () => {
                         </span>
                     </button>
                 ) : (
-                    <Button onClick={() => open()}>Connect wallet</Button>
+                    <Button onClick={() => open()}>Connect Wallet</Button>
                 )}
             </>
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>

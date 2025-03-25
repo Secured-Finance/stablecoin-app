@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
@@ -15,7 +16,9 @@ export const LiquidationManager: React.FC = () => {
 
     return (
         <CardComponent title='Liquidation'>
-            <div className='typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800'>
+            <div
+                className={`typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800`}
+            >
                 <span className='whitespace-nowrap'>Up to</span>
 
                 <input
@@ -25,7 +28,10 @@ export const LiquidationManager: React.FC = () => {
                     step='1'
                     value={numberOfTrovesToLiquidate}
                     onChange={e => setNumberOfTrovesToLiquidate(e.target.value)}
-                    className='typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 focus:border-primary-500 focus:outline-none'
+                    className={clsx(
+                        `typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 focus:border-primary-500 focus:outline-none`,
+                        { 'text-neutral-400': !isConnected }
+                    )}
                 />
 
                 <span className='flex-1'>Troves</span>

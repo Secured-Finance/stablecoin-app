@@ -251,7 +251,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     // const [invalid, setInvalid] = useState(false);
 
     return (
-        <div className={!isConnected ? 'pointer-events-none' : ''}>
+        <div className={clsx({ 'pointer-events-none': !isConnected })}>
             {editing === inputId ? (
                 <Row
                     showBorder

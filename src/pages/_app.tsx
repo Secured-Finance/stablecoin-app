@@ -14,7 +14,6 @@ import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
-import { WalletConnector } from 'src/components/WalletConnector';
 import { getConfig } from 'src/configs';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
 import { SfStablecoinProvider } from 'src/hooks/SfStablecoinContext';
@@ -214,23 +213,19 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                     <QueryClientProvider client={queryClient}>
                         <WagmiProvider config={wagmiConfig}>
                             <Router>
-                                <WalletConnector>
-                                    <SfStablecoinProvider
-                                        loader={loader}
-                                        unsupportedNetworkFallback={
-                                            <UnsupportedNetworkFallback />
-                                        }
-                                        unsupportedMainnetFallback={
-                                            <UnsupportedMainnetFallback />
-                                        }
-                                    >
-                                        <TransactionProvider>
-                                            <SfStablecoinFrontend
-                                                loader={loader}
-                                            />
-                                        </TransactionProvider>
-                                    </SfStablecoinProvider>
-                                </WalletConnector>
+                                <SfStablecoinProvider
+                                    loader={loader}
+                                    unsupportedNetworkFallback={
+                                        <UnsupportedNetworkFallback />
+                                    }
+                                    unsupportedMainnetFallback={
+                                        <UnsupportedMainnetFallback />
+                                    }
+                                >
+                                    <TransactionProvider>
+                                        <SfStablecoinFrontend loader={loader} />
+                                    </TransactionProvider>
+                                </SfStablecoinProvider>
                             </Router>
                         </WagmiProvider>
                         <ReactQueryDevtools initialIsOpen={false} />

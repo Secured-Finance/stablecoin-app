@@ -270,7 +270,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                                         'h-[14px] w-[14px]',
                                         isConnected
                                             ? 'text-primary-500'
-                                            : 'text-gray-500'
+                                            : 'text-neutral-400'
                                     )}
                                 />
                             </button>

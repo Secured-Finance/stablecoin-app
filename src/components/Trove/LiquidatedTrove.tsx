@@ -30,7 +30,7 @@ export const LiquidatedTrove: React.FC = () => {
                     {hasSurplusCollateral && <CollateralSurplusAction />}
                     {!hasSurplusCollateral && (
                         <Button
-                            disabled={isConnected}
+                            disabled={!isConnected}
                             onClick={handleOpenTrove}
                         >
                             Open Trove

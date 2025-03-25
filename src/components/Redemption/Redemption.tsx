@@ -18,6 +18,7 @@ import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
 } from './validation/validateRedemptionChange';
+import clsx from 'clsx';
 
 const transactionId = 'redeem';
 
@@ -105,7 +106,11 @@ export const Redemption: React.FC = ({}) => {
 
     return (
         <CardComponent title='Redemption'>
-            <div className='flex flex-col gap-3'>
+            <div
+                className={clsx(`flex flex-col gap-3`, {
+                    'text-neutral-400': !isConnected,
+                })}
+            >
                 <EditableRow
                     label='Redeem'
                     inputId='redeem-scr'
