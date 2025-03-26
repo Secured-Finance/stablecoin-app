@@ -2,10 +2,10 @@
 import { Provider } from '@ethersproject/abstract-provider';
 import { Web3Provider } from '@ethersproject/providers';
 import {
-    _connectByChainId,
     BlockPolledSfStablecoinStore,
     EthersSfStablecoin,
     EthersSfStablecoinWithStore,
+    _connectByChainId,
 } from '@secured-finance/stablecoin-lib-ethers';
 import { ethers } from 'ethers';
 import React, {
@@ -18,7 +18,6 @@ import React, {
 import { FrontendConfig, getConfig } from 'src/configs';
 import { rpcUrls } from 'src/constants';
 import { BatchedProvider } from 'src/contexts';
-import { filecoinCalibration } from 'viem/chains';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
 type ContextValue = {
@@ -56,12 +55,15 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
                     }),
                 chainId
             );
-        }
-        // Default to Filecoin Calibration RPC if no wallet
-        const rpcUrl =
-            chainId === 314 ? rpcUrls.filecoin : rpcUrls.filecoinCalibration;
+        } else {
+            // Default RPC if no wallet
+            const rpcUrl =
+                chainId === 314
+                    ? rpcUrls.filecoin
+                    : rpcUrls.filecoinCalibration;
 
-        return new ethers.providers.JsonRpcProvider(rpcUrl, chainId);
+            return new ethers.providers.JsonRpcProvider(rpcUrl, chainId);
+        }
     }, [client, chainId]);
 
     const account = useAccount();
@@ -83,43 +85,28 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
 
     const connection = useMemo(() => {
         if (!config || !provider) return null;
-        const effectiveChainId = account.isConnected
-            ? chainId
-            : filecoinCalibration.id;
-        const batchedProvider = new BatchedProvider(provider, effectiveChainId);
+        const batchedProvider = new BatchedProvider(provider, chainId);
+        // batchedProvider._debugLog = true;
         batchedProvider.pollingInterval = 12_000;
 
         try {
-            return _connectByChainId(
-                batchedProvider,
-                signer,
-                effectiveChainId,
-                {
+            if (signer && account.address) {
+                return _connectByChainId(batchedProvider, signer, chainId, {
                     userAddress: account.address,
                     frontendTag: config.frontendTag,
                     useStore: 'blockPolled',
-                }
-            );
-        } catch (err) {
-            return _connectByChainId(
-                batchedProvider,
-                undefined,
-                filecoinCalibration.id,
-                {
+                });
+            } else {
+                return _connectByChainId(batchedProvider, undefined, chainId, {
                     userAddress: '0x0000000000000000000000000000000000000000',
                     frontendTag: config.frontendTag,
                     useStore: 'blockPolled',
-                }
-            );
+                });
+            }
+        } catch (err) {
+            console.error(err);
         }
-    }, [
-        config,
-        provider,
-        signer,
-        account.address,
-        account.isConnected,
-        chainId,
-    ]);
+    }, [config, provider, signer, account.address, chainId]);
 
     useEffect(() => {
         getConfig().then(setConfig);
@@ -129,13 +116,8 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         return <>{loader}</>;
     }
 
-    if (account.isConnected) {
-        const isSupportedNetwork = config.testnetOnly
-            ? chainId === filecoinCalibration.id
-            : chainId === filecoinCalibration.id || chainId === 314;
-        const isMainnetBlocked = config.testnetOnly && chainId === 314;
-        if (isMainnetBlocked) return <>{unsupportedMainnetFallback}</>;
-        if (!isSupportedNetwork) return <>{unsupportedNetworkFallback}</>;
+    if (config.testnetOnly && chainId === 314) {
+        return <>{unsupportedMainnetFallback}</>;
     }
 
     if (!connection) {

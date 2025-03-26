@@ -32,8 +32,8 @@ import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 import theme from '../theme';
+import { rpcUrls } from 'src/constants';
 
-const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 const gaTag = getGoogleAnalyticsTag();
 
 // Start pre-fetching the config
@@ -123,10 +123,8 @@ const wagmiConfig = defaultWagmiConfig({
         walletFeatures: false,
     },
     transports: {
-        [filecoin.id]: http(`https://rpc.ankr.com/filecoin/${ankerApiKey}`),
-        [filecoinCalibration.id]: http(
-            `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`
-        ),
+        [filecoin.id]: http(rpcUrls.filecoin),
+        [filecoinCalibration.id]: http(rpcUrls.filecoinCalibration),
     },
 });
 

@@ -54,9 +54,8 @@ export const UserAccount: React.FC = () => {
                     target='_blank'
                     rel='noopener noreferrer'
                     aria-label='Fixed Income'
-                    className=''
                 >
-                    <div className='hidden h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 tablet:flex laptop:flex laptop:h-10 laptop:px-3.5 desktop:flex'>
+                    <div className='hidden h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 tablet:flex laptop:h-10 laptop:px-3.5'>
                         <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                             Fixed Income
                         </span>

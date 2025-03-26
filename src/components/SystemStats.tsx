@@ -259,11 +259,6 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                                 )}
                             </button>
                             <button
-                                title={
-                                    isConnected
-                                        ? `Add ${COIN} to metamask`
-                                        : undefined
-                                }
                                 className='absolute -right-10 top-1/2 -translate-y-1/2 transform disabled:cursor-default'
                                 onClick={() =>
                                     addToMetamask(addresses.debtToken)

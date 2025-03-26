@@ -2,7 +2,6 @@ import {
     Decimal,
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
-import clsx from 'clsx';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
@@ -38,17 +37,12 @@ export const PriceManager: React.FC = () => {
         <CardComponent title='Price feed'>
             <div className='flex flex-col gap-1'>
                 <div className='flex items-center gap-2 font-semibold'>
-                    {canSetPrice ? (
+                    {canSetPrice && isConnected ? (
                         <>
                             <div className='typography-desktop-body-5'>
                                 {CURRENCY}
                             </div>
-                            <div
-                                className={clsx(
-                                    `typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden`,
-                                    { 'text-neutral-400': !isConnected }
-                                )}
-                            >
+                            <div className='typography-desktop-body-4 relative flex h-11 flex-1 items-center gap-1 overflow-hidden'>
                                 <span className='absolute left-2 top-1/2 -translate-y-1/2 leading-normal'>
                                     $
                                 </span>
@@ -56,11 +50,10 @@ export const PriceManager: React.FC = () => {
                                     type='number'
                                     step='any'
                                     value={editedPrice}
-                                    disabled={!isConnected}
                                     onChange={e =>
                                         setEditedPrice(e.target.value)
                                     }
-                                    className='h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none disabled:text-neutral-400'
+                                    className='h-full flex-1 rounded-md border border-neutral-300 bg-neutral-50 py-2 pl-6 pr-3 font-semibold focus:border-primary-500 focus:outline-none'
                                 />
                             </div>
                         </>

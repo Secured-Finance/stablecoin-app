@@ -250,58 +250,48 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     const [editing, setEditing] = editingState;
     // const [invalid, setInvalid] = useState(false);
 
-    return (
-        <div className={clsx({ 'pointer-events-none': !isConnected })}>
-            {editing === inputId ? (
-                <Row
-                    showBorder
-                    isActive
-                    {...{ label, labelFor: inputId, unit }}
-                >
-                    <Input
-                        id={inputId}
-                        type='number'
-                        step='any'
-                        defaultValue={editedAmount}
-                        disabled={!isConnected}
-                        onChange={e => setEditedAmount(e.target.value)}
-                        onBlur={() => setEditing(undefined)}
-                        variant='editor'
-                        className='!border-none !p-0 outline-none'
-                    />
-                </Row>
-            ) : (
-                <Row
-                    showBorder
-                    labelId={`${inputId}-label`}
-                    {...{ label, unit }}
-                >
-                    <StaticAmounts
-                        labelledBy={`${inputId}-label`}
-                        onClick={() => isConnected && setEditing(inputId)}
-                        inputId={inputId}
-                        amount={amount}
-                        unit={unit}
-                        color={color}
-                        pendingAmount={pendingAmount}
-                        pendingColor={pendingColor}
+    return editing === inputId ? (
+        <Row showBorder isActive {...{ label, labelFor: inputId, unit }}>
+            <Input
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus={!isConnected}
+                id={inputId}
+                type='number'
+                step='any'
+                defaultValue={editedAmount}
+                disabled={!isConnected}
+                onChange={e => setEditedAmount(e.target.value)}
+                onBlur={() => setEditing(undefined)}
+                variant='editor'
+                className='!border-none !p-0 outline-none'
+            />
+        </Row>
+    ) : (
+        <Row showBorder labelId={`${inputId}-label`} {...{ label, unit }}>
+            <StaticAmounts
+                labelledBy={`${inputId}-label`}
+                onClick={() => isConnected && setEditing(inputId)}
+                inputId={inputId}
+                amount={amount}
+                unit={unit}
+                color={color}
+                pendingAmount={pendingAmount}
+                pendingColor={pendingColor}
+            >
+                {maxAmount && (
+                    <Button
+                        size={ButtonSizes.xs}
+                        onClick={event => {
+                            setEditedAmount(maxAmount);
+                            event.stopPropagation();
+                        }}
+                        disabled={maxedOut || !isConnected}
                     >
-                        {maxAmount && (
-                            <Button
-                                size={ButtonSizes.xs}
-                                onClick={event => {
-                                    setEditedAmount(maxAmount);
-                                    event.stopPropagation();
-                                }}
-                                disabled={maxedOut || !isConnected}
-                            >
-                                Max
-                            </Button>
-                        )}
-                    </StaticAmounts>
-                </Row>
-            )}
-        </div>
+                        Max
+                    </Button>
+                )}
+            </StaticAmounts>
+        </Row>
     );
 };
 
