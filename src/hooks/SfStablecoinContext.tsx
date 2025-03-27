@@ -18,6 +18,7 @@ import React, {
 import { FrontendConfig, getConfig } from 'src/configs';
 import { rpcUrls } from 'src/constants';
 import { BatchedProvider } from 'src/contexts';
+import { filecoin } from 'viem/chains';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
 type ContextValue = {
@@ -88,21 +89,12 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         const batchedProvider = new BatchedProvider(provider, chainId);
         // batchedProvider._debugLog = true;
         batchedProvider.pollingInterval = 12_000;
-
         try {
-            if (signer && account.address) {
-                return _connectByChainId(batchedProvider, signer, chainId, {
-                    userAddress: account.address,
-                    frontendTag: config.frontendTag,
-                    useStore: 'blockPolled',
-                });
-            } else {
-                return _connectByChainId(batchedProvider, undefined, chainId, {
-                    userAddress: '0x0000000000000000000000000000000000000000',
-                    frontendTag: config.frontendTag,
-                    useStore: 'blockPolled',
-                });
-            }
+            return _connectByChainId(batchedProvider, signer, chainId, {
+                userAddress: account.address,
+                frontendTag: config.frontendTag,
+                useStore: 'blockPolled',
+            });
         } catch (err) {
             console.error(err);
         }
@@ -116,7 +108,7 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         return <>{loader}</>;
     }
 
-    if (config.testnetOnly && chainId === 314) {
+    if (config.testnetOnly && chainId === filecoin.id) {
         return <>{unsupportedMainnetFallback}</>;
     }
 
