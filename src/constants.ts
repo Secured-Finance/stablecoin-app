@@ -40,6 +40,6 @@ export const TELLOR_ORACLE_LINKS = {
 };
 
 export const rpcUrls = {
-    filecoin: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
-    filecoinCalibration: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
+    mainnet: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
+    testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };

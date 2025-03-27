@@ -123,8 +123,8 @@ const wagmiConfig = defaultWagmiConfig({
         walletFeatures: false,
     },
     transports: {
-        [filecoin.id]: http(rpcUrls.filecoin),
-        [filecoinCalibration.id]: http(rpcUrls.filecoinCalibration),
+        [filecoin.id]: http(rpcUrls.mainnet),
+        [filecoinCalibration.id]: http(rpcUrls.testnet),
     },
 });
 
