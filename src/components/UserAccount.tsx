@@ -81,7 +81,13 @@ export const UserAccount: React.FC = () => {
                         </span>
                     </button>
                 ) : (
-                    <Button onClick={() => open()}>Connect Wallet</Button>
+                    <Button
+                        onClick={() => open()}
+                        mobileText={'Connect'}
+                        className='h-8 px-2 laptop:h-10 laptop:px-3.5'
+                    >
+                        Connect Wallet
+                    </Button>
                 )}
             </>
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>

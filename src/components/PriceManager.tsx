@@ -12,6 +12,7 @@ import { CURRENCY } from 'src/strings';
 import { getSetPriceEnabled } from 'src/utils';
 import { useAccount } from 'wagmi';
 import { Transaction } from './Transaction';
+import { filecoin } from 'viem/chains';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
 
@@ -101,7 +102,7 @@ export const PriceManager: React.FC = () => {
                         <Link
                             className='mx-1 font-semibold text-primary-500'
                             href={
-                                chainId === 314
+                                chainId === filecoin.id
                                     ? TELLOR_ORACLE_LINKS.mainnet
                                     : TELLOR_ORACLE_LINKS.testnet
                             }

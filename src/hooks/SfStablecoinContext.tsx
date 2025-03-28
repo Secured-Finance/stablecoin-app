@@ -57,8 +57,8 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
                 chainId
             );
         } else {
-            // Default RPC if no wallet
-            const rpcUrl = chainId === 314 ? rpcUrls.mainnet : rpcUrls.testnet;
+            const rpcUrl =
+                chainId === filecoin.id ? rpcUrls.mainnet : rpcUrls.testnet;
 
             return new ethers.providers.JsonRpcProvider(rpcUrl, chainId);
         }

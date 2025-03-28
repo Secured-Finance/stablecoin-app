@@ -23,6 +23,7 @@ import {
 import { useAccount, useWalletClient } from 'wagmi';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
+import { filecoin } from 'viem/chains';
 
 const selectBalances = ({
     accountBalance,
@@ -238,7 +239,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         <span className='relative ml-1 font-semibold text-primary-500'>
                             <Link
                                 href={`${
-                                    chainId === 314
+                                    chainId === filecoin.id
                                         ? BLOCKCHAIN_EXPLORER_LINKS.mainnet
                                         : BLOCKCHAIN_EXPLORER_LINKS.testnet
                                 }/en/address/${addresses.debtToken}`}
