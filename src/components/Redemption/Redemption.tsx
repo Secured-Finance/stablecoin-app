@@ -13,7 +13,7 @@ import { COIN, CURRENCY } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
-import { EditableRow, StaticRow } from '../Trove/Editor';
+import { DisabledEditableRow, EditableRow, StaticRow } from '../Trove/Editor';
 import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
@@ -106,20 +106,28 @@ export const Redemption: React.FC = ({}) => {
     return (
         <CardComponent title='Redemption'>
             <div className='flex flex-col gap-3'>
-                <EditableRow
-                    label='Redeem'
-                    inputId='redeem-scr'
-                    amount={debtToken.prettify()}
-                    maxAmount={maxAmount.toString()}
-                    maxedOut={maxedOut}
-                    unit={COIN}
-                    {...{ editingState }}
-                    editedAmount={debtToken.toString(2)}
-                    setEditedAmount={amount =>
-                        setDebtToken(Decimal.from(amount))
-                    }
-                    isConnected={isConnected}
-                />
+                {isConnected ? (
+                    <EditableRow
+                        label='Redeem'
+                        inputId='redeem-scr'
+                        amount={debtToken.prettify()}
+                        maxAmount={maxAmount.toString()}
+                        maxedOut={maxedOut}
+                        unit={COIN}
+                        {...{ editingState }}
+                        editedAmount={debtToken.toString(2)}
+                        setEditedAmount={amount =>
+                            setDebtToken(Decimal.from(amount))
+                        }
+                    />
+                ) : (
+                    <DisabledEditableRow
+                        label='Redeem'
+                        inputId='redeem-scr'
+                        amount={debtToken.prettify()}
+                        unit={COIN}
+                    />
+                )}
                 <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
                         label='Redemption Fee'

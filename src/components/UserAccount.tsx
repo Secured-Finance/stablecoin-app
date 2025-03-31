@@ -5,8 +5,12 @@ import React, { useEffect } from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
-import { Button, Identicon } from 'src/components/atoms';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { Button, ButtonSizes, Identicon } from 'src/components/atoms';
+import {
+    useBreakpoint,
+    useSfStablecoin,
+    useSfStablecoinSelector,
+} from 'src/hooks';
 import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
@@ -27,6 +31,7 @@ const select = ({
 });
 
 export const UserAccount: React.FC = () => {
+    const isMobile = useBreakpoint('laptop');
     const { account } = useSfStablecoin();
     const { open } = useWeb3Modal();
     const { open: isOpen } = useWeb3ModalState();
@@ -47,7 +52,7 @@ export const UserAccount: React.FC = () => {
     }, [isOpen, networks, open, wallet.data]);
 
     return (
-        <div className='flex flex-row items-center gap-3 laptop:gap-2'>
+        <div className='flex flex-row items-center gap-2 laptop:gap-2'>
             <>
                 <Link
                     href={getFixedIncomeMarketLink()}
@@ -55,8 +60,8 @@ export const UserAccount: React.FC = () => {
                     rel='noopener noreferrer'
                     aria-label='Fixed Income'
                 >
-                    <div className='hidden h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 tablet:flex laptop:h-10 laptop:px-3.5'>
-                        <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
+                    <div className='flex items-center gap-x-1.5 rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                        <span className='text-3 leading-4 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                             Fixed Income
                         </span>
                         <ExternalLink className='h-4 w-4' />
@@ -64,7 +69,7 @@ export const UserAccount: React.FC = () => {
                 </Link>
                 {isConnected ? (
                     <button
-                        className='flex h-8 items-center gap-x-1 rounded-md px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
+                        className='flex items-center gap-x-1 rounded-md border border-neutral-300 p-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
                         onClick={() => open()}
                     >
                         <span>
@@ -84,7 +89,7 @@ export const UserAccount: React.FC = () => {
                     <Button
                         onClick={() => open()}
                         mobileText={'Connect'}
-                        className='h-8 px-2 laptop:h-10 laptop:px-3.5'
+                        size={isMobile ? ButtonSizes.sm : ButtonSizes.md}
                     >
                         Connect Wallet
                     </Button>
