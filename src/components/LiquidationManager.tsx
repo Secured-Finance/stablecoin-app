@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin } from 'src/hooks';
+import { useAccount } from 'wagmi';
 import { Transaction } from './Transaction';
 
 export const LiquidationManager: React.FC = () => {
     const {
         sfStablecoin: { send: sfStablecoin },
     } = useSfStablecoin();
+    const { isConnected } = useAccount();
     const [numberOfTrovesToLiquidate, setNumberOfTrovesToLiquidate] =
         useState('90');
 
@@ -16,14 +18,20 @@ export const LiquidationManager: React.FC = () => {
             <div className='typography-mobile-body-4 laptop:typography-desktop-body-3 flex items-center justify-stretch gap-2 text-neutral-800'>
                 <span className='whitespace-nowrap'>Up to</span>
 
-                <input
-                    type='number'
-                    min='1'
-                    step='1'
-                    value={numberOfTrovesToLiquidate}
-                    onChange={e => setNumberOfTrovesToLiquidate(e.target.value)}
-                    className='typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 focus:border-primary-500 focus:outline-none'
-                />
+                {isConnected ? (
+                    <input
+                        type='number'
+                        min='1'
+                        step='1'
+                        value={numberOfTrovesToLiquidate}
+                        onChange={e =>
+                            setNumberOfTrovesToLiquidate(e.target.value)
+                        }
+                        className='typography-desktop-body-3 h-10 min-w-[100px] rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 focus:border-primary-500 focus:outline-none'
+                    />
+                ) : (
+                    <span>{numberOfTrovesToLiquidate}</span>
+                )}
 
                 <span className='flex-1'>Troves</span>
 
@@ -39,7 +47,7 @@ export const LiquidationManager: React.FC = () => {
                         );
                     }}
                 >
-                    <Button>Liquidate</Button>
+                    <Button disabled={!isConnected}>Liquidate</Button>
                 </Transaction>
             </div>
         </CardComponent>

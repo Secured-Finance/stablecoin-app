@@ -257,18 +257,8 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                 type='number'
                 step='any'
                 defaultValue={editedAmount}
-                onChange={e => {
-                    try {
-                        setEditedAmount(e.target.value);
-                        // setInvalid(false);
-                    } catch {
-                        // setInvalid(true);
-                    }
-                }}
-                onBlur={() => {
-                    setEditing(undefined);
-                    // setInvalid(false);
-                }}
+                onChange={e => setEditedAmount(e.target.value)}
+                onBlur={() => setEditing(undefined)}
                 variant='editor'
                 className='!border-none !p-0 outline-none'
             />

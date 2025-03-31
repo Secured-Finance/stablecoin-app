@@ -3,10 +3,12 @@ import InfoIcon from 'src/assets/icons/information-circle.svg';
 import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { COIN } from 'src/strings';
+import { useAccount } from 'wagmi';
 import { useTroveView } from './context/TroveViewContext';
 
 export const NoTrove: React.FC = () => {
     const { dispatchEvent } = useTroveView();
+    const { isConnected } = useAccount();
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('OPEN_TROVE_PRESSED');
@@ -16,7 +18,9 @@ export const NoTrove: React.FC = () => {
         <CardComponent
             title='Trove'
             actionComponent={
-                <Button onClick={handleOpenTrove}>Open Trove</Button>
+                <Button disabled={!isConnected} onClick={handleOpenTrove}>
+                    Open Trove
+                </Button>
             }
         >
             <div className='flex flex-col gap-1 laptop:gap-2'>

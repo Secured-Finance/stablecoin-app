@@ -17,7 +17,7 @@ export const SystemStatsPopup: React.FC = () => {
     return (
         <>
             <button
-                className='flex h-8 items-center rounded-[8px] bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:hidden'
+                className='flex items-center rounded-md border border-neutral-300 bg-neutral-50 p-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:hidden'
                 onClick={() => setSystemStatsOpen(!systemStatsOpen)}
             >
                 <InfoIcon

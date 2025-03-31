@@ -3,6 +3,7 @@ import {
     Percent,
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
+import clsx from 'clsx';
 import { WalletCardsIcon } from 'lucide-react';
 import Link from 'next/link';
 import packageJson from 'package.json';
@@ -19,9 +20,10 @@ import {
     DEBT_TOKEN_PRECISION,
     isProdEnv,
 } from 'src/utils';
-import { useWalletClient } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
+import { filecoin } from 'viem/chains';
 
 const selectBalances = ({
     accountBalance,
@@ -151,6 +153,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                     address: address,
                     symbol: COIN,
                     decimals: 18,
+                    image: 'https://app.usdfc.net/apple-touch-icon.png',
                 },
             });
         },
@@ -162,14 +165,19 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
+    const { isConnected } = useAccount();
 
     return (
         <div className='w-full min-w-0 rounded-lg bg-neutral-50 p-3 text-neutral-900 shadow-card laptop:px-4 laptop:pb-4 laptop:pt-3'>
             <div className='flex flex-col gap-3 laptop:gap-4'>
-                <h2 className='typography-mobile-body-1 flex font-light laptop:hidden'>
-                    My Info
-                </h2>
-                {showBalances && <Balances />}
+                {showBalances && isConnected && (
+                    <>
+                        <h2 className='typography-mobile-body-1 flex font-light laptop:hidden'>
+                            My Info
+                        </h2>
+                        <Balances />
+                    </>
+                )}
 
                 <h2 className='typography-mobile-body-1 flex items-center justify-between font-light text-neutral-800'>
                     Protocol Statistics
@@ -231,7 +239,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                         <span className='relative ml-1 font-semibold text-primary-500'>
                             <Link
                                 href={`${
-                                    chainId === 314
+                                    chainId === filecoin.id
                                         ? BLOCKCHAIN_EXPLORER_LINKS.mainnet
                                         : BLOCKCHAIN_EXPLORER_LINKS.testnet
                                 }/en/address/${addresses.debtToken}`}
@@ -252,12 +260,20 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                                 )}
                             </button>
                             <button
-                                className='absolute -right-10 top-1/2 -translate-y-1/2 transform'
+                                className='absolute -right-10 top-1/2 -translate-y-1/2 transform disabled:cursor-default'
                                 onClick={() =>
                                     addToMetamask(addresses.debtToken)
                                 }
+                                disabled={!isConnected}
                             >
-                                <WalletCardsIcon className='h-[14px] w-[14px] text-primary-500' />
+                                <WalletCardsIcon
+                                    className={clsx(
+                                        'h-[14px] w-[14px]',
+                                        isConnected
+                                            ? 'text-primary-500'
+                                            : 'text-neutral-400'
+                                    )}
+                                />
                             </button>
                         </span>
                     </div>

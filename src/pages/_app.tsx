@@ -14,7 +14,6 @@ import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
-import { WalletConnector } from 'src/components/WalletConnector';
 import { getConfig } from 'src/configs';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
 import { SfStablecoinProvider } from 'src/hooks/SfStablecoinContext';
@@ -33,8 +32,8 @@ import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 import theme from '../theme';
+import { rpcUrls } from 'src/constants';
 
-const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 const gaTag = getGoogleAnalyticsTag();
 
 // Start pre-fetching the config
@@ -124,10 +123,8 @@ const wagmiConfig = defaultWagmiConfig({
         walletFeatures: false,
     },
     transports: {
-        [filecoin.id]: http(`https://rpc.ankr.com/filecoin/${ankerApiKey}`),
-        [filecoinCalibration.id]: http(
-            `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`
-        ),
+        [filecoin.id]: http(rpcUrls.mainnet),
+        [filecoinCalibration.id]: http(rpcUrls.testnet),
     },
 });
 
@@ -214,23 +211,19 @@ const Providers: React.FC<{ children: React.ReactNode }> = () => {
                     <QueryClientProvider client={queryClient}>
                         <WagmiProvider config={wagmiConfig}>
                             <Router>
-                                <WalletConnector>
-                                    <SfStablecoinProvider
-                                        loader={loader}
-                                        unsupportedNetworkFallback={
-                                            <UnsupportedNetworkFallback />
-                                        }
-                                        unsupportedMainnetFallback={
-                                            <UnsupportedMainnetFallback />
-                                        }
-                                    >
-                                        <TransactionProvider>
-                                            <SfStablecoinFrontend
-                                                loader={loader}
-                                            />
-                                        </TransactionProvider>
-                                    </SfStablecoinProvider>
-                                </WalletConnector>
+                                <SfStablecoinProvider
+                                    loader={loader}
+                                    unsupportedNetworkFallback={
+                                        <UnsupportedNetworkFallback />
+                                    }
+                                    unsupportedMainnetFallback={
+                                        <UnsupportedMainnetFallback />
+                                    }
+                                >
+                                    <TransactionProvider>
+                                        <SfStablecoinFrontend loader={loader} />
+                                    </TransactionProvider>
+                                </SfStablecoinProvider>
                             </Router>
                         </WagmiProvider>
                         <ReactQueryDevtools initialIsOpen={false} />
