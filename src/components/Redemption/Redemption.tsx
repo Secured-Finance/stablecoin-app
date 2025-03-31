@@ -8,6 +8,7 @@ import { Button } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Card, Spinner } from 'theme-ui';
+import { useAccount } from 'wagmi';
 import { COIN, CURRENCY } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
@@ -35,6 +36,7 @@ export const Redemption: React.FC = ({}) => {
         useSfStablecoinSelector(selector);
 
     const { sfStablecoin } = useSfStablecoin();
+    const { isConnected } = useAccount();
     const [debtToken, setDebtToken] = useState<Decimal>(Decimal.from(0));
     const [estimatedDebtToken, setEstimatedDebtToken] = useState<Decimal>(
         Decimal.from(0)
@@ -116,6 +118,7 @@ export const Redemption: React.FC = ({}) => {
                     setEditedAmount={amount =>
                         setDebtToken(Decimal.from(amount))
                     }
+                    isConnected={isConnected}
                 />
                 <div className='flex flex-col gap-3 px-3'>
                     <StaticRow
@@ -152,7 +155,12 @@ export const Redemption: React.FC = ({}) => {
                             />
                         </Button>
                     ) : isValid ? (
-                        <Button onClick={sendTransaction}>Confirm</Button>
+                        <Button
+                            disabled={!isConnected}
+                            onClick={sendTransaction}
+                        >
+                            Confirm
+                        </Button>
                     ) : (
                         <Button disabled>Confirm</Button>
                     )}

@@ -7,6 +7,7 @@ import { COIN } from 'src/strings';
 import { CollateralSurplusAction } from '../CollateralSurplusAction';
 import { InfoMessage } from '../InfoMessage';
 import { useTroveView } from './context/TroveViewContext';
+import { useAccount } from 'wagmi';
 
 const select = ({ collateralSurplusBalance }: SfStablecoinStoreState) => ({
     hasSurplusCollateral: !collateralSurplusBalance.isZero,
@@ -15,6 +16,7 @@ const select = ({ collateralSurplusBalance }: SfStablecoinStoreState) => ({
 export const LiquidatedTrove: React.FC = () => {
     const { hasSurplusCollateral } = useSfStablecoinSelector(select);
     const { dispatchEvent } = useTroveView();
+    const { isConnected } = useAccount();
 
     const handleOpenTrove = useCallback(() => {
         dispatchEvent('OPEN_TROVE_PRESSED');
@@ -27,7 +29,12 @@ export const LiquidatedTrove: React.FC = () => {
                 <>
                     {hasSurplusCollateral && <CollateralSurplusAction />}
                     {!hasSurplusCollateral && (
-                        <Button onClick={handleOpenTrove}>Open Trove</Button>
+                        <Button
+                            disabled={!isConnected}
+                            onClick={handleOpenTrove}
+                        >
+                            Open Trove
+                        </Button>
                     )}
                 </>
             }

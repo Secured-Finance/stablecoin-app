@@ -10,7 +10,9 @@ import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { getSetPriceEnabled } from 'src/utils';
+import { useAccount } from 'wagmi';
 import { Transaction } from './Transaction';
+import { filecoin } from 'viem/chains';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
 
@@ -23,6 +25,7 @@ export const PriceManager: React.FC = () => {
     } = useSfStablecoin();
 
     const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
+    const { isConnected } = useAccount();
 
     const price = useSfStablecoinSelector(selectPrice);
     const [editedPrice, setEditedPrice] = useState(price.toString(2));
@@ -35,7 +38,7 @@ export const PriceManager: React.FC = () => {
         <CardComponent title='Price feed'>
             <div className='flex flex-col gap-1'>
                 <div className='flex items-center gap-2 font-semibold'>
-                    {canSetPrice ? (
+                    {canSetPrice && isConnected ? (
                         <>
                             <div className='typography-desktop-body-5'>
                                 {CURRENCY}
@@ -60,7 +63,7 @@ export const PriceManager: React.FC = () => {
                             {`1 ${CURRENCY} = ${editedPrice} USD`}
                         </span>
                     )}
-                    {canSetPrice && (
+                    {canSetPrice && isConnected && (
                         <div className='flex items-center'>
                             <Transaction
                                 id='set-price'
@@ -99,7 +102,7 @@ export const PriceManager: React.FC = () => {
                         <Link
                             className='mx-1 font-semibold text-primary-500'
                             href={
-                                chainId === 314
+                                chainId === filecoin.id
                                     ? TELLOR_ORACLE_LINKS.mainnet
                                     : TELLOR_ORACLE_LINKS.testnet
                             }

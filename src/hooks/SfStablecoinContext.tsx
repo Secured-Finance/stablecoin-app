@@ -7,6 +7,7 @@ import {
     EthersSfStablecoinWithStore,
     _connectByChainId,
 } from '@secured-finance/stablecoin-lib-ethers';
+import { ethers } from 'ethers';
 import React, {
     createContext,
     useContext,
@@ -15,7 +16,9 @@ import React, {
     useState,
 } from 'react';
 import { FrontendConfig, getConfig } from 'src/configs';
+import { rpcUrls } from 'src/constants';
 import { BatchedProvider } from 'src/contexts';
+import { filecoin } from 'viem/chains';
 import { useAccount, useChainId, useClient, useWalletClient } from 'wagmi';
 
 type ContextValue = {
@@ -43,16 +46,23 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
     const client = useClient();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const provider =
-        client &&
-        new Web3Provider(
-            (method, params) =>
-                client.request({
-                    method: method as any,
-                    params: params as any,
-                }),
-            chainId
-        );
+    const provider = useMemo(() => {
+        if (client) {
+            return new Web3Provider(
+                (method, params) =>
+                    client.request({
+                        method: method as any,
+                        params: params as any,
+                    }),
+                chainId
+            );
+        } else {
+            const rpcUrl =
+                chainId === filecoin.id ? rpcUrls.mainnet : rpcUrls.testnet;
+
+            return new ethers.providers.JsonRpcProvider(rpcUrl, chainId);
+        }
+    }, [client, chainId]);
 
     const account = useAccount();
     const walletClient = useWalletClient();
@@ -72,20 +82,18 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
     const [config, setConfig] = useState<FrontendConfig>();
 
     const connection = useMemo(() => {
-        if (config && provider && signer && account.address) {
-            const batchedProvider = new BatchedProvider(provider, chainId);
-            // batchedProvider._debugLog = true;
-            batchedProvider.pollingInterval = 12_000;
-
-            try {
-                return _connectByChainId(batchedProvider, signer, chainId, {
-                    userAddress: account.address,
-                    frontendTag: config.frontendTag,
-                    useStore: 'blockPolled',
-                });
-            } catch (err) {
-                console.error(err);
-            }
+        if (!config || !provider) return null;
+        const batchedProvider = new BatchedProvider(provider, chainId);
+        // batchedProvider._debugLog = true;
+        batchedProvider.pollingInterval = 12_000;
+        try {
+            return _connectByChainId(batchedProvider, signer, chainId, {
+                userAddress: account.address,
+                frontendTag: config.frontendTag,
+                useStore: 'blockPolled',
+            });
+        } catch (err) {
+            console.error(err);
         }
     }, [config, provider, signer, account.address, chainId]);
 
@@ -93,11 +101,11 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         getConfig().then(setConfig);
     }, []);
 
-    if (!config || !provider || !signer || !account.address) {
+    if (!config || !provider) {
         return <>{loader}</>;
     }
 
-    if (config.testnetOnly && chainId === 314) {
+    if (config.testnetOnly && chainId === filecoin.id) {
         return <>{unsupportedMainnetFallback}</>;
     }
 
@@ -112,7 +120,7 @@ export const SfStablecoinProvider: React.FC<SfStablecoinProviderProps> = ({
         <SfStablecoinContext.Provider
             value={{
                 config,
-                account: account.address,
+                account: account.address || '',
                 provider: connection.provider,
                 sfStablecoin,
             }}

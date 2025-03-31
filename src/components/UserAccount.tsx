@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
-import { Identicon } from 'src/components/atoms';
+import { Button, Identicon } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { COIN, CURRENCY } from 'src/strings';
 import {
@@ -14,7 +14,7 @@ import {
     getSupportedChains,
     ordinaryFormat,
 } from 'src/utils';
-import { useWalletClient } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 
 const select = ({
     accountBalance,
@@ -33,7 +33,7 @@ export const UserAccount: React.FC = () => {
     const { accountBalance, debtTokenBalance } =
         useSfStablecoinSelector(select);
     const wallet = useWalletClient();
-
+    const { isConnected } = useAccount();
     const networks = getSupportedChains();
 
     useEffect(() => {
@@ -48,33 +48,48 @@ export const UserAccount: React.FC = () => {
 
     return (
         <div className='flex flex-row items-center gap-3 laptop:gap-2'>
-            <Link
-                href={getFixedIncomeMarketLink()}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='Fixed Income'
-            >
-                <div className='flex h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                    <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                        Fixed Income
-                    </span>
-                    <ExternalLink className='h-4 w-4' />
-                </div>
-            </Link>
-            <button
-                className='flex h-8 items-center gap-x-1 rounded-md px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
-                onClick={() => open()}
-            >
-                <span>
-                    <Identicon value={account.toLowerCase()} size={16} />
-                </span>
-                <span
-                    className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
-                    data-cy='wallet-address'
+            <>
+                <Link
+                    href={getFixedIncomeMarketLink()}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label='Fixed Income'
                 >
-                    {AddressUtils.format(account.toLowerCase(), 6)}
-                </span>
-            </button>
+                    <div className='hidden h-8 items-center gap-x-1.5 rounded-md bg-neutral-50 px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 tablet:flex laptop:h-10 laptop:px-3.5'>
+                        <span className='text-3 leading-5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
+                            Fixed Income
+                        </span>
+                        <ExternalLink className='h-4 w-4' />
+                    </div>
+                </Link>
+                {isConnected ? (
+                    <button
+                        className='flex h-8 items-center gap-x-1 rounded-md px-2 ring-1 ring-neutral-300 hover:ring-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
+                        onClick={() => open()}
+                    >
+                        <span>
+                            <Identicon
+                                value={account.toLowerCase()}
+                                size={16}
+                            />
+                        </span>
+                        <span
+                            className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
+                            data-cy='wallet-address'
+                        >
+                            {AddressUtils.format(account.toLowerCase(), 6)}
+                        </span>
+                    </button>
+                ) : (
+                    <Button
+                        onClick={() => open()}
+                        mobileText={'Connect'}
+                        className='h-8 px-2 laptop:h-10 laptop:px-3.5'
+                    >
+                        Connect Wallet
+                    </Button>
+                )}
+            </>
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [
@@ -109,7 +124,7 @@ export const UserAccount: React.FC = () => {
                             <Logo className='h-4 w-4' />
                             <span className='font-semibold'>{currency}</span>
                         </div>
-                        <span>{balance}</span>
+                        <span>{isConnected ? balance : '-'}</span>
                     </div>
                 ))}
             </div>
