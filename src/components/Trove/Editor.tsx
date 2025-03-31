@@ -229,7 +229,6 @@ type EditableRowProps = DisabledEditableRowProps & {
     setEditedAmount: (editedAmount: string) => void;
     maxAmount?: string;
     maxedOut?: boolean;
-    isConnected?: boolean;
 };
 
 export const EditableRow: React.FC<EditableRowProps> = ({
@@ -245,7 +244,6 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     setEditedAmount,
     maxAmount,
     maxedOut,
-    isConnected,
 }) => {
     const [editing, setEditing] = editingState;
     // const [invalid, setInvalid] = useState(false);
@@ -254,12 +252,11 @@ export const EditableRow: React.FC<EditableRowProps> = ({
         <Row showBorder isActive {...{ label, labelFor: inputId, unit }}>
             <Input
                 // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus={!isConnected}
+                autoFocus
                 id={inputId}
                 type='number'
                 step='any'
                 defaultValue={editedAmount}
-                disabled={!isConnected}
                 onChange={e => setEditedAmount(e.target.value)}
                 onBlur={() => setEditing(undefined)}
                 variant='editor'
@@ -270,7 +267,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
         <Row showBorder labelId={`${inputId}-label`} {...{ label, unit }}>
             <StaticAmounts
                 labelledBy={`${inputId}-label`}
-                onClick={() => isConnected && setEditing(inputId)}
+                onClick={() => setEditing(inputId)}
                 inputId={inputId}
                 amount={amount}
                 unit={unit}
@@ -285,7 +282,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                             setEditedAmount(maxAmount);
                             event.stopPropagation();
                         }}
-                        disabled={maxedOut || !isConnected}
+                        disabled={maxedOut}
                     >
                         Max
                     </Button>
