@@ -61,10 +61,10 @@ export const UserAccount: React.FC = () => {
                     aria-label='Fixed Income'
                 >
                     <div className='flex items-center gap-x-1.5 rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                        <span className='text-3 leading-4 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
+                        <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
                             Fixed Income
                         </span>
-                        <ExternalLink className='h-4 w-4' />
+                        <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
                     </div>
                 </Link>
                 {isConnected ? (
@@ -75,7 +75,7 @@ export const UserAccount: React.FC = () => {
                         <span>
                             <Identicon
                                 value={account.toLowerCase()}
-                                size={16}
+                                size={isMobile ? 14 : 16}
                             />
                         </span>
                         <span
