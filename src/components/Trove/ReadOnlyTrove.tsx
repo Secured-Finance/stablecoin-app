@@ -28,7 +28,11 @@ export const ReadOnlyTrove: React.FC = () => {
         dispatchEvent('CLOSE_TROVE_PRESSED');
     }, [dispatchEvent]);
 
-    const { trove, price, debtInFront } = useSfStablecoinSelector(select);
+    const {
+        trove,
+        price,
+        debtInFront: [debtInFrontAmount, debtInFrontNextAddress],
+    } = useSfStablecoinSelector(select);
 
     // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (
@@ -63,12 +67,14 @@ export const ReadOnlyTrove: React.FC = () => {
                             ></InfoIcon>
                         </div>
                         <div className='font-semibold'>{`${
+                            // Note: `debtInFrontNextAddress !== AddressZero` means there is more Trove that has not been accounted for in `debtInFrontAmount`.
                             ordinaryFormat(
-                                Number(debtInFront[0].toString()) || 0,
+                                Number(debtInFrontAmount.toString()) || 0,
                                 0,
-                                debtInFront[1] === AddressZero ? 2 : 0,
+                                debtInFrontNextAddress === AddressZero ? 2 : 0,
                                 'compact'
-                            ) + (debtInFront[1] === AddressZero ? '' : '+')
+                            ) +
+                            (debtInFrontNextAddress === AddressZero ? '' : '+')
                         } ${COIN}`}</div>
                     </div>
                 </>
