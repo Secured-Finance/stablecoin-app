@@ -1,16 +1,23 @@
+import { AddressZero } from '@ethersproject/constants';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React, { useCallback } from 'react';
 import { Button, ButtonVariants } from 'src/components/atoms';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { COLLATERAL_PRECISION } from 'src/utils';
+import { Card, Paragraph, Text } from 'theme-ui';
 import { COIN, CURRENCY } from '../../strings';
 import { Icon } from '../Icon';
+import { InfoIcon } from '../InfoIcon';
 import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
 import { useTroveView } from './context/TroveViewContext';
 import { DisabledEditableRow } from './Editor';
 
-const select = ({ trove, price }: SfStablecoinStoreState) => ({ trove, price });
+const select = ({ trove, price, debtInFront }: SfStablecoinStoreState) => ({
+    trove,
+    price,
+    debtInFront,
+});
 
 export const ReadOnlyTrove: React.FC = () => {
     const { dispatchEvent } = useTroveView();
@@ -21,12 +28,50 @@ export const ReadOnlyTrove: React.FC = () => {
         dispatchEvent('CLOSE_TROVE_PRESSED');
     }, [dispatchEvent]);
 
-    const { trove, price } = useSfStablecoinSelector(select);
+    const { trove, price, debtInFront } = useSfStablecoinSelector(select);
 
     // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (
         <CardComponent
-            title='Trove'
+            title={
+                <>
+                    Trove
+                    <div className='typography-mobile-body-4 flex flex-row gap-2 rounded-lg bg-neutral-200 px-2 py-1'>
+                        <div className='typography-desktop-body-5 flex items-center gap-1 text-neutral-600'>
+                            Debt In Front{' '}
+                            <InfoIcon
+                                message={
+                                    <Card
+                                        variant='tooltip'
+                                        sx={{ width: '240px' }}
+                                    >
+                                        <Paragraph>
+                                            The{' '}
+                                            <Text sx={{ fontWeight: 'bold' }}>
+                                                &quot;Debt in front&quot;
+                                            </Text>{' '}
+                                            represents the sum of the {COIN}{' '}
+                                            debt of all Troves with a lower
+                                            collateral ratio than you.
+                                        </Paragraph>
+                                        <Paragraph>
+                                            Debt-in-front metric indicates the{' '}
+                                            {COIN} amount to be redeemed before
+                                            affecting your Trove.
+                                        </Paragraph>
+                                    </Card>
+                                }
+                            ></InfoIcon>
+                        </div>
+                        <div className='font-semibold'>{`${
+                            debtInFront[1] === AddressZero
+                                ? debtInFront[0].prettify(2)
+                                : debtInFront[0].div(100000).prettify(0) +
+                                  '00000+'
+                        } ${COIN}`}</div>
+                    </div>
+                </>
+            }
             actionComponent={
                 <>
                     <Button
