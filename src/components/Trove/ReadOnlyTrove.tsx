@@ -40,7 +40,7 @@ export const ReadOnlyTrove: React.FC = () => {
             title={
                 <>
                     Trove
-                    <div className='typography-mobile-body-4 flex flex-row gap-2 rounded-lg bg-neutral-200 px-2 py-1'>
+                    <div className='typography-mobile-body-4 flex flex-row gap-2 rounded-full bg-neutral-200 px-3 py-1'>
                         <div className='typography-desktop-body-5 flex items-center gap-1 text-neutral-600'>
                             Debt in front{' '}
                             <InfoIcon
