@@ -1,45 +1,100 @@
 <div align="center">
 
-<img src="https://assets-global.website-files.com/64083b97a8837a1e7f5a3a33/64083b97a8837a05b25a3a57_logo.svg" width="328" />
+<img src="src/assets/img/usdfc-logo.svg" width="328" />
+
 <br/><br/>
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/stablecoin-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/stablecoin-app)
 
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/secured-finance-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/secured-finance-app)
-
-A DeFi Trading Platform utilizing Orderbook-based Rates, facilitating the lending and borrowing of digital assets for constructing yield curves within the DeFi ecosystem.
+# Secured Finance Stablecoin App
+A decentralized application (dApp) for interacting with Secured Finance's stablecoin protocol, featuring the USDFC stablecoin backed by Filecoin. This app enables users to mint, redeem, and manage stablecoins, as well as participate in fixed-income lending markets on the Filecoin Virtual Machine (FVM).
 
 ### Quick Links
-[![Static Badge](https://img.shields.io/badge/Homepage-5162FF?style=for-the-badge)](https://secured.finance)
-[![Static Badge](https://img.shields.io/badge/Trading_Platform-white?style=for-the-badge)](https://app.secured.finance)
+[![Static Badge](https://img.shields.io/badge/Homepage-5162FF?style=for-the-badge)](https://docs.secured.finance/usdfc-stablecoin-protocol/introduction)
+[![Static Badge](https://img.shields.io/badge/Trading_Platform-white?style=for-the-badge)](https://app.usdfc.net)
 [![Static Badge](https://img.shields.io/badge/Docs-11CABE?style=for-the-badge)](https://docs.secured.finance/)
 
 </div>
 
-## ⚡️ Quick Start
+## 📋 Overview
 
-1. Clone this repository
-2. Login on the GitHub npm package repository with `npm login --registry=https://npm.pkg.github.com`
-3. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
-4. Set your personal access token issued on your Github account by calling the following command: `export NPM_AUTH_TOKEN=<your access token>`
-5. Run `nvm use` to ensure you are using the correct node version
-6. Install all required dependencies by running `npm install`
-7. Run `npm run start` to start development mode
+The Secured Finance Stablecoin App is a comprehensive platform that enables users to:
+- Mint and redeem USDFC stablecoins
+- Participate in fixed-income lending markets
+- Manage stablecoin positions
+- Interact with the Filecoin Virtual Machine (FVM) ecosystem
 
-## 👍 Recommended Development Environment
-This repository provides a `.vscode/settings.json` which assumes you have the following extensions installed in your code editor:
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (version specified in `.nvmrc`)
+- npm or yarn package manager
+- Git
+- MetaMask or another Web3 wallet
+
+### Installation
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/Secured-Finance/stablecoin-app.git
+   cd stablecoin-app
+   ```
+
+2. Login to the GitHub npm package repository:
+   ```bash
+   npm login --registry=https://npm.pkg.github.com
+   ```
+
+3. Create a `.env.local` file:
+   ```bash
+   cp .env.local.sample .env.local
+   ```
+   Then configure your environment variables in `.env.local`
+
+4. Set your GitHub personal access token:
+   ```bash
+   export NPM_AUTH_TOKEN=<your access token>
+   ```
+
+5. Use the correct Node.js version:
+   ```bash
+   nvm use
+   ```
+
+6. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+7. Start the development server:
+   ```bash
+   npm run start
+   ```
+
+## 🛠️ Development Environment
+
+### Recommended VS Code Extensions
 - ESLint
 - Prettier
 - TailwindCSS Intellisense
 - Code Spell Checker
 
-Those extensions helps streamline the development process by creating a standard way of formatting the code.
+These extensions are configured in `.vscode/settings.json` to ensure consistent code formatting and quality.
 
-## 👨‍💻 Test the app
-The web application is tested in multiple ways:
+## 🧪 Testing
 
-### Unit test
-- Run `npm run test`
+### Unit Tests
+Run the test suite:
+```bash
+npm run test
+```
 
-## 💻 Built with
+### Storybook
+Launch the component development environment:
+```bash
+npm run storybook
+```
+
+## 🏗️ Tech Stack
 
 Here's a brief high-level overview of the tech stack the Secured Finance App uses:
 
