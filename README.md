@@ -5,8 +5,7 @@
 <br/><br/>
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/stablecoin-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/stablecoin-app)
 
-# Secured Finance Stablecoin App
-A decentralized application (dApp) for interacting with Secured Finance's stablecoin protocol, featuring the USDFC stablecoin backed by Filecoin. This app enables users to mint, redeem, and manage stablecoins, as well as participate in fixed-income lending markets on the Filecoin Virtual Machine (FVM).
+A decentralized application (dApp) for interacting with Secured Finance's stablecoin protocol, featuring the USDFC stablecoin backed by Filecoin.
 
 ### Quick Links
 [![Static Badge](https://img.shields.io/badge/Homepage-5162FF?style=for-the-badge)](https://docs.secured.finance/usdfc-stablecoin-protocol/introduction)
@@ -15,70 +14,25 @@ A decentralized application (dApp) for interacting with Secured Finance's stable
 
 </div>
 
-## 📋 Overview
 
-The Secured Finance Stablecoin App is a comprehensive platform that enables users to:
-- Mint and redeem USDFC stablecoins
-- Participate in fixed-income lending markets
-- Manage stablecoin positions
-- Interact with the Filecoin Virtual Machine (FVM) ecosystem
+## ⚡️ Quick Start
 
-## 🚀 Getting Started
+1. Clone this repository
+2. Login on the GitHub npm package repository with `npm login --registry=https://npm.pkg.github.com`
+3. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
+4. Run `nvm use` to ensure you are using the correct node version
+5. Install all required dependencies by running `npm install`
+6. Run `npm run start` to start development mode
 
-### Prerequisites
-- Node.js (version specified in `.nvmrc`)
-- npm or yarn package manager
-- Git
-- MetaMask or another Web3 wallet
 
-### Installation
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/Secured-Finance/stablecoin-app.git
-   cd stablecoin-app
-   ```
-
-2. Login to the GitHub npm package repository:
-   ```bash
-   npm login --registry=https://npm.pkg.github.com
-   ```
-
-3. Create a `.env.local` file:
-   ```bash
-   cp .env.local.sample .env.local
-   ```
-   Then configure your environment variables in `.env.local`
-
-4. Set your GitHub personal access token:
-   ```bash
-   export NPM_AUTH_TOKEN=<your access token>
-   ```
-
-5. Use the correct Node.js version:
-   ```bash
-   nvm use
-   ```
-
-6. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-7. Start the development server:
-   ```bash
-   npm run start
-   ```
-
-## 🛠️ Development Environment
-
-### Recommended VS Code Extensions
+## 🛠️ Recommended Development Environment
+This repository provides a `.vscode/settings.json` which assumes you have the following extensions installed in your code editor:
 - ESLint
 - Prettier
 - TailwindCSS Intellisense
 - Code Spell Checker
 
-These extensions are configured in `.vscode/settings.json` to ensure consistent code formatting and quality.
+Those extensions helps streamline the development process by creating a standard way of formatting the code.
 
 ## 🧪 Testing
 
