@@ -21,7 +21,7 @@ export const SystemStatsPopup: React.FC = () => {
                 onClick={() => setSystemStatsOpen(!systemStatsOpen)}
             >
                 <InfoIcon
-                    className={clsx('text-primary-500', {
+                    className={clsx('h-3.5 w-3.5 text-primary-500', {
                         'text-red-500':
                             total.collateralRatioIsBelowCritical(price),
                     })}
