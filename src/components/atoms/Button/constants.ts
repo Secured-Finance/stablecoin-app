@@ -23,7 +23,7 @@ export const sizeStyle: { [key in ButtonSizes]: string } = {
 export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.xxs]: 'text-2.5 leading-3.5',
     [ButtonSizes.xs]: 'text-2.5 leading-3.5',
-    [ButtonSizes.sm]: 'text-3 leading-4',
+    [ButtonSizes.sm]: 'text-3 leading-3.5',
     [ButtonSizes.md]: 'text-3.5 leading-4.5',
     [ButtonSizes.lg]: 'text-4 leading-5',
 };
