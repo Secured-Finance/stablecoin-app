@@ -1,30 +1,31 @@
 <div align="center">
 
-<img src="https://assets-global.website-files.com/64083b97a8837a1e7f5a3a33/64083b97a8837a05b25a3a57_logo.svg" width="328" />
+<img src="src/assets/img/usdfc-logo.svg" width="328" />
+
 <br/><br/>
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/stablecoin-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/stablecoin-app)
 
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/secured-finance-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/secured-finance-app)
-
-A DeFi Trading Platform utilizing Orderbook-based Rates, facilitating the lending and borrowing of digital assets for constructing yield curves within the DeFi ecosystem.
+A decentralized application (dApp) for interacting with Secured Finance's stablecoin protocol, featuring the USDFC stablecoin backed by Filecoin.
 
 ### Quick Links
-[![Static Badge](https://img.shields.io/badge/Homepage-5162FF?style=for-the-badge)](https://secured.finance)
-[![Static Badge](https://img.shields.io/badge/Trading_Platform-white?style=for-the-badge)](https://app.secured.finance)
+[![Static Badge](https://img.shields.io/badge/Homepage-5162FF?style=for-the-badge)](https://docs.secured.finance/usdfc-stablecoin-protocol/introduction)
+[![Static Badge](https://img.shields.io/badge/Trading_Platform-white?style=for-the-badge)](https://app.usdfc.net)
 [![Static Badge](https://img.shields.io/badge/Docs-11CABE?style=for-the-badge)](https://docs.secured.finance/)
 
 </div>
 
+
 ## ⚡️ Quick Start
 
 1. Clone this repository
-2. Login on the GitHub npm package repository with `npm login --registry=https://npm.pkg.github.com`
-3. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
+2. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
+3. Run `nvm use` to ensure you are using the correct node version
 4. Set your personal access token issued on your Github account by calling the following command: `export NPM_AUTH_TOKEN=<your access token>`
-5. Run `nvm use` to ensure you are using the correct node version
-6. Install all required dependencies by running `npm install`
-7. Run `npm run start` to start development mode
+5. Install all required dependencies by running `npm install`
+6. Run `npm run start` to start development mode
 
-## 👍 Recommended Development Environment
+
+## 🛠️ Recommended Development Environment
 This repository provides a `.vscode/settings.json` which assumes you have the following extensions installed in your code editor:
 - ESLint
 - Prettier
@@ -33,13 +34,21 @@ This repository provides a `.vscode/settings.json` which assumes you have the fo
 
 Those extensions helps streamline the development process by creating a standard way of formatting the code.
 
-## 👨‍💻 Test the app
-The web application is tested in multiple ways:
+## 🧪 Testing
 
-### Unit test
-- Run `npm run test`
+### Unit Tests
+Run the test suite:
+```bash
+npm run test
+```
 
-## 💻 Built with
+## Storybook
+Launch the component development environment:
+```bash
+npm run storybook
+```
+
+## 🏗️ Tech Stack
 
 Here's a brief high-level overview of the tech stack the Secured Finance App uses:
 
@@ -48,10 +57,8 @@ Here's a brief high-level overview of the tech stack the Secured Finance App use
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro): Facilitates user-centric testing in React applications by providing intuitive utilities for querying and interacting with components
 - [Storybook](https://storybook.js.org/): Development environment for UI components, providing a sandboxed environment to visually develop and test components in isolation.
 - [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework that allows for rapid UI development by providing pre-defined utility classes for styling elements
-- [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview): Powerful library for managing server-state and caching in React applications, providing a straightforward way to fetch, cache, and update asynchronous data in components
-- [Redux](https://redux.js.org/): Predictable state container for JavaScript applications, commonly used with React to manage application state in a centralized manner
 - [Wagmi](https://wagmi.sh/): A useful library of React Hooks for Ethereum
 
 ## 🔖️ License
 
-This project is licensed under the MIT license, Copyright (c) 2024 Secured Finance. For more information see `LICENSE.md`.
+This project is licensed under the MIT license, Copyright (c) 2025 Secured Finance. For more information see `LICENSE.md`.
