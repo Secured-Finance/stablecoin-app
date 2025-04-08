@@ -18,9 +18,9 @@ A decentralized application (dApp) for interacting with Secured Finance's stable
 ## ⚡️ Quick Start
 
 1. Clone this repository
-2. Login on the GitHub npm package repository with `npm login --registry=https://npm.pkg.github.com`
-3. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
-4. Run `nvm use` to ensure you are using the correct node version
+2. Create a file `.env.local` at the root of the project. Please refer to `.env.local.sample` for the list of environment variables
+3. Run `nvm use` to ensure you are using the correct node version
+4. Set your personal access token issued on your Github account by calling the following command: `export NPM_AUTH_TOKEN=<your access token>`
 5. Install all required dependencies by running `npm install`
 6. Run `npm run start` to start development mode
 
@@ -42,7 +42,7 @@ Run the test suite:
 npm run test
 ```
 
-### Storybook
+## Storybook
 Launch the component development environment:
 ```bash
 npm run storybook
@@ -57,10 +57,8 @@ Here's a brief high-level overview of the tech stack the Secured Finance App use
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro): Facilitates user-centric testing in React applications by providing intuitive utilities for querying and interacting with components
 - [Storybook](https://storybook.js.org/): Development environment for UI components, providing a sandboxed environment to visually develop and test components in isolation.
 - [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework that allows for rapid UI development by providing pre-defined utility classes for styling elements
-- [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview): Powerful library for managing server-state and caching in React applications, providing a straightforward way to fetch, cache, and update asynchronous data in components
-- [Redux](https://redux.js.org/): Predictable state container for JavaScript applications, commonly used with React to manage application state in a centralized manner
 - [Wagmi](https://wagmi.sh/): A useful library of React Hooks for Ethereum
 
 ## 🔖️ License
 
-This project is licensed under the MIT license, Copyright (c) 2024 Secured Finance. For more information see `LICENSE.md`.
+This project is licensed under the MIT license, Copyright (c) 2025 Secured Finance. For more information see `LICENSE.md`.
