@@ -3,7 +3,7 @@
 <img src="src/assets/img/usdfc-logo.svg" width="328" />
 
 <br/><br/>
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Secured-Finance/stablecoin-app) ![GitHub License](https://img.shields.io/github/license/Secured-Finance/stablecoin-app)
+[![GitHub issues](https://img.shields.io/github/issues/Secured-Finance/stablecoin-app)](https://github.com/Secured-Finance/stablecoin-app/issues) [![GitHub license](https://img.shields.io/github/license/Secured-Finance/stablecoin-app)](https://github.com/Secured-Finance/stablecoin-app/blob/develop/LICENCE.md)
 
 A decentralized application (dApp) for interacting with Secured Finance's stablecoin protocol, featuring the USDFC stablecoin backed by Filecoin.
 
