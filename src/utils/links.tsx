@@ -1,6 +1,6 @@
 import GitBook from 'src/assets/icons/gitbook.svg';
 import SF from 'src/assets/icons/sf-logo-light.svg';
-import X from 'src/assets/icons/x.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DOCUMENTATION_LINK } from 'src/constants';
 
 type MoreLink = {
@@ -37,7 +37,9 @@ export const LinkList: MoreLink[] = [
     {
         text: 'Follow us on X',
         href: 'https://x.com/USDFC_Protocol',
-        icon: <X className='h-5 w-5' />,
+        icon: (
+            <FontAwesomeIcon icon={['fab', 'x-twitter']} className='h-5 w-5' />
+        ),
         isExternal: true,
     },
     {
