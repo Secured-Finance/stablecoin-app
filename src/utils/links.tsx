@@ -34,8 +34,8 @@ export const LinkList: MoreLink[] = [
         isExternal: true,
     },
     {
-        text: 'Follow us on Twitter',
-        href: 'https://twitter.com/Secured_Fi',
+        text: 'Follow us on X',
+        href: 'https://x.com/USDFC_Protocol',
         icon: <GitBook className='h-5 w-5' />,
         isExternal: true,
     },
