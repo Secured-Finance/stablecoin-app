@@ -1,5 +1,6 @@
 import GitBook from 'src/assets/icons/gitbook.svg';
 import SF from 'src/assets/icons/sf-logo-light.svg';
+import X from 'src/assets/icons/x.svg';
 import { DOCUMENTATION_LINK } from 'src/constants';
 
 type MoreLink = {
@@ -34,9 +35,9 @@ export const LinkList: MoreLink[] = [
         isExternal: true,
     },
     {
-        text: 'Follow us on Twitter',
-        href: 'https://twitter.com/Secured_Fi',
-        icon: <GitBook className='h-5 w-5' />,
+        text: 'Follow us on X',
+        href: 'https://x.com/USDFC_Protocol',
+        icon: <X className='h-5 w-5' />,
         isExternal: true,
     },
     {
