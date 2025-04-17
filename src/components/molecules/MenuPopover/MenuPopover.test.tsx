@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from 'src/test-utils.js';
 import { LinkList } from 'src/utils';
+import 'src/utils/fontawesome';
 import * as stories from './MenuPopover.stories';
 
 const { Default } = composeStories(stories);
