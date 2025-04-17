@@ -27,6 +27,7 @@ import {
     isProdEnv,
 } from 'src/utils';
 import * as gtag from 'src/utils/gtag';
+import 'src/utils/fontawesome';
 import { Flex, Heading, Paragraph, ThemeUIProvider } from 'theme-ui';
 import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
