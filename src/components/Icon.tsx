@@ -78,6 +78,8 @@ const getIcon = (name: IconName): IconProp => {
             return ['far', 'clipboard'];
         case 'question-circle':
             return ['far', 'question-circle'];
+        case 'x-twitter':
+            return ['fab', 'x-twitter'];
         default:
             return name;
     }
@@ -85,7 +87,7 @@ const getIcon = (name: IconName): IconProp => {
 
 export type IconProps = Pick<
     FontAwesomeIconProps,
-    'style' | 'size' | 'color' | 'spin'
+    'style' | 'size' | 'color' | 'spin' | 'className'
 > & {
     name: IconName;
 };
