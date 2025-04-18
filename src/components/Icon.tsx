@@ -45,43 +45,40 @@ import {
 import React from 'react';
 
 // Initialize FontAwesome library with all icons
-/* eslint-disable @typescript-eslint/no-explicit-any */
 library.add(
-    faCircleNotch as any,
-    faCheck as any,
-    faCheckCircle as any,
-    faExclamationTriangle as any,
-    faInfoCircle as any,
-    faTimes as any,
-    faTrash as any,
-    faChartLine as any,
-    faRedo as any,
-    faHistory as any,
-    faChevronLeft as any,
-    faChevronRight as any,
-    faClipboard as any,
-    faClipboardCheck as any,
-    faUserCircle as any,
-    faWallet as any,
-    faExternalLinkAlt as any,
-    faCog as any,
-    faPlug as any,
-    faExclamationCircle as any,
-    faAngleUp as any,
-    faAngleDoubleUp as any,
-    faAngleDown as any,
-    faAngleDoubleDown as any,
-    faPen as any,
-    faHandPaper as any,
-    faHeartbeat as any,
-    faBars as any,
-    faQuestionCircle as any,
-    faArrowDown as any
+    faCircleNotch,
+    faCheck,
+    faCheckCircle,
+    faExclamationTriangle,
+    faInfoCircle,
+    faTimes,
+    faTrash,
+    faChartLine,
+    faRedo,
+    faHistory,
+    faChevronLeft,
+    faChevronRight,
+    faClipboard,
+    faClipboardCheck,
+    faUserCircle,
+    faWallet,
+    faExternalLinkAlt,
+    faCog,
+    faPlug,
+    faExclamationCircle,
+    faAngleUp,
+    faAngleDoubleUp,
+    faAngleDown,
+    faAngleDoubleDown,
+    faPen,
+    faHandPaper,
+    faHeartbeat,
+    faBars,
+    faQuestionCircle,
+    faArrowDown
 );
 
-// Brand icons
-library.add(faXTwitter as any, faMedium as any, faDiscord as any);
-/* eslint-enable @typescript-eslint/no-explicit-any */
+library.add(faXTwitter, faMedium, faDiscord);
 
 const getIcon = (name: IconName): IconProp => {
     switch (name) {

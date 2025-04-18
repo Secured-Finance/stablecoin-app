@@ -1,4 +1,3 @@
-import { IconName } from '@fortawesome/fontawesome-svg-core';
 import GitBook from 'src/assets/icons/gitbook.svg';
 import SF from 'src/assets/icons/sf-logo-light.svg';
 import { Icon } from 'src/components/Icon';
@@ -20,31 +19,51 @@ export const LinkList: MoreLink[] = [
     {
         text: 'Official Site',
         href: 'https://secured.finance/',
-        icon: <SF className='h-5 w-5 rounded-full' />,
+        icon: (
+            <div className='flex items-center justify-center'>
+                <SF className='h-4 w-4 rounded-full' />
+            </div>
+        ),
         isExternal: true,
     },
     {
         text: 'Documentation',
         href: DOCUMENTATION_LINK,
-        icon: <GitBook className='h-5 w-5' />,
+        icon: (
+            <div className='flex items-center justify-center'>
+                <GitBook className='h-4 w-4' />
+            </div>
+        ),
         isExternal: true,
     },
     {
         text: 'Articles on Medium',
         href: 'https://blog.secured.finance/',
-        icon: <Icon name={'medium' as IconName} className='h-5 w-5' />,
+        icon: (
+            <div className='flex items-center justify-center'>
+                <Icon name='medium' className='h-4 w-4' />
+            </div>
+        ),
         isExternal: true,
     },
     {
         text: 'Follow us on X',
         href: 'https://x.com/USDFC_Protocol',
-        icon: <Icon name={'x-twitter' as IconName} className='h-5 w-5' />,
+        icon: (
+            <div className='flex items-center justify-center'>
+                <Icon name='x-twitter' className='h-4 w-4' />
+            </div>
+        ),
         isExternal: true,
     },
     {
         text: 'Join us on Discord',
         href: 'https://discord.gg/3kytCrv3qY',
-        icon: <Icon name={'discord' as IconName} className='h-5 w-5' />,
+        icon: (
+            <div className='flex items-center justify-center'>
+                <Icon name='discord' className='h-4 w-4' />
+            </div>
+        ),
         isExternal: true,
     },
 ];
