@@ -1,5 +1,10 @@
 import { IconName, IconProp, library } from '@fortawesome/fontawesome-svg-core';
 import {
+    faDiscord,
+    faMedium,
+    faXTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import {
     faClipboard,
     faQuestionCircle,
 } from '@fortawesome/free-regular-svg-icons';
@@ -39,38 +44,44 @@ import {
 } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
+// Initialize FontAwesome library with all icons
+// Using a workaround for TypeScript errors with library.add()
+// Regular and solid icons
 library.add(
-    faCircleNotch,
-    faCheck,
-    faCheckCircle,
-    faExclamationTriangle,
-    faInfoCircle,
-    faTimes,
-    faTrash,
-    faChartLine,
-    faRedo,
-    faHistory,
-    faChevronLeft,
-    faChevronRight,
-    faClipboard,
-    faClipboardCheck,
-    faUserCircle,
-    faWallet,
-    faExternalLinkAlt,
-    faCog,
-    faPlug,
-    faExclamationCircle,
-    faAngleUp,
-    faAngleDoubleUp,
-    faAngleDown,
-    faAngleDoubleDown,
-    faPen,
-    faHandPaper,
-    faHeartbeat,
-    faBars,
-    faQuestionCircle,
-    faArrowDown
+    faCircleNotch as any,
+    faCheck as any,
+    faCheckCircle as any,
+    faExclamationTriangle as any,
+    faInfoCircle as any,
+    faTimes as any,
+    faTrash as any,
+    faChartLine as any,
+    faRedo as any,
+    faHistory as any,
+    faChevronLeft as any,
+    faChevronRight as any,
+    faClipboard as any,
+    faClipboardCheck as any,
+    faUserCircle as any,
+    faWallet as any,
+    faExternalLinkAlt as any,
+    faCog as any,
+    faPlug as any,
+    faExclamationCircle as any,
+    faAngleUp as any,
+    faAngleDoubleUp as any,
+    faAngleDown as any,
+    faAngleDoubleDown as any,
+    faPen as any,
+    faHandPaper as any,
+    faHeartbeat as any,
+    faBars as any,
+    faQuestionCircle as any,
+    faArrowDown as any
 );
+
+// Brand icons
+library.add(faXTwitter as any, faMedium as any, faDiscord as any);
 
 const getIcon = (name: IconName): IconProp => {
     switch (name) {
@@ -78,6 +89,12 @@ const getIcon = (name: IconName): IconProp => {
             return ['far', 'clipboard'];
         case 'question-circle':
             return ['far', 'question-circle'];
+        case 'x-twitter':
+            return ['fab', 'x-twitter'];
+        case 'medium':
+            return ['fab', 'medium'];
+        case 'discord':
+            return ['fab', 'discord'];
         default:
             return name;
     }
@@ -85,7 +102,7 @@ const getIcon = (name: IconName): IconProp => {
 
 export type IconProps = Pick<
     FontAwesomeIconProps,
-    'style' | 'size' | 'color' | 'spin'
+    'style' | 'size' | 'color' | 'spin' | 'className'
 > & {
     name: IconName;
 };
