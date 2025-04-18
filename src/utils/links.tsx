@@ -19,48 +19,31 @@ export const LinkList: MoreLink[] = [
     {
         text: 'Official Site',
         href: 'https://secured.finance/',
-        icon: (
-            <SF className='flex h-4 w-4 items-center justify-center rounded-full' />
-        ),
+        icon: <SF className='h-5 w-5 rounded-full' />,
         isExternal: true,
     },
     {
         text: 'Documentation',
         href: DOCUMENTATION_LINK,
-        icon: <GitBook className='flex h-4 w-4 items-center justify-center' />,
+        icon: <GitBook className='h-5 w-5' />,
         isExternal: true,
     },
     {
         text: 'Articles on Medium',
         href: 'https://blog.secured.finance/',
-        icon: (
-            <Icon
-                name='medium'
-                className='flex h-4 w-4 items-center justify-center'
-            />
-        ),
+        icon: <Icon name='medium' className='h-4 w-4' />,
         isExternal: true,
     },
     {
         text: 'Follow us on X',
         href: 'https://x.com/USDFC_Protocol',
-        icon: (
-            <Icon
-                name='x-twitter'
-                className='flex h-4 w-4 items-center justify-center'
-            />
-        ),
+        icon: <Icon name='x-twitter' className='h-4 w-4' />,
         isExternal: true,
     },
     {
         text: 'Join us on Discord',
         href: 'https://discord.gg/3kytCrv3qY',
-        icon: (
-            <Icon
-                name='discord'
-                className='flex h-4 w-4 items-center justify-center'
-            />
-        ),
+        icon: <Icon name='discord' className='h-4 w-4' />,
         isExternal: true,
     },
 ];
