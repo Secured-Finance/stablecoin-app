@@ -20,29 +20,24 @@ export const LinkList: MoreLink[] = [
         text: 'Official Site',
         href: 'https://secured.finance/',
         icon: (
-            <div className='flex items-center justify-center'>
-                <SF className='h-4 w-4 rounded-full' />
-            </div>
+            <SF className='flex h-4 w-4 items-center justify-center rounded-full' />
         ),
         isExternal: true,
     },
     {
         text: 'Documentation',
         href: DOCUMENTATION_LINK,
-        icon: (
-            <div className='flex items-center justify-center'>
-                <GitBook className='h-4 w-4' />
-            </div>
-        ),
+        icon: <GitBook className='flex h-4 w-4 items-center justify-center' />,
         isExternal: true,
     },
     {
         text: 'Articles on Medium',
         href: 'https://blog.secured.finance/',
         icon: (
-            <div className='flex items-center justify-center'>
-                <Icon name='medium' className='h-4 w-4' />
-            </div>
+            <Icon
+                name='medium'
+                className='flex h-4 w-4 items-center justify-center'
+            />
         ),
         isExternal: true,
     },
@@ -50,9 +45,10 @@ export const LinkList: MoreLink[] = [
         text: 'Follow us on X',
         href: 'https://x.com/USDFC_Protocol',
         icon: (
-            <div className='flex items-center justify-center'>
-                <Icon name='x-twitter' className='h-4 w-4' />
-            </div>
+            <Icon
+                name='x-twitter'
+                className='flex h-4 w-4 items-center justify-center'
+            />
         ),
         isExternal: true,
     },
@@ -60,9 +56,10 @@ export const LinkList: MoreLink[] = [
         text: 'Join us on Discord',
         href: 'https://discord.gg/3kytCrv3qY',
         icon: (
-            <div className='flex items-center justify-center'>
-                <Icon name='discord' className='h-4 w-4' />
-            </div>
+            <Icon
+                name='discord'
+                className='flex h-4 w-4 items-center justify-center'
+            />
         ),
         isExternal: true,
     },
