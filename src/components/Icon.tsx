@@ -1,5 +1,10 @@
 import { IconName, IconProp, library } from '@fortawesome/fontawesome-svg-core';
 import {
+    faDiscord,
+    faMedium,
+    faXTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import {
     faClipboard,
     faQuestionCircle,
 } from '@fortawesome/free-regular-svg-icons';
@@ -39,6 +44,7 @@ import {
 } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
+// Initialize FontAwesome library with all icons
 library.add(
     faCircleNotch,
     faCheck,
@@ -72,12 +78,20 @@ library.add(
     faArrowDown
 );
 
+library.add(faXTwitter, faMedium, faDiscord);
+
 const getIcon = (name: IconName): IconProp => {
     switch (name) {
         case 'clipboard':
             return ['far', 'clipboard'];
         case 'question-circle':
             return ['far', 'question-circle'];
+        case 'x-twitter':
+            return ['fab', 'x-twitter'];
+        case 'medium':
+            return ['fab', 'medium'];
+        case 'discord':
+            return ['fab', 'discord'];
         default:
             return name;
     }
@@ -85,7 +99,7 @@ const getIcon = (name: IconName): IconProp => {
 
 export type IconProps = Pick<
     FontAwesomeIconProps,
-    'style' | 'size' | 'color' | 'spin'
+    'style' | 'size' | 'color' | 'spin' | 'className'
 > & {
     name: IconName;
 };
