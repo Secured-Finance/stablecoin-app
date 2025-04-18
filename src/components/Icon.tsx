@@ -45,8 +45,7 @@ import {
 import React from 'react';
 
 // Initialize FontAwesome library with all icons
-// Using a workaround for TypeScript errors with library.add()
-// Regular and solid icons
+/* eslint-disable @typescript-eslint/no-explicit-any */
 library.add(
     faCircleNotch as any,
     faCheck as any,
@@ -82,6 +81,7 @@ library.add(
 
 // Brand icons
 library.add(faXTwitter as any, faMedium as any, faDiscord as any);
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 const getIcon = (name: IconName): IconProp => {
     switch (name) {
