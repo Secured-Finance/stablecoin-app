@@ -9,7 +9,7 @@ import Script from 'next/script';
 import { useEffect } from 'react';
 import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
-import { HashRouter as Router, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import 'src/bigIntPatch';
 import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
@@ -150,9 +150,9 @@ const TrackingCode = ({ gaTag }: { gaTag: string }) => {
 
                     gtag('config', '${gaTag}');
 
-                    window.addEventListener('hashchange', () => {
+                    window.addEventListener('popstate', () => {
                         gtag('config', '${gaTag}', {
-                            page_path: window.location.pathname + window.location.hash,
+                            page_path: window.location.pathname,
                         });
                     });
                     `}

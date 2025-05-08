@@ -21,4 +21,13 @@ module.exports = withBundleAnalyzer({
         SF_ENV: process.env.SF_ENV,
         COMMIT_HASH: commitHash,
     },
+
+    async rewrites() {
+        return [
+            {
+                source: '/:path*',
+                destination: '/',
+            },
+        ];
+    },
 });
