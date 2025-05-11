@@ -7,6 +7,7 @@ import {
     EthersSfStablecoinWithStore,
     _connectByChainId,
 } from '@secured-finance/stablecoin-lib-ethers';
+import { EventDrivenSfStablecoinStore } from 'src/contexts';
 import { ethers } from 'ethers';
 import React, {
     createContext,
@@ -25,7 +26,9 @@ type ContextValue = {
     config: FrontendConfig;
     account: string;
     provider: Provider;
-    sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
+    sfStablecoin: EthersSfStablecoinWithStore<
+        BlockPolledSfStablecoinStore | EventDrivenSfStablecoinStore
+    >;
 };
 
 const SfStablecoinContext = createContext<ContextValue | undefined>(undefined);
