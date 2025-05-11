@@ -43,3 +43,8 @@ export const rpcUrls = {
     mainnet: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
     testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };
+
+export const wsUrls = {
+    mainnet: `wss://rpc.ankr.com/filecoin/${ankerApiKey}`,
+    testnet: `wss://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
+};
