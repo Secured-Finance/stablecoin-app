@@ -7,3 +7,4 @@ export * from './links';
 export * from './networks';
 export * from './numbers';
 export * from './strings';
+export * from './cnFn';

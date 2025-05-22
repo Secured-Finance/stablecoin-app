@@ -21,11 +21,6 @@ export const MenuExternalLink = ({
             data-cy={formatDataCy(text)}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                {icon && (
-                    <div className='flex h-5 w-5 items-center justify-center'>
-                        {icon}
-                    </div>
-                )}
                 <p
                     className={clsx(
                         'typography-desktop-body-5 grow text-left text-neutral-800'
@@ -33,6 +28,11 @@ export const MenuExternalLink = ({
                 >
                     {text}
                 </p>
+                {icon && (
+                    <div className='flex h-5 w-5 items-center justify-center'>
+                        {icon}
+                    </div>
+                )}
             </div>
         </Link>
     );
