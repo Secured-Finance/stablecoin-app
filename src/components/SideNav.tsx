@@ -11,7 +11,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS } from 'src/constants';
+import { HEADER_LINKS } from 'src/constants';
 import { LinkList } from 'src/utils';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
@@ -65,7 +65,7 @@ export const SideNav: React.FC = () => {
                     </button>
                 </div>
                 <div className='flex flex-col items-start gap-4'>
-                    {LINKS.map(link => (
+                    {HEADER_LINKS.map(link => (
                         <NavLink
                             key={link.label}
                             to={link.to}
@@ -170,12 +170,12 @@ const MobileItemExternalLink = ({
             onClick={onClick}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                <div className='flex h-5 w-5 items-center justify-center'>
-                    {icon}
-                </div>
                 <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
                     {text}
                 </p>
+                <div className='flex h-5 w-5 items-center justify-center'>
+                    {icon}
+                </div>
             </div>
         </NextLink>
     );

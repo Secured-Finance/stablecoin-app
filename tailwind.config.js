@@ -31,12 +31,12 @@ module.exports = {
                 primary: {
                     '50': '#E5F4FF',
                     '300': '#66BDFF',
-                    '500': '#0091FF',
+                    '500': '#1A30FF',
                     '700': '#005799',
                 },
                 secondary: {
                     '300': '#FFD35A',
-                    '500': '#EACC00',
+                    '500': '#3453A8',
                     '700': '#8D6700',
                 },
                 tertiary: {
@@ -115,7 +115,7 @@ module.exports = {
             },
         },
         fontFamily: {
-            primary: ['GT Super Display', ...defaultTheme.fontFamily.serif],
+            primary: ['Inter', ...defaultTheme.fontFamily.serif],
             secondary: [
                 'Suisse International',
                 ...defaultTheme.fontFamily.sans,

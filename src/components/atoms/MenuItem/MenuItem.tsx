@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import ArrowRight from 'src/assets/icons/arrow-right.svg';
 
 export const MenuItem = ({
     text,
@@ -25,7 +24,6 @@ export const MenuItem = ({
                 >
                     {text}
                 </p>
-                <ArrowRight className='h-5 w-5' />
             </div>
         </NavLink>
     );

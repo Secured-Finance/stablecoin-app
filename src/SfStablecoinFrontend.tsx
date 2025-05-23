@@ -9,19 +9,21 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
-import { RedemptionPage } from 'src/components/pages/RedemptionPage';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
 import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
+import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
-import { SystemStatsPopup } from './components/SystemStatsPopup';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
-import { UserAccount } from './components/UserAccount';
+import { StabilityPoolPage } from './components/pages/StabilityPool';
+import Stake from './components/pages/Stake';
+import { TrovePage } from './components/pages/Trove';
+import { RedemptionPage } from './components/pages/RedemptionPage';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
@@ -69,16 +71,11 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                         <Flex
                             sx={{
                                 flexDirection: 'column',
-                                minHeight: '100%',
+                                minHeight: '100vh',
                             }}
                         >
-                            <Header>
-                                <div className='flex items-center gap-2'>
-                                    <UserAccount />
-                                    <SystemStatsPopup />
-                                </div>
-                            </Header>
-                            <div className='m-0 mx-auto mb-10 mt-14 flex w-full max-w-[1280px] flex-grow flex-col items-center px-5 pb-16 laptop:mt-16'>
+                            <Header />
+                            <div className='m-0 mx-auto mt-14 flex w-full max-w-[920px] flex-grow flex-col items-center px-5 '>
                                 <AnimatedSwitch>
                                     <Route path='/' exact>
                                         <PageSwitcher />
@@ -92,8 +89,18 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     <Route path='/bridge'>
                                         <BridgePage />
                                     </Route>
+                                    <Route path='/stake'>
+                                        <Stake />
+                                    </Route>
+                                    <Route path='/trove'>
+                                        <TrovePage />
+                                    </Route>
+                                    <Route path='/stability-pool'>
+                                        <StabilityPoolPage />
+                                    </Route>
                                 </AnimatedSwitch>
                             </div>
+                            <Footer />
                         </Flex>
                     </StakingViewProvider>
                 </StabilityViewProvider>

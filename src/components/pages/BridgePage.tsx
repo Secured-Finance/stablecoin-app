@@ -8,7 +8,7 @@ export const BridgePage: React.FC = () => {
 
     return (
         <section className='w-full'>
-            <div className='border-red relative mt-5 flex justify-center'>
+            <div className='border-red relative my-10 flex justify-center'>
                 <iframe
                     className='rounded-xl border border-transparent bg-neutral-50 shadow-card'
                     title='squid_widget'
