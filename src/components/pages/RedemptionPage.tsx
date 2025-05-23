@@ -1,22 +1,110 @@
-import { useState } from 'react';
-import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { useAccount } from 'wagmi';
-import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import {
+    Decimal,
+    Percent,
+    SfStablecoinStoreState,
+} from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { ArrowDown } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { useAccount } from 'wagmi';
+import {
+    selectForRedemptionChangeValidation,
+    validateRedemptionChange,
+} from '../Redemption/validation/validateRedemptionChange';
+import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 
 export const RedemptionPage = () => {
-    const { isConnected } = useAccount();
-    const [redeemAmount, setRedeemAmount] = useState('1234.84');
+    const selector = (state: SfStablecoinStoreState) => {
+        const { fees, debtTokenBalance, price } = state;
+        return {
+            fees,
+            debtTokenBalance,
+            price,
+            validationContext: selectForRedemptionChangeValidation(state),
+        };
+    };
+
     const { open } = useWeb3Modal();
-    const maxRedeem = 1234.84;
-    const filToReceive = 383.96;
-    const usdValue = 1289.27;
-    const redemptionFee = 1.93;
-    const feePercentage = '0.5%';
+    const { isConnected } = useAccount();
+    const { fees, debtTokenBalance, price, validationContext } =
+        useSfStablecoinSelector(selector);
+
+    const { sfStablecoin } = useSfStablecoin();
+    const myTransactionState = useMyTransactionState('redeem');
+
+    const [redeemAmount, setRedeemAmount] = useState('0.00');
+    const [estimatedFIL, setEstimatedFIL] = useState(Decimal.from(0));
+    const [changePending, setChangePending] = useState(false);
+    const [hintsPending, setHintsPending] = useState(false);
+    const decimalRedeem = Decimal.from(redeemAmount || '0');
+    const maxAmount = debtTokenBalance;
+
+    useEffect(() => {
+        if (decimalRedeem.isZero) {
+            setEstimatedFIL(Decimal.from(0));
+            return;
+        }
+
+        setHintsPending(true);
+
+        const timeoutId = setTimeout(async () => {
+            const hints = await sfStablecoin.findRedemptionHints(decimalRedeem);
+            setEstimatedFIL(hints[0]);
+            setHintsPending(false);
+        }, 500);
+
+        return () => {
+            clearTimeout(timeoutId);
+            setHintsPending(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [redeemAmount]);
+
+    const redemptionRate = fees.redemptionRate();
+    const feePct = new Percent(redemptionRate);
+    const fee = estimatedFIL.mul(redemptionRate).div(price);
+
+    const [isValid, validationMessage] = validateRedemptionChange(
+        decimalRedeem,
+        estimatedFIL,
+        hintsPending,
+        fee,
+        validationContext
+    );
+
+    const [sendTransaction] = useTransactionFunction(
+        'redeem',
+        sfStablecoin.send.redeemDebtToken.bind(
+            sfStablecoin.send,
+            decimalRedeem,
+            undefined
+        )
+    );
+
+    useEffect(() => {
+        if (
+            myTransactionState.type === 'waitingForApproval' ||
+            myTransactionState.type === 'waitingForConfirmation'
+        ) {
+            setChangePending(true);
+        } else {
+            setChangePending(false);
+            if (myTransactionState.type === 'confirmed') {
+                setRedeemAmount('');
+            }
+        }
+    }, [myTransactionState.type]);
+
+    const filToReceive = estimatedFIL.prettify(2);
+    const redemptionFee = fee.prettify(2);
+    const feePercentage = feePct.toString(2);
+    const usdValue = estimatedFIL.mul(price).prettify(2);
 
     const handleMaxRedeem = () => {
-        setRedeemAmount(maxRedeem.toString());
+        setRedeemAmount(maxAmount.prettify(2));
     };
 
     return (
@@ -41,19 +129,26 @@ export const RedemptionPage = () => {
                                 Redeem
                             </div>
                             <div className='mb-1 flex items-center justify-between'>
-                                <div className='text-3xl font-medium'>
-                                    {redeemAmount}
-                                </div>
+                                <input
+                                    type='number'
+                                    className='text-3xl w-full bg-transparent font-medium outline-none'
+                                    value={redeemAmount}
+                                    onChange={e =>
+                                        setRedeemAmount(e.target.value)
+                                    }
+                                />
+
                                 <div className='flex items-center'>
                                     <SecuredFinanceLogo />
                                 </div>
                             </div>
+
                             <div className='flex items-center justify-between'>
                                 <div className='text-sm text-[#565656]'>
                                     ${redeemAmount}
                                 </div>
                                 <div className='text-sm'>
-                                    {maxRedeem} USDFC{' '}
+                                    {maxAmount.toString()} USDFC{' '}
                                     <button
                                         className='ml-1 cursor-pointer text-[#1a30ff]'
                                         onClick={handleMaxRedeem}
@@ -99,7 +194,7 @@ export const RedemptionPage = () => {
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
-                                <div className='flex items-center border-[#e3e3e3] bg-white'>
+                                <div className='flex items-center gap-2 border-[#e3e3e3] bg-white'>
                                     <span className='mr-1 font-medium'>
                                         {redemptionFee}
                                     </span>
@@ -116,17 +211,31 @@ export const RedemptionPage = () => {
                             </div>
                         </div>
                         <button
-                            className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white'
+                            className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
+                            disabled={
+                                !isConnected ||
+                                !isValid ||
+                                !changePending ||
+                                hintsPending
+                            }
                             onClick={() => {
                                 if (!isConnected) open();
+                                else sendTransaction();
                             }}
                         >
-                            {isConnected ? 'Redeem USDFC' : 'Connect wallet'}
+                            {isConnected
+                                ? changePending
+                                    ? 'Processing...'
+                                    : 'Redeem USDFC'
+                                : 'Connect wallet'}
                         </button>
-                        <p className='text-center text-xs text-[#565656]'>
-                            This action will open your wallet to sign the
-                            transaction.
-                        </p>
+                        {!isConnected && (
+                            <p className='text-center text-xs text-[#565656]'>
+                                This action will open your wallet to sign the
+                                transaction.
+                            </p>
+                        )}
+                        {validationMessage}
                     </div>
                 </div>
             </main>

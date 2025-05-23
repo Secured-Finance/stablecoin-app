@@ -7,6 +7,7 @@ import { Nav } from './Nav';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
 import { ConnectButton } from './ConnectButton';
+import { NavLink } from 'react-router-dom';
 
 const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
@@ -24,7 +25,9 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Container variant='header'>
             <div className='flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
-                    <SecuredFinanceLogo />
+                    <NavLink to='/'>
+                        <SecuredFinanceLogo />
+                    </NavLink>
                     {isFrontendRegistered && (
                         <div className='block desktop:hidden'>
                             <SideNav />

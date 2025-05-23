@@ -9,12 +9,12 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
-import { RedemptionPage } from 'src/components/pages/RedemptionPage';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
 import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
+import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
@@ -23,7 +23,7 @@ import { TroveViewProvider } from './components/Trove/context/TroveViewProvider'
 import { StabilityPoolPage } from './components/pages/StabilityPool';
 import Stake from './components/pages/Stake';
 import { TrovePage } from './components/pages/Trove';
-import { Footer } from './components/Footer';
+import { RedemptionPage } from './components/pages/RedemptionPage';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;

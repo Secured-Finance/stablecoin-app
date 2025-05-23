@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useAccount } from 'wagmi';
 import { Button } from '../atoms';
 import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
+import {
+    Decimal,
+    LIQUIDATION_RESERVE,
+    MINIMUM_NET_DEBT,
+    SfStablecoinStoreState,
+    Trove,
+} from '@secured-finance/stablecoin-lib-base';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { DEBT_TOKEN_PRECISION } from 'src/utils';
 
 export const TrovePage = () => {
     const { isConnected } = useAccount();
-    const [collateral, setCollateral] = useState('331.24');
     const [debt, setDebt] = useState('975.51');
     const [isClosing, setIsClosing] = useState(false);
     const [activeTab, setActiveTab] = useState('create');
@@ -16,21 +24,75 @@ export const TrovePage = () => {
 
     const collateralUsdValue = '$1463.26';
     const debtValue = '$975.51';
-    const collateralRatio = '150.0%';
     const liquidationRisk = 'Low';
-    const totalDebt = '1000.39';
-    const maxCollateral = 500;
     const maxDebt = 1500;
     const liquidationPrice = '$3.94';
-    const currentFilPrice = '$5.51';
 
-    const handleMaxCollateral = () => {
-        setCollateral(maxCollateral.toString());
-    };
+    const handleMaxCollateral = () => {};
 
     const handleMaxDebt = () => {
         setDebt(maxDebt.toString());
     };
+
+    const select = ({
+        numberOfTroves,
+        price,
+        total,
+        debtTokenInStabilityPool,
+        borrowingRate,
+        redemptionRate,
+        totalStakedProtocolToken,
+        frontend,
+        fees,
+    }: SfStablecoinStoreState) => ({
+        numberOfTroves,
+        price,
+        total,
+        debtTokenInStabilityPool,
+        borrowingRate,
+        redemptionRate,
+        totalStakedProtocolToken,
+        kickbackRate:
+            frontend.status === 'registered' ? frontend.kickbackRate : null,
+        fees,
+    });
+    const data = useSfStablecoinSelector(select);
+
+    const currentFilPrice = data.price.toString(2);
+
+    const borrowingRate = data.fees.borrowingRate();
+    const borrowRate = borrowingRate.prettify(4);
+
+    const [collateral] = useState<Decimal>(Decimal.ZERO);
+    const [borrowAmount, setBorrowAmount] = useState<Decimal>(Decimal.ZERO);
+    const fee = borrowAmount.mul(borrowingRate);
+
+    const EMPTY_TROVE = new Trove(Decimal.ZERO, Decimal.ZERO);
+    const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
+    const isDirty = !collateral.isZero || !borrowAmount.isZero;
+    const trove = isDirty ? new Trove(collateral, totalDebt) : EMPTY_TROVE;
+    const collateralRatio =
+        !collateral.isZero && !borrowAmount.isZero
+            ? trove.collateralRatio(data.price)
+            : undefined;
+
+    useEffect(() => {
+        if (!collateral.isZero) {
+            const stableDebt = collateral.mul(data.price).mulDiv(2, 3); // for 150% CR
+
+            const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
+                ? stableDebt
+                      .sub(LIQUIDATION_RESERVE)
+                      .div(Decimal.ONE.add(borrowRate))
+                : Decimal.ZERO;
+
+            setBorrowAmount(
+                allowedDebt.gt(MINIMUM_NET_DEBT)
+                    ? allowedDebt
+                    : MINIMUM_NET_DEBT
+            );
+        }
+    }, [borrowRate, collateral, data.price]);
 
     return (
         <div className='min-h-[100vh] w-full'>
@@ -46,7 +108,7 @@ export const TrovePage = () => {
                                             Collateral
                                         </p>
                                         <p className='text-[36px] font-semibold leading-tight text-[#001C33]'>
-                                            {collateral}
+                                            {collateral.toString()}
                                         </p>
                                         <p className='text-[14px] text-[#8E8E93]'>
                                             {collateralUsdValue}
@@ -113,7 +175,7 @@ export const TrovePage = () => {
                                                 Collateral Ratio
                                             </h3>
                                             <p className='text-right font-bold'>
-                                                {collateralRatio}
+                                                {collateralRatio?.prettify(2)}
                                             </p>
                                         </div>
                                     </div>
@@ -193,7 +255,7 @@ export const TrovePage = () => {
                                             </h3>
                                             <div className='flex items-center justify-end gap-1'>
                                                 <span className='font-bold'>
-                                                    20
+                                                    {LIQUIDATION_RESERVE.toString()}
                                                 </span>
                                                 <SecuredFinanceLogo />
                                             </div>
@@ -214,7 +276,7 @@ export const TrovePage = () => {
                                             </h3>
                                             <div className='flex items-center justify-end gap-1'>
                                                 <span className='font-bold'>
-                                                    4.88
+                                                    {fee.prettify()}
                                                 </span>
                                                 <SecuredFinanceLogo />
 
@@ -232,7 +294,7 @@ export const TrovePage = () => {
                                     <h3 className='font-bold'>Total Debt</h3>
                                     <div className='flex items-center gap-1'>
                                         <span className='font-bold'>
-                                            {totalDebt}
+                                            {totalDebt.toString()}
                                         </span>
                                         <SecuredFinanceLogo />
                                     </div>
@@ -274,7 +336,7 @@ export const TrovePage = () => {
                                         </p>
                                         <div className='flex items-center gap-1'>
                                             <span className='font-bold'>
-                                                {totalDebt}
+                                                {totalDebt.toString()}
                                             </span>
                                             <SecuredFinanceLogo />
                                         </div>
@@ -358,13 +420,13 @@ export const TrovePage = () => {
                                             <div className='flex items-center'>
                                                 <div className='flex grow'>
                                                     <input
-                                                        type='text'
-                                                        value={collateral}
-                                                        onChange={e =>
-                                                            setCollateral(
-                                                                e.target.value
-                                                            )
-                                                        }
+                                                        type='decimal'
+                                                        value={collateral.toString()}
+                                                        // onChange={e =>
+                                                        //     setCollateral(
+                                                        //         e.target.value
+                                                        //     )
+                                                        // }
                                                         className='text-xl h-12 min-w-0 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
                                                     />
                                                     <Button
@@ -438,7 +500,7 @@ export const TrovePage = () => {
                                                         New Collateral Ratio
                                                     </h3>
                                                     <p className='text-right font-bold'>
-                                                        {collateralRatio}
+                                                        {collateralRatio?.toString()}
                                                     </p>
                                                 </div>
                                             </div>
@@ -475,7 +537,9 @@ export const TrovePage = () => {
                                             </h3>
                                             <div className='flex items-center gap-1'>
                                                 <span className='font-bold'>
-                                                    {totalDebt}
+                                                    {totalDebt.prettify(
+                                                        DEBT_TOKEN_PRECISION
+                                                    )}
                                                 </span>
                                                 <SecuredFinanceLogo />
                                             </div>
@@ -506,7 +570,9 @@ export const TrovePage = () => {
                                             <div className='flex items-center'>
                                                 <input
                                                     type='text'
-                                                    value={totalDebt}
+                                                    value={totalDebt.prettify(
+                                                        2
+                                                    )}
                                                     readOnly
                                                     className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
                                                 />
@@ -515,7 +581,7 @@ export const TrovePage = () => {
                                                 </div>
                                             </div>
                                             <p className='mt-1 text-sm text-[#565656]'>
-                                                ${totalDebt}
+                                                ${totalDebt.toString()}
                                             </p>
                                         </div>
 

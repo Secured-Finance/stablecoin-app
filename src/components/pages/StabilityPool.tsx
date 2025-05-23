@@ -1,22 +1,92 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useAccount } from 'wagmi';
 import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { useSfStablecoinReducer, useSfStablecoinSelector } from 'src/hooks';
+import {
+    selectForStabilityDepositChangeValidation,
+    validateStabilityDepositChange,
+} from '../Stability/validation/validateStabilityDepositChange';
+import { init, reduce } from '../Stability/StabilityDepositManager';
+import { useMyTransactionState } from '../Transaction';
+import { useStabilityView } from '../Stability/context/StabilityViewContext';
+import { StabilityDepositAction } from '../Stability/StabilityDepositAction';
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 
 export const StabilityPoolPage = () => {
     const { isConnected } = useAccount();
-    const [depositAmount, setDepositAmount] = useState('975.51');
+
     const [showManageView, setShowManageView] = useState(false);
+    const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>(
+        'deposit'
+    );
+
+    const [{ originalDeposit, editedDebtToken }, dispatch] =
+        useSfStablecoinReducer(reduce, init);
+    const validationContext = useSfStablecoinSelector(
+        selectForStabilityDepositChangeValidation
+    );
+    const [validChange] = validateStabilityDepositChange(
+        originalDeposit,
+        editedDebtToken,
+        validationContext
+    );
+    const depositAmount = editedDebtToken.toString();
+    const setDepositAmount = (val: string) =>
+        dispatch({ type: 'setDeposit', newValue: val });
+
+    const { dispatchEvent } = useStabilityView();
+
+    const myTransactionState = useMyTransactionState('stability-deposit');
+
+    useEffect(() => {
+        if (
+            myTransactionState.type === 'waitingForApproval' ||
+            myTransactionState.type === 'waitingForConfirmation'
+        ) {
+            dispatch({ type: 'startChange' });
+        } else if (
+            myTransactionState.type === 'failed' ||
+            myTransactionState.type === 'cancelled'
+        ) {
+            dispatch({ type: 'finishChange' });
+        } else if (myTransactionState.type === 'confirmedOneShot') {
+            dispatchEvent('DEPOSIT_CONFIRMED');
+        }
+    }, [myTransactionState.type, dispatch, dispatchEvent]);
+
+    const select = ({
+        debtTokenBalance,
+        debtTokenInStabilityPool,
+    }: SfStablecoinStoreState) => ({
+        debtTokenBalance,
+        debtTokenInStabilityPool,
+    });
+    const { debtTokenBalance, debtTokenInStabilityPool } =
+        useSfStablecoinSelector(select);
+
+    const maxAmount = originalDeposit.currentDebtToken.add(debtTokenBalance);
+    const maxedOut = editedDebtToken.eq(maxAmount);
+
+    const debtTokenInStabilityPoolAfterChange = debtTokenInStabilityPool
+        .sub(originalDeposit.currentDebtToken)
+        .add(editedDebtToken);
+
+    const originalPoolShare = originalDeposit.currentDebtToken.mulDiv(
+        100,
+        debtTokenInStabilityPool
+    );
+    const newPoolShare = editedDebtToken.mulDiv(
+        100,
+        debtTokenInStabilityPoolAfterChange
+    );
     const { open } = useWeb3Modal();
-    const maxDeposit = 1200;
-    const currentDeposit = 975.51;
-    const poolShare = 10;
     const liquidationGains = 0.1;
     const filUsdValue = 0.34;
 
-    const handleMaxDeposit = () => {
-        setDepositAmount(maxDeposit.toString());
+    const handlemaxedOut = () => {
+        setDepositAmount(maxAmount.toString());
     };
 
     return (
@@ -54,10 +124,11 @@ export const StabilityPoolPage = () => {
                                         ${depositAmount}
                                     </div>
                                     <div className='text-sm'>
-                                        {maxDeposit} USDFC{' '}
+                                        {originalDeposit.currentDebtToken.prettify()}{' '}
+                                        USDFC{' '}
                                         <button
                                             className='ml-1 cursor-pointer text-[#1a30ff]'
-                                            onClick={handleMaxDeposit}
+                                            onClick={handlemaxedOut}
                                         >
                                             Max
                                         </button>
@@ -78,7 +149,7 @@ export const StabilityPoolPage = () => {
                                         </div>
                                     </div>
                                     <div className='text-base font-medium'>
-                                        0%
+                                        {originalPoolShare.prettify()}%
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +192,9 @@ export const StabilityPoolPage = () => {
                                             Deposit
                                         </div>
                                         <div className='flex items-center gap-1 font-medium'>
-                                            <span>{currentDeposit}</span>
+                                            <span>
+                                                {debtTokenBalance.toString()}
+                                            </span>
                                             <SecuredFinanceLogo />
                                         </div>
                                     </div>
@@ -131,7 +204,7 @@ export const StabilityPoolPage = () => {
                                             Pool Share
                                         </div>
                                         <div className='font-medium'>
-                                            {poolShare}%
+                                            {originalPoolShare.prettify()}%
                                         </div>
                                     </div>
 
@@ -159,18 +232,35 @@ export const StabilityPoolPage = () => {
                             </div>
 
                             <div className='mb-6 flex overflow-hidden rounded-lg border border-[#e3e3e3]'>
-                                <button className='flex-1 bg-[#1a30ff] py-2 font-medium text-white'>
+                                <button
+                                    className={`flex-1 py-2 font-medium ${
+                                        activeTab === 'deposit'
+                                            ? 'bg-[#1a30ff] text-white'
+                                            : 'bg-white text-[#565656]'
+                                    }`}
+                                    onClick={() => setActiveTab('deposit')}
+                                >
                                     Deposit
                                 </button>
-                                <button className='flex-1 border-l border-[#e3e3e3] bg-white py-2 text-[#565656]'>
+                                <button
+                                    className={`flex-1 py-2 font-medium ${
+                                        activeTab === 'withdraw'
+                                            ? 'bg-[#1a30ff] text-white'
+                                            : 'bg-white text-[#565656]'
+                                    }`}
+                                    onClick={() => setActiveTab('withdraw')}
+                                >
                                     Withdraw
                                 </button>
                             </div>
 
                             <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
                                 <div className='mb-2 text-sm font-medium'>
-                                    Deposit
+                                    {activeTab === 'deposit'
+                                        ? 'Deposit'
+                                        : 'Withdraw'}
                                 </div>
+
                                 <div className='mb-1 flex items-center justify-between'>
                                     <input
                                         className='text-3xl w-full bg-transparent font-medium focus:outline-none'
@@ -188,10 +278,10 @@ export const StabilityPoolPage = () => {
                                 <div className='flex items-center justify-between text-sm text-[#565656]'>
                                     <div>${depositAmount}</div>
                                     <div>
-                                        {maxDeposit} USDFC{' '}
+                                        {maxedOut} USDFC{' '}
                                         <button
                                             className='ml-1 cursor-pointer text-[#1a30ff]'
-                                            onClick={handleMaxDeposit}
+                                            onClick={handlemaxedOut}
                                         >
                                             Max
                                         </button>
@@ -203,9 +293,8 @@ export const StabilityPoolPage = () => {
                                 <div className='mb-1 text-sm text-[#565656]'>
                                     New Total Deposit
                                 </div>
-                                <div className='text-base font-medium'>
-                                    {parseFloat(depositAmount) + currentDeposit}{' '}
-                                    USDFC
+                                <div className='gap-1 text-base font-medium'>
+                                    {parseFloat(depositAmount)} USDFC
                                 </div>
                             </div>
 
@@ -213,12 +302,30 @@ export const StabilityPoolPage = () => {
                                 <div className='mb-1 text-sm text-[#565656]'>
                                     New Pool Share
                                 </div>
-                                <div className='text-base font-medium'>11%</div>
+                                <div className='text-base font-medium'>
+                                    {newPoolShare.prettify()}%
+                                </div>
                             </div>
 
-                            <button className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3 text-white hover:bg-[#1a30ff]/90'>
-                                Deposit USDFC
-                            </button>
+                            {validChange ? (
+                                <StabilityDepositAction
+                                    transactionId='stability-deposit'
+                                    change={validChange}
+                                >
+                                    <span className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3 text-white hover:bg-[#1a30ff]/90'>
+                                        {activeTab === 'deposit'
+                                            ? 'Deposit USDFC'
+                                            : 'Withdraw USDFC'}
+                                    </span>
+                                </StabilityDepositAction>
+                            ) : (
+                                <button
+                                    disabled
+                                    className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3 text-white hover:bg-[#1a30ff]/90'
+                                >
+                                    Confirm
+                                </button>
+                            )}
 
                             <p className='text-center text-xs text-[#565656]'>
                                 This action will open your wallet to sign the
