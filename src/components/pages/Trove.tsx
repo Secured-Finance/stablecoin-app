@@ -11,7 +11,7 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 
 export const TrovePage = () => {
