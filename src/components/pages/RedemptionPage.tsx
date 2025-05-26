@@ -93,12 +93,12 @@ export const RedemptionPage = () => {
         } else {
             setChangePending(false);
             if (myTransactionState.type === 'confirmed') {
-                setRedeemAmount('');
+                setRedeemAmount('0.00');
             }
         }
     }, [myTransactionState.type]);
 
-    const filToReceive = estimatedFIL.prettify(2);
+    const filToReceive = estimatedFIL.div(price).sub(fee).prettify(2);
     const redemptionFee = fee.prettify(2);
     const feePercentage = feePct.toString(2);
     const usdValue = estimatedFIL.mul(price).prettify(2);
@@ -148,7 +148,7 @@ export const RedemptionPage = () => {
                                     ${redeemAmount}
                                 </div>
                                 <div className='text-sm'>
-                                    {maxAmount.toString()} USDFC{' '}
+                                    {maxAmount.prettify(2)} USDFC
                                     <button
                                         className='ml-1 cursor-pointer text-[#1a30ff]'
                                         onClick={handleMaxRedeem}
@@ -212,12 +212,7 @@ export const RedemptionPage = () => {
                         </div>
                         <button
                             className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
-                            disabled={
-                                !isConnected ||
-                                !isValid ||
-                                !changePending ||
-                                hintsPending
-                            }
+                            disabled={!isConnected || !isValid || hintsPending}
                             onClick={() => {
                                 if (!isConnected) open();
                                 else sendTransaction();
