@@ -7,3 +7,7 @@ export * from './MenuItem';
 export * from './NavTab';
 export * from './Separator';
 export * from './Tooltip';
+export * from './StatItem';
+export * from './ProtocolStat';
+export * from './TokenPrice';
+export * from './VersionStats';

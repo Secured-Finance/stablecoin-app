@@ -1,15 +1,19 @@
-export const LINKS = [
+export const HEADER_LINKS = [
     {
         to: '/',
         label: 'Dashboard',
     },
     {
-        to: '/risky-troves',
-        label: 'Risky Troves',
+        to: '/trove',
+        label: 'Trove',
     },
     {
-        to: '/bridge',
-        label: 'Bridge',
+        to: '/stability-pool',
+        label: 'Stability Pool',
+    },
+    {
+        to: '/stake',
+        label: 'Stake SFC',
     },
 ];
 
@@ -43,3 +47,6 @@ export const rpcUrls = {
     mainnet: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
     testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };
+
+export const coinGeckoUrl =
+    'https://www.geckoterminal.com/filecoin/pools/0xc8f38dbaf661b897b6a2ee5721aac5a8766ffa13';
