@@ -54,7 +54,7 @@ export const ProtocolOverview = memo(function ProtocolOverview() {
                 Protocol Overview
             </h2>
             <div className='flex flex-col gap-6'>
-                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                     <TokenPrice
                         symbol='FIL'
                         price={editedPrice}
@@ -62,11 +62,11 @@ export const ProtocolOverview = memo(function ProtocolOverview() {
                     />
                 </div>
 
-                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                     <RecoveryMode isActive={false} />
                 </div>
 
-                <div className='overflow-hidden rounded-xl border border-[#e3e3e3] bg-white'>
+                <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
                     <ProtocolStats
                         stats={getProtocolStats(data, {
                             addresses,
@@ -76,7 +76,7 @@ export const ProtocolOverview = memo(function ProtocolOverview() {
                     />
                 </div>
 
-                <div className='overflow-hidden rounded-xl border border-[#e3e3e3] bg-white'>
+                <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
                     <VersionStats
                         stats={getProtocolStats(data, {
                             addresses,

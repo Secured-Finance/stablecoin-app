@@ -9,11 +9,11 @@ interface StatItemProps {
 export function StatItem({ stat }: StatItemProps) {
     return (
         <div className={`px-6 py-4`}>
-            <h3 className='mb-1 text-sm text-[#565656]'>{stat.label}</h3>
+            <h3 className='mb-1 text-sm text-secondary-400'>{stat.label}</h3>
             <div className='flex items-baseline gap-2'>
                 <span className='font-bold'>{stat.value}</span>
                 {stat.subValue && (
-                    <span className='text-sm text-[#565656]'>
+                    <span className='text-sm text-secondary-400'>
                         {stat.subValue}
                     </span>
                 )}

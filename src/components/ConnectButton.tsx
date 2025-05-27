@@ -34,7 +34,7 @@ export function ConnectButton() {
         <div className='flex gap-2'>
             <button
                 onClick={() => open()}
-                className='flex items-center gap-2 rounded-full border border-[#e3e3e3] px-4 py-1.5 text-sm font-medium'
+                className='flex items-center gap-2 rounded-full border border-neutral-9 px-4 py-1.5 text-sm font-medium'
             >
                 {address?.slice(0, 6)}...{address?.slice(-4)}
             </button>

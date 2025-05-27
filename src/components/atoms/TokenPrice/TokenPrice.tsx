@@ -24,9 +24,9 @@ export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
                     )}
                 </div>
                 <span className='font-medium'>{symbol}</span>
-                <span className='ml-2 text-[#565656]'>{price} USD</span>
+                <span className='ml-2 text-secondary-400'>{price} USD</span>
             </div>
-            <div className='flex items-center gap-1 text-sm text-[#565656]'>
+            <div className='flex items-center gap-1 text-sm text-secondary-400'>
                 Source:
                 <span className='font-primary text-sm font-bold'>{source}</span>
                 <a

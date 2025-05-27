@@ -36,14 +36,14 @@ export function FeatureCards() {
                 title='Borrow USDFC'
                 description='Create a Trove to deposit FIL as collateral and borrow USDFC.'
                 icon={<BorrowIcon />}
-                className='bg-[#1a30ff] text-white'
+                className='bg-primary-500 text-white'
                 descriptionClassName='opacity-90'
             />
             <FeatureCard
                 title='Earn FIL'
                 description='Deposit USDFC into the Stability Pool to earn FIL rewards.'
                 icon={<EarnIcon />}
-                className='bg-[#ffce45]'
+                className='bg-warning-200'
                 titleClassName='text-[#332500]'
                 descriptionClassName='text-[#332500]'
             />
@@ -51,9 +51,9 @@ export function FeatureCards() {
                 title='Bridge Assets'
                 description='Seamlessly transfer assets to and from the Filecoin network.'
                 icon={<BridgeIcon />}
-                className='bg-[#E3E3E3]'
+                className='bg-neutral-9'
                 titleClassName='text-[#252525]'
-                descriptionClassName='text-[#565656]'
+                descriptionClassName='text-secondary-400'
             />
         </div>
     );

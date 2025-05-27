@@ -69,6 +69,8 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                             sx={{
                                 flexDirection: 'column',
                                 minHeight: '100vh',
+                                backgroundColor: '#FAFAFA',
+                                backdropFilter: 'blur(50px)',
                             }}
                         >
                             <Header />
