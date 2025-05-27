@@ -42,5 +42,9 @@ export const StabilityDepositAction: React.FC<StabilityDepositActionProps> = ({
               )
     );
 
-    return <Button onClick={sendTransaction}>{children}</Button>;
+    return (
+        <Button className='w-full' onClick={sendTransaction}>
+            {children}
+        </Button>
+    );
 };

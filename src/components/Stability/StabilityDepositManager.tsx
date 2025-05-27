@@ -126,6 +126,7 @@ export const StabilityDepositManager: React.FC = () => {
         editedDebtToken,
         validationContext
     );
+    console.log(validChange?.withdrawDebtToken);
 
     const makingNewDeposit = originalDeposit.isEmpty;
 

@@ -25,7 +25,12 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Container variant='header'>
             <div className='flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
-                    <NavLink to='/'>
+                    <NavLink
+                        className={
+                            'flex items-center gap-2 font-numerical text-6 font-semibold'
+                        }
+                        to='/'
+                    >
                         <SecuredFinanceLogo />
                     </NavLink>
                     {isFrontendRegistered && (

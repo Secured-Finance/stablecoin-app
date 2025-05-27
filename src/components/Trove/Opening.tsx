@@ -7,32 +7,22 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Alert, Button, ButtonVariants } from 'src/components/atoms';
-import { CardComponent } from 'src/components/templates';
-import { DOCUMENTATION_LINKS } from 'src/constants';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'src/components/atoms';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
-import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
-import { Card, Spinner } from 'theme-ui';
+import { Spinner } from 'theme-ui';
 import { COIN, CURRENCY } from '../../strings';
-import { Icon } from '../Icon';
-import { InfoIcon } from '../InfoIcon';
-import { LoadingOverlay } from '../LoadingOverlay';
-import { LearnMoreLink } from '../Tooltip';
-import { useMyTransactionState } from '../Transaction';
-import { CollateralRatio, CollateralRatioInfoBubble } from './CollateralRatio';
-import { EditableRow, StaticRow } from './Editor';
-import {
-    ExpensiveTroveChangeWarning,
-    GasEstimationState,
-} from './ExpensiveTroveChangeWarning';
+import { GasEstimationState } from './ExpensiveTroveChangeWarning';
 import { TroveAction } from './TroveAction';
-import { useTroveView } from './context/TroveViewContext';
 import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
+import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { useAccount } from 'wagmi';
+import { ArrowDown } from 'lucide-react';
+
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -45,15 +35,13 @@ const selector = (state: SfStablecoinStoreState) => {
 };
 
 const EMPTY_TROVE = new Trove(Decimal.ZERO, Decimal.ZERO);
-const TRANSACTION_ID = 'trove-creation';
 const GAS_ROOM_ETH = Decimal.from(0.1);
 
 export const Opening: React.FC = () => {
-    const { dispatchEvent } = useTroveView();
+    const { isConnected } = useAccount();
     const { fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
-    const editingState = useState<string>();
 
     const [collateral, setCollateral] = useState<Decimal>(Decimal.ZERO);
     const [borrowAmount, setBorrowAmount] = useState<Decimal>(Decimal.ZERO);
@@ -69,6 +57,7 @@ export const Opening: React.FC = () => {
     const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
         ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const collateralMaxedOut = collateral.eq(maxCollateral);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
@@ -83,30 +72,13 @@ export const Opening: React.FC = () => {
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);
-    const [gasEstimationState, setGasEstimationState] =
-        useState<GasEstimationState>({ type: 'idle' });
+    const [gasEstimationState] = useState<GasEstimationState>({ type: 'idle' });
 
-    const transactionState = useMyTransactionState(TRANSACTION_ID);
-    const isTransactionPending =
-        transactionState.type === 'waitingForApproval' ||
-        transactionState.type === 'waitingForConfirmation';
-
-    const handleCancelPressed = useCallback(() => {
-        dispatchEvent('CANCEL_ADJUST_TROVE_PRESSED');
-    }, [dispatchEvent]);
-
-    const reset = useCallback(() => {
-        setCollateral(Decimal.ZERO);
-        setBorrowAmount(Decimal.ZERO);
-    }, []);
-
-    const setCollateralAmount = useCallback((amount: string) => {
-        setCollateral(Decimal.from(amount));
-    }, []);
+    const TRANSACTION_ID = 'trove-creation';
 
     useEffect(() => {
         if (!collateral.isZero) {
-            const stableDebt = collateral.mul(price).mulDiv(2, 3); // for 150% CR
+            const stableDebt = collateral.mul(price).mulDiv(2, 3);
 
             const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
                 ? stableDebt
@@ -123,187 +95,202 @@ export const Opening: React.FC = () => {
     }, [borrowRate, collateral, price]);
 
     return (
-        <CardComponent
-            title={
-                <>
-                    Trove
-                    {isDirty && !isTransactionPending && (
-                        <button
-                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
-                            onClick={reset}
-                        >
-                            <span className='typography-mobile-body-4 pr-1 font-semibold'>
-                                Reset
-                            </span>
-                            <Icon name='history' size='sm' />
-                        </button>
-                    )}
-                </>
-            }
-            actionComponent={
-                <>
-                    <Button
-                        onClick={handleCancelPressed}
-                        variant={ButtonVariants.tertiary}
-                    >
-                        Cancel
-                    </Button>
+        <>
+            <div className='flex w-full flex-col items-center'>
+                <div className='flex w-full  items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6 '>
+                    <div className='flex-1'>
+                        <p className='mb-1 text-sm font-medium text-[#001C33]'>
+                            Collateral
+                        </p>
+                        <input
+                            type='number'
+                            className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
+                            value={collateral.prettify()}
+                            onChange={e =>
+                                setCollateral(Decimal.from(e.target.value) || 0)
+                            }
+                        />
+                        <p className='mt-1 text-sm text-[#8E8E93]'>
+                            {collateral.div(price).sub(fee).prettify()}
+                        </p>
+                    </div>
+                    <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
+                        <FILIcon />
+                        <span className='text-base font-semibold text-[#001C33]'>
+                            {CURRENCY}
+                        </span>
+                    </div>
+                </div>
+                <div className='relative z-10 -my-7 flex items-center justify-center'>
+                    <div className='shadow-md flex h-16 w-16 items-center justify-center rounded-xl border border-[#e3e3e3] bg-white'>
+                        <ArrowDown className='h-8 w-8 text-[#001C33]' />
+                    </div>
+                </div>
+                <div className='mb-4 flex  w-full items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='flex-1'>
+                        <p className='mb-1 text-sm font-medium text-[#001C33]'>
+                            You will borrow
+                        </p>
+                        <input
+                            type='number'
+                            className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
+                            value={borrowAmount.prettify()}
+                            onChange={e =>
+                                setBorrowAmount(
+                                    Decimal.from(e.target.value) || 0
+                                )
+                            }
+                        />
+                        <p className='mt-1 text-sm text-[#8E8E93]'>
+                            {borrowRate}
+                        </p>
+                    </div>
+                    <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
+                        <SecuredFinanceLogo />
+                        <span className='text-base font-semibold text-[#001C33]'>
+                            {COIN}
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-                    {gasEstimationState.type === 'inProgress' ? (
-                        <Button disabled>
-                            <Spinner size={24} sx={{ color: 'background' }} />
-                        </Button>
-                    ) : stableTroveChange ? (
-                        <TroveAction
-                            transactionId={TRANSACTION_ID}
-                            change={stableTroveChange}
-                            maxBorrowingRate={maxBorrowingRate}
-                            borrowingFeeDecayToleranceMinutes={60}
-                        >
-                            Confirm
-                        </TroveAction>
-                    ) : (
-                        <Button disabled>Confirm</Button>
-                    )}
-                </>
-            }
-        >
-            <div className='flex flex-col gap-3'>
-                <EditableRow
-                    label='Collateral'
-                    inputId='trove-collateral'
-                    amount={collateral.prettify(COLLATERAL_PRECISION)}
-                    maxAmount={maxCollateral.toString()}
-                    maxedOut={collateralMaxedOut}
-                    editingState={editingState}
-                    unit={CURRENCY}
-                    editedAmount={collateral.toString(COLLATERAL_PRECISION)}
-                    setEditedAmount={setCollateralAmount}
-                />
+            <span>{description}</span>
 
-                <EditableRow
-                    label='Borrow'
-                    inputId='trove-borrow-amount'
-                    amount={borrowAmount.prettify()}
-                    unit={COIN}
-                    editingState={editingState}
-                    editedAmount={borrowAmount.toString(2)}
-                    setEditedAmount={(amount: string) =>
-                        setBorrowAmount(Decimal.from(amount))
-                    }
-                />
-
-                <div className='flex flex-col gap-3 px-3'>
-                    <StaticRow
-                        label='Liquidation Reserve'
-                        inputId='trove-liquidation-reserve'
-                        amount={`${LIQUIDATION_RESERVE}`}
-                        unit={COIN}
-                        infoIcon={
-                            <InfoIcon
-                                message={
-                                    <Card
-                                        variant='tooltip'
-                                        sx={{ width: '200px' }}
-                                    >
-                                        An amount set aside to cover the
-                                        liquidator’s gas costs if your Trove
-                                        needs to be liquidated. The amount
-                                        increases your debt and is refunded if
-                                        you close your Trove by fully paying off
-                                        its net debt.
-                                    </Card>
-                                }
-                            />
-                        }
-                    />
-
-                    <StaticRow
-                        label='Borrowing Fee'
-                        inputId='trove-borrowing-fee'
-                        amount={fee.prettify(2)}
-                        pendingAmount={feePct.toString(2)}
-                        unit={COIN}
-                        infoIcon={
-                            <InfoIcon
-                                message={
-                                    <Card
-                                        variant='tooltip'
-                                        sx={{ width: '240px' }}
-                                    >
-                                        This amount is deducted from the
-                                        borrowed amount as a one-time fee. There
-                                        are no recurring fees for borrowing,
-                                        which is thus interest-free.
-                                    </Card>
-                                }
-                            />
-                        }
-                    />
-
-                    <StaticRow
-                        label='Total debt'
-                        inputId='trove-total-debt'
-                        amount={totalDebt.prettify(DEBT_TOKEN_PRECISION)}
-                        unit={COIN}
-                        infoIcon={
-                            <InfoIcon
-                                message={
-                                    <Card
-                                        variant='tooltip'
-                                        sx={{ width: '240px' }}
-                                    >
-                                        {`The total amount of ${COIN} your Trove will hold.`}
-                                        {isDirty && (
-                                            <>
-                                                {` You will need to repay ${totalDebt
-                                                    .sub(LIQUIDATION_RESERVE)
-                                                    .prettify(
-                                                        DEBT_TOKEN_PRECISION
-                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.)`}
-                                            </>
-                                        )}
-                                    </Card>
-                                }
-                            />
-                        }
-                    />
+            <div className='mb-6 mt-6 space-y-4'>
+                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='flex items-start justify-between'>
+                        <div className='max-w-[60%] text-sm text-[#565656]'>
+                            The ratio of deposited FIL to borrowed USDFC. If it
+                            falls below 110% (or 150% in Recovery Mode),
+                            liquidation may occur.
+                        </div>
+                        <div>
+                            <h3 className='mb-1 text-right text-sm text-[#565656]'>
+                                Collateral Ratio
+                            </h3>
+                            <p className='text-right font-bold'>
+                                {collateralRatio?.mul(100)?.prettify()}%
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
-                <CollateralRatio value={collateralRatio} />
+                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='flex items-start justify-between'>
+                        <div className='max-w-[60%] text-sm text-[#565656]'>
+                            The risk of losing your FIL collateral if your
+                            Collateral Ratio drops below 110% under normal
+                            conditions or 150% in Recovery Mode.
+                        </div>
+                        <div>
+                            <h3 className='mb-1 text-right text-sm text-[#565656]'>
+                                Liquidation Risk
+                            </h3>
+                            <div className='flex items-center justify-end gap-2'>
+                                <div className='h-3 w-3 rounded-full bg-green-500'></div>
+                                <span className='font-medium text-green-700'>
+                                    Low
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='flex items-start justify-between'>
+                        <div className='max-w-[60%] text-sm text-[#565656]'>
+                            An amount added to your debt to cover liquidator gas
+                            costs in case your Trove is liquidated. It&apos;s
+                            refunded if you fully repay your debt and close your
+                            Trove.
+                        </div>
+                        <div>
+                            <h3 className='mb-1 text-right text-sm text-[#565656]'>
+                                Liquidation Reserve
+                            </h3>
+                            <div className='flex items-center justify-end gap-1'>
+                                <span className='font-bold'>
+                                    {LIQUIDATION_RESERVE.toString()}
+                                </span>
+                                <SecuredFinanceLogo />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <Alert color='info'>
-                    Keep your collateral ratio above the{' '}
-                    <NavLink
-                        to='/risky-troves'
-                        className='font-semibold text-primary-500'
-                    >
-                        riskiest Troves
-                    </NavLink>{' '}
-                    to avoid being{' '}
-                    <LearnMoreLink link={DOCUMENTATION_LINKS.redemption}>
-                        redeemed.
-                    </LearnMoreLink>
-                </Alert>
+                <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='flex items-start justify-between'>
+                        <div className='max-w-[60%] text-sm text-[#565656]'>
+                            A one-time 0.5% fee charged when borrowing USDFC,
+                            added to the loan balance.
+                        </div>
+                        <div>
+                            <h3 className='mb-1 text-right text-sm text-[#565656]'>
+                                Borrowing Fee
+                            </h3>
+                            <div className='flex items-center justify-end gap-1'>
+                                <span className='font-bold'>
+                                    {fee.prettify()}
+                                </span>
+                                <SecuredFinanceLogo />
 
-                <CollateralRatioInfoBubble value={collateralRatio} />
-
-                {description ?? (
-                    <Alert color='info'>
-                        Start by entering the amount of {CURRENCY} you would
-                        like to deposit as collateral.
-                    </Alert>
-                )}
-
-                <ExpensiveTroveChangeWarning
-                    troveChange={stableTroveChange}
-                    maxBorrowingRate={maxBorrowingRate}
-                    borrowingFeeDecayToleranceMinutes={60}
-                    gasEstimationState={gasEstimationState}
-                    setGasEstimationState={setGasEstimationState}
-                />
-                {isTransactionPending && <LoadingOverlay />}
+                                <span className='ml-1 text-sm font-normal text-[#565656]'>
+                                    {feePct.prettify()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </CardComponent>
+
+            <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                <div className='flex items-center justify-between'>
+                    <h3 className='font-bold'>Total Debt</h3>
+                    <div className='flex items-center gap-1'>
+                        <span className='font-bold'>
+                            {totalDebt.prettify()}
+                        </span>
+                        <SecuredFinanceLogo />
+                    </div>
+                </div>
+            </div>
+
+            {isConnected ? (
+                gasEstimationState.type === 'inProgress' ? (
+                    <Button
+                        disabled
+                        className='text-lg w-full bg-[#1a30ff] py-4'
+                    >
+                        <Spinner size={24} sx={{ color: 'background' }} />
+                    </Button>
+                ) : stableTroveChange ? (
+                    <TroveAction
+                        transactionId={TRANSACTION_ID}
+                        change={stableTroveChange}
+                        maxBorrowingRate={maxBorrowingRate}
+                        borrowingFeeDecayToleranceMinutes={60}
+                    >
+                        Confirm
+                    </TroveAction>
+                ) : (
+                    <Button
+                        disabled
+                        className='text-lg w-full bg-[#1a30ff] py-4'
+                    >
+                        Confirm
+                    </Button>
+                )
+            ) : (
+                <Button
+                    className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'
+                    onClick={() => open()}
+                >
+                    Connect wallet
+                </Button>
+            )}
+
+            <p className='mt-2 text-center text-sm text-[#565656]'>
+                This action will open your wallet to sign the transaction.
+            </p>
+        </>
     );
 };

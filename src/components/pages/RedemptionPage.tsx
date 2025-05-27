@@ -29,7 +29,7 @@ export const RedemptionPage = () => {
 
     const { open } = useWeb3Modal();
     const { isConnected } = useAccount();
-    const { fees, debtTokenBalance, price, validationContext } =
+    const { fees, price, validationContext } =
         useSfStablecoinSelector(selector);
 
     const { sfStablecoin } = useSfStablecoin();
@@ -40,7 +40,6 @@ export const RedemptionPage = () => {
     const [changePending, setChangePending] = useState(false);
     const [hintsPending, setHintsPending] = useState(false);
     const decimalRedeem = Decimal.from(redeemAmount || '0');
-    const maxAmount = debtTokenBalance;
 
     useEffect(() => {
         if (decimalRedeem.isZero) {
@@ -103,13 +102,9 @@ export const RedemptionPage = () => {
     const feePercentage = feePct.toString(2);
     const usdValue = estimatedFIL.mul(price).prettify(2);
 
-    const handleMaxRedeem = () => {
-        setRedeemAmount(maxAmount.prettify(2));
-    };
-
     return (
         <div className='flex min-h-screen w-full flex-col'>
-            <main className='flex flex-grow flex-col items-center justify-center px-4 py-16'>
+            <main className='flex flex-grow flex-col items-center justify-center px-4 py-10'>
                 <div className='mx-auto w-full max-w-3xl'>
                     <h1 className='mb-3 text-center font-primary text-5/none font-semibold'>
                         Redeem USDFC
@@ -123,69 +118,62 @@ export const RedemptionPage = () => {
                         redeemed.
                     </p>
 
-                    <div className='mx-auto max-w-md'>
-                        <div className='mb-2 rounded-xl border border-[#e3e3e3] bg-white p-4'>
-                            <div className='mb-2 text-sm font-medium'>
-                                Redeem
-                            </div>
-                            <div className='mb-1 flex items-center justify-between'>
+                    <div className='flex w-full flex-col items-center'>
+                        {/* Redeem Section */}
+                        <div className='flex w-full items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                            <div className='flex-1'>
+                                <p className='mb-1 text-sm font-medium text-[#001C33]'>
+                                    Redeem
+                                </p>
                                 <input
                                     type='number'
-                                    className='text-3xl w-full bg-transparent font-medium outline-none'
+                                    className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
                                     value={redeemAmount}
                                     onChange={e =>
                                         setRedeemAmount(e.target.value)
                                     }
                                 />
-
-                                <div className='flex items-center'>
-                                    <SecuredFinanceLogo />
+                                <div className='mt-1 flex w-full justify-between text-right text-sm text-[#8E8E93]'>
+                                    <span>${redeemAmount}</span>
                                 </div>
                             </div>
-
-                            <div className='flex items-center justify-between'>
-                                <div className='text-sm text-[#565656]'>
-                                    ${redeemAmount}
-                                </div>
-                                <div className='text-sm'>
-                                    {maxAmount.prettify(2)} USDFC
-                                    <button
-                                        className='ml-1 cursor-pointer text-[#1a30ff]'
-                                        onClick={handleMaxRedeem}
-                                    >
-                                        Max
-                                    </button>
-                                </div>
+                            <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
+                                <SecuredFinanceLogo />
                             </div>
                         </div>
-                        <div className='my-4 flex justify-center'>
-                            <ArrowDown className='h-8 w-8' />
-                        </div>
-                        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
-                            <div className='mb-2 text-sm font-medium'>
-                                You will receive
+
+                        {/* ArrowDown */}
+                        <div className='relative z-10 -my-7 flex items-center justify-center'>
+                            <div className='shadow-md flex h-16 w-16 items-center justify-center rounded-xl border border-[#e3e3e3] bg-white'>
+                                <ArrowDown className='h-8 w-8 text-[#001C33]' />
                             </div>
-                            <div className='mb-1 flex items-center justify-between'>
-                                <div className='text-3xl font-medium'>
+                        </div>
+
+                        {/* Receive Section */}
+                        <div className='mb-4 flex w-full items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                            <div className='flex-1'>
+                                <p className='mb-1 text-sm font-medium text-[#001C33]'>
+                                    You will receive
+                                </p>
+                                <div className='text-[36px] font-semibold leading-tight text-[#001C33]'>
                                     {filToReceive}
                                 </div>
-                                <div className='flex items-center'>
-                                    <div className='mr-1 flex h-6 w-6 items-center justify-center rounded-full bg-[#f5f5ff]'>
-                                        <FILIcon />
-                                    </div>
-                                    <span className='font-medium'>FIL</span>
-                                </div>
-                            </div>
-                            <div className='flex items-center justify-between'>
-                                <div className='text-sm text-[#565656]'>
+                                <p className='mt-1 text-sm text-[#8E8E93]'>
                                     ${usdValue}
-                                </div>
+                                </p>
+                            </div>
+                            <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
+                                <FILIcon />
+                                <span className='text-base font-semibold text-[#001C33]'>
+                                    FIL
+                                </span>
                             </div>
                         </div>
-                        <div className='mb-6 rounded-lg border border-[#e3e3e3] bg-white p-4'>
+                        {/* Redemption Fee */}
+                        <div className='mb-6 w-full rounded-xl border border-[#e3e3e3] bg-white p-6'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='mb-1 text-sm font-medium'>
+                                    <div className='mb-1 text-sm font-medium text-[#001C33]'>
                                         Redemption Fee
                                     </div>
                                     <div className='max-w-[280px] text-xs text-[#565656]'>
@@ -194,22 +182,24 @@ export const RedemptionPage = () => {
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
-                                <div className='flex items-center gap-2 border-[#e3e3e3] bg-white'>
-                                    <span className='mr-1 font-medium'>
+                                <div className='flex items-center gap-2'>
+                                    <span className='text-sm font-medium text-[#001C33]'>
                                         {redemptionFee}
                                     </span>
-                                    <div className='flex items-center'>
-                                        <div className='mr-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#f5f5ff]'>
+                                    <div className='flex items-center gap-1'>
+                                        <div className='flex h-4 w-4 items-center justify-center rounded-full bg-[#f5f5ff]'>
                                             <FILIcon />
                                         </div>
                                         <span className='text-xs'>FIL</span>
+                                        <span className='text-xs text-[#565656]'>
+                                            {feePercentage}
+                                        </span>
                                     </div>
-                                    <span className='ml-1 text-xs text-[#565656]'>
-                                        {feePercentage}
-                                    </span>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Redeem Button */}
                         <button
                             className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
                             disabled={!isConnected || !isValid || hintsPending}
@@ -224,12 +214,14 @@ export const RedemptionPage = () => {
                                     : 'Redeem USDFC'
                                 : 'Connect wallet'}
                         </button>
+
                         {!isConnected && (
                             <p className='text-center text-xs text-[#565656]'>
                                 This action will open your wallet to sign the
                                 transaction.
                             </p>
                         )}
+
                         {validationMessage}
                     </div>
                 </div>
