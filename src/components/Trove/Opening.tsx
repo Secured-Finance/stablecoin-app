@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'src/components/atoms';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Spinner } from 'theme-ui';
-import { COIN, CURRENCY } from '../../strings';
+import { CURRENCY } from '../../strings';
 import { GasEstimationState } from './ExpensiveTroveChangeWarning';
 import { TroveAction } from './TroveAction';
 import {
@@ -147,9 +147,6 @@ export const Opening: React.FC = () => {
                     </div>
                     <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
                         <SecuredFinanceLogo />
-                        <span className='text-base font-semibold text-[#001C33]'>
-                            {COIN}
-                        </span>
                     </div>
                 </div>
             </div>

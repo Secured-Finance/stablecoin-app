@@ -19,11 +19,14 @@ export const TrovePage = () => {
         <div className='min-h-[100vh] w-full'>
             <main className='container mx-auto px-4 py-10'>
                 <h1 className='text-3xl mb-8 font-bold'>Your Trove</h1>
-                <>
-                    {activeTab === 'create' && <Opening />}
-                    {trove && <YourTrove />}
-                    {activeTab === 'manage' && <Adjusting />}
-                </>
+
+                {activeTab === 'create' && <Opening />}
+                {activeTab === 'manage' && (
+                    <>
+                        {trove && <YourTrove />}
+                        <Adjusting />
+                    </>
+                )}
             </main>
         </div>
     );
