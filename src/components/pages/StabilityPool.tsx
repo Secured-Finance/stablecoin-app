@@ -107,6 +107,11 @@ export const StabilityPoolPage = () => {
     });
     const { debtTokenBalance, debtTokenInStabilityPool } =
         useSfStablecoinSelector(select);
+    useEffect(() => {
+        if (debtTokenInStabilityPool) {
+            setShowManageView(true);
+        }
+    }, [debtTokenInStabilityPool]);
 
     const maxAmount = originalDeposit.currentDebtToken.add(debtTokenBalance);
 
