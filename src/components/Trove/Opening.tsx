@@ -23,6 +23,7 @@ import { useAccount } from 'wagmi';
 import { ArrowDown } from 'lucide-react';
 
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -39,6 +40,7 @@ const GAS_ROOM_ETH = Decimal.from(0.1);
 
 export const Opening: React.FC = () => {
     const { isConnected } = useAccount();
+    const { open } = useWeb3Modal();
     const { fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
@@ -273,12 +275,12 @@ export const Opening: React.FC = () => {
                         disabled
                         className='text-lg w-full bg-[#1a30ff] py-4'
                     >
-                        Confirm
+                        Update Trove
                     </Button>
                 )
             ) : (
                 <Button
-                    className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'
+                    className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white hover:bg-[#1a30ff]/90'
                     onClick={() => open()}
                 >
                     Connect wallet

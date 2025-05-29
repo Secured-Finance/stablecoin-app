@@ -202,17 +202,20 @@ export const RedemptionPage = () => {
                         {/* Redeem Button */}
                         <button
                             className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
-                            disabled={!isConnected || !isValid || hintsPending}
+                            disabled={isConnected && (!isValid || hintsPending)}
                             onClick={() => {
-                                if (!isConnected) open();
-                                else sendTransaction();
+                                if (!isConnected) {
+                                    open();
+                                } else {
+                                    sendTransaction();
+                                }
                             }}
                         >
-                            {isConnected
-                                ? changePending
-                                    ? 'Processing...'
-                                    : 'Redeem USDFC'
-                                : 'Connect wallet'}
+                            {!isConnected
+                                ? 'Connect wallet'
+                                : changePending
+                                ? 'Processing...'
+                                : 'Redeem USDFC'}
                         </button>
 
                         {!isConnected && (
