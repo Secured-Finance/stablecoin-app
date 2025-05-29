@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import DiscordIcon from 'src/assets/icons/discord.svg';
-import GitHubIcon from 'src/assets/icons/github.svg';
-import MediumIcon from 'src/assets/icons/medium.svg';
 import SecuredFinanceLogo from 'src/assets/icons/sflogo.svg';
-import TwitterIcon from 'src/assets/icons/twitter.svg';
+import { Icon } from './Icon';
+import { SOCIAL_LINKS } from 'src/constants';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 export const Footer = () => {
     return (
@@ -15,18 +14,22 @@ export const Footer = () => {
                 </div>
 
                 <div className='flex items-center gap-6'>
-                    <Link href='#' aria-label='GitHub'>
-                        <GitHubIcon className='h-5 w-5' />
-                    </Link>
-                    <Link href='#' aria-label='Discord'>
-                        <DiscordIcon className='h-5 w-5' />
-                    </Link>
-                    <Link href='#' aria-label='Twitter'>
-                        <TwitterIcon className='h-5 w-5' />
-                    </Link>
-                    <Link href='#' aria-label='Medium'>
-                        <MediumIcon className='h-5 w-5' />
-                    </Link>
+                    {SOCIAL_LINKS.map(
+                        ({ href, iconName, ariaLabel }, index) => (
+                            <Link
+                                key={index}
+                                href={href}
+                                aria-label={ariaLabel}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <Icon
+                                    name={iconName as IconName}
+                                    className='h-4 w-4'
+                                />
+                            </Link>
+                        )
+                    )}
                 </div>
             </div>
         </footer>

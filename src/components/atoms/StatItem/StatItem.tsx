@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
-import { ProtocolStat } from '../ProtocolStat';
+import { ProtocolStat } from 'src/components/molecules/ProtocolStats';
 
 interface StatItemProps {
     stat: ProtocolStat;
@@ -19,7 +19,10 @@ export function StatItem({ stat }: StatItemProps) {
                 )}
                 {stat.link && (
                     <a href={stat.link} className='inline-flex items-center'>
-                        <ArrowUpRight className='ml-1 inline-block h-4 w-4' />
+                        <ArrowUpRight
+                            data-testid='link-arrow'
+                            className='ml-1 inline-block h-4 w-4'
+                        />
                     </a>
                 )}
             </div>

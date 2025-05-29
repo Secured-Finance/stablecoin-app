@@ -1,4 +1,4 @@
-import { StatItem } from '../StatItem';
+import { StatItem } from 'src/components/atoms';
 
 export interface ProtocolStat {
     label: string;

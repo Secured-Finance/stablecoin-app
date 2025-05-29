@@ -1,51 +1,35 @@
-import {
-    Decimal,
-    Percent,
-    SfStablecoinStoreState,
-    Trove,
-} from '@secured-finance/stablecoin-lib-base';
+import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
 import { memo } from 'react';
-import {
-    ProtocolStat,
-    ProtocolStats,
-    TokenPrice,
-    VersionStats,
-} from 'src/components/atoms';
+import { TokenPrice, VersionStats } from 'src/components/atoms';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { AddressUtils, isProdEnv } from 'src/utils';
 import { filecoin } from 'viem/chains';
+import { ProtocolStat, ProtocolStats } from '../ProtocolStats';
 import { RecoveryMode } from '../RecoveryMode';
 
-export const ProtocolOverview = memo(function ProtocolOverview() {
-    const select = ({
-        numberOfTroves,
-        price,
-        total,
-        debtTokenInStabilityPool,
-        borrowingRate,
-        redemptionRate,
-        totalStakedProtocolToken,
-        frontend,
-    }: SfStablecoinStoreState) => ({
-        numberOfTroves,
-        price,
-        total,
-        debtTokenInStabilityPool,
-        borrowingRate,
-        redemptionRate,
-        totalStakedProtocolToken,
-        kickbackRate:
-            frontend.status === 'registered' ? frontend.kickbackRate : null,
-    });
-    const data = useSfStablecoinSelector(select);
-    const {
-        sfStablecoin: {
-            connection: { deploymentDate, addresses, chainId },
-        },
-    } = useSfStablecoin();
+type ProtocolOverviewProps = {
+    data: {
+        numberOfTroves: number;
+        price: Decimal;
+        total: Trove;
+        debtTokenInStabilityPool: Decimal;
+        borrowingRate: Decimal;
+        redemptionRate: Decimal;
+        totalStakedProtocolToken: Decimal;
+        kickbackRate: Decimal | null;
+    };
+    contextData: {
+        addresses: Record<string, string>;
+        chainId: number;
+        deploymentDate: Date;
+    };
+};
 
+export const ProtocolOverview = memo(function ProtocolOverview({
+    data,
+    contextData,
+}: ProtocolOverviewProps) {
     const editedPrice = data.price.toString(2);
 
     return (
@@ -68,22 +52,12 @@ export const ProtocolOverview = memo(function ProtocolOverview() {
 
                 <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
                     <ProtocolStats
-                        stats={getProtocolStats(data, {
-                            addresses,
-                            chainId,
-                            deploymentDate,
-                        })}
+                        stats={getProtocolStats(data, contextData)}
                     />
                 </div>
 
                 <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
-                    <VersionStats
-                        stats={getProtocolStats(data, {
-                            addresses,
-                            chainId,
-                            deploymentDate,
-                        })}
-                    />
+                    <VersionStats stats={getProtocolStats(data, contextData)} />
                 </div>
             </div>
         </div>
@@ -183,7 +157,6 @@ export const getProtocolStats = (
     return {
         leftColumn: stats.slice(0, 3),
         rightColumn: stats.slice(3, 6),
-        cfleft: stats.slice(6, 7),
-        cfright: stats.slice(7),
+        versionStats: stats.slice(6, stats.length),
     };
 };

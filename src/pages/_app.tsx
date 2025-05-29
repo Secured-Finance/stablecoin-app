@@ -111,7 +111,7 @@ const metadata = {
 
 const network = getSupportedChains();
 
-const wagmiConfig = defaultWagmiConfig({
+export const wagmiConfig = defaultWagmiConfig({
     chains: network,
     projectId: projectId,
     metadata,

@@ -8,6 +8,7 @@ export * from './NavTab';
 export * from './Separator';
 export * from './Tooltip';
 export * from './StatItem';
-export * from './ProtocolStat';
 export * from './TokenPrice';
 export * from './VersionStats';
+export * from './EmptyPositions';
+export * from './ProtocolIcons';

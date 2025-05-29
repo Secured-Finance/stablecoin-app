@@ -50,3 +50,26 @@ export const rpcUrls = {
 
 export const coinGeckoUrl =
     'https://www.geckoterminal.com/filecoin/pools/0xc8f38dbaf661b897b6a2ee5721aac5a8766ffa13';
+
+export const SOCIAL_LINKS = [
+    {
+        href: 'https://github.com/Secured-Finance/stablecoin-app',
+        iconName: 'github',
+        ariaLabel: 'GitHub',
+    },
+    {
+        href: 'https://discord.gg/3kytCrv3qY',
+        iconName: 'discord',
+        ariaLabel: 'Discord',
+    },
+    {
+        href: 'https://x.com/USDFC_Protocol',
+        iconName: 'x-twitter',
+        ariaLabel: 'Twitter',
+    },
+    {
+        href: 'https://blog.secured.finance/',
+        iconName: 'medium',
+        ariaLabel: 'Medium',
+    },
+];

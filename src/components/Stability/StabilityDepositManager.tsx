@@ -21,7 +21,7 @@ import {
     validateStabilityDepositChange,
 } from './validation/validateStabilityDepositChange';
 
-const init = ({ stabilityDeposit }: SfStablecoinStoreState) => ({
+export const init = ({ stabilityDeposit }: SfStablecoinStoreState) => ({
     originalDeposit: stabilityDeposit,
     editedDebtToken: stabilityDeposit.currentDebtToken,
     changePending: false,
@@ -41,7 +41,7 @@ const reduceWith =
 const finishChange = reduceWith({ type: 'finishChange' });
 const revert = reduceWith({ type: 'revert' });
 
-const reduce = (
+export const reduce = (
     state: StabilityDepositManagerState,
     action: StabilityDepositManagerAction
 ): StabilityDepositManagerState => {
