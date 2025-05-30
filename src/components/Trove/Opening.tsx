@@ -33,6 +33,7 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
+import { Amount } from '../ActionDescription';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -104,7 +105,14 @@ export const Opening: React.FC = () => {
         setCollateral(Decimal.from(amount));
     }, []);
 
+    const collateralExceedsMax =
+        collateral.gt(maxCollateral) && collateral.eq(accountBalance);
+
     useEffect(() => {
+        if (collateralExceedsMax) {
+            setBorrowAmount(Decimal.ZERO);
+            return;
+        }
         if (!collateral.isZero) {
             const stableDebt = collateral.mul(price).mulDiv(2, 3); // for 150% CR
 
@@ -114,13 +122,21 @@ export const Opening: React.FC = () => {
                       .div(Decimal.ONE.add(borrowRate))
                 : Decimal.ZERO;
 
+            const safeBorrowable = allowedDebt.gt(MINIMUM_NET_DEBT)
+                ? allowedDebt
+                : MINIMUM_NET_DEBT;
+
+            const borrowableAfterGasBuffer = safeBorrowable.sub(
+                Decimal.from(0.01)
+            );
+
             setBorrowAmount(
-                allowedDebt.gt(MINIMUM_NET_DEBT)
-                    ? allowedDebt
-                    : MINIMUM_NET_DEBT
+                borrowableAfterGasBuffer.gt(Decimal.ZERO)
+                    ? borrowableAfterGasBuffer
+                    : Decimal.ZERO
             );
         }
-    }, [borrowRate, collateral, price]);
+    }, [borrowRate, collateral, collateralExceedsMax, price]);
 
     return (
         <CardComponent
@@ -153,6 +169,8 @@ export const Opening: React.FC = () => {
                         <Button disabled>
                             <Spinner size={24} sx={{ color: 'background' }} />
                         </Button>
+                    ) : collateralExceedsMax ? (
+                        <Button disabled>Exceeds Max collateral</Button>
                     ) : stableTroveChange ? (
                         <TroveAction
                             transactionId={TRANSACTION_ID}
@@ -288,20 +306,34 @@ export const Opening: React.FC = () => {
 
                 <CollateralRatioInfoBubble value={collateralRatio} />
 
-                {description ?? (
-                    <Alert color='info'>
-                        Start by entering the amount of {CURRENCY} you would
-                        like to deposit as collateral.
+                {!collateralExceedsMax &&
+                    (description ?? (
+                        <Alert color='info'>
+                            Start by entering the amount of {CURRENCY} you would
+                            like to deposit as collateral.
+                        </Alert>
+                    ))}
+
+                {collateralExceedsMax && (
+                    <Alert>
+                        The amount you are trying to deposit exceeds your
+                        balance after transaction fees by{' '}
+                        <Amount>
+                            {collateral.sub(maxCollateral).prettify()}{' '}
+                            {CURRENCY}.
+                        </Amount>
                     </Alert>
                 )}
 
-                <ExpensiveTroveChangeWarning
-                    troveChange={stableTroveChange}
-                    maxBorrowingRate={maxBorrowingRate}
-                    borrowingFeeDecayToleranceMinutes={60}
-                    gasEstimationState={gasEstimationState}
-                    setGasEstimationState={setGasEstimationState}
-                />
+                {!collateralExceedsMax && (
+                    <ExpensiveTroveChangeWarning
+                        troveChange={stableTroveChange}
+                        maxBorrowingRate={maxBorrowingRate}
+                        borrowingFeeDecayToleranceMinutes={60}
+                        gasEstimationState={gasEstimationState}
+                        setGasEstimationState={setGasEstimationState}
+                    />
+                )}
                 {isTransactionPending && <LoadingOverlay />}
             </div>
         </CardComponent>
