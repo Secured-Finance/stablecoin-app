@@ -70,7 +70,8 @@ export const Opening: React.FC = () => {
     const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
         ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
-    const collateralMaxedOut = collateral.eq(maxCollateral);
+    const collateralMaxedOut =
+        collateral.eq(maxCollateral) || collateral.eq(accountBalance);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -105,14 +106,7 @@ export const Opening: React.FC = () => {
         setCollateral(Decimal.from(amount));
     }, []);
 
-    const collateralExceedsMax =
-        collateral.gt(maxCollateral) && collateral.eq(accountBalance);
-
     useEffect(() => {
-        if (collateralExceedsMax) {
-            setBorrowAmount(Decimal.ZERO);
-            return;
-        }
         if (!collateral.isZero) {
             const stableDebt = collateral.mul(price).mulDiv(2, 3); // for 150% CR
 
@@ -122,21 +116,13 @@ export const Opening: React.FC = () => {
                       .div(Decimal.ONE.add(borrowRate))
                 : Decimal.ZERO;
 
-            const safeBorrowable = allowedDebt.gt(MINIMUM_NET_DEBT)
-                ? allowedDebt
-                : MINIMUM_NET_DEBT;
-
-            const borrowableAfterGasBuffer = safeBorrowable.sub(
-                Decimal.from(0.01)
-            );
-
             setBorrowAmount(
-                borrowableAfterGasBuffer.gt(Decimal.ZERO)
-                    ? borrowableAfterGasBuffer
-                    : Decimal.ZERO
+                allowedDebt.gt(MINIMUM_NET_DEBT)
+                    ? allowedDebt
+                    : MINIMUM_NET_DEBT
             );
         }
-    }, [borrowRate, collateral, collateralExceedsMax, price]);
+    }, [borrowRate, collateral, price]);
 
     return (
         <CardComponent
@@ -145,7 +131,7 @@ export const Opening: React.FC = () => {
                     Trove
                     {isDirty && !isTransactionPending && (
                         <button
-                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
+                            className='item-right flex w-auto items-center px-2 hover:enabled:text-error-700'
                             onClick={reset}
                         >
                             <span className='typography-mobile-body-4 pr-1 font-semibold'>
@@ -169,8 +155,8 @@ export const Opening: React.FC = () => {
                         <Button disabled>
                             <Spinner size={24} sx={{ color: 'background' }} />
                         </Button>
-                    ) : collateralExceedsMax ? (
-                        <Button disabled>Exceeds Max collateral</Button>
+                    ) : collateralMaxedOut ? (
+                        <Button disabled>Exceeds Collateral Amount</Button>
                     ) : stableTroveChange ? (
                         <TroveAction
                             transactionId={TRANSACTION_ID}
@@ -278,7 +264,7 @@ export const Opening: React.FC = () => {
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.)`}
+                                                    )} ${COIN} to reclaim your collateral ${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.`}
                                             </>
                                         )}
                                     </Card>
@@ -306,7 +292,7 @@ export const Opening: React.FC = () => {
 
                 <CollateralRatioInfoBubble value={collateralRatio} />
 
-                {!collateralExceedsMax &&
+                {!collateralMaxedOut &&
                     (description ?? (
                         <Alert color='info'>
                             Start by entering the amount of {CURRENCY} you would
@@ -314,7 +300,7 @@ export const Opening: React.FC = () => {
                         </Alert>
                     ))}
 
-                {collateralExceedsMax && (
+                {collateralMaxedOut && (
                     <Alert>
                         The amount you are trying to deposit exceeds your
                         balance after transaction fees by{' '}
@@ -325,7 +311,7 @@ export const Opening: React.FC = () => {
                     </Alert>
                 )}
 
-                {!collateralExceedsMax && (
+                {!collateralMaxedOut && (
                     <ExpensiveTroveChangeWarning
                         troveChange={stableTroveChange}
                         maxBorrowingRate={maxBorrowingRate}
