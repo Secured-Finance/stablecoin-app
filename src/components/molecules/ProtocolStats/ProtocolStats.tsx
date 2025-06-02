@@ -1,4 +1,4 @@
-import { StatItem } from 'src/components/atoms';
+import { StatItem } from '../StatItem';
 
 export interface ProtocolStat {
     label: string;
@@ -19,20 +19,12 @@ export function ProtocolStats({ stats }: ProtocolStatsProps) {
         <div className='grid grid-cols-2 justify-center'>
             <div>
                 {stats.leftColumn.map((stat, index) => (
-                    <StatItem
-                        key={index}
-                        stat={stat}
-                        isLast={index === stats.leftColumn.length - 1}
-                    />
+                    <StatItem key={index} stat={stat} />
                 ))}
             </div>
             <div>
                 {stats.rightColumn.map((stat, index) => (
-                    <StatItem
-                        key={index}
-                        stat={stat}
-                        isLast={index === stats.rightColumn.length - 1}
-                    />
+                    <StatItem key={index} stat={stat} />
                 ))}
             </div>
         </div>

@@ -26,6 +26,7 @@ export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
                     href={coinGeckoUrl}
                     target='_blank'
                     rel='noopener noreferrer'
+                    data-testid='source-url'
                     className='flex items-center gap-1 font-medium hover:underline'
                 >
                     <span className='font-primary text-sm font-bold'>

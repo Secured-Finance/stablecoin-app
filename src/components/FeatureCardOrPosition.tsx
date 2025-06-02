@@ -1,19 +1,23 @@
 import { useAccount } from 'wagmi';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
-import { useSfStablecoinSelector } from 'src/hooks';
-import { FeatureCards } from './molecules';
-import { Positions } from './molecules/Positions/Positions';
-import { EmptyPositions } from './atoms';
+import { useSfStablecoinReducer, useSfStablecoinSelector } from 'src/hooks';
+import { EmptyPositions, FeatureCards, Positions } from './molecules';
+import { init, reduce } from './Stability/StabilityDepositManager';
 
-export function FeatureCardsOrPositions() {
+export const FeatureCardsOrPositions = () => {
     const select = ({
         debtTokenInStabilityPool,
         trove,
+        price,
     }: SfStablecoinStoreState) => ({
         debtTokenInStabilityPool,
         trove,
+        price,
     });
-    const { debtTokenInStabilityPool, trove } = useSfStablecoinSelector(select);
+    const { debtTokenInStabilityPool, trove, price } =
+        useSfStablecoinSelector(select);
+
+    const [{ originalDeposit }] = useSfStablecoinReducer(reduce, init);
 
     const { isConnected } = useAccount();
 
@@ -23,9 +27,16 @@ export function FeatureCardsOrPositions() {
     }
 
     if (trove || debtTokenInStabilityPool) {
-        return <Positions />;
+        return (
+            <Positions
+                debtTokenInStabilityPool={debtTokenInStabilityPool}
+                trove={trove}
+                price={price}
+                originalDeposit={originalDeposit}
+            />
+        );
     }
 
     // When wallet is connected but has no positions, show empty positions
     return <EmptyPositions />;
-}
+};

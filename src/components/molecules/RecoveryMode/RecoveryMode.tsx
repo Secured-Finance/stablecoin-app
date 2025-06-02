@@ -2,7 +2,7 @@ interface RecoveryModeProps {
     isActive: boolean;
 }
 
-export function RecoveryMode({ isActive }: RecoveryModeProps) {
+export const RecoveryMode = ({ isActive }: RecoveryModeProps) => {
     return (
         <div>
             <div className='mb-2 flex items-center justify-between'>
@@ -31,4 +31,4 @@ export function RecoveryMode({ isActive }: RecoveryModeProps) {
             </p>
         </div>
     );
-}
+};

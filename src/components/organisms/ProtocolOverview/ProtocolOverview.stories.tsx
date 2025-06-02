@@ -26,7 +26,7 @@ const mockContextData = {
 };
 
 export default {
-    title: 'Molecules/ProtocolOverview',
+    title: 'Organism/ProtocolOverview',
     component: ProtocolOverview,
 } as Meta<typeof ProtocolOverview>;
 

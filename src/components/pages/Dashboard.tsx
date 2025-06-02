@@ -1,7 +1,7 @@
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { ProtocolOverview } from '../molecules';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { FeatureCardsOrPositions } from '../FeatureCardOrPosition';
+import { ProtocolOverview } from '../organisms';
 
 const select = ({
     numberOfTroves,

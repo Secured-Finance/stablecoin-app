@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { FeatureCards } from './FeatureCards';
 
 export default {
-    title: 'Atoms/FeatureCards',
+    title: 'Molecules/FeatureCards',
     component: FeatureCards,
     parameters: {
         viewport: {

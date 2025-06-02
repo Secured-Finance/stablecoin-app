@@ -48,8 +48,7 @@ export const rpcUrls = {
     testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };
 
-export const coinGeckoUrl =
-    'https://www.geckoterminal.com/filecoin/pools/0xc8f38dbaf661b897b6a2ee5721aac5a8766ffa13';
+export const coinGeckoUrl = 'https://www.coingecko.com/en/coins/usdfc';
 
 export const SOCIAL_LINKS = [
     {

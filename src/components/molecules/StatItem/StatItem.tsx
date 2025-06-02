@@ -3,10 +3,9 @@ import { ProtocolStat } from 'src/components/molecules/ProtocolStats';
 
 interface StatItemProps {
     stat: ProtocolStat;
-    isLast?: boolean;
 }
 
-export function StatItem({ stat }: StatItemProps) {
+export const StatItem = ({ stat }: StatItemProps) => {
     return (
         <div className={`px-6 py-4`}>
             <h3 className='mb-1 text-sm text-secondary-400'>{stat.label}</h3>
@@ -28,4 +27,4 @@ export function StatItem({ stat }: StatItemProps) {
             </div>
         </div>
     );
-}
+};

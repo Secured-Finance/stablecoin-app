@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { VersionStats } from './VersionStats';
 export default {
-    title: 'Atoms/VersionStats',
+    title: 'Molecules/VersionStats',
     component: VersionStats,
     args: {
         stats: {

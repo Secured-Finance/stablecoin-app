@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { ProtocolStats } from './ProtocolStats';
 
 export default {
-    title: 'Atoms/ProtocolStats',
+    title: 'Molecules/ProtocolStats',
     component: ProtocolStats,
     parameters: {
         viewport: {

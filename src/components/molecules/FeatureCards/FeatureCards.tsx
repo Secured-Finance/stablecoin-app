@@ -1,10 +1,6 @@
 import type React from 'react';
 import { cn } from 'src/utils';
-import {
-    BorrowIcon,
-    BridgeIcon,
-    EarnIcon,
-} from '../../atoms/ProtocolIcons/ProtocolIcons';
+import { BorrowIcon, BridgeIcon, EarnIcon } from './ProtocolIcons';
 
 interface FeatureCardProps {
     title: string;

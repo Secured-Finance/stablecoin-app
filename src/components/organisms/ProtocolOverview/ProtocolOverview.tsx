@@ -1,12 +1,13 @@
 import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
 import { memo } from 'react';
-import { TokenPrice, VersionStats } from 'src/components/atoms';
+import { TokenPrice } from 'src/components/atoms';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { AddressUtils, isProdEnv } from 'src/utils';
 import { filecoin } from 'viem/chains';
-import { ProtocolStat, ProtocolStats } from '../ProtocolStats';
-import { RecoveryMode } from '../RecoveryMode';
+import { ProtocolStat, ProtocolStats } from '../../molecules/ProtocolStats';
+import { RecoveryMode } from '../../molecules/RecoveryMode';
+import { VersionStats } from '../../molecules/VersionStats';
 
 type ProtocolOverviewProps = {
     data: {

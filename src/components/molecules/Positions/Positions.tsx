@@ -1,33 +1,29 @@
-import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
+import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
-import { useSfStablecoinReducer, useSfStablecoinSelector } from 'src/hooks';
 import { Link } from 'react-router-dom';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
 import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
 
-export function Positions() {
-    const select = ({
-        debtTokenBalance,
-        debtTokenInStabilityPool,
-        trove,
-        price,
-    }: SfStablecoinStoreState) => ({
-        debtTokenBalance,
-        debtTokenInStabilityPool,
-        trove,
-        price,
-    });
+interface PositionsProps {
+    debtTokenInStabilityPool: Decimal;
+    trove: Trove;
+    price: Decimal;
+    originalDeposit: {
+        collateralGain: Decimal;
+        currentDebtToken: Decimal;
+    };
+}
 
-    const { debtTokenInStabilityPool, trove, price } =
-        useSfStablecoinSelector(select);
-
+export const Positions = ({
+    debtTokenInStabilityPool,
+    trove,
+    price,
+    originalDeposit,
+}: PositionsProps) => {
     const collateralRatio =
         !trove.collateral.isZero && !trove.netDebt.isZero
             ? trove.collateralRatio(price)
             : undefined;
-
-    const [{ originalDeposit }] = useSfStablecoinReducer(reduce, init);
 
     const liquidationGains = originalDeposit.collateralGain.prettify(2);
     const originalPoolShare = originalDeposit.currentDebtToken.mulDiv(
@@ -137,4 +133,4 @@ export function Positions() {
             </div>
         </div>
     );
-}
+};
