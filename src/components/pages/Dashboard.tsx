@@ -59,22 +59,23 @@ export const Dashboard: React.FC = () => {
                     </Alert>
                 ) : (
                     <div className='flex flex-col gap-2'>
-                        <Alert color='info'>
-                            Use {COIN} to earn stable yield in the{' '}
-                            <Link
-                                className='font-semibold text-primary-500'
-                                href={getFixedIncomeMarketLink()}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label='Fixed Income'
-                            >
-                                Fixed Income market
-                            </Link>
-                            .
-                        </Alert>
-                        {!isTokenAdded && (
+                        {isTokenAdded ? (
                             <Alert color='info'>
-                                Add {COIN} to Wallet{' '}
+                                Use {COIN} to earn stable yield in the{' '}
+                                <Link
+                                    className='font-semibold text-primary-500'
+                                    href={getFixedIncomeMarketLink()}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label='Fixed Income'
+                                >
+                                    Fixed Income market
+                                </Link>
+                                .
+                            </Alert>
+                        ) : (
+                            <Alert color='info'>
+                                Add {COIN} to the Wallet{' '}
                                 <button
                                     className='font-semibold text-primary-500'
                                     onClick={addToken}
