@@ -78,19 +78,6 @@ export const UserAccount: React.FC = () => {
                         <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
                     </div>
                 </Link>
-                <Link
-                    href={targetLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    aria-label='Switch Network'
-                >
-                    <div className='flex items-center gap-x-1 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                        <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                            {label}
-                        </span>
-                        <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
-                    </div>
-                </Link>
                 {isConnected ? (
                     <button
                         className='flex items-center gap-x-1 rounded-md border border-neutral-300 p-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
@@ -119,6 +106,19 @@ export const UserAccount: React.FC = () => {
                     </Button>
                 )}
             </>
+            <Link
+                href={targetLink}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Switch Network'
+            >
+                <div className='flex items-center gap-x-1 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                    <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
+                        {label}
+                    </span>
+                    <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
+                </div>
+            </Link>
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [

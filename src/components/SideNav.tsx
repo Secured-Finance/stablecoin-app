@@ -11,10 +11,11 @@ import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS } from 'src/constants';
+import { LINKS, NETWORK_SWITCH_INFO } from 'src/constants';
 import { LinkList } from 'src/utils';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
+import { useSfStablecoin } from 'src/hooks';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -23,6 +24,16 @@ export const SideNav: React.FC = () => {
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
+
+    const {
+        sfStablecoin: {
+            connection: { chainId },
+        },
+    } = useSfStablecoin();
+
+    const switchInfo = NETWORK_SWITCH_INFO[chainId];
+
+    const { link: targetLink, label } = switchInfo;
 
     const handleOutsideClick = (
         e:
@@ -102,6 +113,15 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
+                            {targetLink && (
+                                <MobileItemExternalLink
+                                    key='network-switch'
+                                    text={label}
+                                    link={targetLink}
+                                    onClick={() => setIsVisible(false)}
+                                />
+                            )}
+
                             {LinkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink
@@ -155,7 +175,7 @@ const MobileItemExternalLink = ({
     onClick,
 }: {
     text: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     link: string;
     onClick: () => void;
 }) => {
@@ -170,9 +190,11 @@ const MobileItemExternalLink = ({
             onClick={onClick}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                <div className='flex h-5 w-5 items-center justify-center'>
-                    {icon}
-                </div>
+                {icon && (
+                    <div className='flex h-5 w-5 items-center justify-center'>
+                        {icon}
+                    </div>
+                )}
                 <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
                     {text}
                 </p>

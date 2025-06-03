@@ -42,11 +42,11 @@ export const NETWORK_SWITCH_INFO: Record<
 > = {
     [filecoin.id]: {
         link: NETWORK_SWITCH_LINKS.testnet,
-        label: 'Switch to Testnet',
+        label: 'Testnet',
     },
     [filecoinCalibration.id]: {
         link: NETWORK_SWITCH_LINKS.mainnet,
-        label: 'Switch to Mainnet',
+        label: 'Mainnet',
     },
 };
 
