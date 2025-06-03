@@ -243,6 +243,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     editedAmount,
     setEditedAmount,
     maxAmount,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     maxedOut,
 }) => {
     const [editing, setEditing] = editingState;
@@ -282,7 +283,6 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                             setEditedAmount(maxAmount);
                             event.stopPropagation();
                         }}
-                        disabled={maxedOut}
                     >
                         Max
                     </Button>

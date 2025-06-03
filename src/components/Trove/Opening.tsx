@@ -68,10 +68,10 @@ export const Opening: React.FC = () => {
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
     const trove = isDirty ? new Trove(collateral, totalDebt) : EMPTY_TROVE;
     const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
-        ? accountBalance.sub(GAS_ROOM_ETH)
+        ? accountBalance.sub(GAS_ROOM_ETH).prettify()
         : Decimal.ZERO;
     const collateralMaxedOut =
-        collateral.eq(maxCollateral) || collateral.eq(accountBalance);
+        collateral.gt(maxCollateral) || collateral.eq(accountBalance);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
