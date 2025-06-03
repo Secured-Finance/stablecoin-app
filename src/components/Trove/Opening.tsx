@@ -34,6 +34,7 @@ import {
     validateTroveChange,
 } from './validation/validateTroveChange';
 import { Amount } from '../ActionDescription';
+import { truncateDecimal } from 'src/utils/decimal';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -67,9 +68,15 @@ export const Opening: React.FC = () => {
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
     const trove = isDirty ? new Trove(collateral, totalDebt) : EMPTY_TROVE;
-    const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
-        ? accountBalance.sub(GAS_ROOM_ETH).prettify()
+    const rawMaxCollateral = accountBalance.gt(GAS_ROOM_ETH)
+        ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
+
+    const maxCollateral = truncateDecimal(
+        rawMaxCollateral,
+        COLLATERAL_PRECISION
+    );
+
     const collateralMaxedOut =
         collateral.gt(maxCollateral) || collateral.eq(accountBalance);
     const collateralRatio =
@@ -103,7 +110,8 @@ export const Opening: React.FC = () => {
     }, []);
 
     const setCollateralAmount = useCallback((amount: string) => {
-        setCollateral(Decimal.from(amount));
+        const parsed = Decimal.from(amount);
+        setCollateral(truncateDecimal(parsed, COLLATERAL_PRECISION));
     }, []);
 
     useEffect(() => {
@@ -123,6 +131,12 @@ export const Opening: React.FC = () => {
             );
         }
     }, [borrowRate, collateral, price]);
+
+    useEffect(() => {
+        if (collateralMaxedOut && gasEstimationState.type !== 'idle') {
+            setGasEstimationState({ type: 'idle' });
+        }
+    }, [collateralMaxedOut, gasEstimationState]);
 
     return (
         <CardComponent
@@ -151,12 +165,12 @@ export const Opening: React.FC = () => {
                         Cancel
                     </Button>
 
-                    {gasEstimationState.type === 'inProgress' ? (
+                    {collateralMaxedOut ? (
+                        <Button disabled>Exceeds Collateral Amount</Button>
+                    ) : gasEstimationState.type === 'inProgress' ? (
                         <Button disabled>
                             <Spinner size={24} sx={{ color: 'background' }} />
                         </Button>
-                    ) : collateralMaxedOut ? (
-                        <Button disabled>Exceeds Collateral Amount</Button>
                     ) : stableTroveChange ? (
                         <TroveAction
                             transactionId={TRANSACTION_ID}
