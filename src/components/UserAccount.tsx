@@ -104,7 +104,7 @@ export const UserAccount: React.FC = () => {
             </>
 
             <Menu as='div' className='relative inline-block text-left'>
-                <Menu.Button className='flex items-center gap-1 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                <Menu.Button className='flex items-center gap-2 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
                     <span className='relative flex h-2 w-2 items-center justify-center'>
                         <span className='absolute inline-flex h-2 w-2 rounded-full bg-success-500' />
                     </span>
@@ -116,7 +116,7 @@ export const UserAccount: React.FC = () => {
                     <ChevronDownIcon className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
                 </Menu.Button>
 
-                <Menu.Items className='shadow-lg absolute right-0 z-10 mt-1 w-36 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                <Menu.Items className='shadow-lg absolute right-0 z-10 mt-1 w-28 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
                     {Object.entries(NETWORK_SWITCH_LINKS).map(([key, href]) => {
                         const label =
                             key === 'mainnet' ? 'Mainnet' : 'Calibration';
@@ -124,22 +124,22 @@ export const UserAccount: React.FC = () => {
 
                         return (
                             <Menu.Item key={key}>
-                                {({ active }) => (
-                                    <Link
-                                        href={href}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        className={clsx(
-                                            'flex w-full items-center px-4 py-2 text-sm text-neutral-900',
-                                            {
-                                                'bg-neutral-200': isCurrent,
-                                                'bg-neutral-100':
-                                                    !isCurrent && active,
+                                {() => (
+                                    <button
+                                        onClick={() => {
+                                            if (window.location.href !== href) {
+                                                window.location.href = href;
                                             }
+                                        }}
+                                        className={clsx(
+                                            'flex w-full items-center justify-between gap-2 p-2 text-sm text-neutral-900'
                                         )}
                                     >
-                                        {label}
-                                    </Link>
+                                        <span>{label}</span>
+                                        {isCurrent && (
+                                            <span className='h-2 w-2 rounded-full bg-success-500 laptop:hidden' />
+                                        )}
+                                    </button>
                                 )}
                             </Menu.Item>
                         );
