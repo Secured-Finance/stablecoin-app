@@ -22,7 +22,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     return (
         <Container variant='header' className='border-b border-neutral-9'>
-            <div className='flex w-full items-center justify-between gap-3  desktop:gap-8'>
+            <div className='relative flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
                     <SecuredFinanceLogo />
                     {isFrontendRegistered && (
@@ -33,7 +33,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </div>
 
                 {isFrontendRegistered && (
-                    <div className='hidden laptop:block'>
+                    <div className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 laptop:block'>
                         <Nav />
                     </div>
                 )}

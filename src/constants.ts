@@ -33,6 +33,11 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
     testnet: 'https://calibration.filfox.info',
 };
 
+export const NETWORK_SWITCH_LINKS = {
+    mainnet: 'https://app.usdfc.net/#',
+    testnet: 'https://stg.usdfc.net/#',
+};
+
 export const PYTH_ORACLE_LINK =
     'https://www.pyth.network/price-feeds/crypto-fil-usd';
 
