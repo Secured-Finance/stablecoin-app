@@ -75,7 +75,7 @@ export const Dashboard: React.FC = () => {
                             </Alert>
                         ) : (
                             <Alert color='info'>
-                                Add {COIN} to the Wallet{' '}
+                                Add {COIN} to the Wallet,{' '}
                                 <button
                                     className='font-semibold text-primary-500'
                                     onClick={addToken}
