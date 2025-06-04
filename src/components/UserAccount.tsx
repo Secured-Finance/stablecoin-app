@@ -1,12 +1,15 @@
+import { Menu } from '@headlessui/react';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
+import clsx from 'clsx';
+import { ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
 import { Button, ButtonSizes, Identicon } from 'src/components/atoms';
-import { NETWORK_SWITCH_INFO } from 'src/constants';
+import { NETWORK_SWITCH_LINKS } from 'src/constants';
 import {
     useBreakpoint,
     useSfStablecoin,
@@ -15,6 +18,7 @@ import {
 import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
+    getCurrentNetworkLabel,
     getFixedIncomeMarketLink,
     getSupportedChains,
     ordinaryFormat,
@@ -42,15 +46,7 @@ export const UserAccount: React.FC = () => {
     const { isConnected } = useAccount();
     const networks = getSupportedChains();
 
-    const {
-        sfStablecoin: {
-            connection: { chainId },
-        },
-    } = useSfStablecoin();
-
-    const switchInfo = NETWORK_SWITCH_INFO[chainId];
-
-    const { link: targetLink, label } = switchInfo;
+    const currentLabel = getCurrentNetworkLabel();
 
     useEffect(() => {
         if (!isOpen) {
@@ -106,19 +102,51 @@ export const UserAccount: React.FC = () => {
                     </Button>
                 )}
             </>
-            <Link
-                href={targetLink}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label='Switch Network'
-            >
-                <div className='flex items-center gap-x-1 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                    <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                        {label}
+
+            <Menu as='div' className='relative inline-block text-left'>
+                <Menu.Button className='flex items-center gap-1 rounded-md border border-neutral-300 bg-neutral-50 px-2 py-1.5 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                    <span className='relative flex h-2 w-2 items-center justify-center'>
+                        <span className='absolute inline-flex h-2 w-2 rounded-full bg-success-500' />
                     </span>
-                    <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
-                </div>
-            </Link>
+
+                    <span className='hidden text-3 leading-3.5 text-neutral-900 desktop:inline desktop:text-3.5 desktop:leading-4.5'>
+                        {currentLabel}
+                    </span>
+
+                    <ChevronDownIcon className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
+                </Menu.Button>
+
+                <Menu.Items className='shadow-lg absolute right-0 z-10 mt-1 w-36 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                    {Object.entries(NETWORK_SWITCH_LINKS).map(([key, href]) => {
+                        const label =
+                            key === 'mainnet' ? 'Mainnet' : 'Calibration';
+                        const isCurrent = label === currentLabel;
+
+                        return (
+                            <Menu.Item key={key}>
+                                {({ active }) => (
+                                    <Link
+                                        href={href}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className={clsx(
+                                            'flex w-full items-center px-4 py-2 text-sm text-neutral-900',
+                                            {
+                                                'bg-neutral-200': isCurrent,
+                                                'bg-neutral-100':
+                                                    !isCurrent && active,
+                                            }
+                                        )}
+                                    >
+                                        {label}
+                                    </Link>
+                                )}
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu.Items>
+            </Menu>
+
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [

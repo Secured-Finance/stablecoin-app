@@ -2,24 +2,13 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { MenuPopover } from 'src/components/molecules';
-import { LINKS, NETWORK_SWITCH_INFO } from 'src/constants';
-import { useSfStablecoin } from 'src/hooks';
+import { LINKS } from 'src/constants';
 
 const BAR_POSITIONS = ['left-0', 'left-[25%]', 'left-[50%]', 'left-[75%]'];
 
 export const Nav: React.FC = () => {
     const { pathname } = useLocation();
     const [activeIndex, setActiveIndex] = useState(0);
-
-    const {
-        sfStablecoin: {
-            connection: { chainId },
-        },
-    } = useSfStablecoin();
-
-    const switchInfo = NETWORK_SWITCH_INFO[chainId];
-
-    const { link: targetLink, label } = switchInfo;
 
     useEffect(() => {
         const currentIndex = LINKS.findIndex(link => link.to === pathname);
@@ -43,11 +32,7 @@ export const Nav: React.FC = () => {
                     {link.label}
                 </NavLink>
             ))}
-            <MenuPopover
-                currentPath={pathname}
-                targetLink={targetLink}
-                label={label}
-            />
+            <MenuPopover currentPath={pathname} />
             <span
                 className={clsx(
                     'absolute bottom-0 -mb-2 h-1 w-1/4 bg-primary-500 transition-all duration-300',

@@ -5,15 +5,7 @@ import { Fragment } from 'react';
 import { MenuExternalLink, MenuItem, Separator } from 'src/components/atoms';
 import { LinkList } from 'src/utils';
 
-export const MenuPopover = ({
-    currentPath,
-    targetLink,
-    label,
-}: {
-    currentPath: string;
-    targetLink: string;
-    label: string;
-}) => {
+export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     return (
         <div className='flex w-[120px] items-center justify-center'>
             <Popover className='relative'>
@@ -48,13 +40,6 @@ export const MenuPopover = ({
                                 role='menu'
                             >
                                 <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
-                                    {targetLink && (
-                                        <MenuExternalLink
-                                            key='network-switch'
-                                            text={label}
-                                            link={targetLink}
-                                        />
-                                    )}
                                     {LinkList.map((link, index) => {
                                         return (
                                             <button

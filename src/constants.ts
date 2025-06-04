@@ -1,5 +1,3 @@
-import { filecoin, filecoinCalibration } from 'viem/chains';
-
 export const LINKS = [
     {
         to: '/',
@@ -34,20 +32,6 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
 export const NETWORK_SWITCH_LINKS = {
     mainnet: 'https://app.usdfc.net/#',
     testnet: 'https://stg.usdfc.net/#',
-};
-
-export const NETWORK_SWITCH_INFO: Record<
-    number,
-    { link: string; label: string }
-> = {
-    [filecoin.id]: {
-        link: NETWORK_SWITCH_LINKS.testnet,
-        label: 'Testnet',
-    },
-    [filecoinCalibration.id]: {
-        link: NETWORK_SWITCH_LINKS.mainnet,
-        label: 'Mainnet',
-    },
 };
 
 export const PYTH_ORACLE_LINK =

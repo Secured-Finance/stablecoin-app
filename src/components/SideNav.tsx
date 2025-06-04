@@ -11,11 +11,10 @@ import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS, NETWORK_SWITCH_INFO } from 'src/constants';
+import { LINKS } from 'src/constants';
 import { LinkList } from 'src/utils';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
-import { useSfStablecoin } from 'src/hooks';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -24,16 +23,6 @@ export const SideNav: React.FC = () => {
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
-
-    const {
-        sfStablecoin: {
-            connection: { chainId },
-        },
-    } = useSfStablecoin();
-
-    const switchInfo = NETWORK_SWITCH_INFO[chainId];
-
-    const { link: targetLink, label } = switchInfo;
 
     const handleOutsideClick = (
         e:
@@ -113,15 +102,6 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
-                            {targetLink && (
-                                <MobileItemExternalLink
-                                    key='network-switch'
-                                    text={label}
-                                    link={targetLink}
-                                    onClick={() => setIsVisible(false)}
-                                />
-                            )}
-
                             {LinkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink

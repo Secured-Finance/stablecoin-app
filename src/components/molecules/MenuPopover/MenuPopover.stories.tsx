@@ -1,7 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { within } from '@storybook/testing-library';
 import { MenuPopover } from './MenuPopover';
-import { NETWORK_SWITCH_LINKS } from 'src/constants';
 
 export default {
     title: 'Organism/MenuPopover',
@@ -15,11 +14,7 @@ export default {
 
 const Template: StoryFn<typeof MenuPopover> = () => (
     <div className='w-fit'>
-        <MenuPopover
-            currentPath='/mock'
-            label='mainnet'
-            targetLink={NETWORK_SWITCH_LINKS.mainnet}
-        />
+        <MenuPopover currentPath='/mock' />
     </div>
 );
 
