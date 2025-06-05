@@ -1,5 +1,6 @@
 import { hexToString, stringToHex } from 'viem';
 import { getEnvironment } from './env';
+import { NetworkKey } from 'src/constants';
 
 export enum Environment {
     DEVELOPMENT = 'development',
@@ -45,15 +46,15 @@ export const fromBytes32 = (hex: string) => {
     return hexToString(hex as `0x${string}`, { size: 32 });
 };
 
-export const getCurrentNetworkLabel = (): 'Mainnet' | 'Calibration' => {
+export const getCurrentNetworkKey = (): NetworkKey => {
     const env = getEnvironment();
 
     switch (env) {
         case 'production':
-            return 'Mainnet';
+            return 'mainnet';
         case 'staging':
         case 'development':
         default:
-            return 'Calibration';
+            return 'testnet';
     }
 };
