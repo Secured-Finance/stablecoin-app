@@ -132,12 +132,6 @@ export const Opening: React.FC = () => {
         }
     }, [borrowRate, collateral, price]);
 
-    useEffect(() => {
-        if (collateralMaxedOut && gasEstimationState.type !== 'idle') {
-            setGasEstimationState({ type: 'idle' });
-        }
-    }, [collateralMaxedOut, gasEstimationState]);
-
     return (
         <CardComponent
             title={
@@ -278,7 +272,7 @@ export const Opening: React.FC = () => {
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )} ${COIN} to reclaim your collateral ${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.`}
+                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()}) ${COIN} Liquidation Reserve excluded.`}
                                             </>
                                         )}
                                     </Card>
@@ -325,15 +319,14 @@ export const Opening: React.FC = () => {
                     </Alert>
                 )}
 
-                {!collateralMaxedOut && (
-                    <ExpensiveTroveChangeWarning
-                        troveChange={stableTroveChange}
-                        maxBorrowingRate={maxBorrowingRate}
-                        borrowingFeeDecayToleranceMinutes={60}
-                        gasEstimationState={gasEstimationState}
-                        setGasEstimationState={setGasEstimationState}
-                    />
-                )}
+                <ExpensiveTroveChangeWarning
+                    troveChange={stableTroveChange}
+                    maxBorrowingRate={maxBorrowingRate}
+                    borrowingFeeDecayToleranceMinutes={60}
+                    gasEstimationState={gasEstimationState}
+                    setGasEstimationState={setGasEstimationState}
+                />
+
                 {isTransactionPending && <LoadingOverlay />}
             </div>
         </CardComponent>
