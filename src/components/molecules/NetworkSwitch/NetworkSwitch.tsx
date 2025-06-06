@@ -23,7 +23,7 @@ export const NetworkSwitch = () => {
                                             }
                                             close();
                                         }}
-                                        className='flex w-full items-center justify-between gap-2 px-3 py-2 text-3.5 text-neutral-900'
+                                        className='flex w-full items-center justify-between gap-2 px-3 py-2 text-3.5  text-neutral-900  hover:bg-neutral-100'
                                         role='menuitem'
                                     >
                                         <span>{label}</span>

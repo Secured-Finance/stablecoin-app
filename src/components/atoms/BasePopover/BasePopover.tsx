@@ -5,18 +5,13 @@ import { ChevronDown } from 'lucide-react';
 
 interface BasePopoverProps {
     buttonLabel: ReactNode;
-    children: (args: { close: () => void }) => ReactNode;
+    children: (args: { close: () => void }) => React.ReactNode;
     buttonClassName?: string;
-    panelClassName?: string;
-    contentWrapperClassName?: string;
 }
-
 export const BasePopover = ({
     buttonLabel,
     children,
     buttonClassName,
-    panelClassName,
-    contentWrapperClassName = 'relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5',
 }: BasePopoverProps) => {
     return (
         <Popover className='relative inline-block text-left'>
@@ -49,16 +44,13 @@ export const BasePopover = ({
                         leaveTo='opacity-0 translate-y-5'
                     >
                         <Popover.Panel
-                            className={clsx(
-                                'shadow-lg absolute z-10 mt-2 w-48 rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none',
-                                panelClassName
-                            )}
                             static
                             role='menu'
+                            className='shadow-lg absolute z-10 mt-2 w-48 rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'
                         >
-                            <div className={contentWrapperClassName}>
-                                {children({ close })}
-                            </div>
+                            {typeof children === 'function'
+                                ? children({ close })
+                                : children}
                         </Popover.Panel>
                     </Transition>
                 </>

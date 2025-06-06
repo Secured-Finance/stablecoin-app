@@ -13,10 +13,9 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
             <BasePopover
                 buttonLabel={<span>More</span>}
                 buttonClassName='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
-                panelClassName='absolute -left-4 z-10 mt-5 w-[200px] shadow-card'
             >
                 {({ close }) => (
-                    <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
+                    <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white'>
                         {LinkList.map(
                             (link, index): ReactNode => (
                                 <button
