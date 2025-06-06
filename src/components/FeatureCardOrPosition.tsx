@@ -1,6 +1,6 @@
-import { useAccount } from 'wagmi';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoinReducer, useSfStablecoinSelector } from 'src/hooks';
+import { useAccount } from 'wagmi';
 import { EmptyPositions, FeatureCards, Positions } from './molecules';
 import { init, reduce } from './Stability/StabilityDepositManager';
 

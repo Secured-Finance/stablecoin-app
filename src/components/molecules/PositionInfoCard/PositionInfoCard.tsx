@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Card } from 'src/components/atoms';
 
 type InfoCardProps = {
     icon: React.ComponentType<{ className?: string }>;
@@ -16,7 +17,7 @@ export const PositionInfoCard = ({
     to,
 }: InfoCardProps) => {
     return (
-        <div className='max-w-[450px] rounded-xl border border-neutral-9 bg-white p-6'>
+        <Card>
             <div className='mb-6 flex'>
                 <div className='flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-50'>
                     <Icon className='h-6 w-6 text-[#A6A6A6]' />
@@ -28,10 +29,10 @@ export const PositionInfoCard = ({
             <Link
                 to={to}
                 data-testid='button-link'
-                className='mt-4 w-full rounded-md bg-primary-500 py-2 text-white'
+                className='mt-4 block w-full rounded-md bg-primary-500 p-2 text-center text-white'
             >
                 {buttonText}
             </Link>
-        </div>
+        </Card>
     );
 };

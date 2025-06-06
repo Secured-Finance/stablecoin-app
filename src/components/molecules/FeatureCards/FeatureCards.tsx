@@ -1,15 +1,16 @@
 import type React from 'react';
 import { cn } from 'src/utils';
 import { BorrowIcon, BridgeIcon, EarnIcon } from './ProtocolIcons';
+import { Card } from 'src/components/atoms';
 
-interface FeatureCardProps {
+type FeatureCardProps = {
     title: string;
     description: string;
     icon: React.ReactNode;
     className?: string;
     titleClassName?: string;
     descriptionClassName?: string;
-}
+};
 
 const FeatureCard = ({
     title,
@@ -20,15 +21,16 @@ const FeatureCard = ({
     descriptionClassName,
 }: FeatureCardProps) => {
     return (
-        <div className={cn('w-full max-w-[290px] rounded-xl p-6', className)}>
+        <Card className={cn('w-full max-w-[290px]', className)}>
             <div className='mb-6 flex items-center'>{icon}</div>
             <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
                 {title}
             </h3>
             <p className={cn('text-sm', descriptionClassName)}>{description}</p>
-        </div>
+        </Card>
     );
 };
+
 export function FeatureCards() {
     return (
         <div className='grid grid-cols-1 justify-items-center gap-6 laptop:grid-cols-3'>

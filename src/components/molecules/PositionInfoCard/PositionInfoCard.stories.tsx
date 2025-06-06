@@ -3,7 +3,7 @@ import { PositionInfoCard } from './PositionInfoCard';
 import { Vault } from 'lucide-react';
 
 export default {
-    title: 'Atoms/PositionInfoCard',
+    title: 'Molecules/PositionInfoCard',
     component: PositionInfoCard,
     args: {
         icon: Vault,

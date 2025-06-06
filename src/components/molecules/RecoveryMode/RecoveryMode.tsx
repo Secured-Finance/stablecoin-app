@@ -9,7 +9,7 @@ export const RecoveryMode = ({ isActive }: RecoveryModeProps) => {
                 <h3 className='font-primary text-4 font-medium'>
                     Recovery Mode
                 </h3>
-                <div className='flex items-center gap-2 rounded-2xl border-success-100 bg-success-50 px-2 py-1.5'>
+                <div className='flex items-center gap-1 rounded-2xl border-success-100 bg-success-50 px-2 py-1.5'>
                     <div
                         className={`h-3 w-3 rounded-3xl ${
                             isActive ? 'bg-red-500' : 'bg-[#84fa86]'

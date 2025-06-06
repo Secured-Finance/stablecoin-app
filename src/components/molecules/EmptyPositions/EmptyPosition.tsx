@@ -4,12 +4,12 @@ import { PositionInfoCard } from 'src/components/atoms';
 
 export const EmptyPositions: React.FC = () => {
     return (
-        <div>
+        <div className='w-full'>
             <h2 className='mb-4 font-primary text-5/none font-semibold'>
                 My Positions
             </h2>
 
-            <div className='grid grid-cols-1 justify-items-center gap-6 laptop:grid-cols-2'>
+            <div className='grid w-full grid-cols-1 justify-items-center gap-6 laptop:grid-cols-2'>
                 <PositionInfoCard
                     icon={Vault}
                     title='No Trove Yet'
