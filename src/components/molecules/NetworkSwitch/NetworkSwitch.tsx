@@ -34,9 +34,7 @@ export const NetworkSwitch = () => {
                                     {i !==
                                         Object.entries(NETWORK_LINKS).length -
                                             1 && (
-                                        <div className='hidden laptop:block'>
-                                            <Separator color='neutral-100' />
-                                        </div>
+                                        <Separator color='neutral-100' />
                                     )}
                                 </React.Fragment>
                             )

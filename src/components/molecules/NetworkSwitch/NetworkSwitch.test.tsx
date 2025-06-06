@@ -5,8 +5,8 @@ import * as stories from './NetworkSwitch.stories';
 
 const { Default } = composeStories(stories);
 
-describe('MenuPopover component', () => {
-    it('should have a button with text More', () => {
+describe('NetworkSwitch component', () => {
+    it('should have a button with text Calibration', () => {
         render(
             <BrowserRouter>
                 <Default />
