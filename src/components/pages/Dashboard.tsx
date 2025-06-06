@@ -8,20 +8,12 @@ import { Alert } from 'src/components/atoms';
 import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
 import { useAccount } from 'wagmi';
-import {
-    useAddToken,
-    useSfStablecoin,
-    useSfStablecoinSelector,
-} from 'src/hooks';
+import { useAddToken, useSfStablecoin } from 'src/hooks';
 import { X } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
     const { isConnected, address } = useAccount();
     const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
-
-    const { trove } = useSfStablecoinSelector(state => ({
-        trove: state.trove,
-    }));
 
     const {
         sfStablecoin: {
@@ -50,14 +42,9 @@ export const Dashboard: React.FC = () => {
     useEffect(() => {
         if (!isConnected || !address || !addresses.debtToken) return;
 
-        const hasDebt = trove.debt.gt(0);
-        if (hasDebt) {
-            dismissTokenBanner();
-        } else {
-            const tokenAdded = checkIfTokenAdded();
-            setIsTokenAdded(tokenAdded);
-        }
-    }, [isConnected, address, addresses.debtToken, trove, checkIfTokenAdded]);
+        const tokenAdded = checkIfTokenAdded();
+        setIsTokenAdded(tokenAdded);
+    }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
 
     return (
         <section className='w-full'>
