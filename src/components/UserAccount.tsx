@@ -1,14 +1,11 @@
-import { Menu } from '@headlessui/react';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
-import { ChevronDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import ExternalLink from 'src/assets/icons/external-link.svg';
 import FilecoinLogo from 'src/assets/icons/filecoin-network.svg';
 import USDFCLogo from 'src/assets/img/usdfc-logo-small.svg';
 import { Button, ButtonSizes, Identicon } from 'src/components/atoms';
-import { NETWORK_LINKS } from 'src/constants';
 import {
     useBreakpoint,
     useSfStablecoin,
@@ -17,12 +14,12 @@ import {
 import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
-    getCurrentNetworkKey,
     getFixedIncomeMarketLink,
     getSupportedChains,
     ordinaryFormat,
 } from 'src/utils';
 import { useAccount, useWalletClient } from 'wagmi';
+import { NetworkSwitch } from './molecules/NetworkSwitch/NetworkSwitch';
 
 const select = ({
     accountBalance,
@@ -44,8 +41,6 @@ export const UserAccount: React.FC = () => {
     const wallet = useWalletClient();
     const { isConnected } = useAccount();
     const networks = getSupportedChains();
-    const currentKey = getCurrentNetworkKey();
-    const currentNetwork = NETWORK_LINKS[currentKey];
 
     useEffect(() => {
         if (!isOpen) {
@@ -72,42 +67,9 @@ export const UserAccount: React.FC = () => {
                     <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
                 </div>
             </Link>
-
-            <Menu as='div' className='relative hidden text-left laptop:block'>
-                <Menu.Button className='flex items-center gap-x-2 rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                    <span className='relative flex h-2 w-2 items-center justify-center'>
-                        <span className='absolute inline-flex h-2 w-2 rounded-full bg-success-500' />
-                    </span>
-                    <span className='hidden text-3 text-neutral-900 desktop:block'>
-                        {currentNetwork.label}
-                    </span>
-                    <ChevronDownIcon className='h-3.5 w-3.5' />
-                </Menu.Button>
-
-                <Menu.Items className='shadow-lg absolute right-0 z-50 mt-1 w-28 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                    {Object.values(NETWORK_LINKS).map(
-                        ({ key, label, href }) => (
-                            <Menu.Item key={key}>
-                                {() => (
-                                    <button
-                                        onClick={() => {
-                                            if (window.location.href !== href) {
-                                                window.location.href = href;
-                                            }
-                                        }}
-                                        className='flex w-full items-center justify-between gap-2 p-2 text-sm text-neutral-900'
-                                    >
-                                        <span>{label}</span>
-                                        {key === currentKey && (
-                                            <span className='h-2 w-2 rounded-full bg-success-500' />
-                                        )}
-                                    </button>
-                                )}
-                            </Menu.Item>
-                        )
-                    )}
-                </Menu.Items>
-            </Menu>
+            <div className='  hidden min-w-[120px] items-center rounded-md hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:flex laptop:h-10 laptop:border laptop:border-neutral-300 laptop:bg-neutral-50'>
+                <NetworkSwitch />
+            </div>
 
             {isConnected ? (
                 <button
