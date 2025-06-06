@@ -40,19 +40,19 @@ export const Dashboard: React.FC = () => {
         return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
     }, [addresses.debtToken]);
 
+    const dismissTokenBanner = () => setIsTokenAdded(true);
+
     const handleAddToken = async () => {
         const success = await addToken();
-        if (success) setIsTokenAdded(true);
+        if (success) dismissTokenBanner();
     };
-
-    const dismissTokenBanner = () => setIsTokenAdded(true);
 
     useEffect(() => {
         if (!isConnected || !address || !addresses.debtToken) return;
 
         const hasDebt = trove.debt.gt(0);
         if (hasDebt) {
-            setIsTokenAdded(true);
+            dismissTokenBanner();
         } else {
             const tokenAdded = checkIfTokenAdded();
             setIsTokenAdded(tokenAdded);
