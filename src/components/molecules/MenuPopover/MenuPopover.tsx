@@ -11,7 +11,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     return (
         <div className='flex w-[120px] items-center justify-center'>
             <BasePopover
-                buttonLabel={<span>More</span>}
+                buttonLabel='More'
                 buttonClassName='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
             >
                 {({ close }) => (

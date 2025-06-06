@@ -9,7 +9,7 @@ export const NetworkSwitch = () => {
 
     return (
         <div className='hidden w-[120px] items-center justify-center laptop:flex '>
-            <BasePopover buttonLabel={<span>{currentNetwork.label}</span>}>
+            <BasePopover buttonLabel={currentNetwork.label}>
                 {({ close }) => (
                     <>
                         {Object.values(NETWORK_LINKS).map(

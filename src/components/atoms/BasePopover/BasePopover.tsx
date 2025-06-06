@@ -1,10 +1,10 @@
 import { Popover, Transition } from '@headlessui/react';
 import clsx from 'clsx';
-import { Fragment, ReactNode } from 'react';
+import { Fragment } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 interface BasePopoverProps {
-    buttonLabel: ReactNode;
+    buttonLabel: string;
     children: (args: { close: () => void }) => React.ReactNode;
     buttonClassName?: string;
 }
@@ -23,7 +23,7 @@ export const BasePopover = ({
                             buttonClassName
                         )}
                     >
-                        {buttonLabel}
+                        <span>{buttonLabel}</span>
                         <ChevronDown
                             className={clsx(
                                 'h-4 w-4 text-neutral-600 transition',

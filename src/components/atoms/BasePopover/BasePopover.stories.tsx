@@ -12,7 +12,7 @@ type Story = StoryObj<typeof BasePopover>;
 
 export const Default: Story = {
     args: {
-        buttonLabel: <span>Options</span>,
+        buttonLabel: 'Options',
         children: ({ close }) => (
             <>
                 <button
