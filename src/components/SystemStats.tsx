@@ -7,12 +7,16 @@ import clsx from 'clsx';
 import { WalletCardsIcon } from 'lucide-react';
 import Link from 'next/link';
 import packageJson from 'package.json';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CheckIcon from 'src/assets/icons/check.svg';
 import Clipboard from 'src/assets/icons/clipboard-line.svg';
 import Wallet from 'src/assets/icons/wallet.svg';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import {
+    useAddToken,
+    useSfStablecoin,
+    useSfStablecoinSelector,
+} from 'src/hooks';
 import { COIN, CURRENCY } from 'src/strings';
 import {
     AddressUtils,
@@ -20,7 +24,7 @@ import {
     DEBT_TOKEN_PRECISION,
     isProdEnv,
 } from 'src/utils';
-import { useAccount, useWalletClient } from 'wagmi';
+import { useAccount } from 'wagmi';
 import * as l from '../lexicon';
 import { Statistic } from './Statistic';
 import { filecoin } from 'viem/chains';
@@ -102,8 +106,6 @@ const select = ({
 });
 
 export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
-    const { data: client } = useWalletClient();
-
     const {
         sfStablecoin: {
             connection: {
@@ -143,29 +145,17 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         }
     }, [copied]);
 
-    const addToMetamask = useCallback(
-        async (address: string | null) => {
-            if (!client || !address) return;
-
-            client.watchAsset({
-                type: 'ERC20',
-                options: {
-                    address: address,
-                    symbol: COIN,
-                    decimals: 18,
-                    image: 'https://app.usdfc.net/apple-touch-icon.png',
-                },
-            });
-        },
-        [client]
-    );
-
     const debtTokenInStabilityPoolPct =
         total.debt.nonZero &&
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
-    const { isConnected } = useAccount();
+    const { isConnected, address } = useAccount();
+    const { addToken } = useAddToken({
+        debtToken: addresses.debtToken,
+        address,
+        coinSymbol: COIN,
+    });
 
     return (
         <div className='w-full min-w-0 rounded-lg bg-neutral-50 p-3 text-neutral-900 shadow-card laptop:px-4 laptop:pb-4 laptop:pt-3'>
@@ -261,9 +251,7 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
                             </button>
                             <button
                                 className='absolute -right-10 top-1/2 -translate-y-1/2 transform disabled:cursor-default'
-                                onClick={() =>
-                                    addToMetamask(addresses.debtToken)
-                                }
+                                onClick={addToken}
                                 disabled={!isConnected}
                             >
                                 <WalletCardsIcon

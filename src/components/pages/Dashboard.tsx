@@ -7,48 +7,57 @@ import { Trove } from 'src/components/Trove/Trove';
 import { Alert } from 'src/components/atoms';
 import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
-import { useAccount, useWalletClient } from 'wagmi';
-import { useSfStablecoin } from 'src/hooks';
+import { useAccount } from 'wagmi';
+import {
+    useAddToken,
+    useSfStablecoin,
+    useSfStablecoinSelector,
+} from 'src/hooks';
+import { X } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
     const { isConnected, address } = useAccount();
-    const { data: walletClient } = useWalletClient();
     const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
+
+    const { trove } = useSfStablecoinSelector(state => ({
+        trove: state.trove,
+    }));
+
     const {
         sfStablecoin: {
             connection: { addresses },
         },
     } = useSfStablecoin();
 
-    const checkToken = useCallback(() => {
+    const { addToken } = useAddToken({
+        address,
+        debtToken: addresses.debtToken,
+        coinSymbol: COIN,
+    });
+
+    const checkIfTokenAdded = useCallback(() => {
         if (!addresses.debtToken) return false;
-        return !!localStorage.getItem(`token_${addresses.debtToken}`);
+        return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
     }, [addresses.debtToken]);
 
-    const addToken = useCallback(async () => {
-        if (!walletClient || !address || !addresses.debtToken) return;
-        try {
-            const success = await walletClient.watchAsset({
-                type: 'ERC20',
-                options: {
-                    address: addresses.debtToken,
-                    symbol: COIN,
-                    decimals: 18,
-                    image: 'https://app.usdfc.net/apple-touch-icon.png',
-                },
-            });
-            if (success) {
-                localStorage.setItem(`token_${addresses.debtToken}`, 'true');
-                setIsTokenAdded(true);
-            }
-        } catch {}
-    }, [walletClient, address, addresses.debtToken]);
+    const handleAddToken = async () => {
+        const success = await addToken();
+        if (success) setIsTokenAdded(true);
+    };
+
+    const dismissTokenBanner = () => setIsTokenAdded(true);
 
     useEffect(() => {
-        if (isConnected && address && addresses.debtToken) {
-            setIsTokenAdded(checkToken());
+        if (!isConnected || !address || !addresses.debtToken) return;
+
+        const hasDebt = trove.debt.gt(0);
+        if (hasDebt) {
+            setIsTokenAdded(true);
+        } else {
+            const tokenAdded = checkIfTokenAdded();
+            setIsTokenAdded(tokenAdded);
         }
-    }, [isConnected, address, addresses.debtToken, checkToken]);
+    }, [isConnected, address, addresses.debtToken, trove, checkIfTokenAdded]);
 
     return (
         <section className='w-full'>
@@ -74,25 +83,34 @@ export const Dashboard: React.FC = () => {
                                 .
                             </Alert>
                         ) : (
-                            <Alert color='info'>
-                                Add {COIN} to the Wallet,{' '}
-                                <button
-                                    className='font-semibold text-primary-500'
-                                    onClick={addToken}
-                                >
-                                    Click here
-                                </button>
-                            </Alert>
+                            <div className='relative flex flex-col gap-2'>
+                                <Alert color='info'>
+                                    Add {COIN} to Wallet,&nbsp;
+                                    <button
+                                        className='font-semibold text-primary-500'
+                                        onClick={handleAddToken}
+                                    >
+                                        Click here
+                                    </button>
+                                    <button
+                                        className='absolute right-2 top-2 mt-1 flex h-4 w-4 items-center justify-center text-gray-500 hover:text-gray-700'
+                                        onClick={dismissTokenBanner}
+                                        aria-label='Dismiss'
+                                    >
+                                        <X className='h-4 w-4' />
+                                    </button>
+                                </Alert>
+                            </div>
                         )}
                     </div>
                 )}
             </section>
+
             <section className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
                 <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
                     <Trove />
                     <Stability />
                 </div>
-
                 <aside className='flex w-full flex-col gap-5 laptop:w-[42%]'>
                     <div className='hidden laptop:block'>
                         <SystemStats />
