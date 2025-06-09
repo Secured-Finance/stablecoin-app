@@ -22,9 +22,7 @@ export const Dashboard: React.FC = () => {
     } = useSfStablecoin();
 
     const { addToken } = useAddToken({
-        address,
         debtToken: addresses.debtToken,
-        coinSymbol: COIN,
     });
 
     const checkIfTokenAdded = useCallback(() => {

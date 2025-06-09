@@ -150,11 +150,9 @@ export const SystemStats: React.FC<SystemStatsProps> = ({ showBalances }) => {
         new Percent(debtTokenInStabilityPool.div(total.debt));
     const totalCollateralRatioPct = new Percent(total.collateralRatio(price));
     const borrowingFeePct = new Percent(borrowingRate);
-    const { isConnected, address } = useAccount();
+    const { isConnected } = useAccount();
     const { addToken } = useAddToken({
         debtToken: addresses.debtToken,
-        address,
-        coinSymbol: COIN,
     });
 
     return (

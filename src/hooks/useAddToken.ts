@@ -1,26 +1,21 @@
 import { useCallback } from 'react';
+import { COIN } from 'src/strings';
 import { useWalletClient } from 'wagmi';
 
 interface UseAddTokenParams {
-    address: string | undefined;
     debtToken: string | undefined;
-    coinSymbol: string;
 }
 
-export function useAddToken({
-    address,
-    debtToken,
-    coinSymbol,
-}: UseAddTokenParams) {
+export function useAddToken({ debtToken }: UseAddTokenParams) {
     const { data: walletClient } = useWalletClient();
     const addToken = useCallback(async () => {
-        if (!walletClient || !address || !debtToken) return;
+        if (!walletClient || !debtToken) return;
 
         const success = await walletClient.watchAsset({
             type: 'ERC20',
             options: {
                 address: debtToken,
-                symbol: coinSymbol,
+                symbol: COIN,
                 decimals: 18,
                 image: 'https://app.usdfc.net/apple-touch-icon.png',
             },
@@ -31,7 +26,7 @@ export function useAddToken({
             return true;
         }
         return false;
-    }, [walletClient, address, debtToken, coinSymbol]);
+    }, [walletClient, debtToken]);
 
     return { addToken };
 }
