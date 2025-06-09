@@ -1,10 +1,10 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { within } from '@storybook/testing-library';
-import { NetworkSwitch } from './NetworkSwitch';
+import { NetworkSwitchPopover } from './NetworkSwitchPopover';
 
-const meta: Meta<typeof NetworkSwitch> = {
-    title: 'Molecules/NetworkSwitch',
-    component: NetworkSwitch,
+const meta: Meta<typeof NetworkSwitchPopover> = {
+    title: 'Molecules/NetworkSwitchPopover',
+    component: NetworkSwitchPopover,
     parameters: {
         viewport: { disable: true },
     },
@@ -12,9 +12,9 @@ const meta: Meta<typeof NetworkSwitch> = {
 
 export default meta;
 
-const Template: StoryFn<typeof NetworkSwitch> = () => (
+const Template: StoryFn<typeof NetworkSwitchPopover> = () => (
     <div className='w-fit'>
-        <NetworkSwitch />
+        <NetworkSwitchPopover />
     </div>
 );
 

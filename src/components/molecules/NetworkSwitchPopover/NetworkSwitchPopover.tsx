@@ -3,7 +3,7 @@ import { BasePopover, Separator } from 'src/components/atoms';
 import { NETWORK_LINKS } from 'src/constants';
 import { getCurrentNetworkKey } from 'src/utils';
 
-export const NetworkSwitch = () => {
+export const NetworkSwitchPopover = () => {
     const currentKey = getCurrentNetworkKey();
     const currentNetwork = NETWORK_LINKS[currentKey];
 

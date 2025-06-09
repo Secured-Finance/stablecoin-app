@@ -19,7 +19,7 @@ import {
     ordinaryFormat,
 } from 'src/utils';
 import { useAccount, useWalletClient } from 'wagmi';
-import { NetworkSwitch } from './molecules/NetworkSwitch/NetworkSwitch';
+import { NetworkSwitchPopover } from 'src/components/molecules';
 
 const select = ({
     accountBalance,
@@ -68,7 +68,7 @@ export const UserAccount: React.FC = () => {
                 </div>
             </Link>
             <div className='  hidden min-w-[120px] items-center rounded-md hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:flex laptop:h-10 laptop:border laptop:border-neutral-300 laptop:bg-neutral-50'>
-                <NetworkSwitch />
+                <NetworkSwitchPopover />
             </div>
 
             {isConnected ? (
