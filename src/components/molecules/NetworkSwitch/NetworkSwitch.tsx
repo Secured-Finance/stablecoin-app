@@ -11,7 +11,7 @@ export const NetworkSwitch = () => {
         <div className='hidden w-[120px] items-center justify-center laptop:flex '>
             <BasePopover buttonLabel={currentNetwork.label}>
                 {({ close }) => (
-                    <div className='rounded-b-md bg-white py-1.5'>
+                    <div className='w-36 rounded-b-md bg-white py-1.5'>
                         {Object.values(NETWORK_LINKS).map(
                             ({ key, label, href }, i) => (
                                 <React.Fragment key={key}>
@@ -26,7 +26,9 @@ export const NetworkSwitch = () => {
                                         className='flex w-full items-center justify-between gap-2 bg-white px-3 py-2 text-3.5  text-neutral-900  hover:bg-neutral-100'
                                         role='menuitem'
                                     >
-                                        <span>{label}</span>
+                                        <span className='typography-desktop-body-5 grow text-left text-neutral-800'>
+                                            {label}
+                                        </span>
                                         {key === currentKey && (
                                             <span className='h-2 w-2 rounded-full bg-success-500' />
                                         )}

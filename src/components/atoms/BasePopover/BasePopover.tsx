@@ -46,7 +46,7 @@ export const BasePopover = ({
                         <Popover.Panel
                             static
                             role='menu'
-                            className='absolute -left-4 z-10 mt-5 w-[200px] rounded-md shadow-card'
+                            className='absolute -left-4 z-10 mt-5 rounded-md shadow-card'
                         >
                             {typeof children === 'function'
                                 ? children({ close })
