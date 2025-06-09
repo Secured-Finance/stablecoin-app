@@ -29,6 +29,20 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
     testnet: 'https://calibration.filfox.info',
 };
 
+export const NETWORK_LINKS = {
+    mainnet: {
+        label: 'Mainnet',
+        href: 'https://app.usdfc.net/#',
+        key: 'mainnet',
+    },
+    testnet: {
+        label: 'Calibration',
+        href: 'https://stg.usdfc.net/#',
+        key: 'testnet',
+    },
+} as const;
+
+export type NetworkKey = keyof typeof NETWORK_LINKS;
 export const PYTH_ORACLE_LINK =
     'https://www.pyth.network/price-feeds/crypto-fil-usd';
 

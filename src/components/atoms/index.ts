@@ -7,3 +7,4 @@ export * from './MenuItem';
 export * from './NavTab';
 export * from './Separator';
 export * from './Tooltip';
+export * from './BasePopover';

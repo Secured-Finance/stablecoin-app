@@ -3,7 +3,7 @@ import { within } from '@storybook/testing-library';
 import { MenuPopover } from './MenuPopover';
 
 export default {
-    title: 'Organism/MenuPopover',
+    title: 'Molecules/MenuPopover',
     component: MenuPopover,
     parameters: {
         viewport: {
