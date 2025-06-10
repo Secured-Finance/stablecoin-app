@@ -33,7 +33,6 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-import { Amount } from '../ActionDescription';
 import { truncateDecimal } from 'src/utils/decimal';
 
 const selector = (state: SfStablecoinStoreState) => {
@@ -88,7 +87,10 @@ export const Opening: React.FC = () => {
         EMPTY_TROVE,
         trove,
         borrowingRate,
-        validationContext
+        validationContext,
+        collateralMaxedOut,
+        collateral,
+        maxCollateral
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);
@@ -159,13 +161,22 @@ export const Opening: React.FC = () => {
                         Cancel
                     </Button>
 
-                    {collateralMaxedOut ? (
-                        <Button disabled>Exceeds Collateral Amount</Button>
-                    ) : gasEstimationState.type === 'inProgress' ? (
+                    {collateralMaxedOut ||
+                    gasEstimationState.type === 'inProgress' ||
+                    !stableTroveChange ? (
                         <Button disabled>
-                            <Spinner size={24} sx={{ color: 'background' }} />
+                            {collateralMaxedOut ? (
+                                'Exceeds Collateral Amount'
+                            ) : gasEstimationState.type === 'inProgress' ? (
+                                <Spinner
+                                    size={24}
+                                    sx={{ color: 'background' }}
+                                />
+                            ) : (
+                                'Confirm'
+                            )}
                         </Button>
-                    ) : stableTroveChange ? (
+                    ) : (
                         <TroveAction
                             transactionId={TRANSACTION_ID}
                             change={stableTroveChange}
@@ -174,8 +185,6 @@ export const Opening: React.FC = () => {
                         >
                             Confirm
                         </TroveAction>
-                    ) : (
-                        <Button disabled>Confirm</Button>
                     )}
                 </>
             }
@@ -300,22 +309,10 @@ export const Opening: React.FC = () => {
 
                 <CollateralRatioInfoBubble value={collateralRatio} />
 
-                {!collateralMaxedOut &&
-                    (description ?? (
-                        <Alert color='info'>
-                            Start by entering the amount of {CURRENCY} you would
-                            like to deposit as collateral.
-                        </Alert>
-                    ))}
-
-                {collateralMaxedOut && (
-                    <Alert>
-                        The amount you are trying to deposit exceeds your
-                        balance after transaction fees by{' '}
-                        <Amount>
-                            {collateral.sub(maxCollateral).prettify()}{' '}
-                            {CURRENCY}.
-                        </Amount>
+                {description ?? (
+                    <Alert color='info'>
+                        Start by entering the amount of {CURRENCY} you would
+                        like to deposit as collateral.
                     </Alert>
                 )}
 
