@@ -1,2 +1,1 @@
-export * from './MenuPopover';
 export * from './NetworkSwitchPopover';

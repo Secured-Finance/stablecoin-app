@@ -19,6 +19,7 @@ import {
     ordinaryFormat,
 } from 'src/utils';
 import { useAccount, useWalletClient } from 'wagmi';
+import { NetworkSwitchPopover } from 'src/components/molecules';
 
 const select = ({
     accountBalance,
@@ -53,48 +54,51 @@ export const UserAccount: React.FC = () => {
 
     return (
         <div className='flex flex-row items-center gap-2 laptop:gap-2'>
-            <>
-                <Link
-                    href={getFixedIncomeMarketLink()}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    aria-label='Fixed Income'
+            <Link
+                href={getFixedIncomeMarketLink()}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Fixed Income'
+            >
+                <div className='flex items-center gap-x-2 rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                    <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
+                        Fixed Income
+                    </span>
+                    <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
+                </div>
+            </Link>
+            <div className='  hidden min-w-[120px] items-center rounded-md hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:flex laptop:h-10 laptop:border laptop:border-neutral-300 laptop:bg-neutral-50'>
+                <NetworkSwitchPopover />
+            </div>
+
+            {isConnected ? (
+                <button
+                    className='flex items-center gap-x-2 rounded-md border border-neutral-300 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
+                    onClick={() => open()}
                 >
-                    <div className='flex items-center gap-x-1.5 rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
-                        <span className='text-3 leading-3.5 text-neutral-900 laptop:text-3.5 laptop:leading-4.5'>
-                            Fixed Income
-                        </span>
-                        <ExternalLink className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
-                    </div>
-                </Link>
-                {isConnected ? (
-                    <button
-                        className='flex items-center gap-x-1 rounded-md border border-neutral-300 p-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:gap-x-1.5 laptop:px-3.5'
-                        onClick={() => open()}
+                    <span>
+                        <Identicon
+                            value={account.toLowerCase()}
+                            size={isMobile ? 14 : 16}
+                        />
+                    </span>
+                    <span
+                        className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
+                        data-cy='wallet-address'
                     >
-                        <span>
-                            <Identicon
-                                value={account.toLowerCase()}
-                                size={isMobile ? 14 : 16}
-                            />
-                        </span>
-                        <span
-                            className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
-                            data-cy='wallet-address'
-                        >
-                            {AddressUtils.format(account.toLowerCase(), 6)}
-                        </span>
-                    </button>
-                ) : (
-                    <Button
-                        onClick={() => open()}
-                        mobileText={'Connect'}
-                        size={isMobile ? ButtonSizes.sm : ButtonSizes.md}
-                    >
-                        Connect Wallet
-                    </Button>
-                )}
-            </>
+                        {AddressUtils.format(account.toLowerCase(), 6)}
+                    </span>
+                </button>
+            ) : (
+                <Button
+                    onClick={() => open()}
+                    mobileText={'Connect'}
+                    size={isMobile ? ButtonSizes.sm : ButtonSizes.md}
+                >
+                    Connect Wallet
+                </Button>
+            )}
+
             <div className='hidden flex-row items-center gap-2 px-4 laptop:flex'>
                 {(
                     [
@@ -118,7 +122,6 @@ export const UserAccount: React.FC = () => {
                             ),
                             USDFCLogo,
                         ],
-                        // [GT, Decimal.from(protocolTokenBalance)],
                     ] as const
                 ).map(([currency, balance, Logo], i) => (
                     <div

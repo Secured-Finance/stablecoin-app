@@ -11,8 +11,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS } from 'src/constants';
-import { LinkList } from 'src/utils';
+import { LINKS, NETWORK_LINKS } from 'src/constants';
+import { getCurrentNetworkKey, LinkList } from 'src/utils';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
@@ -23,6 +23,10 @@ export const SideNav: React.FC = () => {
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
+    const currentKey = getCurrentNetworkKey();
+    const availableNetworks = Object.values(NETWORK_LINKS).filter(
+        net => net.key !== currentKey
+    );
 
     const handleOutsideClick = (
         e:
@@ -102,6 +106,18 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
+                            <div className='flex gap-2 px-3 py-[11px] laptop:hidden'>
+                                {availableNetworks.map(
+                                    ({ key, label, href }) => (
+                                        <a key={key} href={href}>
+                                            <span className='typography-desktop-body-3 font-semibold text-neutral-800'>
+                                                {label}
+                                            </span>
+                                        </a>
+                                    )
+                                )}
+                            </div>
+
                             {LinkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink
@@ -155,7 +171,7 @@ const MobileItemExternalLink = ({
     onClick,
 }: {
     text: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     link: string;
     onClick: () => void;
 }) => {
@@ -170,9 +186,11 @@ const MobileItemExternalLink = ({
             onClick={onClick}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                <div className='flex h-5 w-5 items-center justify-center'>
-                    {icon}
-                </div>
+                {icon && (
+                    <div className='flex h-5 w-5 items-center justify-center'>
+                        {icon}
+                    </div>
+                )}
                 <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
                     {text}
                 </p>
