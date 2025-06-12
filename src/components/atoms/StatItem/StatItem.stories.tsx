@@ -2,7 +2,7 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { StatItem } from './StatItem';
 
 export default {
-    title: 'Molecules/StatItem',
+    title: 'Atoms/StatItem',
     component: StatItem,
     args: {
         stat: {

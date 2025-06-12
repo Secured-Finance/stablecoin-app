@@ -18,12 +18,20 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                         <Popover.Button
                             as='button'
                             data-cy='popover-button'
-                            className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
+                            className='flex flex-row items-center gap-2 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
                         >
-                            {isInMoreLinks && (
-                                <span className='mr-1 h-1.5 w-1.5 rounded-full bg-primary-500' />
-                            )}
-                            <span>More</span>
+                            <span className='flex items-center gap-2 font-primary'>
+                                <span
+                                    className={clsx(
+                                        'h-2 w-2 rounded-full bg-primary-500  transition-all  duration-200',
+                                        isInMoreLinks
+                                            ? 'scale-100 opacity-100'
+                                            : 'scale-0 opacity-0'
+                                    )}
+                                />
+                                More
+                            </span>
+
                             <ChevronDown
                                 className={clsx(
                                     'h-4 w-4 text-neutral-600 transition',

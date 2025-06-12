@@ -1,6 +1,6 @@
 import { Layers2, Vault } from 'lucide-react';
 import React from 'react';
-import { PositionInfoCard } from 'src/components/atoms';
+import { PositionInfoCard } from '../PositionInfoCard';
 
 export const EmptyPositions: React.FC = () => {
     return (

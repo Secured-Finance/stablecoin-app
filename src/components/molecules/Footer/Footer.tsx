@@ -1,8 +1,8 @@
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import Link from 'next/link';
 import SecuredFinanceLogo from 'src/assets/icons/sflogo.svg';
-import { Icon } from './Icon';
 import { SOCIAL_LINKS } from 'src/constants';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { Icon } from '../../Icon';
 
 export const Footer = () => {
     return (
@@ -22,6 +22,7 @@ export const Footer = () => {
                                 aria-label={ariaLabel}
                                 target='_blank'
                                 rel='noopener noreferrer'
+                                data-testid={`btn${index}`}
                             >
                                 <Icon
                                     name={iconName as IconName}

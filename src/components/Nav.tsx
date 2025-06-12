@@ -16,7 +16,7 @@ export const Nav: React.FC = () => {
                         'flex w-[120px] items-center justify-center text-3.5 leading-6'
                     )}
                 >
-                    <span className='flex items-center gap-1 font-primary'>
+                    <span className='flex items-center gap-2 font-primary'>
                         <span
                             className={clsx(
                                 'h-2 w-2 rounded-full transition-all duration-200',
