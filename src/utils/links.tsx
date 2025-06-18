@@ -15,7 +15,7 @@ export const LinkList: MoreLink[] = [
         isExternal: false,
     },
     {
-        text: 'Reedem USDFC',
+        text: 'Reedeem USDFC',
         href: '/redemption',
         isExternal: false,
     },

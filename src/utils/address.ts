@@ -6,8 +6,4 @@ export const AddressUtils = {
         if (!address) return '...';
         return address.slice(0, length) + '...' + address.slice(-4);
     },
-    formatCopy: (address: string, length: number): string => {
-        if (!address) return '...';
-        return address.slice(0, length) + '...' + address.slice(-4);
-    },
 };

@@ -9,9 +9,7 @@ export default {
 } as Meta<typeof Footer>;
 
 const Template: StoryFn<typeof Footer> = () => (
-    <div
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ flex: 1 }} />
         <Footer />
     </div>

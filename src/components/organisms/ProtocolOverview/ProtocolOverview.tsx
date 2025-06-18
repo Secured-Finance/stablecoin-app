@@ -1,6 +1,5 @@
 import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
-import { memo } from 'react';
 import { TokenPrice } from 'src/components/atoms';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { AddressUtils, isProdEnv } from 'src/utils';
@@ -27,10 +26,10 @@ type ProtocolOverviewProps = {
     };
 };
 
-export const ProtocolOverview = memo(function ProtocolOverview({
+export const ProtocolOverview = ({
     data,
     contextData,
-}: ProtocolOverviewProps) {
+}: ProtocolOverviewProps) => {
     const editedPrice = data.price.toString(2);
 
     return (
@@ -63,7 +62,7 @@ export const ProtocolOverview = memo(function ProtocolOverview({
             </div>
         </div>
     );
-});
+};
 
 export const filPrice = {
     source: 'CoinGecko',

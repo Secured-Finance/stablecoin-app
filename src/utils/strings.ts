@@ -46,14 +46,6 @@ export const fromBytes32 = (hex: string) => {
 };
 
 export const getCurrentNetworkLabel = (): 'Mainnet' | 'Calibration' => {
-    const env = getEnvironment();
-
-    switch (env) {
-        case 'production':
-            return 'Mainnet';
-        case 'staging':
-        case 'development':
-        default:
-            return 'Calibration';
-    }
+    const environment = getEnvironment();
+    return environment === Environment.PRODUCTION ? 'Mainnet' : 'Calibration';
 };

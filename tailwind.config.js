@@ -121,13 +121,14 @@ module.exports = {
             },
         },
         fontFamily: {
-            primary: ['Inter', ...defaultTheme.fontFamily.serif],
+            primary: ['Inter', ...defaultTheme.fontFamily.sans],
             secondary: [
                 'Suisse International',
                 ...defaultTheme.fontFamily.sans,
             ],
             tertiary: ['Roboto Mono', ...defaultTheme.fontFamily.sans],
             numerical: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
+            display: ['GT Super Display', ...defaultTheme.fontFamily.serif],
         },
         screens: {
             tablet: '768px',
