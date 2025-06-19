@@ -78,6 +78,7 @@ export const Opening: React.FC = () => {
 
     const collateralMaxedOut =
         collateral.gt(maxCollateral) || collateral.eq(accountBalance);
+    const isMaxedOut = maxCollateral.eq(collateral);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -195,7 +196,7 @@ export const Opening: React.FC = () => {
                     inputId='trove-collateral'
                     amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
-                    maxedOut={collateralMaxedOut}
+                    maxedOut={isMaxedOut}
                     editingState={editingState}
                     unit={CURRENCY}
                     editedAmount={collateral.toString(COLLATERAL_PRECISION)}
@@ -281,7 +282,7 @@ export const Opening: React.FC = () => {
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()}) ${COIN} Liquidation Reserve excluded.`}
+                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()}) ${COIN} Liquidation Reserve excluded.)`}
                                             </>
                                         )}
                                     </Card>

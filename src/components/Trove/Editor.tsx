@@ -243,8 +243,10 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     editedAmount,
     setEditedAmount,
     maxAmount,
+    maxedOut,
 }) => {
     const [editing, setEditing] = editingState;
+
     // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
@@ -281,6 +283,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                             setEditedAmount(maxAmount);
                             event.stopPropagation();
                         }}
+                        disabled={maxedOut}
                     >
                         Max
                     </Button>
