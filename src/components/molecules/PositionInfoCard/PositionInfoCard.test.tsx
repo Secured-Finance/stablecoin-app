@@ -5,14 +5,14 @@ import { MemoryRouter } from 'react-router-dom';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
-    it('should navigate to coingecko with button click', () => {
+describe('test Position Info Card component', () => {
+    it('should render text', () => {
         render(
             <MemoryRouter>
                 <Default />
             </MemoryRouter>
         );
-        const button = screen.getByTestId('button-link');
+        const button = screen.getByText('No Trove Yet');
         expect(button).toBeInTheDocument();
     });
 });

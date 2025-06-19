@@ -1,9 +1,9 @@
 import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
 import { PositionInfoCard } from '../PositionInfoCard';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 
 interface PositionsProps {
     debtTokenInStabilityPool: Decimal;
@@ -38,83 +38,84 @@ export const Positions = ({
                 My Positions
             </h2>
             <div className='grid grid-cols-1 gap-3 laptop:grid-cols-2'>
-                <PositionInfoCard
-                    icon={Vault}
-                    title='Trove'
-                    mainStat={{
-                        label: 'Total Debt',
-                        value: (
-                            <div className='text-2xl flex items-center gap-1 font-semibold text-neutral-900'>
-                                {trove.debt.prettify()} <SecuredFinanceLogo />
-                            </div>
-                        ),
-                    }}
-                    stats={[
-                        {
-                            label: 'Collateral',
-                            value: `${trove.collateral.prettify()} FIL`,
-                        },
-                        {
-                            label: 'Collateral Ratio',
-                            value: collateralRatio
-                                ? `${collateralRatio.mul(100).prettify()}%`
-                                : '%',
-                        },
-                        {
-                            label: 'Liquidation Risk',
-                            value: (
-                                <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
-                                    Low
-                                </span>
-                            ),
-                        },
-                    ]}
-                    to='/trove'
-                    buttonText='Manage Trove'
-                    buttonVariant='ghost'
-                />
+                <PositionInfoCard icon={Vault} title='Trove'>
+                    <div className='mb-6'>
+                        <p className='text-sm text-neutral-600'>Total Debt</p>
+                        <div className='text-2xl flex items-center gap-1 font-semibold text-neutral-900'>
+                            {trove.debt.prettify()} <SecuredFinanceLogo />
+                        </div>
+                    </div>
+                    <div className='space-y-3 text-sm text-neutral-700'>
+                        <div className='flex justify-between'>
+                            <span>Collateral</span>
+                            <span>{`${trove.collateral.prettify()} FIL`}</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span>Collateral Ratio</span>
+                            <span>
+                                {collateralRatio
+                                    ? `${collateralRatio.mul(100).prettify()}%`
+                                    : '%'}
+                            </span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span>Liquidation Risk</span>
+                            <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
+                                Low
+                            </span>
+                        </div>
+                    </div>
+                    <Button
+                        href='/trove'
+                        data-testid='button-link'
+                        size={ButtonSizes.md}
+                        variant={ButtonVariants.tertiary}
+                        className='mt-3 w-full'
+                    >
+                        Manage Trove
+                    </Button>
+                </PositionInfoCard>
 
-                <PositionInfoCard
-                    icon={Layers2}
-                    title='Stability Pool'
-                    mainStat={{
-                        label: 'Liquidation Gain',
-                        value: (
-                            <div className='text-lg flex items-center gap-2 font-semibold text-neutral-900'>
-                                {liquidationGains} <FILIcon />
-                                FIL
-                            </div>
-                        ),
-                    }}
-                    stats={[
-                        {
-                            label: 'Deposit',
-                            value: (
-                                <div className='flex items-center gap-1'>
-                                    {originalDeposit.currentDebtToken.prettify()}{' '}
-                                    <span>USDFC</span>
-                                </div>
-                            ),
-                        },
-                        {
-                            label: 'Pool Share',
-                            value: `${originalPoolShare.prettify()}%`,
-                        },
-                    ]}
-                    actions={
-                        <>
-                            <Link
-                                to='/stability-pool'
-                                className='w-full rounded-lg border border-neutral-300 bg-white py-2 text-center text-sm font-medium text-neutral-900 hover:bg-neutral-50'
-                            >
-                                Manage Deposit
-                            </Link>
-                            <button className='w-full rounded-lg bg-primary-500 py-2 text-sm font-medium text-white hover:bg-blue-700'>
-                                Claim Gains
-                            </button>
-                        </>
-                    }
-                />
+                <PositionInfoCard icon={Layers2} title='Stability Pool'>
+                    <div className='mb-6'>
+                        <p className='text-sm text-neutral-600'>
+                            Liquidation Gain
+                        </p>
+                        <div className='text-lg flex items-center gap-2 font-semibold text-neutral-900'>
+                            {liquidationGains} <FILIcon /> FIL
+                        </div>
+                    </div>
+                    <div className='space-y-3 text-sm text-neutral-700'>
+                        <div className='flex justify-between'>
+                            <span>Deposit</span>
+                            <span className='flex items-center gap-1'>
+                                {originalDeposit.currentDebtToken.prettify()}{' '}
+                                <span>USDFC</span>
+                            </span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span>Pool Share</span>
+                            <span>{`${originalPoolShare.prettify()}%`}</span>
+                        </div>
+                    </div>
+                    <div className='mt-6 flex gap-3'>
+                        <Button
+                            href='/stability-pool'
+                            size={ButtonSizes.md}
+                            variant={ButtonVariants.tertiary}
+                            className='mt-3 w-full'
+                        >
+                            Manage Deposit
+                        </Button>
+                        <Button
+                            className='mt-3 w-full'
+                            size={ButtonSizes.md}
+                            variant={ButtonVariants.primary}
+                        >
+                            Claim Gains
+                        </Button>
+                    </div>
+                </PositionInfoCard>
             </div>
         </div>
     );

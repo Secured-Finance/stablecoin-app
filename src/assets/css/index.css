@@ -88,24 +88,22 @@
   }
 
   @font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  src: url('./../fonts/inter/Inter-Regular.woff2') format('woff2'),
-       url('./../fonts/inter/Inter-Regular.woff') format('woff');
-}
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
-  src: url('./../fonts/inter/Inter-Bold.woff2') format('woff2'),
-       url('./../fonts/inter/Inter-Bold.woff') format('woff');
-}
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./../fonts/inter/InterDisplay-Regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./../fonts/inter/InterDisplay-Medium.woff2') format('woff2');
+  }
   body {
     @apply font-secondary;
-    min-height: 100dvh;
+    height: 100dvh;
     background-color: #FAFAFA;
-    backdrop-filter: 'blur(50px)';
+    backdrop-filter: blur(50px);
   }
 }
 

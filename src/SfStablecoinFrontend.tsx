@@ -7,6 +7,7 @@ import {
 import React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Footer } from 'src/components/molecules';
 import { BridgePage } from 'src/components/pages/BridgePage';
 import { PageSwitcher } from 'src/components/pages/PageSwitcher';
 import { RiskyTrovesPage } from 'src/components/pages/RiskyTrovesPage';
@@ -15,12 +16,11 @@ import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
 import { Header } from './components/Header';
+import { RedemptionPage } from './components/pages/RedemptionPage';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
-import { Footer } from 'src/components/molecules';
-import { RedemptionPage } from './components/pages/RedemptionPage';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
@@ -68,7 +68,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                         <Flex
                             sx={{
                                 flexDirection: 'column',
-                                minHeight: '100%',
+                                minHeight: '100vh',
                             }}
                         >
                             <Header />

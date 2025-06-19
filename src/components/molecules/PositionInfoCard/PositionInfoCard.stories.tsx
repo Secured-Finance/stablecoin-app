@@ -8,9 +8,6 @@ export default {
     args: {
         icon: Vault,
         title: 'No Trove Yet',
-        description: 'A Trove is your personal vault where you can deposit FIL',
-        buttonText: 'Create Trove',
-        to: '/trove',
     },
     argTypes: {},
     parameters: {},
