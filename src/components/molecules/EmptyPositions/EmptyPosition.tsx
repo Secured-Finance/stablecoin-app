@@ -32,16 +32,15 @@ ensuring a balanced and secure ecosystem.`,
             <div className='grid w-full grid-cols-1 justify-items-center gap-6 laptop:grid-cols-2'>
                 {emptyStates.map(
                     ({ icon, title, description, href, buttonText }, index) => (
-                        <PositionInfoCard key={index}>
-                            <div className='mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-[#f5f5ff]'>
-                                {icon}
-                            </div>
-                            <h3 className='text-5 font-bold'>{title}</h3>
-
+                        <PositionInfoCard
+                            key={index}
+                            icon={() => icon}
+                            title={title}
+                            verticalHeader={true}
+                        >
                             <p className='mb-3 min-h-[48px] font-primary text-4 text-secondary-400'>
                                 {description}
                             </p>
-
                             <Button
                                 href={href}
                                 external={false}

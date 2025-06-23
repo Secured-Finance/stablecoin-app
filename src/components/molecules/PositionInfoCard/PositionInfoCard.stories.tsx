@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import { PositionInfoCard } from './PositionInfoCard';
 import { Vault } from 'lucide-react';
+import { PositionInfoCard } from './PositionInfoCard';
 
 export default {
     title: 'Molecules/PositionInfoCard',
@@ -18,3 +18,7 @@ const Template: StoryFn<typeof PositionInfoCard> = args => (
 );
 
 export const Default = Template.bind({});
+Default.args = {
+    icon: Vault,
+    title: 'No Trove Yet',
+};

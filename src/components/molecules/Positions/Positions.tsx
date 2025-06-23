@@ -1,9 +1,9 @@
 import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
 import { PositionInfoCard } from '../PositionInfoCard';
-import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 
 interface PositionsProps {
     debtTokenInStabilityPool: Decimal;
