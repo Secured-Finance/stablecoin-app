@@ -33,6 +33,7 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
+import { truncateDecimal } from 'src/utils/decimal';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -66,10 +67,18 @@ export const Opening: React.FC = () => {
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
     const trove = isDirty ? new Trove(collateral, totalDebt) : EMPTY_TROVE;
-    const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
+    const rawMaxCollateral = accountBalance.gt(GAS_ROOM_ETH)
         ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
-    const collateralMaxedOut = collateral.eq(maxCollateral);
+
+    const maxCollateral = truncateDecimal(
+        rawMaxCollateral,
+        COLLATERAL_PRECISION
+    );
+
+    const collateralMaxedOut =
+        collateral.gt(maxCollateral) || collateral.eq(accountBalance);
+    const isMaxedOut = maxCollateral.eq(collateral);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -79,7 +88,10 @@ export const Opening: React.FC = () => {
         EMPTY_TROVE,
         trove,
         borrowingRate,
-        validationContext
+        validationContext,
+        collateralMaxedOut,
+        collateral,
+        maxCollateral
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);
@@ -101,7 +113,8 @@ export const Opening: React.FC = () => {
     }, []);
 
     const setCollateralAmount = useCallback((amount: string) => {
-        setCollateral(Decimal.from(amount));
+        const parsed = Decimal.from(amount);
+        setCollateral(truncateDecimal(parsed, COLLATERAL_PRECISION));
     }, []);
 
     useEffect(() => {
@@ -129,7 +142,7 @@ export const Opening: React.FC = () => {
                     Trove
                     {isDirty && !isTransactionPending && (
                         <button
-                            className='item-right flex w-8 w-auto items-center px-2 hover:enabled:text-error-700'
+                            className='item-right flex w-auto items-center px-2 hover:enabled:text-error-700'
                             onClick={reset}
                         >
                             <span className='typography-mobile-body-4 pr-1 font-semibold'>
@@ -149,11 +162,22 @@ export const Opening: React.FC = () => {
                         Cancel
                     </Button>
 
-                    {gasEstimationState.type === 'inProgress' ? (
+                    {collateralMaxedOut ||
+                    gasEstimationState.type === 'inProgress' ||
+                    !stableTroveChange ? (
                         <Button disabled>
-                            <Spinner size={24} sx={{ color: 'background' }} />
+                            {collateralMaxedOut ? (
+                                'Exceeds Collateral Amount'
+                            ) : gasEstimationState.type === 'inProgress' ? (
+                                <Spinner
+                                    size={24}
+                                    sx={{ color: 'background' }}
+                                />
+                            ) : (
+                                'Confirm'
+                            )}
                         </Button>
-                    ) : stableTroveChange ? (
+                    ) : (
                         <TroveAction
                             transactionId={TRANSACTION_ID}
                             change={stableTroveChange}
@@ -162,8 +186,6 @@ export const Opening: React.FC = () => {
                         >
                             Confirm
                         </TroveAction>
-                    ) : (
-                        <Button disabled>Confirm</Button>
                     )}
                 </>
             }
@@ -174,7 +196,7 @@ export const Opening: React.FC = () => {
                     inputId='trove-collateral'
                     amount={collateral.prettify(COLLATERAL_PRECISION)}
                     maxAmount={maxCollateral.toString()}
-                    maxedOut={collateralMaxedOut}
+                    maxedOut={isMaxedOut}
                     editingState={editingState}
                     unit={CURRENCY}
                     editedAmount={collateral.toString(COLLATERAL_PRECISION)}
@@ -260,7 +282,7 @@ export const Opening: React.FC = () => {
                                                     .sub(LIQUIDATION_RESERVE)
                                                     .prettify(
                                                         DEBT_TOKEN_PRECISION
-                                                    )} ${COIN} to reclaim your collateral (${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.)`}
+                                                    )} ${COIN} to reclaim your collateral ${LIQUIDATION_RESERVE.toString()} ${COIN} Liquidation Reserve excluded.`}
                                             </>
                                         )}
                                     </Card>
@@ -302,6 +324,7 @@ export const Opening: React.FC = () => {
                     gasEstimationState={gasEstimationState}
                     setGasEstimationState={setGasEstimationState}
                 />
+
                 {isTransactionPending && <LoadingOverlay />}
             </div>
         </CardComponent>

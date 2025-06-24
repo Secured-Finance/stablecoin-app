@@ -246,6 +246,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     maxedOut,
 }) => {
     const [editing, setEditing] = editingState;
+
     // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
