@@ -30,7 +30,12 @@ export const Dashboard: React.FC = () => {
         return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
     }, [addresses.debtToken]);
 
-    const dismissTokenBanner = () => setIsTokenAdded(true);
+    const dismissTokenBanner = () => {
+        if (addresses.debtToken) {
+            localStorage.setItem(`token_${addresses.debtToken}`, 'true');
+        }
+        setIsTokenAdded(true);
+    };
 
     const handleAddToken = async () => {
         const success = await addToken();
