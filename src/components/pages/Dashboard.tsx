@@ -34,7 +34,9 @@ export const Dashboard: React.FC = () => {
 
     const handleAddToken = async () => {
         const success = await addToken();
-        if (success) dismissTokenBanner();
+        if (success) {
+            setIsTokenAdded(checkIfTokenAdded());
+        }
     };
 
     useEffect(() => {
