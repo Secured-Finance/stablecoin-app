@@ -8,9 +8,18 @@ export default {
     args: {
         icon: Vault,
         title: 'No Trove Yet',
+        verticalHeader: false,
+        children: (
+            <div>
+                <span>
+                    A Trove is your personal vault where you can deposit FIL as
+                    collateral to borrow USDFC with 0% interest, while
+                    maintaining exposure to FIL
+                </span>
+                <button>Create Trove</button>
+            </div>
+        ),
     },
-    argTypes: {},
-    parameters: {},
 } as Meta<typeof PositionInfoCard>;
 
 const Template: StoryFn<typeof PositionInfoCard> = args => (
