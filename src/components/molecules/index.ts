@@ -1,3 +1,4 @@
+export * from './CoreTable';
 export * from './EmptyPositions';
 export * from './FeatureCards';
 export * from './Footer';
