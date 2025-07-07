@@ -1,15 +1,19 @@
-export const LINKS = [
+export const HEADER_LINKS = [
     {
         to: '/',
         label: 'Dashboard',
     },
     {
-        to: '/risky-troves',
-        label: 'Risky Troves',
+        to: '/trove',
+        label: 'Trove',
     },
     {
-        to: '/bridge',
-        label: 'Bridge',
+        to: '/stability-pool',
+        label: 'Stability Pool',
+    },
+    {
+        to: '/stake',
+        label: 'Stake SFC',
     },
 ];
 
@@ -29,6 +33,11 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
     testnet: 'https://calibration.filfox.info',
 };
 
+export const NETWORK_SWITCH_LINKS = {
+    mainnet: 'https://app.usdfc.net/#',
+    testnet: 'https://stg.usdfc.net/#',
+};
+
 export const PYTH_ORACLE_LINK =
     'https://www.pyth.network/price-feeds/crypto-fil-usd';
 
@@ -43,3 +52,28 @@ export const rpcUrls = {
     mainnet: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
     testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };
+
+export const coinGeckoUrl = 'https://www.coingecko.com/en/coins/usdfc';
+
+export const SOCIAL_LINKS = [
+    {
+        href: 'https://github.com/Secured-Finance/stablecoin-app',
+        iconName: 'github',
+        ariaLabel: 'GitHub',
+    },
+    {
+        href: 'https://discord.gg/3kytCrv3qY',
+        iconName: 'discord',
+        ariaLabel: 'Discord',
+    },
+    {
+        href: 'https://x.com/USDFC_Protocol',
+        iconName: 'x-twitter',
+        ariaLabel: 'Twitter',
+    },
+    {
+        href: 'https://blog.secured.finance/',
+        iconName: 'medium',
+        ariaLabel: 'Medium',
+    },
+];

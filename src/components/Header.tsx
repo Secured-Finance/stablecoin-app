@@ -6,6 +6,7 @@ import { Container } from 'theme-ui';
 import { Nav } from './Nav';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
+import { UserAccount } from './UserAccount';
 
 const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
@@ -20,15 +21,23 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         frontendTag === AddressZero || frontend.status === 'registered';
 
     return (
-        <Container variant='header'>
-            <div className='flex items-center gap-3 desktop:gap-8'>
-                <SecuredFinanceLogo />
+        <Container variant='header' className='border-b border-neutral-9'>
+            <div className='relative flex w-full items-center justify-between gap-3 desktop:gap-8'>
+                <div className='flex items-center gap-2'>
+                    <SecuredFinanceLogo />
+                    {isFrontendRegistered && (
+                        <div className='block desktop:hidden'>
+                            <SideNav />
+                        </div>
+                    )}
+                </div>
+
                 {isFrontendRegistered && (
-                    <>
-                        <SideNav />
+                    <div className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 laptop:block'>
                         <Nav />
-                    </>
+                    </div>
                 )}
+                <UserAccount />
             </div>
 
             {children}

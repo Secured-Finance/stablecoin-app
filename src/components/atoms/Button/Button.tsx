@@ -3,6 +3,7 @@ import { useBreakpoint } from 'src/hooks';
 import { SvgIcon } from 'src/types';
 import { sizeStyle, textStyle, variantStyle } from './constants';
 import { ButtonSizes, ButtonVariants } from './types';
+import { Link } from 'react-router-dom';
 
 export const Button = ({
     href,
@@ -13,6 +14,7 @@ export const Button = ({
     EndIcon,
     variant = ButtonVariants.primary,
     mobileText,
+    external = true,
     ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> &
     React.AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -21,19 +23,27 @@ export const Button = ({
         size?: ButtonSizes;
         variant?: ButtonVariants;
         mobileText?: string;
+        external?: boolean;
     } & {
         StartIcon?: SvgIcon;
         EndIcon?: SvgIcon;
     }) => {
     const isMobile = useBreakpoint('laptop');
-    const Tag = href ? 'a' : 'button';
+    const Tag: React.ElementType = href ? (external ? 'a' : Link) : 'button';
+
     const tagProps = href
-        ? {
-              href,
-              target: '_blank',
-              rel: 'noopener noreferrer',
-          }
-        : props;
+        ? external
+            ? {
+                  href,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+              }
+            : {
+                  to: href,
+              }
+        : {
+              type: 'button',
+          };
 
     const label = typeof children === 'string' ? children : 'Button';
     const text = isMobile && mobileText ? mobileText : children;

@@ -1,49 +1,35 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { MenuPopover } from 'src/components/molecules';
-import { LINKS } from 'src/constants';
-
-const BAR_POSITIONS = ['left-0', 'left-[25%]', 'left-[50%]', 'left-[75%]'];
+import { HEADER_LINKS } from 'src/constants';
 
 export const Nav: React.FC = () => {
     const { pathname } = useLocation();
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    useEffect(() => {
-        const currentIndex = LINKS.findIndex(link => link.to === pathname);
-        setActiveIndex(currentIndex === -1 ? 0 : currentIndex);
-    }, [pathname]);
 
     return (
         <div className='relative hidden h-full laptop:flex'>
-            {LINKS.map(link => (
+            {HEADER_LINKS.map(link => (
                 <NavLink
                     key={link.to}
                     to={link.to}
                     className={clsx(
-                        'flex items-center justify-center text-3.5 leading-6 text-neutral-800',
-                        `w-[120px]`,
-                        {
-                            'text-primary-500': pathname === link.to,
-                        }
+                        'flex w-[120px] items-center justify-center text-3.5 leading-6'
                     )}
                 >
-                    {link.label}
+                    <span className='flex items-center gap-2 font-primary'>
+                        <span
+                            className={clsx(
+                                'h-2 w-2 rounded-full transition-all duration-200',
+                                pathname === link.to
+                                    ? 'scale-100 bg-primary-500 opacity-100'
+                                    : 'scale-0 bg-primary-500 opacity-0'
+                            )}
+                        />
+                        {link.label}
+                    </span>
                 </NavLink>
             ))}
             <MenuPopover currentPath={pathname} />
-            <span
-                className={clsx(
-                    'absolute bottom-0 -mb-2 h-1 w-1/4 bg-primary-500 transition-all duration-300',
-                    BAR_POSITIONS[activeIndex],
-                    {
-                        hidden:
-                            LINKS.findIndex(link => link.to === pathname) ===
-                            -1,
-                    }
-                )}
-            />
         </div>
     );
 };

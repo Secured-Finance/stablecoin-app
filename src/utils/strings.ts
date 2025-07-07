@@ -44,3 +44,8 @@ export const toBytes32 = (text: string) => {
 export const fromBytes32 = (hex: string) => {
     return hexToString(hex as `0x${string}`, { size: 32 });
 };
+
+export const getCurrentNetworkLabel = (): 'Mainnet' | 'Calibration' => {
+    const environment = getEnvironment();
+    return environment === Environment.PRODUCTION ? 'Mainnet' : 'Calibration';
+};
