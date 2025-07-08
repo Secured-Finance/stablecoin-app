@@ -158,9 +158,9 @@ export const CoreTable = ({
     open,
 }: CoreTableProps) => {
     return (
-        <div className='overflow-x-auto'>
-            <table className='w-full rounded-xl bg-white'>
-                <thead>
+        <div className='max-h-[500px] overflow-x-auto overflow-y-auto rounded-xl border border-gray-200'>
+            <table className='w-full bg-white'>
+                <thead className='shadow sticky top-0 bg-white'>
                     <tr className='text-left text-sm text-[#565656]'>
                         <th className='px-4 py-4 font-medium'>Address</th>
                         <th className='px-4 py-4 font-medium'>
