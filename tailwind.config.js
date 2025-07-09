@@ -31,25 +31,30 @@ module.exports = {
                 primary: {
                     '50': '#E5F4FF',
                     '300': '#66BDFF',
-                    '500': '#0091FF',
+                    '500': '#1A30FF',
                     '700': '#005799',
                 },
                 secondary: {
                     '300': '#FFD35A',
-                    '500': '#EACC00',
+                    '400': '#565656',
+                    '500': '#3453A8',
                     '700': '#8D6700',
                 },
                 tertiary: {
+                    '50': '#F5F5FF',
                     '300': '#EDCBFF',
                     '500': '#BD47FB',
                     '700': '#8919C4',
                 },
                 success: {
+                    '50': '#DFFEE0',
+                    '100': '#C9FDCA',
                     '300': '#AAE8B0',
                     '500': '#5CD167',
                     '700': '#0F921B',
                 },
                 warning: {
+                    '200': '#FFCE45',
                     '300': '#FFDB93',
                     '500': '#FAAD14',
                     '700': '#C58300',
@@ -70,6 +75,7 @@ module.exports = {
                     '6': '#E6E8EC',
                     '7': '#F4F5F6',
                     '8': '#FCFCFD',
+                    '9': '#E3E3E3',
                     '50': '#FBFAFC',
                     '100': '#F1F5F9',
                     '200': '#E2E8F0',
@@ -115,13 +121,14 @@ module.exports = {
             },
         },
         fontFamily: {
-            primary: ['GT Super Display', ...defaultTheme.fontFamily.serif],
+            primary: ['Inter', ...defaultTheme.fontFamily.sans],
             secondary: [
                 'Suisse International',
                 ...defaultTheme.fontFamily.sans,
             ],
             tertiary: ['Roboto Mono', ...defaultTheme.fontFamily.sans],
             numerical: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans],
+            display: ['GT Super Display', ...defaultTheme.fontFamily.serif],
         },
         screens: {
             tablet: '768px',

@@ -2,10 +2,14 @@ import { Popover, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 import { Fragment } from 'react';
-import { MenuExternalLink, MenuItem, Separator } from 'src/components/atoms';
+import { useLocation } from 'react-router-dom';
+import { MenuExternalLink, MenuItem } from 'src/components/atoms';
 import { LinkList } from 'src/utils';
 
 export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
+    const { pathname } = useLocation();
+    const isInMoreLinks = LinkList.some(link => link.href === pathname);
+
     return (
         <div className='flex w-[120px] items-center justify-center'>
             <Popover className='relative'>
@@ -14,9 +18,20 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                         <Popover.Button
                             as='button'
                             data-cy='popover-button'
-                            className='flex flex-row items-center gap-1 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
+                            className='flex flex-row items-center gap-2 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
                         >
-                            <span>More</span>
+                            <span className='flex items-center gap-2 font-primary'>
+                                <span
+                                    className={clsx(
+                                        'h-2 w-2 rounded-full bg-primary-500  transition-all  duration-200',
+                                        isInMoreLinks
+                                            ? 'scale-100 opacity-100'
+                                            : 'scale-0 opacity-0'
+                                    )}
+                                />
+                                More
+                            </span>
+
                             <ChevronDown
                                 className={clsx(
                                     'h-4 w-4 text-neutral-600 transition',
@@ -36,7 +51,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                             leaveTo='opacity-0 translate-y-5'
                         >
                             <Popover.Panel
-                                className='absolute -left-4 z-10 mt-5 w-[200px] shadow-card'
+                                className='shadow-lg absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-white py-2'
                                 role='menu'
                             >
                                 <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
@@ -46,6 +61,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                                                 key={index}
                                                 role='menuitem'
                                                 onClick={close}
+                                                className='block text-sm hover:bg-neutral-100'
                                             >
                                                 {link.isExternal ? (
                                                     <MenuExternalLink
@@ -62,10 +78,6 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                                                             link.href
                                                         }
                                                     />
-                                                )}
-                                                {index !==
-                                                    LinkList.length - 1 && (
-                                                    <Separator color='neutral-100' />
                                                 )}
                                             </button>
                                         );
