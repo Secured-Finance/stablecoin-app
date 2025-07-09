@@ -4,7 +4,6 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { ArrowDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
@@ -15,6 +14,7 @@ import {
 } from '../Redemption/validation/validateRedemptionChange';
 import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
+import { TokenBox } from '../molecules';
 
 export const RedemptionPage = () => {
     const selector = (state: SfStablecoinStoreState) => {
@@ -99,12 +99,12 @@ export const RedemptionPage = () => {
 
     const filToReceive = estimatedFIL.div(price).sub(fee).prettify(2);
     const redemptionFee = fee.prettify(2);
-    const feePercentage = feePct.toString(2);
+    const feePercentage = feePct.prettify();
     const usdValue = estimatedFIL.mul(price).prettify(2);
 
     return (
         <div className='flex min-h-screen w-full flex-col'>
-            <main className='flex flex-grow flex-col items-center justify-center px-4 py-10'>
+            <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
                 <div className='mx-auto w-full max-w-3xl'>
                     <h1 className='mb-3 text-center font-primary text-5/none font-semibold'>
                         Redeem USDFC
@@ -117,56 +117,23 @@ export const RedemptionPage = () => {
                         <br /> is undercollateralized, it may be partially
                         redeemed.
                     </p>
-
-                    <div className='flex w-full flex-col items-center'>
-                        <div className='flex w-full items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <div className='flex-1'>
-                                <p className='mb-1 text-sm font-medium text-[#001C33]'>
-                                    Redeem
-                                </p>
-                                <input
-                                    type='number'
-                                    className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
-                                    value={redeemAmount}
-                                    onChange={e =>
-                                        setRedeemAmount(e.target.value)
-                                    }
-                                />
-                                <div className='mt-1 flex w-full justify-between text-right text-sm text-[#8E8E93]'>
-                                    <span>${redeemAmount}</span>
-                                </div>
-                            </div>
-                            <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
-                                <SecuredFinanceLogo />
-                            </div>
-                        </div>
-
-                        <div className='relative z-10 -my-7 flex items-center justify-center'>
-                            <div className='shadow-md flex h-16 w-16 items-center justify-center rounded-xl border border-[#e3e3e3] bg-white'>
-                                <ArrowDown className='h-8 w-8 text-[#001C33]' />
-                            </div>
-                        </div>
-
-                        <div className='mb-4 flex w-full items-center justify-between space-y-4 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <div className='flex-1'>
-                                <p className='mb-1 text-sm font-medium text-[#001C33]'>
-                                    You will receive
-                                </p>
-                                <div className='text-[36px] font-semibold leading-tight text-[#001C33]'>
-                                    {filToReceive}
-                                </div>
-                                <p className='mt-1 text-sm text-[#8E8E93]'>
-                                    ${usdValue}
-                                </p>
-                            </div>
-                            <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
+                    <TokenBox
+                        inputLabel='Redeem'
+                        inputValue={redeemAmount}
+                        onInputChange={setRedeemAmount}
+                        inputTokenIcon={<SecuredFinanceLogo />}
+                        outputLabel='You will receive'
+                        outputValue={filToReceive}
+                        outputSubLabel={`$${usdValue}`}
+                        outputTokenIcon={
+                            <div className='flex items-center gap-2'>
                                 <FILIcon />
                                 <span className='text-base font-semibold text-[#001C33]'>
                                     FIL
                                 </span>
                             </div>
-                        </div>
-                        {/* Redemption Fee */}
+                        }
+                    >
                         <div className='mb-6 w-full rounded-xl border border-[#e3e3e3] bg-white p-6'>
                             <div className='flex items-center justify-between'>
                                 <div>
@@ -196,7 +163,6 @@ export const RedemptionPage = () => {
                             </div>
                         </div>
 
-                        {/* Redeem Button */}
                         <button
                             className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
                             disabled={isConnected && (!isValid || hintsPending)}
@@ -223,7 +189,7 @@ export const RedemptionPage = () => {
                         )}
 
                         {validationMessage}
-                    </div>
+                    </TokenBox>
                 </div>
             </main>
         </div>

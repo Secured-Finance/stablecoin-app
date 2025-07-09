@@ -6,4 +6,5 @@ export * from './PositionInfoCard';
 export * from './Positions';
 export * from './ProtocolStats';
 export * from './RecoveryMode';
+export * from './TokenBox';
 export * from './VersionStats';
