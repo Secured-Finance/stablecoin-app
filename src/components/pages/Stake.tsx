@@ -1,15 +1,98 @@
+import {
+    Decimal,
+    Decimalish,
+    ProtocolTokenStake,
+    SfStablecoinStoreState,
+} from '@secured-finance/stablecoin-lib-base';
+import {
+    SfStablecoinStoreUpdate,
+    useSfStablecoinReducer,
+    useSfStablecoinSelector,
+} from 'src/hooks';
+import { GT } from 'src/strings';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import { Alert } from 'src/components/atoms';
+import { StakingManagerAction } from 'src/components/Staking/StakingManagerAction';
+
+type StakeManagerState = {
+    originalStake: ProtocolTokenStake;
+    editedProtocolToken: Decimal;
+};
+
+type StakeManagerAction =
+    | SfStablecoinStoreUpdate
+    | { type: 'revert' }
+    | { type: 'setStake'; newValue: Decimalish };
 
 export default function Stake() {
     const { isConnected } = useAccount();
     const { open } = useWeb3Modal();
-    const [stakeAmount, setStakeAmount] = useState('100.00');
-    const maxStake = '2000';
+
+    const protocolTokenBalance = useSfStablecoinSelector(
+        state => state.protocolTokenBalance
+    );
+
+    const [{ originalStake, editedProtocolToken }, dispatch] =
+        useSfStablecoinReducer<
+            StakeManagerState,
+            StakeManagerAction,
+            SfStablecoinStoreState
+        >(
+            (state, action) => {
+                const { originalStake, editedProtocolToken } = state;
+
+                switch (action.type) {
+                    case 'setStake':
+                        return {
+                            ...state,
+                            editedProtocolToken: Decimal.from(action.newValue),
+                        };
+                    case 'revert':
+                        return {
+                            ...state,
+                            editedProtocolToken:
+                                originalStake.stakedProtocolToken,
+                        };
+                    case 'updateStore': {
+                        const updated = action.stateChange.protocolTokenStake;
+                        if (updated) {
+                            return {
+                                originalStake: updated,
+                                editedProtocolToken: updated.apply(
+                                    originalStake.whatChanged(
+                                        editedProtocolToken
+                                    )
+                                ),
+                            };
+                        }
+                        break;
+                    }
+                }
+
+                return state;
+            },
+            (storeState: SfStablecoinStoreState) => ({
+                originalStake: storeState.protocolTokenStake,
+                editedProtocolToken:
+                    storeState.protocolTokenStake.stakedProtocolToken,
+            })
+        );
+
+    const change = originalStake.whatChanged(editedProtocolToken);
+    const validChange =
+        change && !change.stakeProtocolToken?.gt(protocolTokenBalance)
+            ? change
+            : undefined;
+
+    const stakeOverBalance = change?.stakeProtocolToken
+        ?.sub(protocolTokenBalance)
+        .prettify();
+
+    const maxStake = protocolTokenBalance?.toString() ?? '0';
 
     const handleMaxStake = () => {
-        setStakeAmount(maxStake.toString());
+        dispatch({ type: 'setStake', newValue: maxStake });
     };
 
     return (
@@ -32,12 +115,13 @@ export default function Stake() {
                             <div className='mb-1 flex items-center justify-between'>
                                 <input
                                     className='text-3xl mr-2 w-full bg-transparent font-medium focus:outline-none'
-                                    value={stakeAmount}
+                                    value={editedProtocolToken.toString()}
                                     onChange={e => {
                                         const value = e.target.value;
-                                        if (value <= maxStake) {
-                                            setStakeAmount(value);
-                                        }
+                                        dispatch({
+                                            type: 'setStake',
+                                            newValue: value,
+                                        });
                                     }}
                                     placeholder='0.00'
                                     type='number'
@@ -49,10 +133,14 @@ export default function Stake() {
                                     </span>
                                 </div>
                             </div>
+
                             {isConnected && (
-                                <div className='flex items-center justify-between'>
+                                <div className='mt-1 flex items-center justify-between'>
                                     <div className='text-sm text-[#565656]'>
-                                        ${Number(stakeAmount || 0)}
+                                        $
+                                        {Number(
+                                            editedProtocolToken.toString() || 0
+                                        ).toFixed(2)}
                                     </div>
                                     <div className='text-sm'>
                                         {maxStake} SFC
@@ -64,14 +152,46 @@ export default function Stake() {
                                     </div>
                                 </div>
                             )}
+
+                            {change?.stakeProtocolToken?.gt(
+                                protocolTokenBalance
+                            ) && (
+                                <div className='mt-3'>
+                                    <Alert>
+                                        The amount you are trying to stake
+                                        exceeds your balance by{' '}
+                                        <span className='font-medium'>
+                                            {stakeOverBalance} {GT}
+                                        </span>
+                                        .
+                                    </Alert>
+                                </div>
+                            )}
                         </div>
 
-                        <button
-                            className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white'
-                            onClick={!isConnected ? () => open() : () => {}}
-                        >
-                            {isConnected ? 'Stake SFC' : 'Connect Wallet'}
-                        </button>
+                        {isConnected ? (
+                            validChange ? (
+                                <StakingManagerAction change={validChange}>
+                                    <button className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white'>
+                                        Stake SFC
+                                    </button>
+                                </StakingManagerAction>
+                            ) : (
+                                <button
+                                    disabled
+                                    className='mb-3 w-full rounded-xl bg-gray-300 py-3.5 font-medium text-white'
+                                >
+                                    Enter Valid Amount
+                                </button>
+                            )
+                        ) : (
+                            <button
+                                className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white'
+                                onClick={() => open()}
+                            >
+                                Connect Wallet
+                            </button>
+                        )}
 
                         <p className='text-center text-xs text-[#565656]'>
                             This action will open your wallet to sign the
