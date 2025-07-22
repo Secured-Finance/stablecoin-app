@@ -140,7 +140,7 @@ const TroveRow = ({
                             }
                         >
                             <button
-                                className='w-60 truncate rounded-xl border border-[#E3E3E3] bg-[#F0F0F0] px-4 py-2 text-sm text-[#808080] hover:bg-[#e5e5e5]'
+                                className='w-[14.5rem] truncate rounded-xl border border-[#E3E3E3] bg-[#F0F0F0] px-4 py-2 text-sm text-[#808080] hover:bg-[#e5e5e5]'
                                 disabled={!isConnected}
                             >
                                 Liquidate Trove

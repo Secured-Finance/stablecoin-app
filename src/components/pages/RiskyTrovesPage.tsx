@@ -117,7 +117,7 @@ export const RiskyTrovesPage = () => {
 
     return (
         <div className='flex w-full flex-col'>
-            <main className='container mx-auto flex-grow px-4 py-8'>
+            <main className='container mx-auto flex-grow px-2 py-8'>
                 <h1 className='text-2xl mb-4 font-bold'>Risky Troves</h1>
                 <p className='mb-8 max-w-3xl text-[#565656]'>
                     Track and liquidate risky Troves to maintain protocol
