@@ -1,4 +1,5 @@
 import {
+    Decimal,
     SfStablecoinStoreState,
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
@@ -8,6 +9,8 @@ import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useAccount } from 'wagmi';
 import { CoreTable } from '../molecules';
 import { PaginationFooter } from '../atoms';
+
+type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 
 export const RiskyTrovesPage = () => {
     const { isConnected } = useAccount();
@@ -29,7 +32,7 @@ export const RiskyTrovesPage = () => {
     const { open } = useWeb3Modal();
     const { numberOfTroves, price } = useSfStablecoinSelector(select);
     const { sfStablecoin } = useSfStablecoin();
-    const [troves, setTroves] = useState<UserTrove[]>([]);
+    const [troves, setTroves] = useState<TroveWithDebtInFront[]>([]);
     const [reload, setReload] = useState({});
     const forceReload = useCallback(() => setReload({}), []);
 
@@ -45,17 +48,51 @@ export const RiskyTrovesPage = () => {
     useEffect(() => {
         let mounted = true;
 
-        sfStablecoin
-            .getTroves({
+        const fetchRiskyTroves = async () => {
+            if (!sfStablecoin) return;
+
+            let previousDebt = Decimal.ZERO;
+
+            if (clampedPage > 0) {
+                const previousPages = await sfStablecoin.getTroves({
+                    first: clampedPage * pageSize,
+                    sortedBy: 'ascendingCollateralRatio',
+                    startingAt: 0,
+                });
+
+                previousDebt = previousPages.reduce(
+                    (sum, trove) => sum.add(trove.debt),
+                    Decimal.ZERO
+                );
+            }
+
+            const currentPage = await sfStablecoin.getTroves({
                 first: pageSize,
                 sortedBy: 'ascendingCollateralRatio',
                 startingAt: clampedPage * pageSize,
-            })
-            .then(troves => {
-                if (mounted) {
-                    setTroves(troves);
-                }
             });
+
+            let debtInFront = previousDebt;
+
+            const enriched: TroveWithDebtInFront[] = currentPage.map(trove => {
+                const enrichedTrove = Object.assign(
+                    Object.create(Object.getPrototypeOf(trove)),
+                    trove,
+                    {
+                        debtInFront,
+                    }
+                ) as TroveWithDebtInFront;
+
+                debtInFront = debtInFront.add(trove.debt);
+                return enrichedTrove;
+            });
+
+            if (mounted) {
+                setTroves(enriched);
+            }
+        };
+
+        fetchRiskyTroves();
 
         return () => {
             mounted = false;

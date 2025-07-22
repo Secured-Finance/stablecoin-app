@@ -15,8 +15,9 @@ import { useEffect, useState } from 'react';
 import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
 
+type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 interface CoreTableProps {
-    troves: UserTrove[];
+    troves: TroveWithDebtInFront[];
     price: Decimal;
     isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
@@ -24,7 +25,7 @@ interface CoreTableProps {
 }
 
 interface TroveRowProps {
-    trove: UserTrove;
+    trove: TroveWithDebtInFront;
     price: Decimal;
     isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
@@ -117,6 +118,8 @@ const TroveRow = ({
             <td className='px-4 py-4'>
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
+            <td className='px-4 py-4'>{trove.debtInFront?.prettify()}</td>
+
             <td className='px-4 py-4'>
                 <div className='max-w-56'>
                     {index === 0 && !isConnected ? (
@@ -170,6 +173,7 @@ export const CoreTable = ({
                         <th className='px-4 py-4 font-medium'>
                             Collateral Ratio
                         </th>
+                        <th className='px-4 py-4 font-medium'>Debt In Front</th>
                         <th className='px-4 py-4 font-medium'></th>
                     </tr>
                 </thead>
