@@ -15,7 +15,7 @@ type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 export const RiskyTrovesPage = () => {
     const { isConnected } = useAccount();
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 10;
+    const pageSize = 6;
 
     const select = ({
         numberOfTroves,
@@ -117,16 +117,16 @@ export const RiskyTrovesPage = () => {
 
     return (
         <div className='flex w-full flex-col'>
-            <main className='container mx-auto flex-grow px-2 py-8'>
+            <main className='container mx-auto flex-grow px-2 py-4'>
                 <h1 className='text-2xl mb-4 font-bold'>Risky Troves</h1>
-                <p className='mb-8 max-w-3xl text-[#565656]'>
+                <p className='mb-2 max-w-3xl text-[#565656]'>
                     Track and liquidate risky Troves to maintain protocol
                     stability and earn rewards. Troves with a collateral ratio
                     below 110% (or 150% in Recovery Mode) are at risk, meaning
                     their FIL collateral may not fully cover their debt.
                 </p>
 
-                <div className='overflow-x-auto'>
+                <div className='overflow-hidden'>
                     <CoreTable
                         troves={troves}
                         price={price}
