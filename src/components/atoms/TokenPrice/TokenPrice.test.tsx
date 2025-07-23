@@ -12,7 +12,7 @@ describe('test StatItem component', () => {
                 <Default />
             </MemoryRouter>
         );
-        const button = screen.getByTestId('source-url');
+        const button = screen.getByTestId('source-url1');
         expect(button).toBeInTheDocument();
     });
 });
