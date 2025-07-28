@@ -96,7 +96,7 @@ const TroveRow = ({
                 index % 2 === 0 ? 'bg-[#FAFAFA]' : 'bg-[#FFFFFF]'
             )}
         >
-            <td className='px-4 py-4'>
+            <td className='p-4'>
                 <div className='flex items-center'>
                     <span>{AddressUtils.format(trove.ownerAddress, 6)}</span>
                     <button
@@ -118,7 +118,7 @@ const TroveRow = ({
             </td>
             <td className='p-4'>{trove.debtInFront?.prettify()}</td>
 
-            <td className='p-4'>
+            <td className='px-2 py-4'>
                 <div className='items-end laptop:w-56'>
                     {index === 0 && !isConnected ? (
                         <button
@@ -161,28 +161,47 @@ export const CoreTable = ({
     return (
         <div className='overflow-auto rounded-xl border border-gray-200 laptop:overflow-hidden'>
             <table className='w-full bg-white'>
-                <thead className='shadow sticky top-0 z-10 bg-white'>
+                <thead className='shadow sticky top-0 z-10 w-56 bg-white'>
                     <tr className='text-left text-sm text-[#565656]'>
-                        <th className='p-4 font-medium'>Address</th>
-                        <th className='p-4 font-medium'>Collateral (FIL)</th>
-                        <th className='p-4 font-medium'>Debt (USDFC)</th>
-                        <th className='p-4 font-medium'>Collateral Ratio</th>
-                        <th className='p-4 font-medium'>Debt In Front</th>
-                        <th className='p-4 font-medium'></th>
+                        <th className='p-4'>Address</th>
+                        <th className='p-4'>Collateral (FIL)</th>
+                        <th className='p-4'>Debt (USDFC)</th>
+                        <th className='p-4'>Collateral Ratio</th>
+                        <th className='group relative  p-4'>
+                            Debt In Front
+                            <div className='shadow-lg absolute left-0 top-full z-10 ml-3 w-56 rounded border bg-white p-2 text-xs text-gray-600  opacity-0 transition-opacity group-hover:opacity-100'>
+                                It adds up the total debt of all troves that are
+                                riskier (have lower collateral ratios) than the
+                                current trove. In our CoreTable, troves are
+                                sorted from most risky (lowest collateral ratio)
+                                to least risky.
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {troves.map((trove, index) => (
-                        <TroveRow
-                            key={index}
-                            trove={trove}
-                            price={price}
-                            isConnected={isConnected}
-                            sfStablecoin={sfStablecoin}
-                            open={open}
-                            index={index}
-                        />
-                    ))}
+                    {troves.length <= 0 ? (
+                        <tr>
+                            <td
+                                colSpan={6}
+                                className='p-4 text-center text-gray-400'
+                            >
+                                No Data Available.
+                            </td>
+                        </tr>
+                    ) : (
+                        troves.map((trove, index) => (
+                            <TroveRow
+                                key={index}
+                                trove={trove}
+                                price={price}
+                                isConnected={isConnected}
+                                sfStablecoin={sfStablecoin}
+                                open={open}
+                                index={index}
+                            />
+                        ))
+                    )}
                 </tbody>
             </table>
         </div>
