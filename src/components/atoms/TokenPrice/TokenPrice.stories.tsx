@@ -3,8 +3,8 @@ import { TokenPrice } from './TokenPrice';
 import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
 
 const filPriceSources = [
-    { source: 'Pyth', href: PYTH_ORACLE_LINK },
-    { source: 'Tellor', href: TELLOR_ORACLE_LINKS.testnet },
+    { name: 'Pyth', href: PYTH_ORACLE_LINK },
+    { name: 'Tellor', href: TELLOR_ORACLE_LINKS.testnet },
 ];
 
 export default {
@@ -12,7 +12,7 @@ export default {
     component: TokenPrice,
     args: {
         price: '3.01',
-        source: filPriceSources,
+        sources: filPriceSources,
         symbol: 'USDFC',
     },
     argTypes: {},

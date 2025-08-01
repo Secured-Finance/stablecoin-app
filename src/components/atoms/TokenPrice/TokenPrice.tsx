@@ -4,13 +4,13 @@ import FILIcon from 'src/assets/icons/filecoin-network.svg';
 interface TokenPriceProps {
     symbol: string;
     price: string;
-    source: {
-        source: string;
+    sources: {
+        name: string;
         href: string;
     }[];
 }
 
-export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
+export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
     return (
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-1'>
@@ -25,7 +25,7 @@ export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
 
             <div className='flex items-center gap-2 text-sm text-secondary-400'>
                 Source:
-                {source.map(({ source, href }, i) => {
+                {sources.map(({ name, href }, i) => {
                     return (
                         <Fragment key={i}>
                             {i > 0 && <span>|</span>}
@@ -35,10 +35,10 @@ export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 className='flex items-center gap-1 font-medium hover:underline'
-                                data-testid={`source-url${i}`}
+                                data-testid={`${name}`}
                             >
                                 <span className='font-primary text-sm font-bold text-primary-500'>
-                                    {source}
+                                    {name}
                                 </span>
                             </a>
                         </Fragment>

@@ -39,9 +39,9 @@ export const ProtocolOverview = ({
 }: ProtocolOverviewProps) => {
     const editedPrice = data.price.toString(2);
     const priceSources = [
-        { source: 'Pyth', href: PYTH_ORACLE_LINK },
+        { name: 'Pyth', href: PYTH_ORACLE_LINK },
         {
-            source: 'Tellor',
+            name: 'Tellor',
             href:
                 contextData.chainId === filecoin.id
                     ? TELLOR_ORACLE_LINKS.mainnet
@@ -58,7 +58,7 @@ export const ProtocolOverview = ({
                     <TokenPrice
                         symbol='FIL'
                         price={editedPrice}
-                        source={priceSources}
+                        sources={priceSources}
                     />
                 </div>
 
