@@ -6,10 +6,13 @@ import {
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { useAccount } from 'wagmi';
-import { FeatureCardsOrPositions, ProtocolOverview } from '../organisms';
-import { init, reduce } from '../Stability/StabilityDepositManager';
+import {
+    FeatureCardsOrPositions,
+    ProtocolOverview,
+} from 'src/components/organisms';
+import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert } from '../atoms';
+import { Alert } from 'src/components/atoms';
 import { COIN } from 'src/strings';
 import Link from 'next/link';
 import { getFixedIncomeMarketLink } from 'src/utils';
@@ -80,8 +83,8 @@ export const Dashboard: React.FC = () => {
         setIsTokenAdded(tokenAdded);
     }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
     return (
-        <div className='flex w-full flex-col gap-6'>
-            <section className='mx-auto mt-[25px] w-full px-4  pt-1 laptop:pt-2'>
+        <div className='flex w-full flex-col gap-2 px-4 pt-5 laptop:pt-3'>
+            <div className='w-full'>
                 {!isConnected ? (
                     <Alert color='info'>
                         Connect Wallet to start using {COIN}.
@@ -124,8 +127,8 @@ export const Dashboard: React.FC = () => {
                         )}
                     </div>
                 )}
-            </section>
-            <div className='flex w-full flex-col gap-16 px-4 py-8'>
+            </div>
+            <div className='flex w-full flex-col gap-16 px-4 py-4'>
                 <FeatureCardsOrPositions
                     data={{
                         isConnected,
