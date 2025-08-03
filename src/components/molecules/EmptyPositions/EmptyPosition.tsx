@@ -1,28 +1,29 @@
 import { Layers2, Vault } from 'lucide-react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { PositionInfoCard } from '../PositionInfoCard';
+import { PositionInfoCard } from 'src/components/molecules';
 
-export const EmptyPositions = () => {
-    const emptyStates = [
-        {
-            icon: <Vault className='h-6 w-6 text-[#A6A6A6]' />,
-            title: 'No Trove Yet',
-            description: `A Trove is your personal vault where you can deposit FIL
+const emptyStates = [
+    {
+        icon: <Vault className='h-6 w-6 text-[#A6A6A6]' />,
+        title: 'No Trove Yet',
+        description: `A Trove is your personal vault where you can deposit FIL
 as collateral to borrow USDFC with 0% interest, while
 maintaining exposure to FIL.`,
-            href: '/trove',
-            buttonText: 'Create Trove',
-        },
-        {
-            icon: <Layers2 className='h-6 w-6 text-[#A6A6A6]' />,
-            title: 'No Stability Pool Deposit Yet',
-            description: `Deposit USDFC to earn FIL rewards. The pool helps
+        href: '/trove',
+        buttonText: 'Create Trove',
+    },
+    {
+        icon: <Layers2 className='h-6 w-6 text-[#A6A6A6]' />,
+        title: 'No Stability Pool Deposit Yet',
+        description: `Deposit USDFC to earn FIL rewards. The pool helps
 maintain system stability by covering liquidated debt,
 ensuring a balanced and secure ecosystem.`,
-            href: '/stability-pool',
-            buttonText: 'Deposit',
-        },
-    ];
+        href: '/stability-pool',
+        buttonText: 'Deposit',
+    },
+];
+
+export const EmptyPositions = () => {
     return (
         <div className='w-full'>
             <h2 className='mb-4 font-primary text-5/none font-semibold'>

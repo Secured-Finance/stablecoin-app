@@ -4,7 +4,7 @@ import * as stories from './FeatureCards.stories';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
+describe('test FeatureCards component', () => {
     it('should render button with a text', () => {
         render(<Default />);
         const Text = screen.getByText('Borrow USDFC');

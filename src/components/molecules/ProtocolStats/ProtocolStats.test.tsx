@@ -4,7 +4,7 @@ import * as stories from './ProtocolStats.stories';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
+describe('test ProtocolStats component', () => {
     it('should render button with a text', () => {
         render(<Default />);
         const Borrowing_Fee = screen.getByText('Borrowing Fee');

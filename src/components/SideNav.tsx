@@ -12,13 +12,14 @@ import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
 import { HEADER_LINKS } from 'src/constants';
-import { LinkList } from 'src/utils';
+import { getLinkList } from 'src/utils';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const linkList = getLinkList();
 
     const overlay = useRef<HTMLDivElement>(null);
 
@@ -102,7 +103,7 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
-                            {LinkList.map(link =>
+                            {linkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink
                                         key={link.text}

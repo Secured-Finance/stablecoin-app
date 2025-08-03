@@ -1,7 +1,7 @@
 import type React from 'react';
-import { cn } from 'src/utils';
-import { BorrowIcon, BridgeIcon, EarnIcon } from './ProtocolIcons';
 import { Card } from 'src/components/atoms';
+import { BorrowIcon, BridgeIcon, EarnIcon } from 'src/components/molecules';
+import { cn } from 'src/utils';
 
 type FeatureCardProps = {
     title: string;

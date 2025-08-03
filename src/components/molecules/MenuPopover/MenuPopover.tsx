@@ -4,11 +4,12 @@ import { ChevronDown } from 'lucide-react';
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MenuExternalLink, MenuItem } from 'src/components/atoms';
-import { LinkList } from 'src/utils';
+import { getLinkList } from 'src/utils';
 
 export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
     const { pathname } = useLocation();
-    const isInMoreLinks = LinkList.some(link => link.href === pathname);
+    const linkList = getLinkList();
+    const isInMoreLinks = linkList.some(link => link.href === pathname);
 
     return (
         <div className='flex w-[120px] items-center justify-center'>
@@ -55,7 +56,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                                 role='menu'
                             >
                                 <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
-                                    {LinkList.map((link, index) => {
+                                    {linkList.map((link, index) => {
                                         return (
                                             <button
                                                 key={index}

@@ -1,5 +1,6 @@
 import { StatItem } from 'src/components/atoms';
 import { ProtocolStat } from 'src/components/molecules';
+
 interface ProtocolStatsProps {
     stats: {
         versionStats: ProtocolStat[];
