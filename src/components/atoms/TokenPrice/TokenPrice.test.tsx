@@ -1,11 +1,11 @@
 import { composeStories } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from 'src/test-utils.js';
 import * as stories from './TokenPrice.stories';
-import { MemoryRouter } from 'react-router-dom';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
+describe('test TokenPrice component', () => {
     it('should navigate to coingecko with button click', () => {
         render(
             <MemoryRouter>

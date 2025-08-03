@@ -1,12 +1,15 @@
 import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
 import { TokenPrice } from 'src/components/atoms';
+import {
+    ProtocolStat,
+    ProtocolStats,
+    RecoveryMode,
+    VersionStats,
+} from 'src/components/molecules';
 import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { AddressUtils, isProdEnv } from 'src/utils';
 import { filecoin } from 'viem/chains';
-import { ProtocolStat, ProtocolStats } from '../../molecules/ProtocolStats';
-import { RecoveryMode } from '../../molecules/RecoveryMode';
-import { VersionStats } from '../../molecules/VersionStats';
 
 type ProtocolOverviewProps = {
     data: {
@@ -31,6 +34,7 @@ export const ProtocolOverview = ({
     contextData,
 }: ProtocolOverviewProps) => {
     const editedPrice = data.price.toString(2);
+    const protocolStats = getProtocolStats(data, contextData);
 
     return (
         <div className='flex flex-col gap-6'>
@@ -51,13 +55,11 @@ export const ProtocolOverview = ({
                 </div>
 
                 <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
-                    <ProtocolStats
-                        stats={getProtocolStats(data, contextData)}
-                    />
+                    <ProtocolStats stats={protocolStats} />
                 </div>
 
                 <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
-                    <VersionStats stats={getProtocolStats(data, contextData)} />
+                    <VersionStats stats={protocolStats} />
                 </div>
             </div>
         </div>

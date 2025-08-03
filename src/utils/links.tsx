@@ -28,7 +28,7 @@ export const getLinkList = (): MoreLink[] => [
     {
         text: 'Lend USDFC',
         href: getFixedIncomeMarketLink(),
-        icon: <ArrowUpRight className='h-5 w-5 rounded-full' />,
+        icon: <ArrowUpRight className='h-5 w-5' />,
         isExternal: true,
     },
     {

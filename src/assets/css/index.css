@@ -93,6 +93,7 @@
     font-weight: 400;
     src: url('./../fonts/inter/InterDisplay-Regular.woff2') format('woff2');
   }
+
   @font-face {
     font-family: 'Inter';
     font-style: normal;

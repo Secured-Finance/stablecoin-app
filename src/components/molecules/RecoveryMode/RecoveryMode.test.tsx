@@ -4,7 +4,7 @@ import * as stories from './RecoveryMode.stories';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
+describe('test RecoveryMode component', () => {
     it('should render with a text for inactive ', () => {
         render(<Default />);
         const isActive = screen.getByText('Inactive');

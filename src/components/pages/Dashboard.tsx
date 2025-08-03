@@ -1,11 +1,14 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import {
+    FeatureCardsOrPositions,
+    ProtocolOverview,
+} from 'src/components/organisms';
+import {
     useSfStablecoin,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { useAccount } from 'wagmi';
-import { FeatureCardsOrPositions, ProtocolOverview } from '../organisms';
 import { init, reduce } from '../Stability/StabilityDepositManager';
 
 const select = ({

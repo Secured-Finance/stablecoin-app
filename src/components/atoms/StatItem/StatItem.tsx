@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
-import { ProtocolStat } from 'src/components/molecules/ProtocolStats';
+import { ProtocolStat } from 'src/components/molecules';
 
 interface StatItemProps {
     stat: ProtocolStat;

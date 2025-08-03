@@ -10,7 +10,6 @@ export default {
             disable: true,
         },
     },
-
     args: {
         debtTokenInStabilityPool: Decimal.from('1000'),
         price: Decimal.from('500'),
