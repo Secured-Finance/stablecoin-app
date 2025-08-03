@@ -1,7 +1,7 @@
-import { LinkList } from 'src/utils';
+import { getLinkList } from 'src/utils';
 
 describe('links', () => {
     it('should have one link', () => {
-        expect(LinkList).toHaveLength(5);
+        expect(getLinkList()).toHaveLength(5);
     });
 });
