@@ -7,7 +7,7 @@ export default function Document() {
                 <meta charSet='UTF-8' />
                 <meta
                     name='description'
-                    content='USDFC - USD-pegged stablecoin minted using Filecoin as collateral on the Filecoin Virtual Machine (FVM)'
+                    content='USDFC is a USD-pegged, fully Filecoin-backed decentralized stablecoin developed by Secured Finance. Deposit FIL to mint, redeem anytime, earn yield, and bridge liquidity across DeFi.'
                 />
                 <link rel='shortcut icon' href='/favicon.ico' />
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
@@ -37,6 +37,15 @@ export default function Document() {
                 />
             </Head>
             <body>
+                <h1 className='vh'>
+                    USDFC: FIL-Backed Stablecoin | Secured Finance
+                </h1>
+                <p className='vh'>
+                    USDFC is a USD-pegged, fully Filecoin-backed decentralized
+                    stablecoin developed by Secured Finance. Deposit FIL to
+                    mint, redeem anytime, earn yield, and bridge liquidity
+                    across DeFi.
+                </p>
                 <Main />
                 <NextScript />
             </body>
