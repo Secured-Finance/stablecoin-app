@@ -30,6 +30,8 @@ interface TroveRowProps {
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
     open: () => void;
     index: number;
+    currentTxId: string | null;
+    setCurrentTxId: (txId: string | null) => void;
 }
 
 interface CollateralRatioBadgeProps {
@@ -64,8 +66,12 @@ const TroveRow = ({
     sfStablecoin,
     open,
     index,
+    currentTxId,
+    setCurrentTxId,
 }: TroveRowProps) => {
     const [copied, setCopied] = useState<string | undefined>();
+
+    const txId = `liquidate-${trove.ownerAddress}-${index}`;
 
     useEffect(() => {
         if (copied !== undefined) {
@@ -123,23 +129,34 @@ const TroveRow = ({
                     {index === 0 && !isConnected ? (
                         <button
                             onClick={open}
-                            className='truncate rounded-xl border border-[#E3E3E3] bg-[#F0F0F0] px-4 py-2 text-sm text-[#000000] hover:bg-[#e5e5e5] laptop:w-56'
+                            className='truncate rounded-xl border border-[#E3E3E3] bg-primary-500 px-4 py-2 text-sm text-[#fff] laptop:w-56'
                         >
                             Connect wallet
                         </button>
                     ) : (
                         <Transaction
-                            id={`liquidate-${trove.ownerAddress}-${index}`}
-                            send={overrides =>
-                                sfStablecoin.send.liquidate(
-                                    trove.ownerAddress,
-                                    overrides
-                                )
-                            }
+                            id={txId}
+                            send={async overrides => {
+                                setCurrentTxId(txId);
+                                try {
+                                    const tx =
+                                        await sfStablecoin.send.liquidate(
+                                            trove.ownerAddress,
+                                            overrides
+                                        );
+                                    return tx;
+                                } finally {
+                                    setCurrentTxId(null);
+                                }
+                            }}
                         >
                             <button
-                                className='truncate rounded-xl border border-[#E3E3E3] bg-[#F0F0F0] px-4 py-2 text-sm text-[#808080] hover:bg-[#e5e5e5] laptop:w-56'
-                                disabled={!isConnected}
+                                className='truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-4 py-2 text-sm text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0] laptop:w-56'
+                                disabled={
+                                    !isConnected ||
+                                    (currentTxId !== null &&
+                                        currentTxId !== txId)
+                                }
                             >
                                 Liquidate Trove
                             </button>
@@ -158,6 +175,8 @@ export const CoreTable = ({
     sfStablecoin,
     open,
 }: CoreTableProps) => {
+    const [currentTxId, setCurrentTxId] = useState<string | null>(null);
+
     return (
         <div className='overflow-auto rounded-xl border border-gray-200 laptop:overflow-hidden'>
             <table className='w-full bg-white'>
@@ -167,15 +186,16 @@ export const CoreTable = ({
                         <th className='p-4'>Collateral (FIL)</th>
                         <th className='p-4'>Debt (USDFC)</th>
                         <th className='p-4'>Collateral Ratio</th>
-                        <th className='group relative  p-4'>
-                            Debt In Front
-                            <div className='shadow-lg absolute left-0 top-full z-10 ml-3 w-56 rounded border bg-white p-2 text-xs text-gray-600  opacity-0 transition-opacity group-hover:opacity-100'>
-                                It adds up the total debt of all troves that are
-                                riskier (have lower collateral ratios) than the
-                                current trove. In our CoreTable, troves are
-                                sorted from most risky (lowest collateral ratio)
-                                to least risky.
-                            </div>
+                        <th className='relative p-4'>
+                            <span className='group inline-block'>
+                                Debt In Front
+                                <div className='pointer-events-none absolute left-0 top-full z-10 ml-3 w-56 rounded border bg-white p-2 text-xs text-gray-600 opacity-0 transition-opacity group-hover:opacity-100'>
+                                    It totals the debt of all troves that face
+                                    higher liquidation risk—that is, those with
+                                    lower collateral ratios—than the current
+                                    trove.
+                                </div>
+                            </span>
                         </th>
                     </tr>
                 </thead>
@@ -199,6 +219,8 @@ export const CoreTable = ({
                                 sfStablecoin={sfStablecoin}
                                 open={open}
                                 index={index}
+                                currentTxId={currentTxId}
+                                setCurrentTxId={setCurrentTxId}
                             />
                         ))
                     )}
