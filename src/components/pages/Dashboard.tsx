@@ -90,7 +90,7 @@ export const Dashboard: React.FC = () => {
                         Connect Wallet to start using {COIN}.
                     </Alert>
                 ) : (
-                    <div className='flex flex-col gap-2'>
+                    <div className='flex flex-col gap-2 p-4'>
                         {isTokenAdded ? (
                             <Alert color='info'>
                                 Use {COIN} to earn stable yield in the{' '}
