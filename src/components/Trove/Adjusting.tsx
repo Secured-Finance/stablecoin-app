@@ -263,7 +263,7 @@ export const Adjusting: React.FC = () => {
                             <div className='flex items-center'>
                                 <div className='flex grow'>
                                     <input
-                                        type='text'
+                                        type='number'
                                         value={totalDebt.prettify()}
                                         onChange={e =>
                                             setNetDebt(

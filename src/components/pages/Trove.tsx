@@ -11,11 +11,11 @@ export const TrovePage = () => {
 
     const trove = useSfStablecoinSelector(state => state.trove);
     useEffect(() => {
-        if (trove && isConnected) {
+        if (!trove.isEmpty && isConnected) {
             setActiveTab('manage');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [trove, isConnected]);
 
     return (
         <div className='min-h-[100vh] w-full'>
