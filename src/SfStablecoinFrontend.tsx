@@ -15,12 +15,12 @@ import { SfStablecoinStoreProvider } from 'src/contexts';
 import { useSfStablecoin } from 'src/hooks';
 import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
+import { Header } from './components/Header';
 import { RedemptionPage } from './components/pages/RedemptionPage';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
-import { Header } from './components/Header';
 import Stake from './components/pages/Stake';
 import { TrovePage } from './components/pages/Trove';
 import { StabilityPoolPage } from './components/pages/StabilityPool';
