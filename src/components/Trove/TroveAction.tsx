@@ -42,5 +42,12 @@ export const TroveAction: React.FC<TroveActionProps> = ({
               )
     );
 
-    return <Button onClick={sendTransaction}>{children}</Button>;
+    return (
+        <Button
+            className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'
+            onClick={sendTransaction}
+        >
+            {children}
+        </Button>
+    );
 };
