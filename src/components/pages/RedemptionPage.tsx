@@ -132,6 +132,7 @@ export const RedemptionPage = () => {
                                     onChange={e =>
                                         setRedeemAmount(e.target.value)
                                     }
+                                    disabled={!isConnected}
                                 />
                                 <div className='mt-1 flex w-full justify-between text-right text-sm text-[#8E8E93]'>
                                     <span>${redeemAmount}</span>
