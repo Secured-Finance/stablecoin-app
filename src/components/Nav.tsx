@@ -13,17 +13,18 @@ export const Nav: React.FC = () => {
                     key={link.to}
                     to={link.to}
                     className={clsx(
-                        'flex items-center justify-center text-3.5 leading-6',
-                        'w-[120px]'
-                        // pathname === link.to
-                        //     ? 'text-primary-500'
-                        //     : 'text-neutral-900'
+                        'flex w-[120px] items-center justify-center text-3.5 leading-6'
                     )}
                 >
-                    <span className='flex items-center gap-1 font-primary'>
-                        {pathname === link.to && (
-                            <span className='h-2 w-2 rounded-full bg-primary-500' />
-                        )}
+                    <span className='flex items-center gap-2 font-primary'>
+                        <span
+                            className={clsx(
+                                'h-2 w-2 rounded-full transition-all duration-200',
+                                pathname === link.to
+                                    ? 'scale-100 bg-primary-500 opacity-100'
+                                    : 'scale-0 bg-primary-500 opacity-0'
+                            )}
+                        />
                         {link.label}
                     </span>
                 </NavLink>

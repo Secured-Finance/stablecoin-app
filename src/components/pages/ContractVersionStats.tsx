@@ -15,20 +15,12 @@ export function ContractVersionStats({ stats }: ProtocolStatsProps) {
         <div className='grid grid-cols-2 tablet:grid-cols-2'>
             <div>
                 {stats.cfleft.map((stat, index) => (
-                    <StatItem
-                        key={index}
-                        stat={stat}
-                        isLast={index === stats.leftColumn.length - 1}
-                    />
+                    <StatItem key={index} stat={stat} />
                 ))}
             </div>
             <div>
                 {stats.cfright.map((stat, index) => (
-                    <StatItem
-                        key={index}
-                        stat={stat}
-                        isLast={index === stats.rightColumn.length - 1}
-                    />
+                    <StatItem key={index} stat={stat} />
                 ))}
             </div>
         </div>

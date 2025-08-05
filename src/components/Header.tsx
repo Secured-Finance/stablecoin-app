@@ -6,8 +6,7 @@ import { Container } from 'theme-ui';
 import { Nav } from './Nav';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
-import { ConnectButton } from './ConnectButton';
-import { NavLink } from 'react-router-dom';
+import { UserAccount } from './UserAccount';
 
 const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
@@ -22,17 +21,10 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         frontendTag === AddressZero || frontend.status === 'registered';
 
     return (
-        <Container variant='header'>
-            <div className='flex w-full items-center justify-between gap-3 desktop:gap-8'>
+        <Container variant='header' className='border-b border-neutral-9'>
+            <div className='relative flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
-                    <NavLink
-                        className={
-                            'flex items-center gap-2 font-numerical text-6 font-semibold'
-                        }
-                        to='/'
-                    >
-                        <SecuredFinanceLogo />
-                    </NavLink>
+                    <SecuredFinanceLogo />
                     {isFrontendRegistered && (
                         <div className='block desktop:hidden'>
                             <SideNav />
@@ -41,11 +33,11 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </div>
 
                 {isFrontendRegistered && (
-                    <div className='hidden laptop:block'>
+                    <div className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 laptop:block'>
                         <Nav />
                     </div>
                 )}
-                <ConnectButton />
+                <UserAccount />
             </div>
 
             {children}

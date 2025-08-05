@@ -87,16 +87,23 @@
     src: url('./../fonts/ibm-plex-sans/IBMPlexSans-Medium.woff2') format('woff2'), url('./../fonts/ibm-plex-sans/IBMPlexSans-Medium.woff') format('woff');
   }
 
-   @font-face {
+  @font-face {
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 500;
-    src: url('./../fonts/Inter/InterDisplay-Regular.woff2') format('woff2')
-   }
+    font-weight: 400;
+    src: url('./../fonts/inter/InterDisplay-Regular.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./../fonts/inter/InterDisplay-Medium.woff2') format('woff2');
+  }
   body {
     @apply font-secondary;
-    background-color: #F1F5F9;
-    min-height: 100dvh;
+    height: 100dvh;
+    background-color: #FAFAFA;
+    backdrop-filter: blur(50px);
   }
 }
 
