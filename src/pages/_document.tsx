@@ -7,8 +7,23 @@ export default function Document() {
                 <meta charSet='UTF-8' />
                 <meta
                     name='description'
-                    content='USDFC is a USD-pegged, fully Filecoin-backed decentralized stablecoin developed by Secured Finance. Deposit FIL to mint, redeem anytime, earn yield, and bridge liquidity across DeFi.'
+                    content='USDFC is a USD-pegged, fully Filecoin-backed decentralized stablecoin. Deposit FIL to mint, redeem anytime, earn yield, and bridge liquidity across DeFi.'
                 />
+
+                <script
+                    type='application/ld+json'
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'WebApplication',
+                            name: 'USDFC',
+                            applicationCategory: 'FinanceApplication',
+                            operatingSystem: 'iOS, Android, Web',
+                            url: 'https://app.usdfc.net/',
+                        }),
+                    }}
+                />
+
                 <link rel='shortcut icon' href='/favicon.ico' />
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
                 <link
@@ -37,15 +52,6 @@ export default function Document() {
                 />
             </Head>
             <body>
-                <h1 className='vh'>
-                    USDFC: FIL-Backed Stablecoin | Secured Finance
-                </h1>
-                <p className='vh'>
-                    USDFC is a USD-pegged, fully Filecoin-backed decentralized
-                    stablecoin developed by Secured Finance. Deposit FIL to
-                    mint, redeem anytime, earn yield, and bridge liquidity
-                    across DeFi.
-                </p>
                 <Main />
                 <NextScript />
             </body>
