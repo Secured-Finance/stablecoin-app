@@ -1,22 +1,22 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
+import { X } from 'lucide-react';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'src/components/atoms';
+import {
+    FeatureCardsOrPositions,
+    ProtocolOverview,
+} from 'src/components/organisms';
+import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
 import {
     useAddToken,
     useSfStablecoin,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { useAccount } from 'wagmi';
-import {
-    FeatureCardsOrPositions,
-    ProtocolOverview,
-} from 'src/components/organisms';
-import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
-import { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'src/components/atoms';
 import { COIN } from 'src/strings';
-import Link from 'next/link';
 import { getFixedIncomeMarketLink } from 'src/utils';
-import { X } from 'lucide-react';
+import { useAccount } from 'wagmi';
 
 const select = ({
     numberOfTroves,
@@ -86,9 +86,11 @@ export const Dashboard: React.FC = () => {
         <div className='flex w-full flex-col gap-2 px-4 pt-5 laptop:pt-3'>
             <div className='w-full'>
                 {!isConnected ? (
-                    <Alert color='info'>
-                        Connect Wallet to start using {COIN}.
-                    </Alert>
+                    <div className='flex flex-col gap-2 p-4'>
+                        <Alert color='info'>
+                            Connect Wallet to start using {COIN}.
+                        </Alert>
+                    </div>
                 ) : (
                     <div className='flex flex-col gap-2 p-4'>
                         {isTokenAdded ? (
