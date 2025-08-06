@@ -10,39 +10,6 @@ export default function Document() {
                     content='USDFC is a USD-pegged, fully Filecoin-backed decentralized stablecoin. Deposit FIL to mint, redeem anytime, earn yield, and bridge liquidity across DeFi.'
                 />
 
-                <script
-                    type='application/ld+json'
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'WebApplication',
-                            name: 'USDFC',
-                            applicationCategory: 'FinanceApplication',
-                            operatingSystem: 'iOS, Android, Web',
-                            url: 'https://app.usdfc.net/',
-                        }),
-                    }}
-                />
-
-                <style
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            .sr-only {
-                                position: absolute;
-                                width: 1px;
-                                height: 1px;
-                                margin: -1px;
-                                padding: 0;
-                                overflow: hidden;
-                                clip: rect(0 0 0 0);
-                                clip-path: inset(50%);
-                                white-space: nowrap;
-                                border: 0;
-                            }
-                        `,
-                    }}
-                />
-
                 <link rel='shortcut icon' href='/favicon.ico' />
                 <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
                 <link
@@ -71,9 +38,6 @@ export default function Document() {
                 />
             </Head>
             <body>
-                <h1 className='sr-only'>
-                    USDFC: FIL-Backed Stablecoin | Secured Finance
-                </h1>
                 <Main />
                 <NextScript />
             </body>
