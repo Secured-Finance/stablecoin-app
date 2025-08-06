@@ -41,9 +41,7 @@ export const Button = ({
             : {
                   to: href,
               }
-        : {
-              type: 'button',
-          };
+        : props;
 
     const label = typeof children === 'string' ? children : 'Button';
     const text = isMobile && mobileText ? mobileText : children;
@@ -51,7 +49,6 @@ export const Button = ({
     return (
         <Tag
             {...tagProps}
-            {...props}
             aria-label={label}
             className={clsx(
                 'flex items-center justify-center border',
