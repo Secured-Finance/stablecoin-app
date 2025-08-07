@@ -4,7 +4,7 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useAccount } from 'wagmi';
@@ -12,9 +12,10 @@ import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
 } from '../Redemption/validation/validateRedemptionChange';
-import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TokenBox } from '../molecules';
+import { Spinner } from 'theme-ui';
 
 export const RedemptionPage = () => {
     const selector = (state: SfStablecoinStoreState) => {
@@ -39,7 +40,10 @@ export const RedemptionPage = () => {
     const [estimatedFIL, setEstimatedFIL] = useState(Decimal.from(0));
     const [changePending, setChangePending] = useState(false);
     const [hintsPending, setHintsPending] = useState(false);
-    const decimalRedeem = Decimal.from(redeemAmount || '0');
+    const decimalRedeem = useMemo(
+        () => Decimal.from(redeemAmount || '0'),
+        [redeemAmount]
+    );
 
     useEffect(() => {
         if (decimalRedeem.isZero) {
@@ -64,7 +68,9 @@ export const RedemptionPage = () => {
 
     const redemptionRate = fees.redemptionRate();
     const feePct = new Percent(redemptionRate);
-    const fee = estimatedFIL.mul(redemptionRate).div(price);
+    const fee = estimatedFIL.mul(redemptionRate); // fee in FIL
+    const netFIL = estimatedFIL.sub(fee);
+    const netUsdValue = netFIL.mul(price).prettify(2);
 
     const [isValid, validationMessage] = validateRedemptionChange(
         decimalRedeem,
@@ -97,10 +103,31 @@ export const RedemptionPage = () => {
         }
     }, [myTransactionState.type]);
 
+    const renderButtonContent = () => {
+        if (hintsPending && changePending) {
+            return <Spinner color='white' size={24} />;
+        }
+
+        if (!isConnected) {
+            return 'Connect wallet';
+        }
+
+        return 'Redeem USDFC';
+    };
+
+    const handleClick = () => {
+        if (!isConnected) {
+            open();
+        } else {
+            sendTransaction();
+        }
+    };
+
     const filToReceive = estimatedFIL.div(price).sub(fee).prettify(2);
     const redemptionFee = fee.prettify(2);
     const feePercentage = feePct.prettify();
-    const usdValue = estimatedFIL.mul(price).prettify(2);
+    const usdfcValuePerToken = estimatedFIL.div(decimalRedeem).mul(price);
+    const inputUsdValue = decimalRedeem.mul(usdfcValuePerToken).prettify(2);
 
     return (
         <div className='flex min-h-screen w-full flex-col'>
@@ -121,10 +148,11 @@ export const RedemptionPage = () => {
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
                         onInputChange={setRedeemAmount}
-                        inputTokenIcon={<SecuredFinanceLogo />}
+                        inputTokenIcon={<USDFCIcon />}
                         outputLabel='You will receive'
                         outputValue={filToReceive}
-                        outputSubLabel={`$${usdValue}`}
+                        inputSubLabel={`$${inputUsdValue}`}
+                        outputSubLabel={`$${netUsdValue}`}
                         outputTokenIcon={
                             <div className='flex items-center gap-2'>
                                 <FILIcon />
@@ -133,11 +161,12 @@ export const RedemptionPage = () => {
                                 </span>
                             </div>
                         }
+                        isConnected={isConnected}
                     >
                         <div className='mb-6 w-full rounded-xl border border-[#e3e3e3] bg-white p-6'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='mb-1 text-sm font-medium text-[#001C33]'>
+                                    <div className='mb-1 font-primary text-4 font-medium text-[#001C33]'>
                                         Redemption Fee
                                     </div>
                                     <div className='max-w-[280px] text-xs text-[#565656]'>
@@ -164,21 +193,11 @@ export const RedemptionPage = () => {
                         </div>
 
                         <button
-                            className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
+                            className='mb-3 flex min-h-[48px] w-full items-center justify-center rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
                             disabled={isConnected && (!isValid || hintsPending)}
-                            onClick={() => {
-                                if (!isConnected) {
-                                    open();
-                                } else {
-                                    sendTransaction();
-                                }
-                            }}
+                            onClick={handleClick}
                         >
-                            {!isConnected
-                                ? 'Connect wallet'
-                                : changePending
-                                ? 'Processing...'
-                                : 'Redeem USDFC'}
+                            {renderButtonContent()}
                         </button>
 
                         {!isConnected && (
