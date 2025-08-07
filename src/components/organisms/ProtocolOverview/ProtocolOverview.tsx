@@ -1,12 +1,19 @@
 import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
 import { TokenPrice } from 'src/components/atoms';
-import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
+import {
+    ProtocolStat,
+    ProtocolStats,
+    RecoveryMode,
+    VersionStats,
+} from 'src/components/molecules';
+import {
+    BLOCKCHAIN_EXPLORER_LINKS,
+    PYTH_ORACLE_LINK,
+    TELLOR_ORACLE_LINKS,
+} from 'src/constants';
 import { AddressUtils, isProdEnv } from 'src/utils';
 import { filecoin } from 'viem/chains';
-import { ProtocolStat, ProtocolStats } from '../../molecules/ProtocolStats';
-import { RecoveryMode } from '../../molecules/RecoveryMode';
-import { VersionStats } from '../../molecules/VersionStats';
 
 type ProtocolOverviewProps = {
     data: {
@@ -31,7 +38,16 @@ export const ProtocolOverview = ({
     contextData,
 }: ProtocolOverviewProps) => {
     const editedPrice = data.price.toString(2);
-
+    const priceSources = [
+        { name: 'Pyth', href: PYTH_ORACLE_LINK },
+        {
+            name: 'Tellor',
+            href:
+                contextData.chainId === filecoin.id
+                    ? TELLOR_ORACLE_LINKS.mainnet
+                    : TELLOR_ORACLE_LINKS.testnet,
+        },
+    ];
     return (
         <div className='flex flex-col gap-6'>
             <h2 className='font-primary text-5/none font-semibold'>
@@ -42,7 +58,7 @@ export const ProtocolOverview = ({
                     <TokenPrice
                         symbol='FIL'
                         price={editedPrice}
-                        source={filPrice.source}
+                        sources={priceSources}
                     />
                 </div>
 
@@ -62,10 +78,6 @@ export const ProtocolOverview = ({
             </div>
         </div>
     );
-};
-
-export const filPrice = {
-    source: 'CoinGecko',
 };
 
 const formatStat = (

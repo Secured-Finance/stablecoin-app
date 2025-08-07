@@ -41,9 +41,7 @@ export const Button = ({
             : {
                   to: href,
               }
-        : {
-              type: 'button',
-          };
+        : props;
 
     const label = typeof children === 'string' ? children : 'Button';
     const text = isMobile && mobileText ? mobileText : children;
