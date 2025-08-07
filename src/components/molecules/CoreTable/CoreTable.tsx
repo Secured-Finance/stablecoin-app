@@ -9,8 +9,9 @@ import {
     EthersSfStablecoinWithStore,
 } from '@secured-finance/stablecoin-lib-ethers';
 import clsx from 'clsx';
-import { CheckIcon, Copy } from 'lucide-react';
+import { CheckIcon, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { LinkButton, Tooltip } from 'src/components/atoms';
 import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
 
@@ -20,7 +21,10 @@ interface CoreTableProps {
     price: Decimal;
     isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
-    open: () => void;
+    currentPage: number;
+    totalPages: number;
+    onNext: () => void;
+    onPrevious: () => void;
 }
 
 interface TroveRowProps {
@@ -28,7 +32,6 @@ interface TroveRowProps {
     price: Decimal;
     isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
-    open: () => void;
     index: number;
     currentTxId: string | null;
     setCurrentTxId: (txId: string | null) => void;
@@ -64,36 +67,28 @@ const TroveRow = ({
     price,
     isConnected,
     sfStablecoin,
-    open,
     index,
     currentTxId,
     setCurrentTxId,
 }: TroveRowProps) => {
     const [copied, setCopied] = useState<string | undefined>();
-
     const txId = `liquidate-${trove.ownerAddress}-${index}`;
 
     useEffect(() => {
         if (copied !== undefined) {
             let cancelled = false;
-
             navigator.clipboard.writeText(copied);
-
             setTimeout(() => {
-                if (!cancelled) {
-                    setCopied(undefined);
-                }
+                if (!cancelled) setCopied(undefined);
             }, 2000);
-
             return () => {
                 cancelled = true;
             };
         }
     }, [copied]);
 
-    const calculateCollateralRatio = (trove: UserTrove) => {
-        return trove.collateralRatio(price);
-    };
+    const calculateCollateralRatio = (trove: UserTrove) =>
+        trove.collateralRatio(price);
 
     return (
         <tr
@@ -102,66 +97,66 @@ const TroveRow = ({
                 index % 2 === 0 ? 'bg-[#FAFAFA]' : 'bg-[#FFFFFF]'
             )}
         >
-            <td className='p-4'>
-                <div className='flex items-center'>
-                    <span>{AddressUtils.format(trove.ownerAddress, 6)}</span>
-                    <button
-                        className='ml-2 text-[#565656] hover:text-primary-500'
-                        onClick={() => setCopied(trove.ownerAddress)}
+            <td className='min-w-36 p-4 '>
+                <div className='flex items-center gap-3 laptop:justify-center'>
+                    <Tooltip
+                        iconElement={
+                            <span className='inline-block w-[100px] font-numerical'>
+                                {AddressUtils.format(trove.ownerAddress, 6)}
+                            </span>
+                        }
+                        placement='top'
                     >
+                        {trove.ownerAddress}
+                    </Tooltip>
+
+                    <button onClick={() => setCopied(trove.ownerAddress)}>
                         {copied === trove.ownerAddress ? (
-                            <CheckIcon size={12} className='text-success-700' />
+                            <CheckIcon className='h-4 w-4 text-success-700' />
                         ) : (
-                            <Copy size={12} />
+                            <Copy className='h-4 w-4 text-gray-400' />
                         )}
                     </button>
                 </div>
             </td>
-            <td className='p-4'>{trove.collateral.prettify()}</td>
-            <td className='p-4'>{trove.debt.prettify()}</td>
-            <td className='p-4'>
+            <td className='min-w-30 p-4 text-center'>
+                {trove.collateral.prettify()}
+            </td>
+            <td className='min-w-30 p-4 text-center'>
+                {trove.debt.prettify()}
+            </td>
+            <td className='min-w-30 p-4 text-center'>
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
-            <td className='p-4'>{trove.debtInFront?.prettify()}</td>
-
-            <td className='px-2 py-4'>
-                <div className='items-end laptop:w-56'>
-                    {index === 0 && !isConnected ? (
+            <td className='min-w-30 p-4 text-center'>
+                {trove.debtInFront?.prettify()}
+            </td>
+            <td className='min-w-[180px] p-2'>
+                <div className='relative h-10 w-full'>
+                    <Transaction
+                        id={txId}
+                        send={async overrides => {
+                            setCurrentTxId(txId);
+                            try {
+                                return await sfStablecoin.send.liquidate(
+                                    trove.ownerAddress,
+                                    overrides
+                                );
+                            } finally {
+                                setCurrentTxId(null);
+                            }
+                        }}
+                    >
                         <button
-                            onClick={open}
-                            className='truncate rounded-xl border border-[#E3E3E3] bg-primary-500 px-4 py-2 text-sm text-[#fff] laptop:w-56'
+                            className='h-10 w-full truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
+                            disabled={
+                                !isConnected ||
+                                (currentTxId !== null && currentTxId !== txId)
+                            }
                         >
-                            Connect wallet
+                            Liquidate Trove
                         </button>
-                    ) : (
-                        <Transaction
-                            id={txId}
-                            send={async overrides => {
-                                setCurrentTxId(txId);
-                                try {
-                                    const tx =
-                                        await sfStablecoin.send.liquidate(
-                                            trove.ownerAddress,
-                                            overrides
-                                        );
-                                    return tx;
-                                } finally {
-                                    setCurrentTxId(null);
-                                }
-                            }}
-                        >
-                            <button
-                                className='truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-4 py-2 text-sm text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0] laptop:w-56'
-                                disabled={
-                                    !isConnected ||
-                                    (currentTxId !== null &&
-                                        currentTxId !== txId)
-                                }
-                            >
-                                Liquidate Trove
-                            </button>
-                        </Transaction>
-                    )}
+                    </Transaction>
                 </div>
             </td>
         </tr>
@@ -173,23 +168,34 @@ export const CoreTable = ({
     price,
     isConnected,
     sfStablecoin,
-    open,
+    currentPage,
+    onNext,
+    onPrevious,
+    totalPages,
 }: CoreTableProps) => {
     const [currentTxId, setCurrentTxId] = useState<string | null>(null);
 
     return (
         <div className='overflow-auto rounded-xl border border-gray-200 laptop:overflow-hidden'>
-            <table className='w-full bg-white'>
-                <thead className='shadow sticky top-0 z-10 w-56 bg-white'>
+            <table className='w-full bg-white tablet:table-fixed'>
+                <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
                     <tr className='text-left text-sm text-[#565656]'>
-                        <th className='p-4'>Address</th>
-                        <th className='p-4'>Collateral (FIL)</th>
-                        <th className='p-4'>Debt (USDFC)</th>
-                        <th className='p-4'>Collateral Ratio</th>
-                        <th className='relative p-4'>
+                        <th className='min-w-[150px] p-4 text-center'>
+                            Address
+                        </th>
+                        <th className='min-w-30 p-4 text-center'>
+                            Collateral (FIL)
+                        </th>
+                        <th className='min-w-30 p-4 text-center'>
+                            Debt (USDFC)
+                        </th>
+                        <th className='min-w-30 p-4 text-center'>
+                            Collateral Ratio
+                        </th>
+                        <th className='min-w-30 relative p-4 text-center'>
                             <span className='group inline-block'>
                                 Debt In Front
-                                <div className='pointer-events-none absolute left-0 top-full z-10 ml-3 w-56 rounded border bg-white p-2 text-xs text-gray-600 opacity-0 transition-opacity group-hover:opacity-100'>
+                                <div className='pointer-events-none absolute left-0 top-full z-10 ml-6 w-56 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100'>
                                     It totals the debt of all troves that face
                                     higher liquidation risk—that is, those with
                                     lower collateral ratios—than the current
@@ -197,6 +203,7 @@ export const CoreTable = ({
                                 </div>
                             </span>
                         </th>
+                        <th className='min-w-[180px] p-4 text-center'></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,7 +213,7 @@ export const CoreTable = ({
                                 colSpan={6}
                                 className='p-4 text-center text-gray-400'
                             >
-                                No Data Available.
+                                No Troves Available
                             </td>
                         </tr>
                     ) : (
@@ -217,7 +224,6 @@ export const CoreTable = ({
                                 price={price}
                                 isConnected={isConnected}
                                 sfStablecoin={sfStablecoin}
-                                open={open}
                                 index={index}
                                 currentTxId={currentTxId}
                                 setCurrentTxId={setCurrentTxId}
@@ -226,6 +232,31 @@ export const CoreTable = ({
                     )}
                 </tbody>
             </table>
+
+            {troves.length >= 0 && (
+                <div className='flex items-center justify-between border-t border-[#f0f0f0] p-4'>
+                    <div className='flex items-center'>
+                        <LinkButton
+                            onClick={onPrevious}
+                            disabled={currentPage === 1}
+                            leftIcon={<ChevronLeft size={16} />}
+                        >
+                            Previous
+                        </LinkButton>
+                        <LinkButton
+                            onClick={onNext}
+                            disabled={currentPage === totalPages}
+                            rightIcon={<ChevronRight size={16} />}
+                            className='ml-4'
+                        >
+                            Next
+                        </LinkButton>
+                    </div>
+                    <div className='text-sm text-[#565656]'>
+                        Page {currentPage} of {totalPages}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
