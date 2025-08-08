@@ -56,6 +56,7 @@ export const TokenBox = ({
                                 }
                             }}
                             placeholder='0.0'
+                            disabled={!isConnected}
                         />
 
                         {inputSubLabel && (
