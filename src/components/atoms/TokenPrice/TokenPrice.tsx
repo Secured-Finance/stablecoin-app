@@ -1,14 +1,16 @@
-import { ArrowUpRight } from 'lucide-react';
+import { Fragment } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { coinGeckoUrl } from 'src/constants';
 
 interface TokenPriceProps {
     symbol: string;
     price: string;
-    source: string;
+    sources: {
+        name: string;
+        href: string;
+    }[];
 }
 
-export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
+export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
     return (
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-1'>
@@ -20,20 +22,28 @@ export function TokenPrice({ symbol, price, source }: TokenPriceProps) {
                     {price} USD
                 </span>
             </div>
-            <div className='flex items-center gap-1 text-sm text-secondary-400'>
+
+            <div className='flex items-center gap-2 text-sm text-secondary-400'>
                 Source:
-                <a
-                    href={coinGeckoUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    data-testid='source-url'
-                    className='flex items-center gap-1 font-medium hover:underline'
-                >
-                    <span className='font-primary text-sm font-bold'>
-                        {source}
-                    </span>
-                    <ArrowUpRight className='h-4 w-4' />
-                </a>
+                {sources.map(({ name, href }, i) => {
+                    return (
+                        <Fragment key={i}>
+                            {i > 0 && <span>|</span>}
+                            <a
+                                key={i}
+                                href={href}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='flex items-center gap-1 font-medium hover:underline'
+                                data-testid={`${name}`}
+                            >
+                                <span className='font-primary text-sm font-bold text-primary-500'>
+                                    {name}
+                                </span>
+                            </a>
+                        </Fragment>
+                    );
+                })}
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 export * from './AsyncValue';
 export * from './queries';
 export * from './SfStablecoinContext';
+export * from './useAddToken';
 export * from './useBreakpoint';
 export * from './useContract';
 export * from './usePrevious';
