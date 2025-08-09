@@ -48,10 +48,12 @@ export const Opening: React.FC = () => {
     const [collateral, setCollateral] = useState<Decimal>(Decimal.ZERO);
     const [borrowAmount, setBorrowAmount] = useState<Decimal>(Decimal.ZERO);
 
+    const [collateralInput, setCollateralInput] = useState('0.00');
+    const [borrowAmountInput, setBorrowAmountInput] = useState('0.00');
+
     const maxBorrowingRate = borrowingRate.add(0.005);
 
     const fee = borrowAmount.mul(borrowingRate);
-    const borrowRate = borrowingRate.prettify(4);
     const feePct = new Percent(borrowingRate);
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
@@ -78,6 +80,20 @@ export const Opening: React.FC = () => {
 
     const TRANSACTION_ID = 'trove-creation';
 
+    const getSafeBorrowableAmount = (
+        collateral: Decimal,
+        price: Decimal,
+        fee: Decimal
+    ): Decimal => {
+        try {
+            if (price.lte(Decimal.ZERO)) return Decimal.ZERO;
+            const raw = collateral.div(price).sub(fee);
+            return raw.lt(0) ? Decimal.ZERO : raw;
+        } catch {
+            return Decimal.ZERO;
+        }
+    };
+
     useEffect(() => {
         if (!collateral.isZero) {
             const stableDebt = collateral.mul(price).mulDiv(2, 3);
@@ -85,16 +101,17 @@ export const Opening: React.FC = () => {
             const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
                 ? stableDebt
                       .sub(LIQUIDATION_RESERVE)
-                      .div(Decimal.ONE.add(borrowRate))
+                      .div(Decimal.ONE.add(borrowingRate))
                 : Decimal.ZERO;
 
-            setBorrowAmount(
-                allowedDebt.gt(MINIMUM_NET_DEBT)
-                    ? allowedDebt
-                    : MINIMUM_NET_DEBT
-            );
+            const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
+                ? allowedDebt
+                : MINIMUM_NET_DEBT;
+
+            setBorrowAmount(finalDebt);
+            setBorrowAmountInput(finalDebt.prettify());
         }
-    }, [borrowRate, collateral, price]);
+    }, [borrowingRate, collateral, price]);
 
     return (
         <>
@@ -107,13 +124,28 @@ export const Opening: React.FC = () => {
                         <input
                             type='number'
                             className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
-                            value={collateral.prettify()}
-                            onChange={e =>
-                                setCollateral(Decimal.from(e.target.value) || 0)
-                            }
+                            inputMode='decimal'
+                            value={collateralInput}
+                            onChange={e => {
+                                const value = e.target.value;
+                                if (value.trim() === '') {
+                                    setCollateral(Decimal.ZERO);
+                                    return;
+                                }
+                                setCollateralInput(value);
+                                const parsed = Decimal.from(value);
+                                if (parsed) setCollateral(parsed);
+                            }}
+                            onBlur={() => {
+                                setCollateralInput(collateral.prettify());
+                            }}
                         />
                         <p className='mt-1 text-sm text-[#8E8E93]'>
-                            {collateral.div(price).sub(fee).prettify()}
+                            {getSafeBorrowableAmount(
+                                collateral,
+                                price,
+                                fee
+                            ).prettify()}
                         </p>
                     </div>
                     <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
@@ -136,15 +168,19 @@ export const Opening: React.FC = () => {
                         <input
                             type='number'
                             className='w-full bg-transparent text-[36px] font-semibold leading-tight text-[#001C33] outline-none'
-                            value={borrowAmount.prettify()}
-                            onChange={e =>
-                                setBorrowAmount(
-                                    Decimal.from(e.target.value) || 0
-                                )
-                            }
+                            value={borrowAmountInput}
+                            onChange={e => {
+                                const val = e.target.value;
+                                setBorrowAmountInput(val);
+                                const parsed = Decimal.from(val);
+                                if (parsed) setBorrowAmount(parsed);
+                            }}
+                            onBlur={() => {
+                                setBorrowAmountInput(borrowAmount.prettify());
+                            }}
                         />
                         <p className='mt-1 text-sm text-[#8E8E93]'>
-                            {borrowRate}
+                            {fee.prettify(2)}
                         </p>
                     </div>
                     <div className='ml-4 flex items-center gap-2 rounded-full border border-[#E5E5EA] bg-[#F5F5F5] px-3 py-1'>
