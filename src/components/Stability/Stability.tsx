@@ -1,24 +1,27 @@
 import React from 'react';
-import { ActiveDeposit } from './ActiveDeposit';
-import { NoDeposit } from './NoDeposit';
-import { StabilityDepositManager } from './StabilityDepositManager';
 import { useStabilityView } from './context/StabilityViewContext';
+import { StabilityDepositView } from './StabilityDepositView';
+import { StabilityManageView } from './StabilityManageView';
 
 export const Stability: React.FC = props => {
     const { view } = useStabilityView();
 
-    switch (view) {
-        case 'NONE': {
-            return <NoDeposit {...props} />;
-        }
-        case 'DEPOSITING': {
-            return <StabilityDepositManager {...props} />;
-        }
-        case 'ADJUSTING': {
-            return <StabilityDepositManager {...props} />;
-        }
-        case 'ACTIVE': {
-            return <ActiveDeposit {...props} />;
-        }
-    }
+    return (
+        <div className='flex w-full flex-col'>
+            <main className='flex flex-grow flex-col items-center justify-center px-4 py-16'>
+                <div className='mx-auto w-full max-w-3xl'>
+                    {(() => {
+                        switch (view) {
+                            case 'NONE':
+                            case 'DEPOSITING':
+                                return <StabilityDepositView {...props} />;
+                            case 'ADJUSTING':
+                            case 'ACTIVE':
+                                return <StabilityManageView {...props} />;
+                        }
+                    })()}
+                </div>
+            </main>
+        </div>
+    );
 };
