@@ -37,7 +37,7 @@ export const Positions = ({
             <h2 className='mb-3 font-primary text-5 font-semibold text-neutral-900'>
                 My Positions
             </h2>
-            <div className='grid grid-cols-1 gap-3 laptop:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-3 tablet:grid-cols-2'>
                 <PositionInfoCard icon={Vault} title='Trove'>
                     <InfoBlock
                         label='Total Debt'

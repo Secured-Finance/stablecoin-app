@@ -3,6 +3,7 @@ export * from './Button';
 export * from './Card';
 export * from './Identicon';
 export * from './InputBase';
+export * from './LinkButton';
 export * from './MenuExternalLink';
 export * from './MenuItem';
 export * from './NavTab';
