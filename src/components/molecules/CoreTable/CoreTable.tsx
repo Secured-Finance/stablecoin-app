@@ -11,20 +11,29 @@ import {
 import clsx from 'clsx';
 import { CheckIcon, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { LinkButton, Tooltip } from 'src/components/atoms';
+import {
+    Button,
+    ButtonVariants,
+    LinkButton,
+    Tooltip,
+} from 'src/components/atoms';
 import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
+import { Spinner } from 'theme-ui';
+import RedoIcon from 'src/assets/icons/refresh.svg';
+import { useSfStablecoin } from 'src/hooks';
+import { useAccount } from 'wagmi';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 interface CoreTableProps {
     troves: TroveWithDebtInFront[];
     price: Decimal;
-    isConnected: boolean;
-    sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
     currentPage: number;
     totalPages: number;
     onNext: () => void;
     onPrevious: () => void;
+    loading: boolean;
+    forceReload: () => void;
 }
 
 interface TroveRowProps {
@@ -147,7 +156,8 @@ const TroveRow = ({
                             }
                         }}
                     >
-                        <button
+                        <Button
+                            variant={ButtonVariants.tertiary}
                             className='h-10 w-full truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
                             disabled={
                                 !isConnected ||
@@ -155,7 +165,7 @@ const TroveRow = ({
                             }
                         >
                             Liquidate Trove
-                        </button>
+                        </Button>
                     </Transaction>
                 </div>
             </td>
@@ -166,13 +176,16 @@ const TroveRow = ({
 export const CoreTable = ({
     troves,
     price,
-    isConnected,
-    sfStablecoin,
     currentPage,
     onNext,
     onPrevious,
     totalPages,
+    loading,
+    forceReload,
 }: CoreTableProps) => {
+    const { sfStablecoin } = useSfStablecoin();
+    const { isConnected } = useAccount();
+
     const [currentTxId, setCurrentTxId] = useState<string | null>(null);
 
     return (
@@ -252,8 +265,24 @@ export const CoreTable = ({
                             Next
                         </LinkButton>
                     </div>
-                    <div className='text-sm text-[#565656]'>
-                        Page {currentPage} of {totalPages}
+                    <div className='flex items-center justify-between gap-2 text-sm text-[#565656]'>
+                        <span>
+                            Page {currentPage} of {totalPages}
+                        </span>
+
+                        <div className='flex items-center'>
+                            <button
+                                className='flex h-6 w-6 items-center justify-center'
+                                onClick={forceReload}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <Spinner size={20} />
+                                ) : (
+                                    <RedoIcon size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

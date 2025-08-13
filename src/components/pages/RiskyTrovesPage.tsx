@@ -5,14 +5,11 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { useAccount } from 'wagmi';
-import { Spinner } from '../Spinner';
 import { CoreTable } from 'src/components/molecules';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 
 export const RiskyTrovesPage = () => {
-    const { isConnected } = useAccount();
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 7;
 
@@ -136,22 +133,16 @@ export const RiskyTrovesPage = () => {
                 </p>
 
                 <div className='relative flex min-h-[300px] items-center justify-center overflow-hidden'>
-                    {loading ? (
-                        <div className='flex h-[300px] items-center justify-center'>
-                            <Spinner />
-                        </div>
-                    ) : (
-                        <CoreTable
-                            troves={troves}
-                            price={price}
-                            isConnected={isConnected}
-                            sfStablecoin={sfStablecoin}
-                            currentPage={currentPage}
-                            totalPages={totalPages}
-                            onNext={handleNext}
-                            onPrevious={handlePrevious}
-                        />
-                    )}
+                    <CoreTable
+                        troves={troves}
+                        price={price}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onNext={handleNext}
+                        onPrevious={handlePrevious}
+                        loading={loading}
+                        forceReload={forceReload}
+                    />
                 </div>
             </main>
         </div>
