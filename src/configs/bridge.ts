@@ -100,5 +100,6 @@ export const squidConfig: any = {
     tabs: {
         swap: true,
         buy: true,
+        send: true,
     },
 };
