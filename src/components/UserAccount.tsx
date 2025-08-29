@@ -36,7 +36,10 @@ export const UserAccount: React.FC = () => {
     return (
         <div className='flex flex-row items-center gap-2 laptop:gap-2'>
             <Menu as='div' className='relative text-left tablet:inline-block'>
-                <Menu.Button className='flex items-center gap-2 rounded-3xl border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'>
+                <Menu.Button
+                    className='flex items-center gap-2 rounded-3xl border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
+                    aria-label='Network switcher'
+                >
                     <span className='relative flex h-2 w-2 items-center justify-center'>
                         <span className='absolute inline-flex h-2 w-2 rounded-full bg-success-500' />
                     </span>
@@ -80,6 +83,7 @@ export const UserAccount: React.FC = () => {
             {isConnected ? (
                 <button
                     onClick={() => open()}
+                    aria-label='Wallet menu'
                     className='flex items-center gap-2 rounded-3xl border border-neutral-300 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
                 >
                     <Identicon
