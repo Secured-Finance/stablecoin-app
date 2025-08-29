@@ -23,10 +23,11 @@ export const Footer = () => {
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 data-testid={`btn${index}`}
+                                className='flex h-12 w-12 items-center justify-center rounded-full hover:bg-neutral-100'
                             >
                                 <Icon
                                     name={iconName as IconName}
-                                    className='h-4 w-4'
+                                    className='h-6 w-6'
                                 />
                             </Link>
                         )

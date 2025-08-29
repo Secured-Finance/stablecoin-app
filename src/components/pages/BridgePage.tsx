@@ -7,8 +7,16 @@ export const BridgePage: React.FC = () => {
     const configQueryParam = encodeURIComponent(JSON.stringify(squidConfig));
 
     return (
-        <section className='w-full'>
-            <div className='border-red relative mt-5 flex justify-center'>
+        <section className='md:px-16 flex w-full flex-col items-center px-4'>
+            <div className='flex flex-col items-center gap-6 text-center'>
+                <h1 className='font-primary text-[24px] font-semibold leading-[29px] text-[#002133]'>
+                    Bridge Assets
+                </h1>
+                <p className='mt-2 font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>
+                    Seamlessly transfer assets to and from the Filecoin network.
+                </p>
+            </div>
+            <div className='relative mt-5 flex justify-center'>
                 <iframe
                     className='rounded-xl border border-transparent bg-neutral-50 shadow-card'
                     title='squid_widget'

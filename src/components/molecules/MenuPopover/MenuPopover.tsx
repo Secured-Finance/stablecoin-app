@@ -19,6 +19,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                             as='button'
                             data-cy='popover-button'
                             className='flex flex-row items-center gap-2 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
+                            aria-label='More menu'
                         >
                             <span className='flex items-center gap-2 font-primary'>
                                 <span
