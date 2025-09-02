@@ -13,7 +13,7 @@ interface TokenPriceProps {
 export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
     return (
         <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-1'>
+            <div className='flex flex-col items-center gap-1 tablet:flex-row'>
                 <div className='flex h-6 w-6 items-center'>
                     <FILIcon />
                 </div>
@@ -23,12 +23,11 @@ export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
                 </span>
             </div>
 
-            <div className='flex items-center gap-2 text-sm text-secondary-400'>
+            <div className='flex flex-col items-center gap-2 text-sm text-secondary-400 tablet:flex-row'>
                 Source:
                 {sources.map(({ name, href }, i) => {
                     return (
                         <Fragment key={i}>
-                            {i > 0 && <span>|</span>}
                             <a
                                 key={i}
                                 href={href}
@@ -40,6 +39,7 @@ export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
                                 <span className='font-primary text-sm font-bold text-primary-500'>
                                     {name}
                                 </span>
+                                {i === 0 && <span>|</span>}
                             </a>
                         </Fragment>
                     );

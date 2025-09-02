@@ -69,10 +69,11 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                             sx={{
                                 flexDirection: 'column',
                                 minHeight: '100vh',
+                                background: '#FAFAFA',
                             }}
                         >
                             <Header />
-                            <div className='m-0 mx-auto mt-14 flex w-full max-w-[920px] flex-grow flex-col items-center px-5 '>
+                            <div className='m-0 mx-auto mt-14 flex w-full max-w-[920px] flex-grow flex-col items-center px-5 py-[60px] '>
                                 <AnimatedSwitch>
                                     <Route path='/' exact>
                                         <PageSwitcher />

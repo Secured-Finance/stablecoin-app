@@ -13,7 +13,7 @@ describe('MenuPopover component', () => {
                 <Default />
             </BrowserRouter>
         );
-        const button = screen.getByRole('button', { name: 'More' });
+        const button = screen.getByRole('button', { name: 'More menu' });
         expect(button).toBeInTheDocument();
     });
 
