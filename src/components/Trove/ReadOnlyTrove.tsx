@@ -34,7 +34,6 @@ export const ReadOnlyTrove: React.FC = () => {
         debtInFront: [debtInFrontAmount, debtInFrontNextAddress],
     } = useSfStablecoinSelector(select);
 
-    // console.log("READONLY TROVE", trove.collateral.prettify(4));
     return (
         <CardComponent
             title={

@@ -21,6 +21,9 @@ import { StabilityViewProvider } from './components/Stability/context/StabilityV
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
+import Stake from './components/pages/Stake';
+import { TrovePage } from './components/pages/Trove';
+import { StabilityPoolPage } from './components/pages/StabilityPool';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
@@ -69,10 +72,11 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                             sx={{
                                 flexDirection: 'column',
                                 minHeight: '100vh',
+                                backgroundColor: '#FAFAFA',
                             }}
                         >
                             <Header />
-                            <div className='m-0 mx-auto mt-14 flex w-full max-w-[920px] flex-grow flex-col items-center px-5 '>
+                            <div className='m-0 mx-auto mt-14 flex w-full max-w-[920px] flex-grow flex-col items-center px-5 py-[60px] '>
                                 <AnimatedSwitch>
                                     <Route path='/' exact>
                                         <PageSwitcher />
@@ -85,6 +89,15 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     </Route>
                                     <Route path='/bridge'>
                                         <BridgePage />
+                                    </Route>
+                                    <Route path='/stake'>
+                                        <Stake />
+                                    </Route>
+                                    <Route path='/trove'>
+                                        <TrovePage />
+                                    </Route>
+                                    <Route path='/stability-pool'>
+                                        <StabilityPoolPage />
                                     </Route>
                                 </AnimatedSwitch>
                             </div>
