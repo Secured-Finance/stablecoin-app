@@ -75,6 +75,7 @@ export const Positions = ({
                         size={ButtonSizes.md}
                         variant={ButtonVariants.tertiary}
                         className='mt-3 w-full'
+                        external={false}
                     >
                         Manage Trove
                     </Button>
@@ -107,6 +108,7 @@ export const Positions = ({
                             size={ButtonSizes.md}
                             variant={ButtonVariants.tertiary}
                             className='mt-3 w-full'
+                            external={false}
                         >
                             Manage Deposit
                         </Button>
