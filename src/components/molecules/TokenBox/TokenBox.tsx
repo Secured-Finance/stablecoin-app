@@ -13,6 +13,8 @@ interface TokenBoxProps {
     outputTokenIcon?: React.ReactNode;
     isConnected: boolean;
     children?: React.ReactNode;
+    maxValue?: string;
+    onMaxClick?: () => void;
 }
 export const TokenBox = ({
     inputLabel,
@@ -26,6 +28,8 @@ export const TokenBox = ({
     outputTokenIcon,
     isConnected,
     children,
+    maxValue,
+    onMaxClick,
 }: TokenBoxProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,11 +63,24 @@ export const TokenBox = ({
                             disabled={!isConnected}
                         />
 
-                        {inputSubLabel && (
-                            <p className='mt-1 text-sm text-[#8E8E93]'>
-                                {inputSubLabel}
-                            </p>
-                        )}
+                        <div className='flex items-center justify-between'>
+                            {inputSubLabel && (
+                                <p className='mt-1 text-sm text-[#8E8E93]'>
+                                    {inputSubLabel}
+                                </p>
+                            )}
+                            {maxValue && onMaxClick && isConnected && (
+                                <div className='flex items-center gap-2 text-sm text-[#8E8E93]'>
+                                    <span>{maxValue} USDFC</span>
+                                    <button
+                                        onClick={onMaxClick}
+                                        className='text-[#1a30ff] hover:underline'
+                                    >
+                                        Max
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     {inputTokenIcon && (
                         <div className='ml-3 flex items-center gap-2 rounded-full border border-[#E5E5EA] px-3 py-1.5'>

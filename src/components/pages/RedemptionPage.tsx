@@ -4,7 +4,7 @@ import {
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useAccount } from 'wagmi';
@@ -15,7 +15,6 @@ import {
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TokenBox } from '../molecules';
-import { Spinner } from 'theme-ui';
 
 export const RedemptionPage = () => {
     const selector = (state: SfStablecoinStoreState) => {
@@ -30,24 +29,21 @@ export const RedemptionPage = () => {
 
     const { open } = useWeb3Modal();
     const { isConnected } = useAccount();
-    const { fees, price, validationContext } =
+    const { fees, debtTokenBalance, price, validationContext } =
         useSfStablecoinSelector(selector);
 
     const { sfStablecoin } = useSfStablecoin();
     const myTransactionState = useMyTransactionState('redeem');
 
     const [redeemAmount, setRedeemAmount] = useState('0.00');
-    const [estimatedFIL, setEstimatedFIL] = useState(Decimal.from(0));
+    const [truncatedUSDFC, setTruncatedUSDFC] = useState(Decimal.from(0));
     const [changePending, setChangePending] = useState(false);
     const [hintsPending, setHintsPending] = useState(false);
-    const decimalRedeem = useMemo(
-        () => Decimal.from(redeemAmount || '0'),
-        [redeemAmount]
-    );
+    const decimalRedeem = Decimal.from(redeemAmount || '0');
 
     useEffect(() => {
         if (decimalRedeem.isZero) {
-            setEstimatedFIL(Decimal.from(0));
+            setTruncatedUSDFC(Decimal.from(0));
             return;
         }
 
@@ -55,7 +51,7 @@ export const RedemptionPage = () => {
 
         const timeoutId = setTimeout(async () => {
             const hints = await sfStablecoin.findRedemptionHints(decimalRedeem);
-            setEstimatedFIL(hints[0]);
+            setTruncatedUSDFC(hints[0]);
             setHintsPending(false);
         }, 500);
 
@@ -68,13 +64,11 @@ export const RedemptionPage = () => {
 
     const redemptionRate = fees.redemptionRate();
     const feePct = new Percent(redemptionRate);
-    const fee = estimatedFIL.mul(redemptionRate); // fee in FIL
-    const netFIL = estimatedFIL.sub(fee);
-    const netUsdValue = netFIL.mul(price).prettify(2);
+    const fee = truncatedUSDFC.mul(redemptionRate).div(price);
 
     const [isValid, validationMessage] = validateRedemptionChange(
         decimalRedeem,
-        estimatedFIL,
+        truncatedUSDFC,
         hintsPending,
         fee,
         validationContext
@@ -104,12 +98,12 @@ export const RedemptionPage = () => {
     }, [myTransactionState.type]);
 
     const renderButtonContent = () => {
-        if (hintsPending && changePending) {
-            return <Spinner color='white' size={24} />;
-        }
-
         if (!isConnected) {
             return 'Connect wallet';
+        }
+
+        if (changePending) {
+            return 'Processing...';
         }
 
         return 'Redeem USDFC';
@@ -123,11 +117,11 @@ export const RedemptionPage = () => {
         }
     };
 
-    const filToReceive = estimatedFIL.div(price).sub(fee).prettify(2);
+    const filReceived = truncatedUSDFC.div(price).sub(fee);
+    const filToReceive = filReceived.prettify(2);
     const redemptionFee = fee.prettify(2);
     const feePercentage = feePct.prettify();
-    const usdfcValuePerToken = estimatedFIL.div(decimalRedeem).mul(price);
-    const inputUsdValue = decimalRedeem.mul(usdfcValuePerToken).prettify(2);
+    const usdValue = filReceived.mul(price).prettify(2);
 
     return (
         <div className='flex min-h-screen w-full flex-col'>
@@ -151,8 +145,7 @@ export const RedemptionPage = () => {
                         inputTokenIcon={<USDFCIcon />}
                         outputLabel='You will receive'
                         outputValue={filToReceive}
-                        inputSubLabel={`$${inputUsdValue}`}
-                        outputSubLabel={`$${netUsdValue}`}
+                        outputSubLabel={`$${usdValue}`}
                         outputTokenIcon={
                             <div className='flex items-center gap-2'>
                                 <FILIcon />
@@ -160,6 +153,10 @@ export const RedemptionPage = () => {
                                     FIL
                                 </span>
                             </div>
+                        }
+                        maxValue={debtTokenBalance.prettify()}
+                        onMaxClick={() =>
+                            setRedeemAmount(debtTokenBalance.toString())
                         }
                         isConnected={isConnected}
                     >
@@ -171,7 +168,7 @@ export const RedemptionPage = () => {
                                     </div>
                                     <div className='max-w-[280px] text-xs text-[#565656]'>
                                         A percentage of the FIL received,
-                                        starting at a minimum of 0.5%. It varies
+                                        currently {feePercentage}. It varies
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
@@ -193,7 +190,7 @@ export const RedemptionPage = () => {
                         </div>
 
                         <button
-                            className='mb-3 flex min-h-[48px] w-full items-center justify-center rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
+                            className='mb-3 w-full rounded-xl bg-[#1a30ff] py-3.5 font-medium text-white disabled:opacity-60'
                             disabled={isConnected && (!isValid || hintsPending)}
                             onClick={handleClick}
                         >
