@@ -20,7 +20,7 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { USDFCIcon } from '../SecuredFinanceLogo';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 const init = ({ trove }: SfStablecoinStoreState) => ({
     original: trove,
@@ -235,7 +235,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
                         />
                         <div className='ml-4 flex items-center gap-2'>
-                            <SecuredFinanceLogo />
+                            <USDFCIcon />
                         </div>
                     </div>
                     <p className='mt-1 text-sm text-[#565656]'>

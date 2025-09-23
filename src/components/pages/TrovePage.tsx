@@ -1,28 +1,22 @@
-import { useEffect, useState } from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { useAccount } from 'wagmi';
-import { Adjusting } from '../Trove/Adjusting';
-import { Opening } from '../Trove/Opening';
-import { Trove } from '../organisms/Trove/Trove';
+import { Adjusting } from 'src/components/Trove/Adjusting';
+import { Opening } from 'src/components/Trove/Opening';
+import { Trove } from 'src/components/organisms/Trove/Trove';
 
 export const TrovePage = () => {
-    const [activeTab, setActiveTab] = useState('create');
     const { isConnected } = useAccount();
 
     const trove = useSfStablecoinSelector(state => state.trove);
-    useEffect(() => {
-        if (!trove.isEmpty && isConnected) {
-            setActiveTab('manage');
-        }
-    }, [trove, isConnected]);
+    const hasExistingTrove = !trove.isEmpty && isConnected;
 
     return (
         <div className='min-h-[100vh] w-full'>
             <main className='container mx-auto px-4 py-10'>
                 <h1 className='text-3xl mb-8 font-bold'>Your Trove</h1>
 
-                {activeTab === 'create' && <Opening />}
-                {activeTab === 'manage' && isConnected && (
+                {!hasExistingTrove && <Opening />}
+                {hasExistingTrove && (
                     <>
                         {trove && <Trove />}
                         <Adjusting />

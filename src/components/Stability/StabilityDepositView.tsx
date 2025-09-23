@@ -80,13 +80,13 @@ export function StabilityDepositView() {
             <h1 className='text-2xl mb-2 text-center font-bold'>
                 Deposit USDFC into the Stability Pool
             </h1>
-            <p className='mb-8 text-center text-sm text-[#565656]'>
+            <p className='mb-8 text-center text-sm text-neutral-450'>
                 Deposit USDFC to earn FIL rewards. The pool helps maintain
                 system stability by covering liquidated debt, ensuring a
                 balanced and secure ecosystem.
             </p>
 
-            <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
+            <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
                 <div className='mb-2 font-primary text-4 font-medium'>
                     Deposit
                 </div>
@@ -105,7 +105,7 @@ export function StabilityDepositView() {
                     </div>
                 </div>
                 {isConnected && (
-                    <div className='flex gap-1 text-sm text-[#565656]'>
+                    <div className='flex gap-1 text-sm text-neutral-450'>
                         <span>
                             {originalDeposit.currentDebtToken.prettify()}
                         </span>
@@ -114,13 +114,13 @@ export function StabilityDepositView() {
                 )}
             </div>
 
-            <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
+            <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
                 <div className='flex items-center justify-between'>
                     <div>
                         <div className='mb-1 text-sm font-medium'>
                             Pool Share
                         </div>
-                        <div className='max-w-[280px] text-xs text-[#565656]'>
+                        <div className='max-w-[280px] text-xs text-neutral-450'>
                             Your percentage of the Stability Pool, determining
                             your share of liquidated collateral and rewards.
                         </div>
@@ -135,7 +135,7 @@ export function StabilityDepositView() {
                 className={`mb-3 w-full rounded-xl py-3.5 font-medium text-white ${
                     isDisabled
                         ? 'cursor-not-allowed bg-gray-400'
-                        : 'bg-[#1a30ff] hover:bg-[#1a30ff]/90'
+                        : 'bg-primary-500 hover:bg-primary-700'
                 }`}
                 onClick={() => {
                     if (isConnected) {
@@ -149,7 +149,7 @@ export function StabilityDepositView() {
                 {isConnected ? getButtonText() : 'Connect Wallet'}
             </button>
 
-            <p className='text-center text-xs text-[#565656]'>
+            <p className='text-center text-xs text-neutral-450'>
                 This action will open your wallet to sign the transaction.
             </p>
         </>

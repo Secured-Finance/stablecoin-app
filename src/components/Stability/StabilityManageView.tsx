@@ -45,7 +45,7 @@ export const StabilityManageView = () => {
             return withdrawAmountInput;
         }
 
-        return editedDebtToken.isZero ? '' : editedDebtToken.toString();
+        return editedDebtToken.isZero ? '' : editedDebtToken.prettify(2);
     };
 
     const displayAmount = getDisplayAmount();
@@ -115,8 +115,6 @@ export const StabilityManageView = () => {
     const { debtTokenBalance, debtTokenInStabilityPool } =
         useSfStablecoinSelector(selectBalances);
 
-    const maxAmount = originalDeposit.currentDebtToken.add(debtTokenBalance);
-
     const debtTokenInStabilityPoolAfterChange = debtTokenInStabilityPool
         .sub(originalDeposit.currentDebtToken)
         .add(editedDebtToken);
@@ -184,7 +182,7 @@ export const StabilityManageView = () => {
                           activeTab === 'deposit' ? 'Deposit' : 'Withdrawal'
                       }`}
             </h1>
-            <p className='mb-8 text-center text-sm text-[#565656]'>
+            <p className='mb-8 text-center text-sm text-neutral-450'>
                 {originalDeposit.isEmpty
                     ? 'Deposit USDFC to earn FIL rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.'
                     : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
@@ -217,30 +215,36 @@ export const StabilityManageView = () => {
                 maxAmount={
                     activeTab === 'withdraw'
                         ? originalDeposit.currentDebtToken
-                        : maxAmount
+                        : debtTokenBalance
                 }
                 disabled={isDisabled}
                 currentBalance={debtTokenBalance}
                 onMaxClick={() => {
                     if (activeTab === 'withdraw') {
-                        const maxWithdraw =
-                            originalDeposit.currentDebtToken.toString();
-                        setWithdrawAmountInput(maxWithdraw);
+                        const maxWithdraw = originalDeposit.currentDebtToken;
+                        setWithdrawAmountInput(maxWithdraw.prettify(2));
                         setDepositAmount('0');
                     } else {
-                        setDepositAmount(maxAmount.toString());
+                        const maxTotalDeposit =
+                            originalDeposit.currentDebtToken.add(
+                                debtTokenBalance
+                            );
+                        dispatch({
+                            type: 'setDeposit',
+                            newValue: maxTotalDeposit.toString(),
+                        });
                     }
                 }}
             />
 
             {originalDeposit.isEmpty ? (
-                <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
+                <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
                     <div className='flex items-center justify-between'>
                         <div>
                             <div className='mb-1 text-sm font-medium'>
                                 Pool Share
                             </div>
-                            <div className='max-w-[280px] text-xs text-[#565656]'>
+                            <div className='max-w-[280px] text-xs text-neutral-450'>
                                 Your percentage of the Stability Pool,
                                 determining your share of liquidated collateral
                                 and rewards.
@@ -253,8 +257,8 @@ export const StabilityManageView = () => {
                 </div>
             ) : (
                 <>
-                    <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
-                        <div className='mb-1 text-sm text-[#565656]'>
+                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
+                        <div className='mb-1 text-sm text-neutral-450'>
                             New Total Deposit
                         </div>
                         <div className='gap-1 text-base font-medium'>
@@ -262,8 +266,8 @@ export const StabilityManageView = () => {
                         </div>
                     </div>
 
-                    <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
-                        <div className='mb-1 text-sm text-[#565656]'>
+                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
+                        <div className='mb-1 text-sm text-neutral-450'>
                             New Pool Share
                         </div>
                         <div className='text-base font-medium'>
@@ -282,7 +286,7 @@ export const StabilityManageView = () => {
             />
 
             {!isConnected && (
-                <p className='text-center text-xs text-[#565656]'>
+                <p className='text-center text-xs text-neutral-450'>
                     This action will open your wallet to sign the transaction.
                 </p>
             )}

@@ -18,9 +18,9 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { SecuredFinanceLogo } from '../SecuredFinanceLogo';
+import { USDFCIcon } from '../SecuredFinanceLogo';
+import { TabSwitcher, InputBox } from 'src/components/atoms';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { trove, fees, price, accountBalance } = state;
@@ -174,6 +174,38 @@ export const Adjusting: React.FC = () => {
         trove.collateralRatio(price)
     );
 
+    // Calculate liquidation risk based on collateral ratio
+    const getLiquidationRisk = (ratio?: Decimal) => {
+        if (!ratio)
+            return {
+                text: 'Unknown',
+                color: 'text-neutral-450',
+                bg: 'bg-neutral-250',
+            };
+        const ratioPercent = ratio.mul(100);
+        if (ratioPercent.gte(200))
+            return {
+                text: 'Very Low',
+                color: 'text-success-700',
+                bg: 'bg-success-500',
+            };
+        if (ratioPercent.gte(150))
+            return {
+                text: 'Low',
+                color: 'text-success-700',
+                bg: 'bg-success-500',
+            };
+        if (ratioPercent.gte(120))
+            return {
+                text: 'Medium',
+                color: 'text-warning-700',
+                bg: 'bg-warning-500',
+            };
+        return { text: 'High', color: 'text-error-700', bg: 'bg-error-500' };
+    };
+
+    const liquidationRisk = getLiquidationRisk(collateralRatio);
+
     const [troveChange, description] = validateTroveChange(
         trove,
         updatedTrove,
@@ -196,100 +228,55 @@ export const Adjusting: React.FC = () => {
     return (
         <>
             {description}
-            <div className='mb-6 mt-4 flex overflow-hidden rounded-xl border border-[#e3e3e3] bg-[#F5f5f5]'>
-                <button
-                    className={`flex-1 rounded-xl py-2 font-medium text-[#565656] ${
-                        !isClosing
-                            ? 'border border-[#E3E3E3] bg-white'
-                            : 'bg-[#F5f5f5]'
-                    }`}
-                    onClick={() => setIsClosing(false)}
-                >
-                    Update Trove
-                </button>
-                <button
-                    className={`flex-1 rounded-xl py-2 font-medium text-[#565656] ${
-                        isClosing
-                            ? 'border border-[#E3E3E3] bg-white'
-                            : 'bg-[#F5f5f5]'
-                    }`}
-                    onClick={() => setIsClosing(true)}
-                >
-                    Close Trove
-                </button>
-            </div>
+            <TabSwitcher
+                activeTab={isClosing ? 'close' : 'update'}
+                setActiveTab={tab => setIsClosing(tab === 'close')}
+                disabled={false}
+                tabs={[
+                    { key: 'update', label: 'Update Trove' },
+                    { key: 'close', label: 'Close Trove' },
+                ]}
+            />
 
             {!isClosing ? (
                 <>
-                    <p className='mb-6 text-left text-sm text-[#565656]'>
+                    <p className='mb-6 text-left text-sm text-gray-500'>
                         Update your Trove by modifying its collateral, borrowed
                         amount, or both.
                     </p>
 
-                    <div className='mb-6 '>
-                        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <span className='mb-2 block text-sm font-medium'>
-                                Collateral
-                            </span>
-                            <div className='flex items-center'>
-                                <div className='flex grow'>
-                                    <input
-                                        type='number'
-                                        value={collateral.prettify()}
-                                        onChange={e =>
-                                            setCollateral(
-                                                Decimal.from(
-                                                    e.target.value || '0'
-                                                )
-                                            )
-                                        }
-                                        className='h-12 min-w-0 flex-1 rounded-md border-none px-3 py-2 font-primary text-8 font-medium '
-                                    />
-                                </div>
-                                <div className='ml-4 flex min-w-[90px] items-center justify-end gap-2'>
+                    <div className='mb-6'>
+                        <InputBox
+                            label='Collateral'
+                            value={collateral.prettify()}
+                            onChange={value =>
+                                setCollateral(Decimal.from(value || '0'))
+                            }
+                            tokenIcon={
+                                <>
                                     <FILIcon />
                                     <span className='font-medium'>FIL</span>
-                                </div>
-                            </div>
-                            <p className='mt-1 text-sm text-[#565656]'>
-                                {collateral.div(price).sub(fee).prettify()}
-                            </p>
-                        </div>
+                                </>
+                            }
+                            subLabel={collateral.div(price).sub(fee).prettify()}
+                        />
 
-                        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <span className='mb-2 block text-sm font-medium'>
-                                Borrowed Amount
-                            </span>
-                            <div className='flex items-center'>
-                                <div className='flex grow'>
-                                    <input
-                                        type='number'
-                                        value={totalDebt.prettify()}
-                                        onChange={e =>
-                                            setNetDebt(
-                                                Decimal.from(
-                                                    e.target.value || '0'
-                                                )
-                                            )
-                                        }
-                                        className='h-12 min-w-0 flex-1 rounded-md border-none px-3 py-2 font-primary text-8 font-medium '
-                                    />
-                                </div>
-                                <div className='ml-4 flex min-w-[90px] items-center justify-end gap-2'>
-                                    <SecuredFinanceLogo />
-                                </div>
-                            </div>
-                            <p className='mt-1 text-sm text-[#565656]'>
-                                {totalDebt.prettify()}
-                            </p>
-                        </div>
+                        <InputBox
+                            label='Borrowed Amount'
+                            value={totalDebt.prettify()}
+                            onChange={value =>
+                                setNetDebt(Decimal.from(value || '0'))
+                            }
+                            tokenIcon={<USDFCIcon />}
+                            subLabel={totalDebt.prettify()}
+                        />
                     </div>
 
                     <div className='mb-6 space-y-4'>
-                        <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                        <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                             <div className='flex items-start justify-between'>
-                                <div className='max-w-[60%] text-sm text-[#565656]'>
-                                    <h3 className='mb-1 text-left text-sm text-[#565656]'>
+                                <div className='max-w-[60%] text-sm text-gray-500'>
+                                    <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Collateral Ratio
                                     </h3>
                                     The ratio of deposited FIL to borrowed
@@ -303,10 +290,10 @@ export const Adjusting: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className='rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                        <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                             <div className='flex items-start justify-between'>
-                                <div className='max-w-[60%] text-sm text-[#565656]'>
-                                    <h3 className='mb-1 text-left text-sm text-[#565656]'>
+                                <div className='max-w-[60%] text-sm text-gray-500'>
+                                    <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Liquidation Risk
                                     </h3>
                                     The risk of losing your FIL collateral if
@@ -315,9 +302,13 @@ export const Adjusting: React.FC = () => {
                                 </div>
                                 <div>
                                     <div className='flex items-center justify-end gap-2'>
-                                        <div className='h-3 w-3 rounded-full bg-green-500'></div>
-                                        <span className='font-medium text-green-700'>
-                                            {/* {liquidationRisk} */}
+                                        <div
+                                            className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
+                                        ></div>
+                                        <span
+                                            className={`font-medium ${liquidationRisk.color}`}
+                                        >
+                                            {liquidationRisk.text}
                                         </span>
                                     </div>
                                 </div>
@@ -325,14 +316,14 @@ export const Adjusting: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
                         <div className='flex items-center justify-between'>
                             <h3 className='font-bold'>Total Debt</h3>
                             <div className='flex items-center gap-1'>
                                 <span className='font-bold'>
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
-                                <SecuredFinanceLogo />
+                                <USDFCIcon />
                             </div>
                         </div>
                     </div>
@@ -349,64 +340,51 @@ export const Adjusting: React.FC = () => {
                     ) : (
                         <Button
                             disabled
-                            className='text-lg w-full bg-[#ccc] py-4'
+                            className='text-lg w-full bg-neutral-250 py-4'
                         >
                             Update Trove
                         </Button>
                     )}
-                    <p className='mt-2 text-center text-sm text-[#565656]'>
+                    <p className='mt-2 text-center text-sm text-gray-500'>
                         This action will open your wallet to sign the
                         transaction.
                     </p>
                 </>
             ) : (
                 <>
-                    <p className='mb-6 text-center text-sm text-[#565656]'>
+                    <p className='mb-6 text-center text-sm text-gray-500'>
                         Closing your Trove will repay all your debt and return
                         your remaining collateral.
                     </p>
 
-                    <div className='mb-6 '>
-                        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <span className='mb-2 block text-sm font-medium'>
-                                You will repay
-                            </span>
-                            <div className='flex items-center'>
-                                <input
-                                    type='text'
-                                    value={totalDebt.prettify(2)}
-                                    readOnly
-                                    className='h-12 min-w-0 flex-1 rounded-md border-none px-3 py-2 font-primary text-8 font-medium '
-                                />
-                                <div className='ml-4 flex items-center gap-2'>
-                                    <SecuredFinanceLogo />
-                                </div>
-                            </div>
-                            <p className='mt-1 text-sm text-[#565656]'>
-                                ${totalDebt.prettify()}
-                            </p>
-                        </div>
+                    <div className='mb-6'>
+                        <InputBox
+                            label='You will repay'
+                            value={totalDebt.prettify(2)}
+                            onChange={() => {}} // Read-only
+                            tokenIcon={<USDFCIcon />}
+                            subLabel={`$${totalDebt.prettify()}`}
+                            readOnly={true}
+                            type='text'
+                        />
 
-                        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
-                            <span className='mb-2 block text-sm font-medium'>
-                                You will reclaim
-                            </span>
-                            <div className='flex items-center'>
-                                <input
-                                    type='text'
-                                    value={collateral.prettify()}
-                                    readOnly
-                                    className='h-12 min-w-0 flex-1 rounded-md border-none px-3 py-2 font-primary text-8 font-medium '
-                                />
-                                <div className='ml-4 flex items-center gap-2'>
+                        <InputBox
+                            label='You will reclaim'
+                            value={collateral.prettify()}
+                            onChange={() => {}} // Read-only
+                            tokenIcon={
+                                <>
                                     <FILIcon />
                                     <span className='font-medium'>FIL</span>
-                                </div>
-                            </div>
-                            <p className='mt-1 text-sm text-[#565656]'>
-                                ${collateral.div(price).sub(fee).prettify()}
-                            </p>
-                        </div>
+                                </>
+                            }
+                            subLabel={`$${collateral
+                                .div(price)
+                                .sub(fee)
+                                .prettify()}`}
+                            readOnly={true}
+                            type='text'
+                        />
                     </div>
 
                     {stableTroveChange ? (
@@ -421,12 +399,12 @@ export const Adjusting: React.FC = () => {
                     ) : (
                         <Button
                             onClick={() => sendTransaction()}
-                            className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'
+                            className='text-lg w-full bg-primary-500 py-4 hover:bg-primary-700'
                         >
                             Repay & Close Trove
                         </Button>
                     )}
-                    <p className='mt-2 text-center text-sm text-[#565656]'>
+                    <p className='mt-2 text-center text-sm text-gray-500'>
                         This action will open your wallet to sign the
                         transaction.
                     </p>

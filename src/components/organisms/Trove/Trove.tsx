@@ -1,8 +1,7 @@
 import { useSfStablecoinSelector } from 'src/hooks';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
-
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
+import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 
 const select = ({
     trove,
@@ -24,32 +23,32 @@ export const Trove = () => {
     } = useSfStablecoinSelector(select);
 
     return (
-        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+        <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
             <div className='grid grid-cols-2 gap-6'>
                 <div>
-                    <p className='mb-1 text-sm text-[#565656]'>Total Debt</p>
+                    <p className='mb-1 text-sm text-neutral-450'>Total Debt</p>
                     <div className='flex items-center gap-1'>
                         <span className='font-bold'>
                             {trove.debt.prettify()}
                         </span>
-                        <SecuredFinanceLogo />
+                        <USDFCIcon />
                     </div>
                 </div>
                 <div>
-                    <p className='mb-1 text-sm text-[#565656]'>Collateral</p>
+                    <p className='mb-1 text-sm text-neutral-450'>Collateral</p>
                     <div className='flex items-center gap-1'>
                         <span className='font-bold'>
                             {trove.collateral.prettify()}
                         </span>
                         <FILIcon />
                         <span className='text-sm'>FIL</span>
-                        <span className='ml-1 text-xs text-[#565656]'>
+                        <span className='ml-1 text-xs text-neutral-450'>
                             {trove.collateral.div(price).sub(0).prettify()}
                         </span>
                     </div>
                 </div>
                 <div>
-                    <p className='mb-1 text-sm text-[#565656]'>
+                    <p className='mb-1 text-sm text-neutral-450'>
                         Collateral Ratio
                     </p>
                     <div className='flex items-center gap-1'>
@@ -65,7 +64,9 @@ export const Trove = () => {
                     </div>
                 </div>
                 <div>
-                    <p className='mb-1 text-sm text-[#565656]'>Debt in Front</p>
+                    <p className='mb-1 text-sm text-neutral-450'>
+                        Debt in Front
+                    </p>
                     <div className='font-bold'>
                         ${debtInFrontAmount.prettify()}
                     </div>
