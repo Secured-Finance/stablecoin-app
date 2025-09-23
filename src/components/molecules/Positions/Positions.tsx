@@ -115,7 +115,7 @@ export const Positions = ({
                         <Button
                             className='mt-3 w-full'
                             size={ButtonSizes.md}
-                            variant={ButtonVariants.primary}
+                            variant={ButtonVariants.secondary}
                         >
                             Claim Gains
                         </Button>

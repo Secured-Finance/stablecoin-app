@@ -2,6 +2,7 @@ export enum ButtonVariants {
     primary = 'primary',
     secondary = 'secondary',
     tertiary = 'tertiary',
+    pill = 'pill',
 }
 
 export enum ButtonSizes {
@@ -10,4 +11,5 @@ export enum ButtonSizes {
     sm = 'sm',
     md = 'md',
     lg = 'lg',
+    pill = 'pill',
 }

@@ -2,6 +2,7 @@ import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 
 export function StabilityAmountInput({
     label,
@@ -22,11 +23,11 @@ export function StabilityAmountInput({
 }) {
     const { isConnected } = useAccount();
     return (
-        <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-4'>
+        <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
             <div className='mb-2 text-sm font-medium'>{label}</div>
             <div className='mb-1 flex items-center justify-between'>
                 <input
-                    className='w-full bg-transparent text-8 font-medium focus:outline-none'
+                    className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
                     value={displayAmount}
                     onChange={e => handleInputChange(e.target.value)}
                     type='number'
@@ -37,7 +38,7 @@ export function StabilityAmountInput({
                     <USDFCIcon />
                 </div>
             </div>
-            <div className='flex items-center justify-between text-sm text-[#565656]'>
+            <div className='flex items-center justify-between text-sm text-neutral-450'>
                 <div>
                     {isConnected && currentBalance && (
                         <div className='flex gap-1'>
@@ -46,15 +47,18 @@ export function StabilityAmountInput({
                         </div>
                     )}
                 </div>
-                <div>
-                    {maxAmount.prettify()} {COIN}{' '}
-                    <button
-                        className='ml-1 cursor-pointer text-[#1a30ff] disabled:cursor-not-allowed disabled:opacity-50'
+                <div className='flex items-center gap-2'>
+                    <span>
+                        {maxAmount.prettify(2)} {COIN}
+                    </span>
+                    <Button
                         onClick={onMaxClick}
                         disabled={disabled}
+                        size={ButtonSizes.pill}
+                        variant={ButtonVariants.pill}
                     >
                         Max
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

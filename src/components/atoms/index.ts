@@ -8,6 +8,8 @@ export * from './MenuExternalLink';
 export * from './MenuItem';
 export * from './NavTab';
 export * from './Separator';
+export * from './InputBox';
 export * from './StatItem';
+export * from './TabSwitcher';
 export * from './TokenPrice';
 export * from './Tooltip';

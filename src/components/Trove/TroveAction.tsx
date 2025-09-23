@@ -8,6 +8,7 @@ type TroveActionProps = React.PropsWithChildren<{
     change: Exclude<TroveChange<Decimal>, { type: 'invalidCreation' }>;
     maxBorrowingRate: Decimal;
     borrowingFeeDecayToleranceMinutes: number;
+    className?: string;
 }>;
 
 export const TroveAction: React.FC<TroveActionProps> = ({
@@ -16,6 +17,7 @@ export const TroveAction: React.FC<TroveActionProps> = ({
     change,
     maxBorrowingRate,
     borrowingFeeDecayToleranceMinutes,
+    className,
 }) => {
     const { sfStablecoin } = useSfStablecoin();
 
@@ -42,5 +44,9 @@ export const TroveAction: React.FC<TroveActionProps> = ({
               )
     );
 
-    return <Button onClick={sendTransaction}>{children}</Button>;
+    return (
+        <Button onClick={sendTransaction} className={className}>
+            {children}
+        </Button>
+    );
 };
