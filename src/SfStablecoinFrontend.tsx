@@ -21,6 +21,7 @@ import { StabilityViewProvider } from './components/Stability/context/StabilityV
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
+import { TrovePage } from './components/pages/TrovePage';
 import { Stability } from './components/Stability/Stability';
 
 type SfStablecoinFrontendProps = {
@@ -87,6 +88,9 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     </Route>
                                     <Route path='/bridge'>
                                         <BridgePage />
+                                    </Route>
+                                    <Route path='/trove'>
+                                        <TrovePage />
                                     </Route>
                                     <Route path='/stability-pool'>
                                         <Stability />

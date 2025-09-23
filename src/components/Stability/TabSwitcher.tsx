@@ -1,3 +1,5 @@
+import { TabSwitcher as UniversalTabSwitcher } from 'src/components/atoms';
+
 export function TabSwitcher({
     activeTab,
     setActiveTab,
@@ -7,30 +9,17 @@ export function TabSwitcher({
     setActiveTab: (tab: 'deposit' | 'withdraw') => void;
     disabled: boolean;
 }) {
+    const tabs = [
+        { key: 'deposit', label: 'Deposit' },
+        { key: 'withdraw', label: 'Withdraw' },
+    ];
+
     return (
-        <div className='mb-6 flex gap-1 overflow-hidden rounded-xl border border-[#e3e3e3] bg-[#F5f5f5]'>
-            <button
-                className={`flex-1 rounded-xl py-2 font-medium text-[#565656] ${
-                    activeTab === 'deposit'
-                        ? 'border border-[#E3E3E3] bg-white'
-                        : 'bg-[#F5f5f5]'
-                }`}
-                onClick={() => setActiveTab('deposit')}
-                disabled={disabled}
-            >
-                Deposit
-            </button>
-            <button
-                className={`flex-1 rounded-xl py-2 font-medium text-[#565656] ${
-                    activeTab === 'withdraw'
-                        ? 'border border-[#E3E3E3] bg-white'
-                        : 'bg-[#F5f5f5]'
-                }`}
-                onClick={() => setActiveTab('withdraw')}
-                disabled={disabled}
-            >
-                Withdraw
-            </button>
-        </div>
+        <UniversalTabSwitcher
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            disabled={disabled}
+            tabs={tabs}
+        />
     );
 }
