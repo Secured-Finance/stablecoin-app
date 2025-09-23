@@ -2,7 +2,7 @@ import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
+import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import { PositionInfoCard } from '../PositionInfoCard';
 
 interface PositionsProps {
@@ -43,7 +43,7 @@ export const Positions = ({
                         label='Total Debt'
                         value={
                             <>
-                                {trove.debt.prettify()} <SecuredFinanceLogo />
+                                {trove.debt.prettify()} <USDFCIcon />
                             </>
                         }
                     />

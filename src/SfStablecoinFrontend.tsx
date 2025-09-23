@@ -21,6 +21,7 @@ import { StabilityViewProvider } from './components/Stability/context/StabilityV
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
+import { Stability } from './components/Stability/Stability';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
@@ -86,6 +87,9 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     </Route>
                                     <Route path='/bridge'>
                                         <BridgePage />
+                                    </Route>
+                                    <Route path='/stability-pool'>
+                                        <Stability />
                                     </Route>
                                 </AnimatedSwitch>
                             </div>
