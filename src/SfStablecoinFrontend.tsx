@@ -22,6 +22,7 @@ import { StakingViewProvider } from './components/Staking/context/StakingViewPro
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
 import { TrovePage } from './components/pages/TrovePage';
+import { Stability } from './components/Stability/Stability';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;
@@ -70,6 +71,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                             sx={{
                                 flexDirection: 'column',
                                 minHeight: '100vh',
+                                backgroundColor: '#FAFAFA',
                             }}
                         >
                             <Header />
@@ -89,6 +91,9 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                                     </Route>
                                     <Route path='/trove'>
                                         <TrovePage />
+                                    </Route>
+                                    <Route path='/stability-pool'>
+                                        <Stability />
                                     </Route>
                                 </AnimatedSwitch>
                             </div>
