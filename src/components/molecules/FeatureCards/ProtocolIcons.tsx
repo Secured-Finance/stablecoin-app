@@ -4,7 +4,7 @@ import YellowIcon from 'src/assets/icons/yellow.svg';
 
 export function BorrowIcon() {
     return (
-        <div className='mb-6 flex h-16 w-72 items-start justify-start'>
+        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
             <BlueIcon className='h-16 w-32' />
         </div>
     );
@@ -12,7 +12,7 @@ export function BorrowIcon() {
 
 export function EarnIcon() {
     return (
-        <div className='mb-6 flex h-16 w-72 items-start justify-start'>
+        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
             <YellowIcon className='h-16 w-32' />
         </div>
     );
@@ -20,8 +20,8 @@ export function EarnIcon() {
 
 export function BridgeIcon() {
     return (
-        <div className='mb-6 flex h-16 w-72 items-start justify-start'>
-            <GreyIcon className='h-16 w-32 drop-shadow-xl' />
+        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
+            <GreyIcon className='h-16 w-32 drop-shadow-2xl' />
         </div>
     );
 }

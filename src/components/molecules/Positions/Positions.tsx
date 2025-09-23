@@ -2,7 +2,7 @@ import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { SecuredFinanceLogo } from 'src/components/SecuredFinanceLogo';
+import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import { PositionInfoCard } from '../PositionInfoCard';
 
 interface PositionsProps {
@@ -37,13 +37,13 @@ export const Positions = ({
             <h2 className='mb-3 font-primary text-5 font-semibold text-neutral-900'>
                 My Positions
             </h2>
-            <div className='grid grid-cols-1 gap-3 laptop:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-3 tablet:grid-cols-2'>
                 <PositionInfoCard icon={Vault} title='Trove'>
                     <InfoBlock
                         label='Total Debt'
                         value={
                             <>
-                                {trove.debt.prettify()} <SecuredFinanceLogo />
+                                {trove.debt.prettify()} <USDFCIcon />
                             </>
                         }
                     />
@@ -115,7 +115,7 @@ export const Positions = ({
                         <Button
                             className='mt-3 w-full'
                             size={ButtonSizes.md}
-                            variant={ButtonVariants.primary}
+                            variant={ButtonVariants.secondary}
                         >
                             Claim Gains
                         </Button>

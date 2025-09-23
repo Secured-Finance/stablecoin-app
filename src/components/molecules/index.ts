@@ -1,3 +1,4 @@
+export * from './CoreTable';
 export * from './EmptyPositions';
 export * from './FeatureCards';
 export * from './Footer';
@@ -6,4 +7,5 @@ export * from './PositionInfoCard';
 export * from './Positions';
 export * from './ProtocolStats';
 export * from './RecoveryMode';
+export * from './TokenBox';
 export * from './VersionStats';

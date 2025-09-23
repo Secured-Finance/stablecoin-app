@@ -6,23 +6,22 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
-import { useCallback, useEffect } from 'react';
-import { Alert, Button, ButtonVariants } from 'src/components/atoms';
+import { useEffect } from 'react';
+import { Button } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
-import { CURRENCY } from 'src/strings';
 import { useMyTransactionState } from '../Transaction';
 import { useTroveView } from './context/TroveViewContext';
 import { TroveAction } from './TroveAction';
-import { TroveEditor } from './TroveEditor';
 import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-
+import { USDFCIcon } from '../SecuredFinanceLogo';
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
 const init = ({ trove }: SfStablecoinStoreState) => ({
     original: trove,
     edited: new Trove(trove.collateral, trove.debt),
@@ -166,8 +165,10 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
     collateral,
     debt,
 }) => {
-    const [{ original, edited, changePending }, dispatch] =
-        useSfStablecoinReducer(reduce, init);
+    const [{ original, edited }, dispatch] = useSfStablecoinReducer(
+        reduce,
+        init
+    );
     const { fees, validationContext } = useSfStablecoinSelector(select);
 
     useEffect(() => {
@@ -190,12 +191,6 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
     );
 
     const { dispatchEvent } = useTroveView();
-
-    const handleCancel = useCallback(() => {
-        dispatchEvent('CANCEL_ADJUST_TROVE_PRESSED');
-    }, [dispatchEvent]);
-
-    const openingNewTrove = original.isEmpty;
 
     const myTransactionState = useMyTransactionState(transactionIdMatcher);
 
@@ -220,45 +215,72 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
     }, [myTransactionState, dispatch, dispatchEvent]);
 
     return (
-        <TroveEditor
-            original={original}
-            edited={edited}
-            changePending={changePending}
-            dispatch={dispatch}
-        >
-            {description ??
-                (openingNewTrove ? (
-                    <Alert color='info'>
-                        Start by entering the amount of {CURRENCY} you would
-                        like to deposit as collateral.
-                    </Alert>
-                ) : (
-                    <Alert color='info'>
-                        Adjust your Trove by modifying its collateral, debt, or
-                        both.
-                    </Alert>
-                ))}
+        <>
+            {description}
+            <p className='mb-6 text-center text-sm text-[#565656]'>
+                Closing your Trove will repay all your debt and return your
+                remaining collateral.
+            </p>
 
-            <div className='flex justify-end gap-2'>
-                <Button
-                    variant={ButtonVariants.tertiary}
-                    onClick={handleCancel}
-                >
-                    Cancel
-                </Button>
-                {validChange ? (
-                    <TroveAction
-                        transactionId={`${transactionIdPrefix}${validChange.type}`}
-                        change={validChange}
-                        maxBorrowingRate={maxBorrowingRate}
-                        borrowingFeeDecayToleranceMinutes={60}
-                    >
-                        Confirm
-                    </TroveAction>
-                ) : (
-                    <Button disabled>Confirm</Button>
-                )}
+            <div className='mb-6 rounded-xl border border-[#e3e3e3] bg-white p-6'>
+                <div className='mb-6'>
+                    <span className='mb-2 block text-sm font-medium'>
+                        You will repay
+                    </span>
+                    <div className='flex items-center'>
+                        <input
+                            type='text'
+                            value={debt?.toString()}
+                            readOnly
+                            className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
+                        />
+                        <div className='ml-4 flex items-center gap-2'>
+                            <USDFCIcon />
+                        </div>
+                    </div>
+                    <p className='mt-1 text-sm text-[#565656]'>
+                        ${debt?.toString()}
+                    </p>
+                </div>
+
+                <div className='mb-6'>
+                    <span className='mb-2 block text-sm font-medium'>
+                        You will reclaim
+                    </span>
+                    <div className='flex items-center'>
+                        <input
+                            type='text'
+                            value='331.24'
+                            readOnly
+                            className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
+                        />
+                        <div className='ml-4 flex items-center gap-2'>
+                            <FILIcon />
+                            <span className='font-medium'>FIL</span>
+                        </div>
+                    </div>
+                    <p className='mt-1 text-sm text-[#565656]'>$1463.26</p>
+                </div>
             </div>
-        </TroveEditor>
+
+            {validChange ? (
+                <TroveAction
+                    transactionId={`${transactionIdPrefix}${validChange.type}`}
+                    change={validChange}
+                    maxBorrowingRate={maxBorrowingRate}
+                    borrowingFeeDecayToleranceMinutes={60}
+                >
+                    Repay & Close Trove
+                </TroveAction>
+            ) : (
+                <Button className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'>
+                    Repay & Close Trove
+                </Button>
+            )}
+
+            <p className='mt-2 text-center text-sm text-[#565656]'>
+                This action will open your wallet to sign the transaction.
+            </p>
+        </>
     );
 };
