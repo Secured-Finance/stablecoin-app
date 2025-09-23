@@ -21,7 +21,7 @@ export function EarnIcon() {
 export function BridgeIcon() {
     return (
         <div className='mb-6 flex h-16 w-60 items-start justify-start'>
-            <GreyIcon className='h-16 w-32 drop-shadow-md' />
+            <GreyIcon className='h-16 w-32 drop-shadow-2xl' />
         </div>
     );
 }
