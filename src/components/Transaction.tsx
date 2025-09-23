@@ -23,7 +23,6 @@ import { TransactionStatus } from './TransactionStatus';
 
 type TransactionIdle = {
     type: 'idle';
-    id?: string;
 };
 
 type TransactionFailed = {
@@ -67,26 +66,16 @@ export type TransactionState =
     | TransactionConfirmed
     | TransactionConfirmedOneShot;
 
-type TransactionContextType = {
-    states: Record<string, TransactionState>;
-    setTransactionState: (id: string, state: TransactionState) => void;
-};
-
-export const TransactionContext = React.createContext<
-    TransactionContextType | undefined
+const TransactionContext = React.createContext<
+    [TransactionState, (state: TransactionState) => void] | undefined
 >(undefined);
 
 export const TransactionProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const [states, setStates] = useState<Record<string, TransactionState>>({});
-
-    const setTransactionState = (id: string, state: TransactionState) => {
-        setStates(prev => ({ ...prev, [id]: state }));
-    };
-
+    const transactionState = useState<TransactionState>({ type: 'idle' });
     return (
-        <TransactionContext.Provider value={{ states, setTransactionState }}>
+        <TransactionContext.Provider value={transactionState}>
             {children}
         </TransactionContext.Provider>
     );
@@ -107,13 +96,14 @@ const useTransactionState = () => {
 export const useMyTransactionState = (
     myId: string | RegExp
 ): TransactionState => {
-    const { states } = useTransactionState();
-    const id = Object.keys(states).find(key =>
-        typeof myId === 'string' ? key === myId : key.match(myId)
-    );
-    return id
-        ? states[id]
-        : { type: 'idle', id: typeof myId === 'string' ? myId : '' };
+    const [transactionState] = useTransactionState();
+
+    return transactionState.type !== 'idle' &&
+        (typeof myId === 'string'
+            ? transactionState.id === myId
+            : transactionState.id.match(myId))
+        ? transactionState
+        : { type: 'idle' };
 };
 
 const hasMessage = (error: unknown): error is { message: string } =>
@@ -154,22 +144,29 @@ export const useTransactionFunction = (
     sendTransaction: () => Promise<void>,
     transactionState: TransactionState
 ] => {
-    const { setTransactionState } = useTransactionState();
+    const [transactionState, setTransactionState] = useTransactionState();
 
     const sendTransaction = useCallback(async () => {
-        setTransactionState(id, { type: 'waitingForApproval', id });
+        setTransactionState({ type: 'waitingForApproval', id });
+
         try {
             const tx = await send();
-            setTransactionState(id, { type: 'waitingForConfirmation', id, tx });
+
+            setTransactionState({
+                type: 'waitingForConfirmation',
+                id,
+                tx,
+            });
         } catch (error) {
             if (
                 hasMessage(error) &&
                 error.message.includes('User denied transaction signature')
             ) {
-                setTransactionState(id, { type: 'cancelled', id });
+                setTransactionState({ type: 'cancelled', id });
             } else {
                 console.error(error);
-                setTransactionState(id, {
+
+                setTransactionState({
                     type: 'failed',
                     id,
                     error: new Error('Failed to send transaction (try again)'),
@@ -178,8 +175,7 @@ export const useTransactionFunction = (
         }
     }, [send, id, setTransactionState]);
 
-    const state = useMyTransactionState(id);
-    return [sendTransaction, state];
+    return [sendTransaction, transactionState];
 };
 
 export function Transaction<C extends React.ReactElement<ButtonlikeProps>>({
@@ -269,13 +265,17 @@ const tryToGetRevertReason = async (
 
 export const TransactionMonitor: React.FC = () => {
     const { provider } = useSfStablecoin();
-    const { states, setTransactionState } = useTransactionState();
+    const [transactionState, setTransactionState] = useTransactionState();
+
+    const id =
+        transactionState.type !== 'idle' ? transactionState.id : undefined;
+    const tx =
+        transactionState.type === 'waitingForConfirmation'
+            ? transactionState.tx
+            : undefined;
 
     useEffect(() => {
-        Object.entries(states).forEach(([id, transactionState]) => {
-            if (transactionState.type !== 'waitingForConfirmation') return;
-
-            const tx = transactionState.tx;
+        if (id && tx) {
             let cancelled = false;
             let finished = false;
 
@@ -300,7 +300,8 @@ export const TransactionMonitor: React.FC = () => {
 
                     if (receipt.status === 'succeeded') {
                         console.log(`${receipt}`);
-                        setTransactionState(id, {
+
+                        setTransactionState({
                             type: 'confirmedOneShot',
                             id,
                         });
@@ -319,7 +320,7 @@ export const TransactionMonitor: React.FC = () => {
                             console.error(`Revert reason: ${reason}`);
                         }
 
-                        setTransactionState(id, {
+                        setTransactionState({
                             type: 'failed',
                             id,
                             error: new Error(
@@ -336,11 +337,12 @@ export const TransactionMonitor: React.FC = () => {
 
                     if (rawError instanceof EthersTransactionCancelledError) {
                         console.log(`Cancelled tx ${txHash}`);
-                        setTransactionState(id, { type: 'cancelled', id });
+                        setTransactionState({ type: 'cancelled', id });
                     } else {
                         console.error(`Failed to get receipt for tx ${txHash}`);
                         console.error(rawError);
-                        setTransactionState(id, {
+
+                        setTransactionState({
                             type: 'failed',
                             id,
                             error: new Error('Failed'),
@@ -354,53 +356,52 @@ export const TransactionMonitor: React.FC = () => {
 
             return () => {
                 if (!finished) {
-                    setTransactionState(id, { type: 'idle' });
+                    setTransactionState({ type: 'idle' });
                     console.log(`Cancel monitoring tx ${txHash}`);
                     cancelled = true;
                 }
             };
-        });
-    }, [provider, states, setTransactionState]);
+        }
+    }, [provider, id, tx, setTransactionState]);
 
     useEffect(() => {
-        Object.entries(states).forEach(([id, transactionState]) => {
-            if (transactionState.type === 'confirmedOneShot') {
-                setTransactionState(id, { type: 'confirmed', id });
-            } else if (
-                transactionState.type === 'confirmed' ||
-                transactionState.type === 'failed' ||
-                transactionState.type === 'cancelled'
-            ) {
-                let cancelled = false;
-                setTimeout(() => {
-                    if (!cancelled) {
-                        setTransactionState(id, { type: 'idle' });
-                    }
-                }, 5000);
-                return () => {
-                    cancelled = true;
-                };
+        if (transactionState.type === 'confirmedOneShot' && id) {
+            // hack: the txn confirmed state lasts 5 seconds which blocks other states, review with Dani
+            setTransactionState({ type: 'confirmed', id });
+        } else if (
+            transactionState.type === 'confirmed' ||
+            transactionState.type === 'failed' ||
+            transactionState.type === 'cancelled'
+        ) {
+            let cancelled = false;
+
+            setTimeout(() => {
+                if (!cancelled) {
+                    setTransactionState({ type: 'idle' });
+                }
+            }, 5000);
+
+            return () => {
+                cancelled = true;
+            };
+        }
+    }, [transactionState.type, setTransactionState, id]);
+
+    if (
+        transactionState.type === 'idle' ||
+        transactionState.type === 'waitingForApproval'
+    ) {
+        return null;
+    }
+
+    return (
+        <TransactionStatus
+            state={transactionState.type}
+            message={
+                transactionState.type === 'failed'
+                    ? transactionState.error.message
+                    : undefined
             }
-        });
-    }, [states, setTransactionState]);
-
-    const activeStates = Object.values(states).filter(
-        state => state.type !== 'idle' && state.type !== 'waitingForApproval'
+        />
     );
-
-    return activeStates.length > 0 ? (
-        <>
-            {activeStates.map(transactionState => (
-                <TransactionStatus
-                    key={transactionState.id}
-                    state={transactionState.type}
-                    message={
-                        transactionState.type === 'failed'
-                            ? transactionState.error.message
-                            : undefined
-                    }
-                />
-            ))}
-        </>
-    ) : null;
 };

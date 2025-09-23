@@ -1,6 +1,7 @@
 import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
+    MINIMUM_COLLATERAL_RATIO,
     Percent,
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
@@ -34,6 +35,9 @@ interface CoreTableProps {
     onPrevious: () => void;
     loading: boolean;
     forceReload: () => void;
+    recoveryMode: boolean;
+    totalCollateralRatio: Decimal;
+    debtTokenInStabilityPool: Decimal;
 }
 
 interface TroveRowProps {
@@ -42,8 +46,9 @@ interface TroveRowProps {
     isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
     index: number;
-    currentTxId: string | null;
-    setCurrentTxId: (txId: string | null) => void;
+    recoveryMode: boolean;
+    totalCollateralRatio: Decimal;
+    debtTokenInStabilityPool: Decimal;
 }
 
 interface CollateralRatioBadgeProps {
@@ -71,17 +76,44 @@ const CollateralRatioBadge = ({ ratio }: CollateralRatioBadgeProps) => {
     );
 };
 
+const liquidatableInNormalMode = (trove: UserTrove, price: Decimal) =>
+    [
+        trove.collateralRatioIsBelowMinimum(price),
+        'Collateral ratio not low enough',
+    ] as const;
+
+const liquidatableInRecoveryMode = (
+    trove: UserTrove,
+    price: Decimal,
+    totalCollateralRatio: Decimal,
+    debtTokenInStabilityPool: Decimal
+) => {
+    const collateralRatio = trove.collateralRatio(price);
+
+    if (
+        collateralRatio.gte(MINIMUM_COLLATERAL_RATIO) &&
+        collateralRatio.lt(totalCollateralRatio)
+    ) {
+        return [
+            trove.debt.lte(debtTokenInStabilityPool),
+            "There's not enough token in the Stability pool to cover the debt",
+        ] as const;
+    } else {
+        return liquidatableInNormalMode(trove, price);
+    }
+};
+
 const TroveRow = ({
     trove,
     price,
     isConnected,
     sfStablecoin,
     index,
-    currentTxId,
-    setCurrentTxId,
+    recoveryMode,
+    totalCollateralRatio,
+    debtTokenInStabilityPool,
 }: TroveRowProps) => {
     const [copied, setCopied] = useState<string | undefined>();
-    const txId = `liquidate-${trove.ownerAddress}-${index}`;
 
     useEffect(() => {
         if (copied !== undefined) {
@@ -140,29 +172,30 @@ const TroveRow = ({
             <td className='min-w-30 p-4 text-center'>
                 {trove.debtInFront?.prettify()}
             </td>
-            <td className='min-w-[180px] p-2'>
-                <div className='relative h-10 w-full'>
+            <td className='min-w-[180px] p-4'>
+                <div className='flex justify-center truncate'>
                     <Transaction
-                        id={txId}
-                        send={async overrides => {
-                            setCurrentTxId(txId);
-                            try {
-                                return await sfStablecoin.send.liquidate(
-                                    trove.ownerAddress,
-                                    overrides
-                                );
-                            } finally {
-                                setCurrentTxId(null);
-                            }
-                        }}
+                        id='liquidate'
+                        tooltip='Liquidate'
+                        requires={[
+                            recoveryMode
+                                ? liquidatableInRecoveryMode(
+                                      trove,
+                                      price,
+                                      totalCollateralRatio,
+                                      debtTokenInStabilityPool
+                                  )
+                                : liquidatableInNormalMode(trove, price),
+                        ]}
+                        send={sfStablecoin.send.liquidate.bind(
+                            sfStablecoin.send,
+                            trove.ownerAddress
+                        )}
                     >
                         <Button
                             variant={ButtonVariants.tertiary}
-                            className='h-10 w-full truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
-                            disabled={
-                                !isConnected ||
-                                (currentTxId !== null && currentTxId !== txId)
-                            }
+                            className='h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
+                            disabled={!isConnected}
                         >
                             Liquidate Trove
                         </Button>
@@ -182,16 +215,17 @@ export const CoreTable = ({
     totalPages,
     loading,
     forceReload,
+    recoveryMode,
+    totalCollateralRatio,
+    debtTokenInStabilityPool,
 }: CoreTableProps) => {
     const { sfStablecoin } = useSfStablecoin();
     const { isConnected } = useAccount();
 
-    const [currentTxId, setCurrentTxId] = useState<string | null>(null);
-
     return (
-        <div className='overflow-auto rounded-xl border border-gray-200 laptop:overflow-hidden'>
-            <table className='w-full bg-white tablet:table-fixed'>
-                <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
+        <div className='w-full rounded-xl border border-gray-200'>
+            <table className='w-full bg-white'>
+                <thead className='border-b border-gray-200 bg-white'>
                     <tr className='text-left text-sm text-[#565656]'>
                         <th className='min-w-[150px] p-4 text-center'>
                             Address
@@ -238,8 +272,11 @@ export const CoreTable = ({
                                 isConnected={isConnected}
                                 sfStablecoin={sfStablecoin}
                                 index={index}
-                                currentTxId={currentTxId}
-                                setCurrentTxId={setCurrentTxId}
+                                recoveryMode={recoveryMode}
+                                totalCollateralRatio={totalCollateralRatio}
+                                debtTokenInStabilityPool={
+                                    debtTokenInStabilityPool
+                                }
                             />
                         ))
                     )}

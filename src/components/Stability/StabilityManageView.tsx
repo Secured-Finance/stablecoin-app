@@ -278,7 +278,9 @@ export const StabilityManageView = () => {
                         </div>
                         <div className='mt-2 flex gap-1 text-base font-medium'>
                             {validChange?.depositDebtToken
-                                ? validChange.depositDebtToken.prettify()
+                                ? originalDeposit.currentDebtToken
+                                      .add(validChange.depositDebtToken)
+                                      .prettify()
                                 : validChange?.withdrawDebtToken
                                 ? originalDeposit.currentDebtToken
                                       .sub(validChange.withdrawDebtToken)

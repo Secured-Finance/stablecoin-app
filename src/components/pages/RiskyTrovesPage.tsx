@@ -25,7 +25,13 @@ export const RiskyTrovesPage = () => {
         totalCollateralRatio: total.collateralRatio(price),
         debtTokenInStabilityPool,
     });
-    const { numberOfTroves, price } = useSfStablecoinSelector(select);
+    const {
+        numberOfTroves,
+        price,
+        recoveryMode,
+        totalCollateralRatio,
+        debtTokenInStabilityPool,
+    } = useSfStablecoinSelector(select);
     const { sfStablecoin } = useSfStablecoin();
     const [troves, setTroves] = useState<TroveWithDebtInFront[]>([]);
     const [reload, setReload] = useState({});
@@ -87,7 +93,6 @@ export const RiskyTrovesPage = () => {
                         return enrichedTrove;
                     }
                 );
-
                 if (mounted) {
                     setTroves(enriched);
                 }
@@ -120,19 +125,20 @@ export const RiskyTrovesPage = () => {
     };
 
     return (
-        <div className='flex w-full flex-col'>
-            <main className='container mx-auto flex-grow px-2 py-5'>
-                <h1 className='mb-4 font-primary text-6 font-semibold'>
-                    Risky Troves
-                </h1>
-                <p className='mb-2 max-w-3xl text-[#565656]'>
-                    Track and liquidate risky Troves to maintain protocol
-                    stability and earn rewards. Troves with a collateral ratio
-                    below 110% (or 150% in Recovery Mode) are at risk, meaning
-                    their FIL collateral may not fully cover their debt.
-                </p>
+        <div className='flex min-h-screen w-full flex-col'>
+            <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
+                <div className='mx-auto w-full max-w-6xl'>
+                    <h1 className='mb-4 font-primary text-6 font-semibold'>
+                        Risky Troves
+                    </h1>
+                    <p className='mb-6 max-w-3xl text-[#565656]'>
+                        Track and liquidate risky Troves to maintain protocol
+                        stability and earn rewards. Troves with a collateral
+                        ratio below 110% (or 150% in Recovery Mode) are at risk,
+                        meaning their FIL collateral may not fully cover their
+                        debt.
+                    </p>
 
-                <div className='relative flex min-h-[300px] items-center justify-center overflow-hidden'>
                     <CoreTable
                         troves={troves}
                         price={price}
@@ -142,6 +148,9 @@ export const RiskyTrovesPage = () => {
                         onPrevious={handlePrevious}
                         loading={loading}
                         forceReload={forceReload}
+                        recoveryMode={recoveryMode}
+                        totalCollateralRatio={totalCollateralRatio}
+                        debtTokenInStabilityPool={debtTokenInStabilityPool}
                     />
                 </div>
             </main>
