@@ -49,7 +49,8 @@ export function StabilityDepositView() {
 
     const isDisabled =
         myTransactionState.type === 'waitingForApproval' ||
-        myTransactionState.type === 'waitingForConfirmation';
+        myTransactionState.type === 'waitingForConfirmation' ||
+        !isConnected;
 
     const getButtonText = () => {
         if (myTransactionState.type === 'waitingForApproval')

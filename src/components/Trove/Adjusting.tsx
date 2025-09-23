@@ -7,10 +7,12 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from 'src/components/atoms';
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { Button, InputBox, TabSwitcher } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
+import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TroveAction } from './TroveAction';
 import { useTroveView } from './context/TroveViewContext';
@@ -18,9 +20,6 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { USDFCIcon } from '../SecuredFinanceLogo';
-import { TabSwitcher, InputBox } from 'src/components/atoms';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { trove, fees, price, accountBalance } = state;
@@ -34,7 +33,6 @@ const selector = (state: SfStablecoinStoreState) => {
 };
 
 const TRANSACTION_ID = 'trove-adjustment';
-const GAS_ROOM_ETH = Decimal.from(0.1);
 
 const feeFrom = (
     original: Trove,
@@ -92,11 +90,20 @@ const applyUnsavedNetDebtChanges = (
 
 export const Adjusting: React.FC = () => {
     const { dispatchEvent } = useTroveView();
-    const { trove, fees, price, accountBalance, validationContext } =
+    const { trove, fees, price, validationContext } =
         useSfStablecoinSelector(selector);
     const previousTrove = useRef<Trove>(trove);
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);
     const [netDebt, setNetDebt] = useState<Decimal>(trove.netDebt);
+    const [collateralInput, setCollateralInput] = useState<string>(
+        trove.collateral.prettify()
+    );
+    const [netDebtInput, setNetDebtInput] = useState<string>(
+        trove.netDebt.prettify()
+    );
+    const [editingField, setEditingField] = useState<
+        'collateral' | 'netDebt' | undefined
+    >(undefined);
     const [isClosing, setIsClosing] = useState(false);
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
@@ -111,8 +118,14 @@ export const Adjusting: React.FC = () => {
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
             dispatchEvent('TROVE_ADJUSTED');
+            // Reset fields to current trove values after successful transaction
+            setCollateral(trove.collateral);
+            setNetDebt(trove.netDebt);
+            setCollateralInput(trove.collateral.prettify());
+            setNetDebtInput(trove.netDebt.prettify());
+            setEditingField(undefined);
         }
-    }, [transactionState.type, dispatchEvent]);
+    }, [transactionState.type, dispatchEvent, trove.collateral, trove.netDebt]);
 
     useEffect(() => {
         if (!previousTrove.current.collateral.eq(trove.collateral)) {
@@ -125,6 +138,9 @@ export const Adjusting: React.FC = () => {
                 trove
             );
             setCollateral(nextCollateral);
+            if (editingField !== 'collateral') {
+                setCollateralInput(nextCollateral.prettify());
+            }
         }
         if (!previousTrove.current.netDebt.eq(trove.netDebt)) {
             const unsavedChanges = Difference.between(
@@ -136,9 +152,12 @@ export const Adjusting: React.FC = () => {
                 trove
             );
             setNetDebt(nextNetDebt);
+            if (editingField !== 'netDebt') {
+                setNetDebtInput(nextNetDebt.prettify());
+            }
         }
         previousTrove.current = trove;
-    }, [trove, collateral, netDebt]);
+    }, [trove, collateral, netDebt, editingField]);
 
     const isDirty =
         !collateral.eq(trove.collateral) || !netDebt.eq(trove.netDebt);
@@ -157,51 +176,48 @@ export const Adjusting: React.FC = () => {
     const totalDebt = netDebt.add(LIQUIDATION_RESERVE).add(fee);
     const maxBorrowingRate = borrowingRate.add(0.005);
     const updatedTrove = isDirty ? new Trove(collateral, totalDebt) : trove;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const feePct = new Percent(borrowingRate);
-    const availableEth = accountBalance.gt(GAS_ROOM_ETH)
-        ? accountBalance.sub(GAS_ROOM_ETH)
-        : Decimal.ZERO;
-    const maxCollateral = trove.collateral.add(availableEth);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const collateralMaxedOut = collateral.eq(maxCollateral);
     const collateralRatio =
         !collateral.isZero && !netDebt.isZero
             ? updatedTrove.collateralRatio(price)
             : undefined;
-    const collateralRatioChange = Difference.between(
-        collateralRatio,
-        trove.collateralRatio(price)
-    );
 
     // Calculate liquidation risk based on collateral ratio
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
                 text: 'Unknown',
-                color: 'text-neutral-450',
-                bg: 'bg-neutral-250',
+                color: 'text-neutral-600',
+                bg: 'bg-neutral-100',
+                dotBg: 'bg-neutral-400',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
                 color: 'text-success-700',
-                bg: 'bg-success-500',
+                bg: 'bg-success-100',
+                dotBg: 'bg-success-500',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
                 color: 'text-success-700',
-                bg: 'bg-success-500',
+                bg: 'bg-success-100',
+                dotBg: 'bg-success-500',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
                 color: 'text-warning-700',
-                bg: 'bg-warning-500',
+                bg: 'bg-warning-100',
+                dotBg: 'bg-warning-500',
             };
-        return { text: 'High', color: 'text-error-700', bg: 'bg-error-500' };
+        return {
+            text: 'High',
+            color: 'text-error-700',
+            bg: 'bg-error-100',
+            dotBg: 'bg-error-500',
+        };
     };
 
     const liquidationRisk = getLiquidationRisk(collateralRatio);
@@ -214,12 +230,6 @@ export const Adjusting: React.FC = () => {
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);
-    // const [gasEstimationState, setGasEstimationState] =
-    //     useState<GasEstimationState>({ type: 'idle' });
-
-    // const isTransactionPending =
-    //     transactionState.type === 'waitingForApproval' ||
-    //     transactionState.type === 'waitingForConfirmation';
 
     if (trove.status !== 'open') {
         return null;
@@ -227,7 +237,7 @@ export const Adjusting: React.FC = () => {
 
     return (
         <>
-            {description}
+            <div className='mb-4'>{description}</div>
             <TabSwitcher
                 activeTab={isClosing ? 'close' : 'update'}
                 setActiveTab={tab => setIsClosing(tab === 'close')}
@@ -248,25 +258,37 @@ export const Adjusting: React.FC = () => {
                     <div className='mb-6'>
                         <InputBox
                             label='Collateral'
-                            value={collateral.prettify()}
-                            onChange={value =>
-                                setCollateral(Decimal.from(value || '0'))
-                            }
+                            type='text'
+                            value={collateralInput}
+                            onFocus={() => setEditingField('collateral')}
+                            onBlur={() => setEditingField(undefined)}
+                            onChange={value => {
+                                if (/^\d*\.?\d*$/.test(value)) {
+                                    setCollateralInput(value);
+                                    setCollateral(Decimal.from(value || '0'));
+                                }
+                            }}
                             tokenIcon={
                                 <>
                                     <FILIcon />
                                     <span className='font-medium'>FIL</span>
                                 </>
                             }
-                            subLabel={collateral.div(price).sub(fee).prettify()}
+                            subLabel={collateral.mul(price).prettify()}
                         />
 
                         <InputBox
                             label='Borrowed Amount'
-                            value={totalDebt.prettify()}
-                            onChange={value =>
-                                setNetDebt(Decimal.from(value || '0'))
-                            }
+                            type='text'
+                            value={netDebtInput}
+                            onFocus={() => setEditingField('netDebt')}
+                            onBlur={() => setEditingField(undefined)}
+                            onChange={value => {
+                                if (/^\d*\.?\d*$/.test(value)) {
+                                    setNetDebtInput(value);
+                                    setNetDebt(Decimal.from(value || '0'));
+                                }
+                            }}
                             tokenIcon={<USDFCIcon />}
                             subLabel={totalDebt.prettify()}
                         />
@@ -284,8 +306,11 @@ export const Adjusting: React.FC = () => {
                                     Recovery Mode), liquidation may occur.
                                 </div>
                                 <p className='text-right font-bold'>
-                                    {collateralRatioChange.absoluteValue?.prettify()}
-                                    %
+                                    {collateralRatio
+                                        ? new Percent(
+                                              collateralRatio
+                                          ).prettify()
+                                        : 'N/A'}
                                 </p>
                             </div>
                         </div>
@@ -300,17 +325,17 @@ export const Adjusting: React.FC = () => {
                                     your Collateral Ratio drops below 110% under
                                     normal conditions or 150% in Recovery Mode.
                                 </div>
-                                <div>
-                                    <div className='flex items-center justify-end gap-2'>
-                                        <div
-                                            className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
-                                        ></div>
-                                        <span
-                                            className={`font-medium ${liquidationRisk.color}`}
-                                        >
-                                            {liquidationRisk.text}
-                                        </span>
-                                    </div>
+                                <div
+                                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${liquidationRisk.bg}`}
+                                >
+                                    <div
+                                        className={`h-2 w-2 rounded-full ${liquidationRisk.dotBg}`}
+                                    ></div>
+                                    <span
+                                        className={`text-xs ${liquidationRisk.color}`}
+                                    >
+                                        {liquidationRisk.text}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -334,13 +359,14 @@ export const Adjusting: React.FC = () => {
                             change={stableTroveChange}
                             maxBorrowingRate={maxBorrowingRate}
                             borrowingFeeDecayToleranceMinutes={60}
+                            className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
                         >
                             Update Trove
                         </TroveAction>
                     ) : (
                         <Button
                             disabled
-                            className='text-lg w-full bg-neutral-250 py-4'
+                            className='mb-3 w-full rounded-xl bg-neutral-250 py-3.5 font-medium text-white'
                         >
                             Update Trove
                         </Button>
@@ -379,7 +405,7 @@ export const Adjusting: React.FC = () => {
                                 </>
                             }
                             subLabel={`$${collateral
-                                .div(price)
+                                .mul(price)
                                 .sub(fee)
                                 .prettify()}`}
                             readOnly={true}

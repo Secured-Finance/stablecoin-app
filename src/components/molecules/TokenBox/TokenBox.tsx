@@ -6,10 +6,12 @@ interface TokenBoxProps {
     inputLabel: string;
     inputValue: string;
     onInputChange: (value: string) => void;
+    onInputBlur?: () => void;
     inputTokenIcon?: React.ReactNode;
     outputLabel: string;
     outputValue: string;
     onOutputChange?: (value: string) => void;
+    onOutputBlur?: () => void;
     inputSubLabel?: string;
     outputSubLabel?: string;
     outputTokenIcon?: React.ReactNode;
@@ -22,11 +24,13 @@ export const TokenBox = ({
     inputLabel,
     inputValue,
     onInputChange,
+    onInputBlur,
     inputTokenIcon,
     inputSubLabel,
     outputLabel,
     outputValue,
     onOutputChange,
+    onOutputBlur,
     outputSubLabel,
     outputTokenIcon,
     isConnected,
@@ -62,6 +66,7 @@ export const TokenBox = ({
                                     onInputChange(value);
                                 }
                             }}
+                            onBlur={onInputBlur}
                             placeholder='0.0'
                             disabled={!isConnected}
                         />
@@ -116,6 +121,7 @@ export const TokenBox = ({
                                         onOutputChange(value);
                                     }
                                 }}
+                                onBlur={onOutputBlur}
                                 placeholder='0.0'
                                 disabled={!isConnected}
                             />

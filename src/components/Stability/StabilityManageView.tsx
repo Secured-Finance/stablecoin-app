@@ -9,6 +9,7 @@ import {
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { useAccount } from 'wagmi';
+import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
@@ -90,6 +91,9 @@ export const StabilityManageView = () => {
         } else if (myTransactionState.type === 'confirmedOneShot') {
             dispatchEvent('DEPOSIT_CONFIRMED');
             dispatch({ type: 'finishChange' });
+            // Reset fields after successful transaction
+            setWithdrawAmountInput('');
+            dispatch({ type: 'revert' });
         }
     }, [myTransactionState.type, dispatch, dispatchEvent]);
 
@@ -129,6 +133,14 @@ export const StabilityManageView = () => {
     );
 
     const liquidationGains = originalDeposit.collateralGain.prettify(2);
+
+    // Compute action deltas for display (currently unused, kept for future UX variants)
+    // const depositDelta = editedDebtToken.gt(originalDeposit.currentDebtToken)
+    //     ? editedDebtToken.sub(originalDeposit.currentDebtToken)
+    //     : Decimal.ZERO;
+    // const withdrawDelta = originalDeposit.currentDebtToken.gt(editedDebtToken)
+    //     ? originalDeposit.currentDebtToken.sub(editedDebtToken)
+    //     : Decimal.ZERO;
 
     const isDepositOperation = validChange?.depositDebtToken !== undefined;
 
@@ -171,7 +183,8 @@ export const StabilityManageView = () => {
 
     const isDisabled =
         myTransactionState.type === 'waitingForApproval' ||
-        myTransactionState.type === 'waitingForConfirmation';
+        myTransactionState.type === 'waitingForConfirmation' ||
+        !isConnected;
 
     return (
         <>
@@ -188,21 +201,17 @@ export const StabilityManageView = () => {
                     : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
             </p>
 
-            {!originalDeposit.isEmpty && (
-                <StabilityStats
-                    originalDeposit={originalDeposit}
-                    originalPoolShare={originalPoolShare}
-                    liquidationGains={liquidationGains}
-                />
-            )}
+            <StabilityStats
+                originalDeposit={originalDeposit}
+                originalPoolShare={originalPoolShare}
+                liquidationGains={liquidationGains}
+            />
 
-            {!originalDeposit.isEmpty && (
-                <TabSwitcher
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
-                    disabled={isDisabled}
-                />
-            )}
+            <TabSwitcher
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                disabled={isDisabled}
+            />
 
             <StabilityAmountInput
                 label={
@@ -257,20 +266,40 @@ export const StabilityManageView = () => {
                 </div>
             ) : (
                 <>
-                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
-                        <div className='mb-1 text-sm text-neutral-450'>
-                            New Total Deposit
+                    <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
+                        <div>
+                            <div className='mb-1 text-sm font-bold text-neutral-450'>
+                                New Total Deposit
+                            </div>
+                            <div className='max-w-[280px] text-xs text-neutral-450'>
+                                Your updated deposit amount in the Stability
+                                Pool after this transaction.
+                            </div>
                         </div>
-                        <div className='gap-1 text-base font-medium'>
-                            {editedDebtToken.prettify()} USDFC
+                        <div className='mt-2 flex gap-1 text-base font-medium'>
+                            {validChange?.depositDebtToken
+                                ? validChange.depositDebtToken.prettify()
+                                : validChange?.withdrawDebtToken
+                                ? originalDeposit.currentDebtToken
+                                      .sub(validChange.withdrawDebtToken)
+                                      .prettify()
+                                : editedDebtToken.prettify()}{' '}
+                            <USDFCIcon />
                         </div>
                     </div>
 
-                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
-                        <div className='mb-1 text-sm text-neutral-450'>
-                            New Pool Share
+                    <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
+                        <div>
+                            <div className='mb-1 text-sm font-bold text-neutral-450'>
+                                New Pool Share
+                            </div>
+                            <div className='max-w-[280px] text-xs text-neutral-450'>
+                                Your percentage of the Stability Pool after this
+                                transaction, determining your share of
+                                liquidated collateral and rewards.
+                            </div>
                         </div>
-                        <div className='text-base font-medium'>
+                        <div className='mt-2 text-base font-medium'>
                             {newPoolShare.prettify()}%
                         </div>
                     </div>

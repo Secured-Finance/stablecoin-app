@@ -7,7 +7,7 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'src/components/atoms';
 import { TokenBox } from 'src/components/molecules/TokenBox/TokenBox';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
@@ -50,6 +50,7 @@ export const Opening: React.FC = () => {
 
     const [collateralInput, setCollateralInput] = useState('0.00');
     const [borrowAmountInput, setBorrowAmountInput] = useState('0.00');
+    const [borrowEditedManually, setBorrowEditedManually] = useState(false);
 
     const maxBorrowingRate = borrowingRate.add(0.005);
 
@@ -112,25 +113,6 @@ export const Opening: React.FC = () => {
 
     const TRANSACTION_ID = 'trove-creation';
 
-    useEffect(() => {
-        if (!collateral.isZero) {
-            const stableDebt = collateral.mul(price).mulDiv(2, 3);
-
-            const allowedDebt = stableDebt.gt(LIQUIDATION_RESERVE)
-                ? stableDebt
-                      .sub(LIQUIDATION_RESERVE)
-                      .div(Decimal.ONE.add(borrowingRate))
-                : Decimal.ZERO;
-
-            const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
-                ? allowedDebt
-                : MINIMUM_NET_DEBT;
-
-            setBorrowAmount(finalDebt);
-            setBorrowAmountInput(finalDebt.prettify());
-        }
-    }, [borrowingRate, collateral, price]);
-
     return (
         <div className='w-full flex-col items-center'>
             <TokenBox
@@ -146,6 +128,33 @@ export const Opening: React.FC = () => {
                     const parsed = Decimal.from(value);
                     if (parsed) setCollateral(parsed);
                 }}
+                onInputBlur={() => {
+                    // If user hasn't manually edited borrow amount or it's empty, compute a recommended value
+                    if (
+                        !borrowEditedManually ||
+                        !borrowAmountInput ||
+                        borrowAmountInput === '0' ||
+                        borrowAmount.isZero
+                    ) {
+                        if (!collateral.isZero) {
+                            const stableDebt = collateral
+                                .mul(price)
+                                .mulDiv(2, 3);
+                            const allowedDebt = stableDebt.gt(
+                                LIQUIDATION_RESERVE
+                            )
+                                ? stableDebt
+                                      .sub(LIQUIDATION_RESERVE)
+                                      .div(Decimal.ONE.add(borrowingRate))
+                                : Decimal.ZERO;
+                            const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
+                                ? allowedDebt
+                                : MINIMUM_NET_DEBT;
+                            setBorrowAmount(finalDebt);
+                            setBorrowAmountInput(finalDebt.prettify());
+                        }
+                    }
+                }}
                 inputTokenIcon={
                     <div className='flex items-center gap-2'>
                         <FILIcon />
@@ -158,9 +167,17 @@ export const Opening: React.FC = () => {
                 outputLabel='You will borrow'
                 outputValue={borrowAmountInput}
                 onOutputChange={value => {
+                    setBorrowEditedManually(true);
                     setBorrowAmountInput(value);
                     const parsed = Decimal.from(value || '0');
                     if (parsed) setBorrowAmount(parsed);
+                }}
+                onOutputBlur={() => {
+                    // Normalize formatting on blur only; do not override user intent
+                    const parsed =
+                        Decimal.from(borrowAmountInput || '0') || Decimal.ZERO;
+                    setBorrowAmount(parsed);
+                    setBorrowAmountInput(parsed.prettify());
                 }}
                 outputTokenIcon={<USDFCIcon />}
                 outputSubLabel={`$${borrowAmount.prettify()}`}
@@ -169,6 +186,26 @@ export const Opening: React.FC = () => {
                 onMaxClick={() => {
                     setCollateral(maxCollateral);
                     setCollateralInput(maxCollateral.prettify());
+                    // On explicit Max, recompute recommended borrow amount only if user hasn't edited manually
+                    if (!borrowEditedManually) {
+                        if (!maxCollateral.isZero) {
+                            const stableDebt = maxCollateral
+                                .mul(price)
+                                .mulDiv(2, 3);
+                            const allowedDebt = stableDebt.gt(
+                                LIQUIDATION_RESERVE
+                            )
+                                ? stableDebt
+                                      .sub(LIQUIDATION_RESERVE)
+                                      .div(Decimal.ONE.add(borrowingRate))
+                                : Decimal.ZERO;
+                            const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
+                                ? allowedDebt
+                                : MINIMUM_NET_DEBT;
+                            setBorrowAmount(finalDebt);
+                            setBorrowAmountInput(finalDebt.prettify());
+                        }
+                    }
                 }}
             />
 
@@ -298,13 +335,14 @@ export const Opening: React.FC = () => {
                         change={stableTroveChange}
                         maxBorrowingRate={maxBorrowingRate}
                         borrowingFeeDecayToleranceMinutes={60}
+                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
                     >
                         Confirm
                     </TroveAction>
                 ) : (
                     <Button
                         disabled
-                        className='text-lg w-full bg-primary-500 py-4'
+                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white'
                     >
                         Update Trove
                     </Button>

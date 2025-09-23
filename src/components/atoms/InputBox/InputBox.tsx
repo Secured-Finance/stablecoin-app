@@ -9,6 +9,8 @@ interface InputBoxProps {
     disabled?: boolean;
     type?: 'text' | 'number';
     readOnly?: boolean;
+    onFocus?: () => void;
+    onBlur?: () => void;
 }
 
 export const InputBox = ({
@@ -20,6 +22,8 @@ export const InputBox = ({
     disabled = false,
     type = 'number',
     readOnly = false,
+    onFocus,
+    onBlur,
 }: InputBoxProps) => {
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
@@ -30,6 +34,8 @@ export const InputBox = ({
                         type={type}
                         value={value}
                         onChange={e => onChange(e.target.value)}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
                         className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
                         disabled={disabled}
                         readOnly={readOnly}
