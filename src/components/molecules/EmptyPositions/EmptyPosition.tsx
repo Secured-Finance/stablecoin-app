@@ -25,7 +25,7 @@ ensuring a balanced and secure ecosystem.`,
     ];
     return (
         <div className='w-full'>
-            <h2 className='mb-4 font-primary text-5/none font-semibold'>
+            <h2 className='text-2xl mb-4 text-center font-semibold leading-none'>
                 My Positions
             </h2>
 

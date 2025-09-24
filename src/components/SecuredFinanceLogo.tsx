@@ -9,9 +9,5 @@ export const SecuredFinanceLogo = () => (
     </NavLink>
 );
 
-export const USDFCIcon = () => (
-    <>
-        <USDFCLogo className='hidden h-[25px] w-[90px] desktop:flex' />
-        <USDFCLogoSmall className='flex h-[25px] w-[25px] desktop:hidden' />
-    </>
-);
+export const USDFCIcon = () => <USDFCLogoSmall className='h-4 w-4' />;
+export const USDFCIconLarge = () => <USDFCLogoSmall className='h-8 w-8' />;

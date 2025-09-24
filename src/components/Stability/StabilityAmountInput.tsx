@@ -1,4 +1,4 @@
-import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
+import { USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
@@ -34,8 +34,11 @@ export function StabilityAmountInput({
                     disabled={disabled}
                     placeholder='0.00'
                 />
-                <div className='ml-2 flex items-center justify-center'>
-                    <USDFCIcon />
+                <div className='ml-2 flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
+                    <USDFCIconLarge />
+                    <span className='text-2xl font-medium leading-none text-neutral-900'>
+                        USDFC
+                    </span>
                 </div>
             </div>
             <div className='flex items-center justify-between text-sm text-neutral-450'>

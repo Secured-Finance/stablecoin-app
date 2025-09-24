@@ -42,7 +42,7 @@ export const InputBox = ({
                     />
                 </div>
                 {tokenIcon && (
-                    <div className='ml-4 flex min-w-[90px] items-center justify-end gap-2'>
+                    <div className='ml-3 flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
                         {tokenIcon}
                     </div>
                 )}

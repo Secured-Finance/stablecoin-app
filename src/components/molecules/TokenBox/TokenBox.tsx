@@ -77,9 +77,9 @@ export const TokenBox = ({
                             </p>
                         )}
                     </div>
-                    <div className='ml-3 flex flex-col items-end gap-2'>
+                    <div className='ml-3 flex flex-col items-end gap-4'>
                         {inputTokenIcon && (
-                            <div className='flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
+                            <div className='flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-2'>
                                 {inputTokenIcon}
                             </div>
                         )}

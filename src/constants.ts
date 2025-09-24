@@ -11,10 +11,10 @@ export const HEADER_LINKS = [
         to: '/stability-pool',
         label: 'Stability Pool',
     },
-    {
-        to: '/stake',
-        label: 'Stake SFC',
-    },
+    // {
+    //     to: '/stake',
+    //     label: 'Stake SFC',
+    // },
 ];
 
 export const DOCUMENTATION_LINK =

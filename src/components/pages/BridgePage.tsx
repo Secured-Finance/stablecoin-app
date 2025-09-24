@@ -9,7 +9,7 @@ export const BridgePage: React.FC = () => {
     return (
         <section className='md:px-16 flex w-full flex-col items-center px-4'>
             <div className='flex flex-col items-center gap-6 text-center'>
-                <h1 className='font-primary text-[24px] font-semibold leading-[29px] text-[#002133]'>
+                <h1 className='text-2xl text-center font-semibold leading-none text-[#002133]'>
                     Bridge Assets
                 </h1>
                 <p className='mt-2 font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>

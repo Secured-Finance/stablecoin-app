@@ -12,7 +12,7 @@ import { Button, InputBox, TabSwitcher } from 'src/components/atoms';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
+import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TroveAction } from './TroveAction';
 import { useTroveView } from './context/TroveViewContext';
@@ -270,11 +270,13 @@ export const Adjusting: React.FC = () => {
                             }}
                             tokenIcon={
                                 <>
-                                    <FILIcon />
-                                    <span className='font-medium'>FIL</span>
+                                    <FILIcon className='h-8 w-8' />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        FIL
+                                    </span>
                                 </>
                             }
-                            subLabel={collateral.mul(price).prettify()}
+                            subLabel={`$${collateral.mul(price).prettify()}`}
                         />
 
                         <InputBox
@@ -289,8 +291,15 @@ export const Adjusting: React.FC = () => {
                                     setNetDebt(Decimal.from(value || '0'));
                                 }
                             }}
-                            tokenIcon={<USDFCIcon />}
-                            subLabel={totalDebt.prettify()}
+                            tokenIcon={
+                                <>
+                                    <USDFCIconLarge />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        USDFC
+                                    </span>
+                                </>
+                            }
+                            subLabel={`$${totalDebt.prettify()}`}
                         />
                     </div>
 
@@ -349,6 +358,7 @@ export const Adjusting: React.FC = () => {
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
                                 <USDFCIcon />
+                                <span>USDFC</span>
                             </div>
                         </div>
                     </div>
@@ -378,7 +388,7 @@ export const Adjusting: React.FC = () => {
                 </>
             ) : (
                 <>
-                    <p className='mb-6 text-center text-sm text-gray-500'>
+                    <p className='mb-6 text-left text-sm text-gray-500'>
                         Closing your Trove will repay all your debt and return
                         your remaining collateral.
                     </p>
@@ -388,7 +398,14 @@ export const Adjusting: React.FC = () => {
                             label='You will repay'
                             value={totalDebt.prettify(2)}
                             onChange={() => {}} // Read-only
-                            tokenIcon={<USDFCIcon />}
+                            tokenIcon={
+                                <>
+                                    <USDFCIconLarge />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        USDFC
+                                    </span>
+                                </>
+                            }
                             subLabel={`$${totalDebt.prettify()}`}
                             readOnly={true}
                             type='text'
@@ -400,8 +417,10 @@ export const Adjusting: React.FC = () => {
                             onChange={() => {}} // Read-only
                             tokenIcon={
                                 <>
-                                    <FILIcon />
-                                    <span className='font-medium'>FIL</span>
+                                    <FILIcon className='h-8 w-8' />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        FIL
+                                    </span>
                                 </>
                             }
                             subLabel={`$${collateral

@@ -138,12 +138,12 @@ const TroveRow = ({
                 index % 2 === 0 ? 'bg-[#FAFAFA]' : 'bg-[#FFFFFF]'
             )}
         >
-            <td className='min-w-36 p-4 '>
-                <div className='flex items-center gap-3 laptop:justify-center'>
+            <td className='sm:p-4 min-w-36 p-3'>
+                <div className='sm:gap-3 flex items-center gap-2 laptop:justify-center'>
                     <Tooltip
                         iconElement={
-                            <span className='inline-block w-[100px] font-numerical'>
-                                {AddressUtils.format(trove.ownerAddress, 6)}
+                            <span className='sm:w-[100px] inline-block w-[90px] font-numerical text-sm'>
+                                {AddressUtils.format(trove.ownerAddress, 5)}
                             </span>
                         }
                         placement='top'
@@ -160,19 +160,19 @@ const TroveRow = ({
                     </button>
                 </div>
             </td>
-            <td className='min-w-30 p-4 text-center'>
+            <td className='sm:min-w-30 sm:p-4 min-w-24 p-3 text-center text-sm'>
                 {trove.collateral.prettify()}
             </td>
-            <td className='min-w-30 p-4 text-center'>
+            <td className='sm:min-w-30 sm:p-4 min-w-24 p-3 text-center text-sm'>
                 {trove.debt.prettify()}
             </td>
-            <td className='min-w-30 p-4 text-center'>
+            <td className='sm:min-w-30 sm:p-4 min-w-24 p-3 text-center'>
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
-            <td className='min-w-30 p-4 text-center'>
+            <td className='sm:min-w-30 sm:p-4 min-w-24 p-3 text-center text-sm'>
                 {trove.debtInFront?.prettify()}
             </td>
-            <td className='min-w-[180px] p-4'>
+            <td className='sm:min-w-[180px] sm:p-4 min-w-[150px] p-3'>
                 <div className='flex justify-center truncate'>
                     <Transaction
                         id='liquidate'
@@ -194,10 +194,13 @@ const TroveRow = ({
                     >
                         <Button
                             variant={ButtonVariants.tertiary}
-                            className='h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
+                            className='sm:h-10 sm:w-36 h-9 w-32 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
                             disabled={!isConnected}
                         >
-                            Liquidate Trove
+                            <span className='sm:inline hidden'>
+                                Liquidate Trove
+                            </span>
+                            <span className='sm:hidden inline'>Liquidate</span>
                         </Button>
                     </Transaction>
                 </div>
@@ -223,23 +226,23 @@ export const CoreTable = ({
     const { isConnected } = useAccount();
 
     return (
-        <div className='w-full rounded-xl border border-gray-200'>
-            <table className='w-full bg-white'>
-                <thead className='border-b border-gray-200 bg-white'>
+        <div className='overflow-auto rounded-xl border border-gray-200 laptop:overflow-hidden'>
+            <table className='w-full bg-white tablet:table-fixed'>
+                <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
                     <tr className='text-left text-sm text-[#565656]'>
-                        <th className='min-w-[150px] p-4 text-center'>
+                        <th className='sm:p-4 sm:min-w-[150px] min-w-[120px] p-3 text-center'>
                             Address
                         </th>
-                        <th className='min-w-30 p-4 text-center'>
+                        <th className='sm:p-4 sm:min-w-30 min-w-[80px] p-3 text-center'>
                             Collateral (FIL)
                         </th>
-                        <th className='min-w-30 p-4 text-center'>
+                        <th className='sm:p-4 sm:min-w-30 min-w-[80px] p-3 text-center'>
                             Debt (USDFC)
                         </th>
-                        <th className='min-w-30 p-4 text-center'>
+                        <th className='sm:p-4 sm:min-w-30 min-w-[80px] p-3 text-center'>
                             Collateral Ratio
                         </th>
-                        <th className='min-w-30 relative p-4 text-center'>
+                        <th className='sm:p-4 sm:min-w-30 relative min-w-[80px] p-3 text-center'>
                             <span className='group inline-block'>
                                 Debt In Front
                                 <div className='pointer-events-none absolute left-0 top-full z-10 ml-6 w-56 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100'>
@@ -250,7 +253,7 @@ export const CoreTable = ({
                                 </div>
                             </span>
                         </th>
-                        <th className='min-w-[180px] p-4 text-center'></th>
+                        <th className='sm:p-4 sm:min-w-[180px] min-w-[100px] p-3 text-center'></th>
                     </tr>
                 </thead>
                 <tbody>

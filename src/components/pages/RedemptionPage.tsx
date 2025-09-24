@@ -12,7 +12,7 @@ import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
 } from '../Redemption/validation/validateRedemptionChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
+import { USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TokenBox } from '../molecules';
 
@@ -132,7 +132,7 @@ export const RedemptionPage = () => {
         <div className='flex min-h-screen w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
                 <div className='mx-auto w-full max-w-3xl'>
-                    <h1 className='mb-3 text-center font-primary text-5/none font-semibold'>
+                    <h1 className='text-2xl mb-3 text-center font-semibold leading-none'>
                         Redeem USDFC
                     </h1>
                     <p className='mb-8 text-center text-sm text-neutral-450'>
@@ -150,17 +150,24 @@ export const RedemptionPage = () => {
                             setRedeemAmount(value);
                             setRedeemAmountDecimal(Decimal.from(value || '0'));
                         }}
-                        inputTokenIcon={<USDFCIcon />}
+                        inputTokenIcon={
+                            <>
+                                <USDFCIconLarge />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
+                                    USDFC
+                                </span>
+                            </>
+                        }
                         outputLabel='You will receive'
                         outputValue={filToReceive}
                         outputSubLabel={`$${usdValue}`}
                         outputTokenIcon={
-                            <div className='flex items-center gap-2'>
-                                <FILIcon />
-                                <span className='text-base font-semibold text-neutral-900'>
+                            <>
+                                <FILIcon className='h-8 w-8' />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
                                     FIL
                                 </span>
-                            </div>
+                            </>
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
@@ -187,7 +194,7 @@ export const RedemptionPage = () => {
                                     </span>
                                     <div className='flex items-center gap-1'>
                                         <div className='flex h-4 w-4 items-center justify-center rounded-full bg-neutral-150'>
-                                            <FILIcon />
+                                            <FILIcon className='h-4 w-4' />
                                         </div>
                                         <span className='text-xs'>FIL</span>
                                         <span className='text-xs text-neutral-450'>

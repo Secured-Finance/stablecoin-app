@@ -255,7 +255,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
                         />
                         <div className='ml-4 flex items-center gap-2'>
-                            <FILIcon />
+                            <FILIcon className='h-4 w-4' />
                             <span className='font-medium'>FIL</span>
                         </div>
                     </div>

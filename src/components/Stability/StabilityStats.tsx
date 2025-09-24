@@ -49,8 +49,9 @@ export function StabilityStats({
             <div className='grid grid-cols-3 gap-2'>
                 <Stat label='Current Deposit'>
                     <span>{originalDeposit.currentDebtToken.prettify()}</span>
-                    <div className='ml-2 flex items-center justify-center'>
+                    <div className='ml-2 flex items-center justify-center gap-1.5'>
                         <USDFCIcon />
+                        <span>USDFC</span>
                     </div>
                 </Stat>
                 <Stat label='Pool Share'>{originalPoolShare.prettify()}%</Stat>

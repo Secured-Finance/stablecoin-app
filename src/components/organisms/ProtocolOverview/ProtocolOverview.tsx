@@ -50,7 +50,7 @@ export const ProtocolOverview = ({
     ];
     return (
         <div className='flex flex-col gap-6'>
-            <h2 className='font-primary text-5/none font-semibold'>
+            <h2 className='text-2xl text-left font-semibold leading-none'>
                 Protocol Overview
             </h2>
             <div className='flex flex-col gap-6'>

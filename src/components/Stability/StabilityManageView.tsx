@@ -276,17 +276,20 @@ export const StabilityManageView = () => {
                                 Pool after this transaction.
                             </div>
                         </div>
-                        <div className='mt-2 flex gap-1 text-base font-medium'>
-                            {validChange?.depositDebtToken
-                                ? originalDeposit.currentDebtToken
-                                      .add(validChange.depositDebtToken)
-                                      .prettify()
-                                : validChange?.withdrawDebtToken
-                                ? originalDeposit.currentDebtToken
-                                      .sub(validChange.withdrawDebtToken)
-                                      .prettify()
-                                : editedDebtToken.prettify()}{' '}
+                        <div className='mt-2 flex items-center gap-1 text-base font-medium'>
+                            <span>
+                                {validChange?.depositDebtToken
+                                    ? originalDeposit.currentDebtToken
+                                          .add(validChange.depositDebtToken)
+                                          .prettify()
+                                    : validChange?.withdrawDebtToken
+                                    ? originalDeposit.currentDebtToken
+                                          .sub(validChange.withdrawDebtToken)
+                                          .prettify()
+                                    : editedDebtToken.prettify()}
+                            </span>
                             <USDFCIcon />
+                            <span>USDFC</span>
                         </div>
                     </div>
 

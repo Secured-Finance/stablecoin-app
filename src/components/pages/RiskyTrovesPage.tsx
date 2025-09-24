@@ -11,7 +11,7 @@ type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 
 export const RiskyTrovesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 7;
+    const pageSize = 8;
 
     const select = ({
         numberOfTroves,
@@ -126,9 +126,9 @@ export const RiskyTrovesPage = () => {
 
     return (
         <div className='flex min-h-screen w-full flex-col'>
-            <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
-                <div className='mx-auto w-full max-w-6xl'>
-                    <h1 className='mb-4 font-primary text-6 font-semibold'>
+            <main className='flex flex-grow flex-col items-center p-4'>
+                <div className='w-full'>
+                    <h1 className='text-2xl mb-4 text-left font-semibold leading-none'>
                         Risky Troves
                     </h1>
                     <p className='mb-6 max-w-3xl text-[#565656]'>

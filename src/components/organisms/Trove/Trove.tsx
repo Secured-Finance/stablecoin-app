@@ -76,6 +76,7 @@ export const Trove = () => {
                             {trove.debt.prettify()}
                         </span>
                         <USDFCIcon />
+                        <span className='text-sm'>USDFC</span>
                     </div>
                 </div>
                 <div>
@@ -84,10 +85,10 @@ export const Trove = () => {
                         <span className='font-bold'>
                             {trove.collateral.prettify()}
                         </span>
-                        <FILIcon />
+                        <FILIcon className='h-4 w-4' />
                         <span className='text-sm'>FIL</span>
                         <span className='ml-1 text-xs text-neutral-450'>
-                            {trove.collateral.mul(price).sub(0).prettify()}
+                            ${trove.collateral.mul(price).sub(0).prettify()}
                         </span>
                     </div>
                 </div>

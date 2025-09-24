@@ -10,7 +10,7 @@ import {
 import React, { useState } from 'react';
 import { Button } from 'src/components/atoms';
 import { TokenBox } from 'src/components/molecules/TokenBox/TokenBox';
-import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
+import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
@@ -156,12 +156,12 @@ export const Opening: React.FC = () => {
                     }
                 }}
                 inputTokenIcon={
-                    <div className='flex items-center gap-2'>
-                        <FILIcon />
-                        <span className='text-base font-semibold text-neutral-900'>
+                    <>
+                        <FILIcon className='h-8 w-8' />
+                        <span className='text-2xl font-medium leading-none text-neutral-900'>
                             {CURRENCY}
                         </span>
-                    </div>
+                    </>
                 }
                 inputSubLabel={`$${collateral.mul(price).prettify()}`}
                 outputLabel='You will borrow'
@@ -179,7 +179,7 @@ export const Opening: React.FC = () => {
                     setBorrowAmount(parsed);
                     setBorrowAmountInput(parsed.prettify());
                 }}
-                outputTokenIcon={<USDFCIcon />}
+                outputTokenIcon={<USDFCIconLarge />}
                 outputSubLabel={`$${borrowAmount.prettify()}`}
                 isConnected={isConnected}
                 maxValue={maxCollateral.prettify()}

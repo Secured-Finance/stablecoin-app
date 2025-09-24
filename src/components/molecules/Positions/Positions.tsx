@@ -34,7 +34,7 @@ export const Positions = ({
 
     return (
         <div>
-            <h2 className='mb-3 font-primary text-5 font-semibold text-neutral-900'>
+            <h2 className='text-2xl mb-3 text-left font-semibold leading-none text-neutral-900'>
                 My Positions
             </h2>
             <div className='grid grid-cols-1 gap-3 tablet:grid-cols-2'>
@@ -43,14 +43,20 @@ export const Positions = ({
                         label='Total Debt'
                         value={
                             <>
-                                {trove.debt.prettify()} <USDFCIcon />
+                                {trove.debt.prettify()} <USDFCIcon />{' '}
+                                <span>USDFC</span>
                             </>
                         }
                     />
                     <div className='space-y-3 text-sm text-neutral-700'>
                         <InfoRow
                             label='Collateral'
-                            value={`${trove.collateral.prettify()} FIL`}
+                            value={
+                                <span className='flex items-center gap-1'>
+                                    {trove.collateral.prettify()} <FILIcon />
+                                    <span>FIL</span>
+                                </span>
+                            }
                         />
                         <InfoRow
                             label='Collateral Ratio'
@@ -85,7 +91,12 @@ export const Positions = ({
                     <InfoBlock
                         label='Liquidation Gain'
                         value={`${liquidationGains}`}
-                        icon={<FILIcon />}
+                        icon={
+                            <>
+                                <FILIcon />
+                                <span>FIL</span>
+                            </>
+                        }
                     />
                     <div className='space-y-3 text-sm text-neutral-700'>
                         <InfoRow
@@ -93,6 +104,7 @@ export const Positions = ({
                             value={
                                 <span className='flex items-center gap-1'>
                                     {originalDeposit.currentDebtToken.prettify()}{' '}
+                                    <USDFCIcon />
                                     <span>USDFC</span>
                                 </span>
                             }
