@@ -150,7 +150,7 @@ export const Positions = ({
                             <Button
                                 className='flex-1 text-xs tablet:text-sm'
                                 size={ButtonSizes.md}
-                                variant={ButtonVariants.secondary}
+                                variant={ButtonVariants.primary}
                             >
                                 <span className='hidden tablet:inline'>
                                     Claim Gains

@@ -18,7 +18,7 @@ import {
     RotateCw,
     Trash2,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Button,
     ButtonVariants,
@@ -49,7 +49,6 @@ interface CoreTableProps {
 interface TroveRowProps {
     trove: TroveWithDebtInFront;
     price: Decimal;
-    isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
     index: number;
     recoveryMode: boolean;
@@ -112,13 +111,13 @@ const liquidatableInRecoveryMode = (
 const TroveRow = ({
     trove,
     price,
-    isConnected,
     sfStablecoin,
     index,
     recoveryMode,
     totalCollateralRatio,
     debtTokenInStabilityPool,
 }: TroveRowProps) => {
+    const { isConnected } = useAccount();
     const [copied, setCopied] = useState<string | undefined>();
 
     useEffect(() => {
@@ -134,8 +133,32 @@ const TroveRow = ({
         }
     }, [copied]);
 
-    const calculateCollateralRatio = (trove: UserTrove) =>
-        trove.collateralRatio(price);
+    const calculateCollateralRatio = useCallback(
+        (trove: UserTrove) => trove.collateralRatio(price),
+        [price]
+    );
+
+    // Calculate if liquidation is disabled
+    const liquidationRequirement = useMemo(
+        () =>
+            recoveryMode
+                ? liquidatableInRecoveryMode(
+                      trove,
+                      price,
+                      totalCollateralRatio,
+                      debtTokenInStabilityPool
+                  )
+                : liquidatableInNormalMode(trove, price),
+        [
+            trove,
+            price,
+            recoveryMode,
+            totalCollateralRatio,
+            debtTokenInStabilityPool,
+        ]
+    );
+
+    const isLiquidationDisabled = !isConnected || !liquidationRequirement[0];
 
     return (
         <tr
@@ -160,6 +183,10 @@ const TroveRow = ({
                     <button
                         onClick={() => setCopied(trove.ownerAddress)}
                         className='ml-0.5 tablet:ml-1'
+                        aria-label={`Copy address ${AddressUtils.format(
+                            trove.ownerAddress,
+                            3
+                        )}`}
                     >
                         {copied === trove.ownerAddress ? (
                             <CheckIcon className='h-3 w-3 text-success-700 tablet:h-4 tablet:w-4' />
@@ -179,14 +206,15 @@ const TroveRow = ({
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
             <td className='p-1 text-center text-xs tablet:p-4 tablet:text-sm'>
-                {trove.debtInFront?.shorten()}
+                {trove.debtInFront?.shorten() ?? '0'}
             </td>
             <td className='p-1 tablet:p-4'>
                 <div className='flex justify-center'>
                     <Transaction
-                        id='liquidate'
+                        id={`liquidate-${trove.ownerAddress}`}
                         tooltip='Liquidate'
                         requires={[
+                            [isConnected, 'Please connect your wallet'],
                             recoveryMode
                                 ? liquidatableInRecoveryMode(
                                       trove,
@@ -204,8 +232,9 @@ const TroveRow = ({
                         <div>
                             {/* Mobile: Trash icon only */}
                             <button
-                                className='p-1 text-error-500 disabled:text-neutral-400 tablet:hidden'
-                                disabled={!isConnected}
+                                className='p-1 text-error-500 disabled:text-neutral-600 tablet:hidden'
+                                disabled={isLiquidationDisabled}
+                                aria-label='Liquidate trove'
                             >
                                 <Trash2 className='h-4 w-4' />
                             </button>
@@ -213,8 +242,8 @@ const TroveRow = ({
                             {/* Tablet+: Full liquidate button */}
                             <Button
                                 variant={ButtonVariants.tertiary}
-                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0] tablet:block'
-                                disabled={!isConnected}
+                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
+                                disabled={isLiquidationDisabled}
                             >
                                 Liquidate Trove
                             </Button>
@@ -240,7 +269,6 @@ export const CoreTable = ({
     debtTokenInStabilityPool,
 }: CoreTableProps) => {
     const { sfStablecoin } = useSfStablecoin();
-    const { isConnected } = useAccount();
 
     return (
         <div className='w-full overflow-hidden rounded-xl border border-gray-200 bg-white'>
@@ -292,7 +320,7 @@ export const CoreTable = ({
                                 <span className='hidden tablet:inline'>
                                     Debt In Front
                                 </span>
-                                <div className='pointer-events-none absolute left-0 top-full z-10 ml-6 w-56 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100'>
+                                <div className='pointer-events-none absolute right-0 top-full z-10 w-48 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100 tablet:left-0 tablet:right-auto tablet:ml-6 tablet:w-56'>
                                     It totals the debt of all troves that face
                                     higher liquidation risk—that is, those with
                                     lower collateral ratios—than the current
@@ -316,10 +344,9 @@ export const CoreTable = ({
                     ) : (
                         troves.map((trove, index) => (
                             <TroveRow
-                                key={index}
+                                key={`${trove.ownerAddress}-${index}`}
                                 trove={trove}
                                 price={price}
-                                isConnected={isConnected}
                                 sfStablecoin={sfStablecoin}
                                 index={index}
                                 recoveryMode={recoveryMode}
@@ -346,6 +373,7 @@ export const CoreTable = ({
                         onClick={onPrevious}
                         disabled={currentPage === 1}
                         className='p-1 disabled:text-neutral-400 tablet:hidden'
+                        aria-label='Previous page'
                     >
                         <ChevronLeft className='h-4 w-4' />
                     </button>
@@ -354,6 +382,7 @@ export const CoreTable = ({
                         onClick={onNext}
                         disabled={currentPage === totalPages}
                         className='p-1 disabled:text-neutral-400 tablet:hidden'
+                        aria-label='Next page'
                     >
                         <ChevronRight className='h-4 w-4' />
                     </button>
@@ -380,6 +409,7 @@ export const CoreTable = ({
                         className='flex items-center justify-center p-1'
                         onClick={forceReload}
                         disabled={loading}
+                        aria-label={loading ? 'Reloading...' : 'Reload data'}
                     >
                         {loading ? (
                             <Spinner size={16} />
