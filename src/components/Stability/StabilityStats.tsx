@@ -46,7 +46,7 @@ export function StabilityStats({
     const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-            <div className='grid grid-cols-3 gap-2'>
+            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-3 tablet:gap-2'>
                 <Stat label='Current Deposit'>
                     <span>{originalDeposit.currentDebtToken.prettify()}</span>
                     <div className='ml-2 flex items-center justify-center gap-1.5'>
@@ -56,19 +56,19 @@ export function StabilityStats({
                 </Stat>
                 <Stat label='Pool Share'>{originalPoolShare.prettify()}%</Stat>
                 <Stat label='Liquidation Gains'>
-                    <div className='flex items-center gap-1.5 font-medium'>
+                    <div className='flex items-baseline gap-1.5 font-medium'>
                         <span>{liquidationGains}</span>
                         <FILIcon />
                         <span>FIL</span>
-                        <span className='text-xs text-neutral-450'>
+                        <span className='text-sm text-neutral-450'>
                             ${liquidationGainsUSD.prettify()}
                         </span>
                     </div>
                     <button
-                        className={`text-xs font-medium ${
+                        className={`text-xs font-medium underline ${
                             isClaimDisabled
-                                ? 'cursor-not-allowed text-gray-400'
-                                : 'cursor-pointer font-semibold text-neutral-2 hover:underline'
+                                ? 'cursor-not-allowed text-neutral-400'
+                                : 'hover:text-primary-600 cursor-pointer text-primary-500'
                         }`}
                         onClick={sendClaimTransaction}
                         disabled={isClaimDisabled}

@@ -37,7 +37,7 @@ export const Positions = ({
             <h2 className='text-2xl mb-3 text-left font-semibold leading-none text-neutral-900'>
                 My Positions
             </h2>
-            <div className='grid grid-cols-1 gap-3 tablet:grid-cols-2'>
+            <div className='sm:gap-6 grid grid-cols-1 justify-items-center gap-4 tablet:grid-cols-2'>
                 <PositionInfoCard icon={Vault} title='Trove'>
                     <InfoBlock
                         label='Total Debt'
@@ -80,7 +80,7 @@ export const Positions = ({
                         data-testid='button-link'
                         size={ButtonSizes.md}
                         variant={ButtonVariants.tertiary}
-                        className='mt-3 w-full'
+                        className='mt-6 w-full text-sm'
                         external={false}
                     >
                         Manage Trove
@@ -114,22 +114,28 @@ export const Positions = ({
                             value={`${originalPoolShare.prettify()}%`}
                         />
                     </div>
-                    <div className='mt-6 flex gap-3'>
+                    <div className='mt-6 flex gap-2 tablet:gap-3'>
                         <Button
                             href='/stability-pool'
                             size={ButtonSizes.md}
                             variant={ButtonVariants.tertiary}
-                            className='mt-3 w-full'
+                            className='flex-1 text-xs tablet:text-sm'
                             external={false}
                         >
-                            Manage Deposit
+                            <span className='hidden tablet:inline'>
+                                Manage Deposit
+                            </span>
+                            <span className='inline tablet:hidden'>Manage</span>
                         </Button>
                         <Button
-                            className='mt-3 w-full'
+                            className='flex-1 text-xs tablet:text-sm'
                             size={ButtonSizes.md}
                             variant={ButtonVariants.secondary}
                         >
-                            Claim Gains
+                            <span className='hidden tablet:inline'>
+                                Claim Gains
+                            </span>
+                            <span className='inline tablet:hidden'>Claim</span>
                         </Button>
                     </div>
                 </PositionInfoCard>
@@ -145,9 +151,9 @@ const InfoRow = ({
     label: string;
     value: React.ReactNode;
 }) => (
-    <div className='flex justify-between'>
-        <span>{label}</span>
-        <span>{value}</span>
+    <div className='flex flex-col tablet:flex-row tablet:justify-between'>
+        <span className='text-neutral-600'>{label}</span>
+        <span className='font-medium'>{value}</span>
     </div>
 );
 

@@ -68,7 +68,7 @@ export const Trove = () => {
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-            <div className='grid grid-cols-2 gap-6'>
+            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-2 tablet:gap-6'>
                 <div>
                     <p className='mb-1 text-sm text-neutral-450'>Total Debt</p>
                     <div className='flex items-center gap-1'>
@@ -81,13 +81,13 @@ export const Trove = () => {
                 </div>
                 <div>
                     <p className='mb-1 text-sm text-neutral-450'>Collateral</p>
-                    <div className='flex items-center gap-1'>
+                    <div className='flex items-baseline gap-1'>
                         <span className='font-bold'>
                             {trove.collateral.prettify()}
                         </span>
                         <FILIcon className='h-4 w-4' />
                         <span className='text-sm'>FIL</span>
-                        <span className='ml-1 text-xs text-neutral-450'>
+                        <span className='ml-1 text-sm text-neutral-450'>
                             ${trove.collateral.mul(price).sub(0).prettify()}
                         </span>
                     </div>

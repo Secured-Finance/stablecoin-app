@@ -125,8 +125,8 @@ export const RiskyTrovesPage = () => {
     };
 
     return (
-        <div className='flex min-h-screen w-full flex-col'>
-            <main className='flex flex-grow flex-col items-center p-4'>
+        <div className='flex w-full flex-col'>
+            <main className='flex flex-grow flex-col items-center px-4 py-8'>
                 <div className='w-full'>
                     <h1 className='text-2xl mb-2 text-left font-semibold leading-none'>
                         Risky Troves

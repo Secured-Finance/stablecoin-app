@@ -15,18 +15,30 @@ interface ProtocolStatsProps {
 }
 
 export function ProtocolStats({ stats }: ProtocolStatsProps) {
+    const allStats = [...stats.leftColumn, ...stats.rightColumn];
+
     return (
-        <div className='grid grid-cols-2 justify-center'>
-            <div>
-                {stats.leftColumn.map((stat, index) => (
+        <>
+            {/* Mobile: Single column with all stats */}
+            <div className='tablet:hidden'>
+                {allStats.map((stat, index) => (
                     <StatItem key={index} stat={stat} />
                 ))}
             </div>
-            <div>
-                {stats.rightColumn.map((stat, index) => (
-                    <StatItem key={index} stat={stat} />
-                ))}
+
+            {/* Tablet+: Two column layout */}
+            <div className='hidden justify-center tablet:grid tablet:grid-cols-2'>
+                <div>
+                    {stats.leftColumn.map((stat, index) => (
+                        <StatItem key={index} stat={stat} />
+                    ))}
+                </div>
+                <div>
+                    {stats.rightColumn.map((stat, index) => (
+                        <StatItem key={index} stat={stat} />
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 }

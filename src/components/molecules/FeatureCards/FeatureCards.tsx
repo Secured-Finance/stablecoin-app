@@ -21,7 +21,9 @@ const FeatureCard = ({
     descriptionClassName,
 }: FeatureCardProps) => {
     return (
-        <Card className={cn('w-full max-w-[290px]', className)}>
+        <Card
+            className={cn('w-full max-w-none laptop:max-w-[290px]', className)}
+        >
             <div className='mb-6 flex items-center'>{icon}</div>
             <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
                 {title}

@@ -17,12 +17,12 @@ import { Flex } from 'theme-ui';
 import 'tippy.js/dist/tippy.css'; // Tooltip default style
 import { Header } from './components/Header';
 import { RedemptionPage } from './components/pages/RedemptionPage';
+import { TrovePage } from './components/pages/TrovePage';
 import { StabilityViewProvider } from './components/Stability/context/StabilityViewProvider';
+import { Stability } from './components/Stability/Stability';
 import { StakingViewProvider } from './components/Staking/context/StakingViewProvider';
 import { TransactionMonitor } from './components/Transaction';
 import { TroveViewProvider } from './components/Trove/context/TroveViewProvider';
-import { TrovePage } from './components/pages/TrovePage';
-import { Stability } from './components/Stability/Stability';
 
 type SfStablecoinFrontendProps = {
     loader?: React.ReactNode;

@@ -20,7 +20,7 @@ export const PositionInfoCard = ({
         verticalHeader ? 'flex-col gap-3' : 'items-center gap-2'
     );
     return (
-        <Card className='flex flex-col justify-between p-6'>
+        <Card className='flex max-w-none flex-col justify-between p-6'>
             <div className={headerClass}>
                 <div className='flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-50'>
                     <Icon className='h-6 w-6 text-primary-500' />

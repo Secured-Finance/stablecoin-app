@@ -83,7 +83,7 @@ export const Dashboard: React.FC = () => {
         setIsTokenAdded(tokenAdded);
     }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
     return (
-        <div className='flex w-full flex-col px-4 pt-2 laptop:pt-3'>
+        <div className='flex w-full flex-col'>
             <div className='flex flex-col p-4'>
                 {!isConnected ? (
                     <Alert color='info'>

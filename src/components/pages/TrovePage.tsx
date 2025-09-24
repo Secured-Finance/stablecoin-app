@@ -11,19 +11,21 @@ export const TrovePage = () => {
     const hasExistingTrove = !trove.isEmpty && isConnected;
 
     return (
-        <div className='min-h-[100vh] w-full'>
-            <main className='container mx-auto px-4 py-10'>
-                <h1 className='text-2xl mb-8 text-left font-semibold leading-none'>
-                    Your Trove
-                </h1>
+        <div className='flex w-full flex-col'>
+            <main className='flex flex-grow flex-col items-center px-4 py-8'>
+                <div className='w-full'>
+                    <h1 className='text-2xl mb-8 text-left font-semibold leading-none'>
+                        Your Trove
+                    </h1>
 
-                {!hasExistingTrove && <Opening />}
-                {hasExistingTrove && (
-                    <>
-                        {trove && <Trove />}
-                        <Adjusting />
-                    </>
-                )}
+                    {!hasExistingTrove && <Opening />}
+                    {hasExistingTrove && (
+                        <>
+                            {trove && <Trove />}
+                            <Adjusting />
+                        </>
+                    )}
+                </div>
             </main>
         </div>
     );

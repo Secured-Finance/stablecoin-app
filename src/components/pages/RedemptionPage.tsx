@@ -129,9 +129,9 @@ export const RedemptionPage = () => {
     const usdValue = filReceived.mul(price).prettify(2);
 
     return (
-        <div className='flex min-h-screen w-full flex-col'>
+        <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
-                <div className='mx-auto w-full max-w-3xl'>
+                <div className='w-full'>
                     <h1 className='text-2xl mb-3 text-center font-semibold leading-none'>
                         Redeem USDFC
                     </h1>
