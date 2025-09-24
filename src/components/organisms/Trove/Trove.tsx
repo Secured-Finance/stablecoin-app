@@ -28,10 +28,10 @@ export const Trove = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: 'Unknown',
-                color: 'text-neutral-600',
-                bg: 'bg-neutral-100',
-                dotBg: 'bg-neutral-400',
+                text: 'Low',
+                color: 'text-success-700',
+                bg: 'bg-success-100',
+                dotBg: 'bg-success-500',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
@@ -98,7 +98,9 @@ export const Trove = () => {
                     </p>
                     <div className='flex items-center gap-1'>
                         <span className='font-bold'>
-                            {trove.collateralRatio(price).mul(100).prettify()}%
+                            {collateralRatio
+                                ? `${collateralRatio.mul(100).prettify()}%`
+                                : '150%'}
                         </span>
                         <div
                             className={`ml-2 inline-flex items-center gap-2 rounded-full px-3 py-1 ${liquidationRisk.bg}`}

@@ -24,6 +24,7 @@ import {
 
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { StatCard } from 'src/components/molecules/StatCard';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -73,9 +74,9 @@ export const Opening: React.FC = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: '',
-                color: 'text-neutral-450',
-                bg: 'bg-neutral-250',
+                text: 'Low',
+                color: 'text-success-700',
+                bg: 'bg-success-500',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
@@ -219,104 +220,67 @@ export const Opening: React.FC = () => {
             <div className='mb-6 mt-8'>{description}</div>
 
             <div className='mb-6 mt-6 space-y-4'>
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Collateral Ratio
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                The ratio of deposited FIL to borrowed USDFC. If
-                                it falls below 110% (or 150% in Recovery Mode),
-                                liquidation may occur.
-                            </div>
-                        </div>
-                        <div>
-                            <p className='text-right font-bold'>
-                                {collateralRatio?.mul(100)?.prettify()}%
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <StatCard
+                    title='Collateral Ratio'
+                    description='The ratio of deposited FIL to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.'
+                    value={
+                        <p className='text-right font-bold'>
+                            {collateralRatio
+                                ? `${collateralRatio.mul(100).prettify()}%`
+                                : '150%'}
+                        </p>
+                    }
+                />
 
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Liquidation Risk
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                The risk of losing your FIL collateral if your
-                                Collateral Ratio drops below 110% under normal
-                                conditions or 150% in Recovery Mode.
-                            </div>
+                <StatCard
+                    title='Liquidation Risk'
+                    description='The risk of losing your FIL collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.'
+                    value={
+                        <div className='flex items-center justify-end gap-2'>
+                            <div
+                                className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
+                            ></div>
+                            <span
+                                className={`font-medium ${liquidationRisk.color}`}
+                            >
+                                {liquidationRisk.text}
+                            </span>
                         </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-2'>
-                                <div
-                                    className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
-                                ></div>
-                                <span
-                                    className={`font-medium ${liquidationRisk.color}`}
-                                >
-                                    {liquidationRisk.text}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Liquidation Reserve
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                An amount added to your debt to cover liquidator
-                                gas costs in case your Trove is liquidated.
-                                It&apos;s refunded if you fully repay your debt
-                                and close your Trove.
-                            </div>
-                        </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-1'>
-                                <span className='font-bold'>
-                                    {LIQUIDATION_RESERVE.toString()}
-                                </span>
-                                <USDFCIcon />
-                                <span>USDFC</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    }
+                />
 
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Borrowing Fee
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                A one-time {feePct.prettify()} fee charged when
-                                borrowing USDFC, added to the loan balance.
-                            </div>
+                <StatCard
+                    title='Liquidation Reserve'
+                    description="An amount added to your debt to cover liquidator gas costs in case your Trove is liquidated. It's refunded if you fully repay your debt and close your Trove."
+                    value={
+                        <div className='flex items-center justify-end gap-1'>
+                            <span className='font-bold'>
+                                {LIQUIDATION_RESERVE.toString()}
+                            </span>
+                            <USDFCIcon />
+                            <span>USDFC</span>
                         </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-1'>
+                    }
+                />
+
+                <StatCard
+                    title='Borrowing Fee'
+                    description={`A one-time ${feePct.prettify()} fee charged when borrowing USDFC, added to the loan balance.`}
+                    value={
+                        <div className='flex flex-col items-end tablet:flex-row tablet:items-center tablet:justify-end tablet:gap-1'>
+                            <div className='flex items-center gap-1'>
                                 <span className='font-bold'>
                                     {fee.prettify()}
                                 </span>
                                 <USDFCIcon />
-
                                 <span>USDFC</span>
-
-                                <span className='ml-1 text-sm font-normal text-neutral-450'>
-                                    {feePct.prettify()}
-                                </span>
                             </div>
+                            <span className='text-sm font-normal text-neutral-450'>
+                                {feePct.prettify()}
+                            </span>
                         </div>
-                    </div>
-                </div>
+                    }
+                />
             </div>
 
             <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>

@@ -4,9 +4,10 @@ import { Card } from 'src/components/atoms';
 
 export type PositionInfoCardProps = {
     icon: React.ComponentType<{ className?: string }>;
-    title: string;
+    title?: string;
     children?: React.ReactNode;
     verticalHeader?: boolean;
+    isEmpty?: boolean;
 };
 
 export const PositionInfoCard = ({
@@ -14,6 +15,7 @@ export const PositionInfoCard = ({
     title,
     children,
     verticalHeader = false,
+    isEmpty = false,
 }: PositionInfoCardProps) => {
     const headerClass = clsx(
         'mb-6 flex',
@@ -22,8 +24,21 @@ export const PositionInfoCard = ({
     return (
         <Card className='flex max-w-none flex-col justify-between p-6'>
             <div className={headerClass}>
-                <div className='flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-50'>
-                    <Icon className='h-6 w-6 text-primary-500' />
+                <div
+                    className={clsx(
+                        'flex items-center justify-center',
+                        isEmpty
+                            ? 'h-20 w-20 rounded-full border-[1.54px] border-neutral-200 bg-neutral-100'
+                            : 'h-10 w-10 rounded-[9.23px] border-[0.77px] border-transparent bg-tertiary-50'
+                    )}
+                >
+                    <Icon
+                        className={clsx(
+                            isEmpty
+                                ? 'h-10 w-10 text-neutral-400'
+                                : 'h-6 w-6 text-primary-500'
+                        )}
+                    />
                 </div>
                 <h3 className='text-xl font-semibold text-neutral-900'>
                     {title}

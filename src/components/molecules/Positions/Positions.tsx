@@ -3,6 +3,7 @@ import { Layers2, Vault } from 'lucide-react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
+import { EmptyPosition } from '../EmptyPosition';
 import { PositionInfoCard } from '../PositionInfoCard';
 
 interface PositionsProps {
@@ -32,113 +33,143 @@ export const Positions = ({
         debtTokenInStabilityPool
     );
 
+    const hasTrove = !trove.isEmpty;
+    const hasStabilityDeposit = !originalDeposit.currentDebtToken.isZero;
+
     return (
         <div>
             <h2 className='text-2xl mb-3 text-left font-semibold leading-none text-neutral-900'>
                 My Positions
             </h2>
             <div className='sm:gap-6 grid grid-cols-1 justify-items-center gap-4 tablet:grid-cols-2'>
-                <PositionInfoCard icon={Vault} title='Trove'>
-                    <InfoBlock
-                        label='Total Debt'
-                        value={
-                            <>
-                                {trove.debt.prettify()} <USDFCIcon />{' '}
-                                <span>USDFC</span>
-                            </>
-                        }
-                    />
-                    <div className='space-y-3 text-sm text-neutral-700'>
-                        <InfoRow
-                            label='Collateral'
+                {hasTrove ? (
+                    <PositionInfoCard icon={Vault} title='Trove'>
+                        <InfoBlock
+                            label='Total Debt'
                             value={
-                                <span className='flex items-center gap-1'>
-                                    {trove.collateral.prettify()} <FILIcon />
-                                    <span>FIL</span>
-                                </span>
-                            }
-                        />
-                        <InfoRow
-                            label='Collateral Ratio'
-                            value={
-                                collateralRatio
-                                    ? `${collateralRatio.mul(100).prettify(1)}%`
-                                    : '%'
-                            }
-                        />
-                        <InfoRow
-                            label='Liquidation Risk'
-                            value={
-                                <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
-                                    Low
-                                </span>
-                            }
-                        />
-                    </div>
-                    <Button
-                        href='/trove'
-                        data-testid='button-link'
-                        size={ButtonSizes.md}
-                        variant={ButtonVariants.tertiary}
-                        className='mt-6 w-full text-sm'
-                        external={false}
-                    >
-                        Manage Trove
-                    </Button>
-                </PositionInfoCard>
-
-                <PositionInfoCard icon={Layers2} title='Stability Pool'>
-                    <InfoBlock
-                        label='Liquidation Gain'
-                        value={`${liquidationGains}`}
-                        icon={
-                            <>
-                                <FILIcon />
-                                <span>FIL</span>
-                            </>
-                        }
-                    />
-                    <div className='space-y-3 text-sm text-neutral-700'>
-                        <InfoRow
-                            label='Deposit'
-                            value={
-                                <span className='flex items-center gap-1'>
-                                    {originalDeposit.currentDebtToken.prettify()}{' '}
-                                    <USDFCIcon />
+                                <>
+                                    {trove.debt.prettify()} <USDFCIcon />{' '}
                                     <span>USDFC</span>
-                                </span>
+                                </>
                             }
                         />
-                        <InfoRow
-                            label='Pool Share'
-                            value={`${originalPoolShare.prettify()}%`}
-                        />
-                    </div>
-                    <div className='mt-6 flex gap-2 tablet:gap-3'>
+                        <div className='space-y-3 text-sm text-neutral-700'>
+                            <InfoRow
+                                label='Collateral'
+                                value={
+                                    <span className='flex items-center gap-1'>
+                                        {trove.collateral.prettify()}{' '}
+                                        <FILIcon />
+                                        <span>FIL</span>
+                                    </span>
+                                }
+                            />
+                            <InfoRow
+                                label='Collateral Ratio'
+                                value={
+                                    collateralRatio
+                                        ? `${collateralRatio
+                                              .mul(100)
+                                              .prettify(1)}%`
+                                        : '%'
+                                }
+                            />
+                            <InfoRow
+                                label='Liquidation Risk'
+                                value={
+                                    <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
+                                        Low
+                                    </span>
+                                }
+                            />
+                        </div>
                         <Button
-                            href='/stability-pool'
+                            href='/trove'
+                            data-testid='button-link'
                             size={ButtonSizes.md}
                             variant={ButtonVariants.tertiary}
-                            className='flex-1 text-xs tablet:text-sm'
+                            className='mt-6 w-full text-sm'
                             external={false}
                         >
-                            <span className='hidden tablet:inline'>
-                                Manage Deposit
-                            </span>
-                            <span className='inline tablet:hidden'>Manage</span>
+                            Manage Trove
                         </Button>
-                        <Button
-                            className='flex-1 text-xs tablet:text-sm'
-                            size={ButtonSizes.md}
-                            variant={ButtonVariants.secondary}
-                        >
-                            <span className='hidden tablet:inline'>
-                                Claim Gains
-                            </span>
-                            <span className='inline tablet:hidden'>Claim</span>
-                        </Button>
-                    </div>
-                </PositionInfoCard>
+                    </PositionInfoCard>
+                ) : (
+                    <EmptyPosition
+                        icon={Vault}
+                        title='Trove Yet'
+                        description='A Trove is your personal vault where you can deposit FIL as collateral to borrow USDFC with 0% interest, while maintaining exposure to FIL.'
+                        buttonText='Create Trove'
+                        buttonHref='/trove'
+                    />
+                )}
+
+                {hasStabilityDeposit ? (
+                    <PositionInfoCard icon={Layers2} title='Stability Pool'>
+                        <InfoBlock
+                            label='Liquidation Gain'
+                            value={`${liquidationGains}`}
+                            icon={
+                                <>
+                                    <FILIcon />
+                                    <span>FIL</span>
+                                </>
+                            }
+                        />
+                        <div className='space-y-3 text-sm text-neutral-700'>
+                            <InfoRow
+                                label='Deposit'
+                                value={
+                                    <span className='flex items-center gap-1'>
+                                        {originalDeposit.currentDebtToken.prettify()}{' '}
+                                        <USDFCIcon />
+                                        <span>USDFC</span>
+                                    </span>
+                                }
+                            />
+                            <InfoRow
+                                label='Pool Share'
+                                value={`${originalPoolShare.prettify()}%`}
+                            />
+                        </div>
+                        <div className='mt-6 flex gap-2 tablet:gap-3'>
+                            <Button
+                                href='/stability-pool'
+                                size={ButtonSizes.md}
+                                variant={ButtonVariants.tertiary}
+                                className='flex-1 text-xs tablet:text-sm'
+                                external={false}
+                            >
+                                <span className='hidden tablet:inline'>
+                                    Manage Deposit
+                                </span>
+                                <span className='inline tablet:hidden'>
+                                    Manage
+                                </span>
+                            </Button>
+                            <Button
+                                className='flex-1 text-xs tablet:text-sm'
+                                size={ButtonSizes.md}
+                                variant={ButtonVariants.secondary}
+                            >
+                                <span className='hidden tablet:inline'>
+                                    Claim Gains
+                                </span>
+                                <span className='inline tablet:hidden'>
+                                    Claim
+                                </span>
+                            </Button>
+                        </div>
+                    </PositionInfoCard>
+                ) : (
+                    <EmptyPosition
+                        icon={Layers2}
+                        title='Stability Pool Deposit Yet'
+                        description='Deposit USDFC to earn FIL rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.'
+                        buttonText='Deposit'
+                        buttonHref='/stability-pool'
+                    />
+                )}
             </div>
         </div>
     );
