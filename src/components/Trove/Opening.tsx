@@ -179,7 +179,14 @@ export const Opening: React.FC = () => {
                     setBorrowAmount(parsed);
                     setBorrowAmountInput(parsed.prettify());
                 }}
-                outputTokenIcon={<USDFCIconLarge />}
+                outputTokenIcon={
+                    <>
+                        <USDFCIconLarge />
+                        <span className='text-2xl font-medium leading-none text-neutral-900'>
+                            USDFC
+                        </span>
+                    </>
+                }
                 outputSubLabel={`$${borrowAmount.prettify()}`}
                 isConnected={isConnected}
                 maxValue={maxCollateral.prettify()}
@@ -277,6 +284,7 @@ export const Opening: React.FC = () => {
                                     {LIQUIDATION_RESERVE.toString()}
                                 </span>
                                 <USDFCIcon />
+                                <span>USDFC</span>
                             </div>
                         </div>
                     </div>
@@ -300,6 +308,8 @@ export const Opening: React.FC = () => {
                                 </span>
                                 <USDFCIcon />
 
+                                <span>USDFC</span>
+
                                 <span className='ml-1 text-sm font-normal text-neutral-450'>
                                     {feePct.prettify()}
                                 </span>
@@ -317,6 +327,8 @@ export const Opening: React.FC = () => {
                             {totalDebt.prettify()}
                         </span>
                         <USDFCIcon />
+
+                        <span>USDFC</span>
                     </div>
                 </div>
             </div>

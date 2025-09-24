@@ -50,7 +50,7 @@ export function StabilityAmountInput({
                         </div>
                     )}
                 </div>
-                <div className='flex items-center gap-2'>
+                <div className='mt-2 flex items-center gap-2'>
                     <span>
                         {maxAmount.prettify(2)} {COIN}
                     </span>
