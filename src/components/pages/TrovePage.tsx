@@ -33,7 +33,7 @@ export const TrovePage = () => {
                                 >
                                     <Icon
                                         name='info-circle'
-                                        className='h-4 w-4 cursor-pointer text-blue-500'
+                                        className='h-4 w-4 cursor-pointer text-neutral-400 hover:text-blue-500'
                                     />
                                 </CustomTooltip>
                             </div>
