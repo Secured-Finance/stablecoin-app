@@ -13,6 +13,7 @@ import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
 import { Icon } from 'src/components/Icon';
+import { openDocumentation } from 'src/constants';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
 import { StabilityAmountInput } from './StabilityAmountInput';
@@ -259,7 +260,9 @@ export const StabilityManageView = () => {
                                 <CustomTooltip
                                     title='Pool Share'
                                     description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
-                                    buttonText='Read more'
+                                    onButtonClick={() =>
+                                        openDocumentation('stabilityPool')
+                                    }
                                     position='top'
                                 >
                                     <Icon
@@ -317,7 +320,9 @@ export const StabilityManageView = () => {
                                 <CustomTooltip
                                     title='Pool Share'
                                     description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
-                                    buttonText='Read more'
+                                    onButtonClick={() =>
+                                        openDocumentation('stabilityPool')
+                                    }
                                     position='top'
                                 >
                                     <Icon

@@ -9,6 +9,7 @@ import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useTransactionFunction, useMyTransactionState } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
 import { Icon } from 'src/components/Icon';
+import { openDocumentation } from 'src/constants';
 
 export function StabilityStats({
     originalDeposit,
@@ -60,6 +61,7 @@ export function StabilityStats({
                         title: 'Pool Share',
                         description:
                             'Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.',
+                        onButtonClick: () => openDocumentation('stabilityPool'),
                     }}
                 >
                     {originalPoolShare.prettify()}%
@@ -110,7 +112,6 @@ function Stat({
                     <CustomTooltip
                         title={tooltip.title}
                         description={tooltip.description}
-                        buttonText='Read more'
                         onButtonClick={tooltip.onButtonClick}
                         position='top'
                     >

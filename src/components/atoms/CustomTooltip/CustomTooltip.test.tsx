@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor, act } from 'src/test-utils.js';
 import * as stories from './CustomTooltip.stories';
 
-const { Default, WithCustomButton, WithoutButton } = composeStories(stories);
+const { Default, WithCustomButton } = composeStories(stories);
 
 const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -41,20 +41,6 @@ describe('CustomTooltip Component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Learn More')).toBeInTheDocument();
-        });
-    });
-
-    it('should not show button when buttonText is undefined', async () => {
-        render(<WithoutButton />);
-        const icon = screen.getByTestId('custom-tooltip-icon');
-
-        await act(async () => {
-            await userEvent.hover(icon);
-        });
-
-        await waitFor(() => {
-            expect(screen.getByText('No Button Tooltip')).toBeInTheDocument();
-            expect(screen.queryByRole('button')).not.toBeInTheDocument();
         });
     });
 

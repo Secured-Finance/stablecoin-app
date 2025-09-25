@@ -16,7 +16,7 @@ interface CustomTooltipProps extends Pick<TippyProps, 'placement'> {
 export const CustomTooltip: React.FC<CustomTooltipProps> = ({
     title,
     description,
-    buttonText,
+    buttonText = 'Read more',
     onButtonClick,
     children,
     position = 'top',
@@ -45,15 +45,13 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
                                 {description}
                             </p>
                         </div>
-                        {buttonText !== undefined && (
-                            <button
-                                onClick={handleButtonClick}
-                                type='button'
-                                className='flex h-8 items-center justify-center gap-2 rounded-lg border border-[#6F707E] bg-[#52535C] px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#5A5B64] tablet:h-9 tablet:rounded-xl tablet:px-4 tablet:py-2.5 tablet:text-sm'
-                            >
-                                {buttonText || 'Read more'}
-                            </button>
-                        )}
+                        <button
+                            onClick={handleButtonClick}
+                            type='button'
+                            className='flex h-8 items-center justify-center gap-2 rounded-lg border border-[#6F707E] bg-[#52535C] px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#5A5B64] tablet:h-9 tablet:rounded-xl tablet:px-4 tablet:py-2.5 tablet:text-sm'
+                        >
+                            {buttonText}
+                        </button>
                     </div>
                 </div>
             )}

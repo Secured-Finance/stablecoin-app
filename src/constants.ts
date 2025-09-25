@@ -20,12 +20,26 @@ export const HEADER_LINKS = [
 export const DOCUMENTATION_LINK =
     'https://docs.secured.finance/stablecoin-protocol-guide';
 
+const USDFC_DOCS_BASE = 'https://docs.secured.finance/usdfc-stablecoin';
+
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
 export const DOCUMENTATION_LINKS = {
     liquidation: `${DOCUMENTATION_LINK}/key-features/stability-pool-and-liquidation#what-are-liquidations`,
     redemption: `${DOCUMENTATION_LINK}/key-features/redemption`,
     recoveryMode: `${DOCUMENTATION_LINK}/key-features/recovery-mode`,
+    troveSystem: `${USDFC_DOCS_BASE}/core-mechanics/the-trove-system`,
+    stabilityPool: `${USDFC_DOCS_BASE}/getting-started/using-the-stability-pool`,
+    collateralRatio: `${USDFC_DOCS_BASE}/getting-started/monitoring-your-position#collateral-ratio`,
+    liquidationMechanics: `${USDFC_DOCS_BASE}/core-mechanics/liquidation`,
+    liquidationReserve: `${USDFC_DOCS_BASE}/core-mechanics/mint-and-borrow#id-1.-liquidation-reserve`,
+    borrowingFee: `${USDFC_DOCS_BASE}/core-mechanics/the-trove-system#debt-calculations`,
+};
+
+export const openDocumentation = (
+    section: keyof typeof DOCUMENTATION_LINKS
+) => {
+    window.open(DOCUMENTATION_LINKS[section], '_blank');
 };
 
 export const BLOCKCHAIN_EXPLORER_LINKS = {

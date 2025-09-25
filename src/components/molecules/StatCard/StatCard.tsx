@@ -9,7 +9,6 @@ interface StatCardProps {
     tooltip?: {
         title: string;
         description: string;
-        buttonText?: string;
         onButtonClick?: () => void;
     };
 }
@@ -32,7 +31,6 @@ export const StatCard = ({
                             <CustomTooltip
                                 title={tooltip.title}
                                 description={tooltip.description}
-                                buttonText='Read more'
                                 onButtonClick={tooltip.onButtonClick}
                                 position='top'
                             >

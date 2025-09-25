@@ -5,6 +5,7 @@ import { Opening } from 'src/components/Trove/Opening';
 import { Trove } from 'src/components/organisms/Trove/Trove';
 import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
 import { Icon } from 'src/components/Icon';
+import { openDocumentation } from 'src/constants';
 
 export const TrovePage = () => {
     const { isConnected } = useAccount();
@@ -25,9 +26,8 @@ export const TrovePage = () => {
                                 <CustomTooltip
                                     title='Trove'
                                     description='A personal vault where you deposit FIL as collateral to borrow USDFC. It must maintain a minimum collateral ratio of 110% to avoid liquidation.'
-                                    buttonText='Read more'
                                     onButtonClick={() =>
-                                        alert('Learn more about Troves!')
+                                        openDocumentation('troveSystem')
                                     }
                                     position='bottom'
                                 >

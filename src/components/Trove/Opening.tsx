@@ -25,6 +25,7 @@ import {
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { StatCard } from 'src/components/molecules/StatCard';
+import { openDocumentation } from 'src/constants';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -234,6 +235,8 @@ export const Opening: React.FC = () => {
                         title: 'Collateral Ratio',
                         description:
                             'The ratio of deposited FIL to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.',
+                        onButtonClick: () =>
+                            openDocumentation('collateralRatio'),
                     }}
                 />
 
@@ -256,6 +259,8 @@ export const Opening: React.FC = () => {
                         title: 'Liquidation Risk',
                         description:
                             'The risk of losing your FIL collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.',
+                        onButtonClick: () =>
+                            openDocumentation('liquidationMechanics'),
                     }}
                 />
 
@@ -275,6 +280,8 @@ export const Opening: React.FC = () => {
                         title: 'Liquidation Reserve',
                         description:
                             'A small deposit set aside when opening a trove. It ensures funds are available for liquidation costs and is refunded upon full repayment.',
+                        onButtonClick: () =>
+                            openDocumentation('liquidationReserve'),
                     }}
                 />
 
@@ -299,6 +306,7 @@ export const Opening: React.FC = () => {
                         title: 'Borrowing Fee',
                         description:
                             'A one-time fee charged when borrowing USDFC, calculated as a percentage of the loan amount. It varies based on system conditions and helps maintain protocol stability.',
+                        onButtonClick: () => openDocumentation('borrowingFee'),
                     }}
                 />
             </div>

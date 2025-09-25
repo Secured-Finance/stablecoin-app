@@ -18,7 +18,6 @@ export default {
         title: 'Sample Title',
         description:
             'This is a sample description for the custom tooltip component.',
-        buttonText: 'Read more',
         children: InformationIcon,
     },
     parameters: {
@@ -108,23 +107,6 @@ RightPosition.play = async ({ canvasElement }) => {
     const icon = await canvas.findByTestId('custom-tooltip-icon');
     await userEvent.unhover(icon);
     await userEvent.hover(icon);
-};
-
-export const WithoutButton = Template.bind({});
-WithoutButton.args = {
-    buttonText: undefined,
-    title: 'No Button Tooltip',
-    description: 'This tooltip has no button at the bottom.',
-};
-WithoutButton.play = async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const icon = await canvas.findByTestId('custom-tooltip-icon');
-    await userEvent.unhover(icon);
-    await userEvent.hover(icon);
-    await waitFor(async () => {
-        await expect(screen.getByText('No Button Tooltip')).toBeInTheDocument();
-        await expect(screen.queryByRole('button')).not.toBeInTheDocument();
-    });
 };
 
 export const LongContent = Template.bind({});
