@@ -1,5 +1,5 @@
 import { ArrowDown } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 
@@ -20,6 +20,7 @@ interface TokenBoxProps {
     children?: React.ReactNode;
     maxValue?: string;
     onMaxClick?: () => void;
+    autoFocusInput?: boolean;
 }
 export const TokenBox = ({
     inputLabel,
@@ -38,9 +39,18 @@ export const TokenBox = ({
     children,
     maxValue,
     onMaxClick,
+    autoFocusInput,
 }: TokenBoxProps) => {
-    const [inputEditing, setInputEditing] = useState(false);
+    const [inputEditing, setInputEditing] = useState(autoFocusInput || false);
     const [outputEditing, setOutputEditing] = useState(false);
+
+    // Auto focus input on mount if autoFocusInput is true
+    useEffect(() => {
+        if (autoFocusInput && isConnected) {
+            // Small delay to ensure DOM is ready
+            setTimeout(() => setInputEditing(true), 0);
+        }
+    }, [autoFocusInput, isConnected]);
 
     // Parse strings to Decimals for display
     const cleanInputValue = inputValue?.replace(/,/g, '') || '';
@@ -54,6 +64,17 @@ export const TokenBox = ({
         cleanOutputValue && cleanOutputValue !== '' && cleanOutputValue !== '.'
             ? Decimal.from(cleanOutputValue) || Decimal.ZERO
             : Decimal.ZERO;
+
+    // Get clean values for editing (removing commas and keeping raw numbers)
+    const getCleanInputValue = () => {
+        const clean = inputValue?.replace(/,/g, '') || '';
+        return clean === '' || clean === '0' ? '' : clean;
+    };
+
+    const getCleanOutputValue = () => {
+        const clean = outputValue?.replace(/,/g, '') || '';
+        return clean === '' || clean === '0' ? '' : clean;
+    };
 
     return (
         <div className='w-full'>
@@ -70,7 +91,7 @@ export const TokenBox = ({
                                 type='number'
                                 step='any'
                                 className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                                defaultValue={inputDecimal.prettify()}
+                                defaultValue={getCleanInputValue()}
                                 onChange={e => {
                                     const value = e.target.value;
                                     // Only allow numbers and decimal point
@@ -151,7 +172,7 @@ export const TokenBox = ({
                                     type='number'
                                     step='any'
                                     className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                                    defaultValue={outputDecimal.prettify()}
+                                    defaultValue={getCleanOutputValue()}
                                     onChange={e => {
                                         const value = e.target.value;
                                         // Only allow numbers and decimal point

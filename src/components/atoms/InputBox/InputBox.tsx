@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
+import { Button, ButtonSizes, ButtonVariants } from '../index';
 
 interface InputBoxProps {
     label: string;
@@ -13,6 +14,9 @@ interface InputBoxProps {
     onFocus?: () => void;
     onBlur?: () => void;
     autoFocus?: boolean;
+    maxValue?: string;
+    onMaxClick?: () => void;
+    maxToken?: string;
 }
 
 export const InputBox = ({
@@ -26,9 +30,20 @@ export const InputBox = ({
     readOnly = false,
     onFocus,
     onBlur,
+    autoFocus = false,
+    maxValue,
+    onMaxClick,
+    maxToken,
 }: InputBoxProps) => {
-    const [editing, setEditing] = useState(false);
+    const [editing, setEditing] = useState(autoFocus && !disabled && !readOnly);
     const [editedValue, setEditedValue] = useState(value);
+
+    // Auto focus on mount if autoFocus is true
+    useEffect(() => {
+        if (autoFocus && !disabled && !readOnly) {
+            setEditing(true);
+        }
+    }, [autoFocus, disabled, readOnly]);
 
     // Sync edited value when parent value changes and not editing
     React.useEffect(() => {
@@ -65,7 +80,7 @@ export const InputBox = ({
                     {editing ? (
                         <input
                             // eslint-disable-next-line jsx-a11y/no-autofocus
-                            autoFocus
+                            autoFocus={autoFocus}
                             type={type}
                             step='any'
                             value={editedValue}
@@ -117,9 +132,25 @@ export const InputBox = ({
                     </div>
                 )}
             </div>
-            {subLabel && (
-                <p className='mt-1 text-sm text-neutral-450'>{subLabel}</p>
-            )}
+            <div className='mt-2 flex items-center justify-between'>
+                {subLabel && (
+                    <p className='text-sm text-neutral-450'>{subLabel}</p>
+                )}
+                {maxValue && onMaxClick && !disabled && (
+                    <div className='flex items-center gap-2 text-sm text-neutral-350'>
+                        <span>
+                            {maxValue} {maxToken}
+                        </span>
+                        <Button
+                            onClick={onMaxClick}
+                            size={ButtonSizes.pill}
+                            variant={ButtonVariants.pill}
+                        >
+                            Max
+                        </Button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

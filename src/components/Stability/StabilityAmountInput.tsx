@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { useEffect, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
@@ -15,6 +13,8 @@ export function StabilityAmountInput({
     onMaxClick,
     disabled,
     currentBalance,
+    autoFocus = true,
+    focusKey,
 }: {
     label: string;
     displayAmount: string;
@@ -23,13 +23,21 @@ export function StabilityAmountInput({
     onMaxClick: () => void;
     disabled: boolean;
     currentBalance?: Decimal;
+    autoFocus?: boolean;
+    focusKey?: string | number;
 }) {
     const { isConnected } = useAccount();
-    const [editing, setEditing] = useState(false);
+    const [editing, setEditing] = useState(autoFocus);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [editedAmount, setEditedAmount] = useState(displayAmount);
 
-    // Sync with parent changes when not editing
+    // Auto focus on mount or when focusKey changes if autoFocus is true
+    useEffect(() => {
+        if (autoFocus && isConnected && !disabled) {
+            setEditing(true);
+        }
+    }, [autoFocus, isConnected, disabled, focusKey]);
+
     useEffect(() => {
         if (!editing) {
             setEditedAmount(displayAmount);
@@ -42,9 +50,8 @@ export function StabilityAmountInput({
             ? Decimal.from(cleanAmount) || Decimal.ZERO
             : Decimal.ZERO;
 
-    // Get clean value for editing - Decimal.toString() is already clean
     const getCleanEditingValue = () =>
-        decimal.isZero ? '0' : decimal.toString();
+        decimal.isZero ? '0.00' : decimal.toString();
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
@@ -53,14 +60,13 @@ export function StabilityAmountInput({
                 {editing ? (
                     <input
                         // eslint-disable-next-line jsx-a11y/no-autofocus
-                        autoFocus
+                        autoFocus={true}
                         className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
                         type='number'
                         step='any'
                         defaultValue={getCleanEditingValue()}
                         onChange={e => {
                             const value = e.target.value;
-                            // Only allow numbers and decimal point
                             if (/^[0-9]*\.?[0-9]*$/.test(value)) {
                                 setEditedAmount(value);
                                 handleInputChange(value);
@@ -74,6 +80,14 @@ export function StabilityAmountInput({
                     <div
                         className='w-full cursor-text text-8 font-semibold text-neutral-900'
                         onClick={() => !disabled && setEditing(true)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                !disabled && setEditing(true);
+                            }
+                        }}
+                        role='button'
+                        tabIndex={disabled ? -1 : 0}
                     >
                         {displayAmount && displayAmount !== '0'
                             ? decimal.prettify(2)

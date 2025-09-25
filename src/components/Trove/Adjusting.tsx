@@ -33,6 +33,7 @@ const selector = (state: SfStablecoinStoreState) => {
 };
 
 const TRANSACTION_ID = 'trove-adjustment';
+const GAS_ROOM_ETH = Decimal.from(0.1);
 
 const feeFrom = (
     original: Trove,
@@ -90,7 +91,7 @@ const applyUnsavedNetDebtChanges = (
 
 export const Adjusting: React.FC = () => {
     const { dispatchEvent } = useTroveView();
-    const { trove, fees, price, validationContext } =
+    const { trove, fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
 
     const previousTrove = useRef<Trove>(trove);
@@ -110,6 +111,13 @@ export const Adjusting: React.FC = () => {
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
     const borrowingRate = fees.borrowingRate();
+
+    // Calculate max collateral including current trove collateral + available account balance minus gas room
+    const maxCollateral = trove.collateral.add(
+        accountBalance.gt(GAS_ROOM_ETH)
+            ? accountBalance.sub(GAS_ROOM_ETH)
+            : Decimal.ZERO
+    );
 
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
@@ -308,8 +316,14 @@ export const Adjusting: React.FC = () => {
                                 </>
                             }
                             subLabel={`$${collateral.mul(price).prettify()}`}
+                            maxValue={maxCollateral.prettify()}
+                            maxToken='FIL'
+                            onMaxClick={() => {
+                                setCollateral(maxCollateral);
+                                setCollateralInput(maxCollateral.prettify());
+                            }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
-                            autoFocus
+                            autoFocus={true}
                         />
 
                         <InputBox
@@ -337,6 +351,8 @@ export const Adjusting: React.FC = () => {
                                 </>
                             }
                             subLabel={`$${totalDebt.prettify()}`}
+                            // eslint-disable-next-line jsx-a11y/no-autofocus
+                            autoFocus={false}
                         />
                     </div>
 

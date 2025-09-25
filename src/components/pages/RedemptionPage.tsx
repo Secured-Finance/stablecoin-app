@@ -151,6 +151,7 @@ export const RedemptionPage = () => {
                     <TokenBox
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
+                        autoFocusInput={true}
                         onInputChange={setRedeemAmount}
                         inputTokenIcon={
                             <>
@@ -173,7 +174,7 @@ export const RedemptionPage = () => {
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
-                            setRedeemAmount(debtTokenBalance.toString());
+                            setRedeemAmount(debtTokenBalance.prettify());
                         }}
                         isConnected={isConnected}
                     >

@@ -47,12 +47,32 @@ export const Opening: React.FC = () => {
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
 
-    const [collateral, setCollateral] = useState<Decimal>(Decimal.ZERO);
-    const [borrowAmount, setBorrowAmount] = useState<Decimal>(Decimal.ZERO);
-
-    const [collateralInput, setCollateralInput] = useState('0.00');
-    const [borrowAmountInput, setBorrowAmountInput] = useState('0.00');
+    const [collateralInput, setCollateralInput] = useState('');
+    const [borrowAmountInput, setBorrowAmountInput] = useState('');
     const [borrowEditedManually, setBorrowEditedManually] = useState(false);
+
+    // Parse inputs to decimals safely
+    const collateral = (() => {
+        try {
+            const cleanValue = collateralInput?.replace(/,/g, '') || '0';
+            return cleanValue && cleanValue !== ''
+                ? Decimal.from(cleanValue)
+                : Decimal.ZERO;
+        } catch {
+            return Decimal.ZERO;
+        }
+    })();
+
+    const borrowAmount = (() => {
+        try {
+            const cleanValue = borrowAmountInput?.replace(/,/g, '') || '0';
+            return cleanValue && cleanValue !== ''
+                ? Decimal.from(cleanValue)
+                : Decimal.ZERO;
+        } catch {
+            return Decimal.ZERO;
+        }
+    })();
 
     const maxBorrowingRate = borrowingRate.add(0.005);
 
@@ -120,22 +140,22 @@ export const Opening: React.FC = () => {
             <TokenBox
                 inputLabel='Collateral'
                 inputValue={collateralInput}
+                autoFocusInput={true}
                 onInputChange={value => {
-                    if (value.trim() === '') {
-                        setCollateral(Decimal.ZERO);
-                        setCollateralInput('');
-                        return;
-                    }
                     setCollateralInput(value);
-                    const parsed = Decimal.from(value);
-                    if (parsed) setCollateral(parsed);
                 }}
                 onInputBlur={() => {
-                    // If user hasn't manually edited borrow amount or it's empty, compute a recommended value
+                    // Handle negative values by setting to 0
+                    if (collateral.lt(Decimal.ZERO)) {
+                        setCollateralInput('0');
+                        return;
+                    }
+
+                    // If user hasn't manually edited borrow amount, compute a recommended value
                     if (
                         !borrowEditedManually ||
                         !borrowAmountInput ||
-                        borrowAmountInput === '0' ||
+                        borrowAmountInput === '' ||
                         borrowAmount.isZero
                     ) {
                         if (!collateral.isZero) {
@@ -152,7 +172,6 @@ export const Opening: React.FC = () => {
                             const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
-                            setBorrowAmount(finalDebt);
                             setBorrowAmountInput(finalDebt.prettify());
                         }
                     }
@@ -171,15 +190,12 @@ export const Opening: React.FC = () => {
                 onOutputChange={value => {
                     setBorrowEditedManually(true);
                     setBorrowAmountInput(value);
-                    const parsed = Decimal.from(value || '0');
-                    if (parsed) setBorrowAmount(parsed);
                 }}
                 onOutputBlur={() => {
-                    // Normalize formatting on blur only; do not override user intent
-                    const parsed =
-                        Decimal.from(borrowAmountInput || '0') || Decimal.ZERO;
-                    setBorrowAmount(parsed);
-                    setBorrowAmountInput(parsed.prettify());
+                    // Handle negative values by setting to 0
+                    if (borrowAmount.lt(Decimal.ZERO)) {
+                        setBorrowAmountInput('0');
+                    }
                 }}
                 outputTokenIcon={
                     <>
@@ -193,7 +209,6 @@ export const Opening: React.FC = () => {
                 isConnected={isConnected}
                 maxValue={maxCollateral.prettify()}
                 onMaxClick={() => {
-                    setCollateral(maxCollateral);
                     setCollateralInput(maxCollateral.prettify());
                     // On explicit Max, recompute recommended borrow amount only if user hasn't edited manually
                     if (!borrowEditedManually) {
@@ -211,7 +226,6 @@ export const Opening: React.FC = () => {
                             const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
-                            setBorrowAmount(finalDebt);
                             setBorrowAmountInput(finalDebt.prettify());
                         }
                     }

@@ -17,8 +17,11 @@ import {
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Tooltip, TransactionModal } from 'src/components/atoms';
+import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { useSfStablecoin } from 'src/hooks';
+import { isProdEnv } from 'src/utils';
 import type { TooltipProps } from './Tooltip';
+import { useChainId } from 'wagmi';
 
 type TransactionIdle = {
     type: 'idle';
@@ -265,6 +268,7 @@ const tryToGetRevertReason = async (
 export const TransactionMonitor: React.FC = () => {
     const { provider } = useSfStablecoin();
     const [transactionState, setTransactionState] = useTransactionState();
+    const chainId = useChainId();
 
     const id =
         transactionState.type !== 'idle' ? transactionState.id : undefined;
@@ -277,10 +281,18 @@ export const TransactionMonitor: React.FC = () => {
         return tx?.rawSentTransaction.hash;
     };
 
+    const getExplorerUrl = () => {
+        const isMainnet = chainId === 314 || isProdEnv();
+        return isMainnet
+            ? BLOCKCHAIN_EXPLORER_LINKS.mainnet
+            : BLOCKCHAIN_EXPLORER_LINKS.testnet;
+    };
+
     const handleViewTransaction = () => {
         const hash = getTransactionHash();
         if (hash) {
-            window.open(`https://filfox.info/tx/${hash}`, '_blank');
+            const explorerUrl = getExplorerUrl();
+            window.open(`${explorerUrl}/tx/${hash}`, '_blank');
         }
     };
 

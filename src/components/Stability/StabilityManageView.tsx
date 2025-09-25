@@ -231,6 +231,7 @@ export const StabilityManageView = () => {
                 }
                 disabled={isDisabled}
                 currentBalance={debtTokenBalance}
+                focusKey={activeTab}
                 onMaxClick={() => {
                     if (activeTab === 'withdraw') {
                         const maxWithdraw = originalDeposit.currentDebtToken;
