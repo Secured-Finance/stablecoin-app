@@ -35,10 +35,16 @@ export const RedemptionPage = () => {
     const { sfStablecoin } = useSfStablecoin();
     const myTransactionState = useMyTransactionState('redeem');
 
-    const [redeemAmount, setRedeemAmount] = useState('0.00');
-    const [redeemAmountDecimal, setRedeemAmountDecimal] = useState(
-        Decimal.from(0)
-    );
+    const [redeemAmount, setRedeemAmount] = useState('0');
+
+    // Parse string to Decimal for calculations
+    const cleanRedeemAmount = redeemAmount?.replace(/,/g, '') || '';
+    const redeemAmountDecimal =
+        cleanRedeemAmount &&
+        cleanRedeemAmount !== '' &&
+        cleanRedeemAmount !== '.'
+            ? Decimal.from(cleanRedeemAmount) || Decimal.ZERO
+            : Decimal.ZERO;
     const [truncatedUSDFC, setTruncatedUSDFC] = useState(Decimal.from(0));
     const [changePending, setChangePending] = useState(false);
     const [hintsPending, setHintsPending] = useState(false);
@@ -96,8 +102,7 @@ export const RedemptionPage = () => {
         } else {
             setChangePending(false);
             if (myTransactionState.type === 'confirmed') {
-                setRedeemAmount('0.00');
-                setRedeemAmountDecimal(Decimal.from(0));
+                setRedeemAmount('0');
             }
         }
     }, [myTransactionState.type]);
@@ -146,10 +151,7 @@ export const RedemptionPage = () => {
                     <TokenBox
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
-                        onInputChange={value => {
-                            setRedeemAmount(value);
-                            setRedeemAmountDecimal(Decimal.from(value || '0'));
-                        }}
+                        onInputChange={setRedeemAmount}
                         inputTokenIcon={
                             <>
                                 <USDFCIconLarge />
@@ -171,8 +173,7 @@ export const RedemptionPage = () => {
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
-                            setRedeemAmount(debtTokenBalance.prettify(2));
-                            setRedeemAmountDecimal(debtTokenBalance);
+                            setRedeemAmount(debtTokenBalance.toString());
                         }}
                         isConnected={isConnected}
                     >

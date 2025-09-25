@@ -9,11 +9,11 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { Button, InputBox, TabSwitcher } from 'src/components/atoms';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
-import { useMyTransactionState, useTransactionFunction } from '../Transaction';
+import { useMyTransactionState } from '../Transaction';
 import { TroveAction } from './TroveAction';
 import { useTroveView } from './context/TroveViewContext';
 import {
@@ -92,6 +92,7 @@ export const Adjusting: React.FC = () => {
     const { dispatchEvent } = useTroveView();
     const { trove, fees, price, validationContext } =
         useSfStablecoinSelector(selector);
+
     const previousTrove = useRef<Trove>(trove);
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);
     const [netDebt, setNetDebt] = useState<Decimal>(trove.netDebt);
@@ -105,27 +106,25 @@ export const Adjusting: React.FC = () => {
         'collateral' | 'netDebt' | undefined
     >(undefined);
     const [isClosing, setIsClosing] = useState(false);
+    const [hasAttemptedClose, setHasAttemptedClose] = useState(false);
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
     const borrowingRate = fees.borrowingRate();
 
-    const { sfStablecoin } = useSfStablecoin();
-    const [sendTransaction] = useTransactionFunction(
-        'closure',
-        sfStablecoin.send.closeTrove.bind(sfStablecoin.send)
-    );
-
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
-            dispatchEvent('TROVE_ADJUSTED');
-            // Reset fields to current trove values after successful transaction
-            setCollateral(trove.collateral);
-            setNetDebt(trove.netDebt);
-            setCollateralInput(trove.collateral.prettify());
-            setNetDebtInput(trove.netDebt.prettify());
-            setEditingField(undefined);
+            if (isClosing) {
+                dispatchEvent('TROVE_CLOSED');
+            } else {
+                dispatchEvent('TROVE_ADJUSTED');
+                setCollateral(trove.collateral);
+                setNetDebt(trove.netDebt);
+                setCollateralInput(trove.collateral.prettify());
+                setNetDebtInput(trove.netDebt.prettify());
+                setEditingField(undefined);
+            }
         }
-    }, [transactionState.type, dispatchEvent, trove.collateral, trove.netDebt]);
+    }, [transactionState.type, dispatchEvent, trove, isClosing]);
 
     useEffect(() => {
         if (!previousTrove.current.collateral.eq(trove.collateral)) {
@@ -173,6 +172,7 @@ export const Adjusting: React.FC = () => {
               borrowingRate
           )
         : Decimal.ZERO;
+
     const totalDebt = netDebt.add(LIQUIDATION_RESERVE).add(fee);
     const maxBorrowingRate = borrowingRate.add(0.005);
     const updatedTrove = isDirty ? new Trove(collateral, totalDebt) : trove;
@@ -222,14 +222,40 @@ export const Adjusting: React.FC = () => {
 
     const liquidationRisk = getLiquidationRisk(collateralRatio);
 
+    // Update trove validation
     const [troveChange, description] = validateTroveChange(
         trove,
         updatedTrove,
         borrowingRate,
         validationContext
     );
-
     const stableTroveChange = useStableTroveChange(troveChange);
+
+    // Close trove validation
+    const closingTrove = new Trove(Decimal.ZERO, Decimal.ZERO);
+    const [closeChange, closeDescription] = validateTroveChange(
+        trove,
+        closingTrove,
+        borrowingRate,
+        validationContext
+    );
+    const stableCloseChange = useStableTroveChange(closeChange);
+
+    const shouldShowCloseValidation = isClosing && hasAttemptedClose;
+    const closeValidationError = shouldShowCloseValidation
+        ? closeDescription
+        : null;
+
+    const handleTabChange = (tab: string) => {
+        setIsClosing(tab === 'close');
+        setHasAttemptedClose(false);
+        // Reset inputs to current trove state when switching tabs
+        setCollateral(trove.collateral);
+        setNetDebt(trove.netDebt);
+        setCollateralInput(trove.collateral.prettify());
+        setNetDebtInput(trove.netDebt.prettify());
+        setEditingField(undefined);
+    };
 
     if (trove.status !== 'open') {
         return null;
@@ -237,10 +263,9 @@ export const Adjusting: React.FC = () => {
 
     return (
         <>
-            <div className='mb-4'>{description}</div>
             <TabSwitcher
                 activeTab={isClosing ? 'close' : 'update'}
-                setActiveTab={tab => setIsClosing(tab === 'close')}
+                setActiveTab={handleTabChange}
                 disabled={false}
                 tabs={[
                     { key: 'update', label: 'Update Trove' },
@@ -254,7 +279,9 @@ export const Adjusting: React.FC = () => {
                         Update your Trove by modifying its collateral, borrowed
                         amount, or both.
                     </p>
-
+                    {description && !isClosing && (
+                        <div className='pb-6'>{description}</div>
+                    )}
                     <div className='mb-6'>
                         <InputBox
                             label='Collateral'
@@ -263,9 +290,13 @@ export const Adjusting: React.FC = () => {
                             onFocus={() => setEditingField('collateral')}
                             onBlur={() => setEditingField(undefined)}
                             onChange={value => {
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    setCollateralInput(value);
-                                    setCollateral(Decimal.from(value || '0'));
+                                setCollateralInput(value);
+                                const cleanValue =
+                                    value?.replace(/,/g, '') || '0';
+                                try {
+                                    setCollateral(Decimal.from(cleanValue));
+                                } catch {
+                                    setCollateral(Decimal.ZERO);
                                 }
                             }}
                             tokenIcon={
@@ -288,9 +319,13 @@ export const Adjusting: React.FC = () => {
                             onFocus={() => setEditingField('netDebt')}
                             onBlur={() => setEditingField(undefined)}
                             onChange={value => {
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    setNetDebtInput(value);
-                                    setNetDebt(Decimal.from(value || '0'));
+                                setNetDebtInput(value);
+                                const cleanValue =
+                                    value?.replace(/,/g, '') || '0';
+                                try {
+                                    setNetDebt(Decimal.from(cleanValue));
+                                } catch {
+                                    setNetDebt(Decimal.ZERO);
                                 }
                             }}
                             tokenIcon={
@@ -434,23 +469,34 @@ export const Adjusting: React.FC = () => {
                         />
                     </div>
 
-                    {stableTroveChange ? (
+                    {stableCloseChange && hasAttemptedClose ? (
                         <TroveAction
                             transactionId={'closure'}
-                            change={stableTroveChange}
+                            change={stableCloseChange}
                             maxBorrowingRate={maxBorrowingRate}
                             borrowingFeeDecayToleranceMinutes={60}
                         >
                             Repay & Close Trove
                         </TroveAction>
+                    ) : hasAttemptedClose && !stableCloseChange ? (
+                        <Button
+                            disabled
+                            className='text-lg w-full cursor-not-allowed bg-gray-400 py-4 opacity-50'
+                        >
+                            Repay & Close Trove
+                        </Button>
                     ) : (
                         <Button
-                            onClick={() => sendTransaction()}
+                            onClick={() => setHasAttemptedClose(true)}
                             className='text-lg w-full bg-primary-500 py-4 hover:bg-primary-700'
                         >
                             Repay & Close Trove
                         </Button>
                     )}
+                    {closeValidationError && (
+                        <div className='py-2'>{closeValidationError}</div>
+                    )}
+
                     <p className='mt-2 text-center text-sm text-gray-500'>
                         This action will open your wallet to sign the
                         transaction.

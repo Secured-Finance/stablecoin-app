@@ -14,3 +14,4 @@ export * from './StatItem';
 export * from './TabSwitcher';
 export * from './TokenPrice';
 export * from './Tooltip';
+export * from './TransactionModal';

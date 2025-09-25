@@ -16,10 +16,9 @@ import {
 } from '@secured-finance/stablecoin-lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-import { Tooltip } from 'src/components/atoms';
+import { Tooltip, TransactionModal } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
 import type { TooltipProps } from './Tooltip';
-import { TransactionStatus } from './TransactionStatus';
 
 type TransactionIdle = {
     type: 'idle';
@@ -274,6 +273,67 @@ export const TransactionMonitor: React.FC = () => {
             ? transactionState.tx
             : undefined;
 
+    const getTransactionHash = () => {
+        return tx?.rawSentTransaction.hash;
+    };
+
+    const handleViewTransaction = () => {
+        const hash = getTransactionHash();
+        if (hash) {
+            window.open(`https://filfox.info/tx/${hash}`, '_blank');
+        }
+    };
+
+    const getModalProps = () => {
+        switch (transactionState.type) {
+            case 'waitingForApproval':
+                return {
+                    type: 'confirm' as const,
+                    title: 'Confirm in Your Wallet',
+                    description:
+                        'Please confirm the transaction in your wallet to proceed. If no prompt appears, check your connection and try again.',
+                };
+            case 'waitingForConfirmation':
+                return {
+                    type: 'processing' as const,
+                    title: 'Transaction Processing',
+                    description:
+                        'Your transaction is being processed. This may take 1 to 2 minutes to complete.',
+                    transactionHash: getTransactionHash(),
+                    onViewTransaction: handleViewTransaction,
+                };
+            case 'confirmed':
+                return {
+                    type: 'confirmed' as const,
+                    title: 'Transaction Confirmed',
+                    description:
+                        'Your transaction has been successfully confirmed.',
+                    transactionHash: getTransactionHash(),
+                    onViewTransaction: handleViewTransaction,
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            case 'failed':
+                return {
+                    type: 'failed' as const,
+                    title: 'Transaction Failed',
+                    description: (transactionState as TransactionFailed).error
+                        .message,
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            case 'cancelled':
+                return {
+                    type: 'failed' as const,
+                    title: 'Transaction Cancelled',
+                    description: 'The transaction was cancelled.',
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            default:
+                return null;
+        }
+    };
+
+    const modalProps = getModalProps();
+
     useEffect(() => {
         if (id && tx) {
             let cancelled = false;
@@ -387,21 +447,9 @@ export const TransactionMonitor: React.FC = () => {
         }
     }, [transactionState.type, setTransactionState, id]);
 
-    if (
-        transactionState.type === 'idle' ||
-        transactionState.type === 'waitingForApproval'
-    ) {
+    if (transactionState.type === 'idle' || !modalProps) {
         return null;
     }
 
-    return (
-        <TransactionStatus
-            state={transactionState.type}
-            message={
-                transactionState.type === 'failed'
-                    ? transactionState.error.message
-                    : undefined
-            }
-        />
-    );
+    return <TransactionModal isOpen={true} {...modalProps} />;
 };

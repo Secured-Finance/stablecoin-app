@@ -45,7 +45,9 @@ export function StabilityStats({
         return 'Claim Gains';
     };
 
-    const liquidationGainsDecimal = Decimal.from(liquidationGains || '0');
+    const liquidationGainsDecimal = Decimal.from(
+        (liquidationGains || '0').replace(/,/g, '')
+    );
     const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>

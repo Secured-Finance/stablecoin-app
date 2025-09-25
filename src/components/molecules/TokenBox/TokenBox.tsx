@@ -1,6 +1,7 @@
 import { ArrowDown } from 'lucide-react';
-import React, { useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { Decimal } from '@secured-finance/stablecoin-lib-base';
 
 interface TokenBoxProps {
     inputLabel: string;
@@ -38,13 +39,21 @@ export const TokenBox = ({
     maxValue,
     onMaxClick,
 }: TokenBoxProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [inputEditing, setInputEditing] = useState(false);
+    const [outputEditing, setOutputEditing] = useState(false);
 
-    useEffect(() => {
-        if (isConnected) {
-            inputRef.current?.focus();
-        }
-    }, [isConnected]);
+    // Parse strings to Decimals for display
+    const cleanInputValue = inputValue?.replace(/,/g, '') || '';
+    const inputDecimal =
+        cleanInputValue && cleanInputValue !== '' && cleanInputValue !== '.'
+            ? Decimal.from(cleanInputValue) || Decimal.ZERO
+            : Decimal.ZERO;
+
+    const cleanOutputValue = outputValue?.replace(/,/g, '') || '';
+    const outputDecimal =
+        cleanOutputValue && cleanOutputValue !== '' && cleanOutputValue !== '.'
+            ? Decimal.from(cleanOutputValue) || Decimal.ZERO
+            : Decimal.ZERO;
 
     return (
         <div className='w-full'>
@@ -54,22 +63,47 @@ export const TokenBox = ({
                         <label className='mb-1 block font-primary text-4 font-medium text-neutral-900'>
                             {inputLabel}
                         </label>
-                        <input
-                            type='text'
-                            inputMode='decimal'
-                            className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                            value={inputValue}
-                            ref={inputRef}
-                            onChange={e => {
-                                const value = e.target.value;
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    onInputChange(value);
+                        {inputEditing ? (
+                            <input
+                                // eslint-disable-next-line jsx-a11y/no-autofocus
+                                autoFocus
+                                type='number'
+                                step='any'
+                                className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
+                                defaultValue={inputDecimal.prettify()}
+                                onChange={e => {
+                                    const value = e.target.value;
+                                    // Only allow numbers and decimal point
+                                    if (/^[0-9]*\.?[0-9]*$/.test(value)) {
+                                        onInputChange(value);
+                                    }
+                                }}
+                                onBlur={() => {
+                                    setInputEditing(false);
+                                    onInputBlur?.();
+                                }}
+                                placeholder='0.0'
+                                disabled={!isConnected}
+                            />
+                        ) : (
+                            <div
+                                className='w-full cursor-text text-8 font-semibold text-neutral-900'
+                                onClick={() =>
+                                    isConnected && setInputEditing(true)
                                 }
-                            }}
-                            onBlur={onInputBlur}
-                            placeholder='0.0'
-                            disabled={!isConnected}
-                        />
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        isConnected && setInputEditing(true);
+                                    }
+                                }}
+                                role='button'
+                                tabIndex={isConnected ? 0 : -1}
+                            >
+                                {inputDecimal.isZero
+                                    ? '0.00'
+                                    : inputDecimal.prettify(2)}
+                            </div>
+                        )}
 
                         {inputSubLabel && (
                             <p className='mt-1 text-sm text-neutral-350'>
@@ -110,24 +144,56 @@ export const TokenBox = ({
                             {outputLabel}
                         </label>
                         {onOutputChange ? (
-                            <input
-                                type='text'
-                                inputMode='decimal'
-                                className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                                value={outputValue}
-                                onChange={e => {
-                                    const value = e.target.value;
-                                    if (/^\d*\.?\d*$/.test(value)) {
-                                        onOutputChange(value);
+                            outputEditing ? (
+                                <input
+                                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                                    autoFocus
+                                    type='number'
+                                    step='any'
+                                    className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
+                                    defaultValue={outputDecimal.prettify()}
+                                    onChange={e => {
+                                        const value = e.target.value;
+                                        // Only allow numbers and decimal point
+                                        if (/^[0-9]*\.?[0-9]*$/.test(value)) {
+                                            onOutputChange(value);
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        setOutputEditing(false);
+                                        onOutputBlur?.();
+                                    }}
+                                    placeholder='0.0'
+                                    disabled={!isConnected}
+                                />
+                            ) : (
+                                <div
+                                    className='w-full cursor-text text-8 font-semibold text-neutral-900'
+                                    onClick={() =>
+                                        isConnected && setOutputEditing(true)
                                     }
-                                }}
-                                onBlur={onOutputBlur}
-                                placeholder='0.0'
-                                disabled={!isConnected}
-                            />
+                                    onKeyDown={e => {
+                                        if (
+                                            e.key === 'Enter' ||
+                                            e.key === ' '
+                                        ) {
+                                            isConnected &&
+                                                setOutputEditing(true);
+                                        }
+                                    }}
+                                    role='button'
+                                    tabIndex={isConnected ? 0 : -1}
+                                >
+                                    {outputDecimal.isZero
+                                        ? '0.00'
+                                        : outputDecimal.prettify(2)}
+                                </div>
+                            )
                         ) : (
                             <div className='text-8 font-semibold text-neutral-900'>
-                                {outputValue || '0.0'}
+                                {outputDecimal.isZero
+                                    ? '0.00'
+                                    : outputDecimal.prettify(2)}
                             </div>
                         )}
                         {outputSubLabel && (
