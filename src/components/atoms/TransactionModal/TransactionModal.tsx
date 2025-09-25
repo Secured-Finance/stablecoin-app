@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { WalletCards, X, Check, ExternalLink } from 'lucide-react';
 
 interface TransactionModalProps {
@@ -20,68 +20,42 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     onClose,
     onViewTransaction,
 }) => {
-    if (!isOpen) return null;
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
 
-    const truncateHash = (hash: string) => {
-        if (!hash) return '';
-        return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
-    };
+            return () => {
+                document.body.style.overflow = '';
+                document.documentElement.style.overflow = '';
+            };
+        }
+    }, [isOpen]);
+
+    if (!isOpen) return null;
 
     return (
         <div
             className='fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-50'
-            style={
-                {
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: '100vw',
-                    height: '100vh',
-                    minHeight: '100vh',
-                    zIndex: 99999,
-                } as React.CSSProperties
-            }
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                zIndex: 99999,
+            }}
         >
             <div className='shadow-xl relative flex w-[90vw] max-w-[500px] flex-col items-center gap-6 rounded-[20px] bg-white px-6 py-12 tablet:px-10'>
-                {/* Close button - for confirmed and failed states */}
-                {(type === 'confirmed' || type === 'failed') && onClose && (
-                    <button
-                        onClick={onClose}
-                        className='absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-colors hover:bg-gray-200'
-                    >
-                        <X size={16} />
-                    </button>
-                )}
-
                 {/* Icon/Spinner */}
                 {type === 'processing' ? (
                     <div className='flex h-[120px] w-[120px] items-center justify-center'>
-                        <svg
-                            className='h-full w-full animate-spin'
-                            viewBox='0 0 120 120'
-                        >
-                            <circle
-                                className='stroke-current text-[#E6E8FF]'
-                                strokeWidth='12'
-                                fill='none'
-                                r='50'
-                                cx='60'
-                                cy='60'
-                            />
-                            <circle
-                                className='stroke-current text-[#5F6FFF]'
-                                strokeWidth='12'
-                                strokeDasharray='200'
-                                strokeDashoffset='150'
-                                strokeLinecap='round'
-                                fill='none'
-                                r='50'
-                                cx='60'
-                                cy='60'
-                            />
-                        </svg>
+                        <div
+                            className='h-[120px] w-[120px] animate-spin rounded-full border-[12px] border-[#E6E8FF]'
+                            style={{
+                                borderTopColor: '#5F6FFF',
+                            }}
+                        />
                     </div>
                 ) : type === 'confirmed' ? (
                     <div className='flex h-[100px] w-[100px] items-center justify-center rounded-full bg-green-100'>
@@ -121,25 +95,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                     </div>
                 )}
 
-                {/* Transaction Hash Button - for confirmed state */}
-                {type === 'confirmed' &&
-                    transactionHash &&
-                    onViewTransaction && (
-                        <button
-                            onClick={onViewTransaction}
-                            className='flex h-[48px] w-full max-w-[420px] items-center justify-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 transition-colors hover:bg-green-100'
-                        >
-                            <span className='text-sm font-medium text-green-700 tablet:text-base'>
-                                {truncateHash(transactionHash)}
-                            </span>
-                            <ExternalLink
-                                size={16}
-                                className='text-green-600'
-                            />
-                        </button>
-                    )}
-
-                {/* View on Explorer Button - for processing state */}
+                {/* Transaction Hash for Processing */}
                 {type === 'processing' &&
                     transactionHash &&
                     onViewTransaction && (
@@ -154,15 +110,41 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                         </button>
                     )}
 
-                {/* Close Button for Confirmed and Failed States */}
-                {(type === 'confirmed' || type === 'failed') && onClose && (
+                {/* Buttons for Confirmed */}
+                {type === 'confirmed' && (
+                    <div className='flex w-full max-w-[420px] flex-col gap-3'>
+                        {transactionHash && onViewTransaction && (
+                            <button
+                                onClick={onViewTransaction}
+                                className='flex h-[48px] w-full items-center justify-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 transition-colors hover:bg-green-100'
+                            >
+                                <span className='text-sm font-medium text-green-700 tablet:text-base'>
+                                    View on Explorer
+                                </span>
+                                <ExternalLink
+                                    size={16}
+                                    className='text-green-600'
+                                />
+                            </button>
+                        )}
+                        {onClose && (
+                            <button
+                                onClick={onClose}
+                                className='flex h-[48px] w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-white transition-colors hover:bg-blue-700'
+                            >
+                                <span className='text-sm font-medium tablet:text-base'>
+                                    Close
+                                </span>
+                            </button>
+                        )}
+                    </div>
+                )}
+
+                {/* Close Button for Failed */}
+                {type === 'failed' && onClose && (
                     <button
                         onClick={onClose}
-                        className={`flex h-[48px] w-full max-w-[420px] items-center justify-center rounded-xl px-4 py-3 text-white transition-colors ${
-                            type === 'confirmed'
-                                ? 'bg-blue-600 hover:bg-blue-700'
-                                : 'bg-red-600 hover:bg-red-700'
-                        }`}
+                        className='flex h-[48px] w-full max-w-[420px] items-center justify-center rounded-xl bg-red-600 px-4 py-3 text-white transition-colors hover:bg-red-700'
                     >
                         <span className='text-sm font-medium tablet:text-base'>
                             Close
