@@ -49,23 +49,19 @@ export function StabilityStats({
             <div className='grid grid-cols-1 gap-4 tablet:grid-cols-3 tablet:gap-2'>
                 <Stat label='Current Deposit'>
                     <span>{originalDeposit.currentDebtToken.prettify()}</span>
-                    <div className='ml-2 flex items-center justify-center gap-1.5'>
-                        <USDFCIcon />
-                        <span>USDFC</span>
-                    </div>
+                    <USDFCIcon />
+                    <span>USDFC</span>
                 </Stat>
                 <Stat label='Pool Share'>{originalPoolShare.prettify()}%</Stat>
                 <Stat label='Liquidation Gains'>
-                    <div className='flex items-baseline gap-1.5 font-medium'>
-                        <span>{liquidationGains}</span>
-                        <FILIcon />
-                        <span>FIL</span>
-                        <span className='text-sm text-neutral-450'>
-                            ${liquidationGainsUSD.prettify()}
-                        </span>
-                    </div>
+                    <span>{liquidationGains}</span>
+                    <FILIcon className='h-4 w-4' />
+                    <span>FIL</span>
+                    <span className='text-sm text-neutral-450'>
+                        ${liquidationGainsUSD.prettify()}
+                    </span>
                     <button
-                        className={`text-xs font-medium underline ${
+                        className={`ml-2 text-xs font-medium underline ${
                             isClaimDisabled
                                 ? 'cursor-not-allowed text-neutral-400'
                                 : 'hover:text-primary-600 cursor-pointer text-primary-500'

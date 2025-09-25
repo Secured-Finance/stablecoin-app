@@ -3,6 +3,7 @@ import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { useEffect, useRef } from 'react';
 
 export function StabilityAmountInput({
     label,
@@ -22,11 +23,19 @@ export function StabilityAmountInput({
     currentBalance?: Decimal;
 }) {
     const { isConnected } = useAccount();
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isConnected && !disabled) {
+            inputRef.current?.focus();
+        }
+    }, [isConnected, disabled]);
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
             <div className='mb-2 text-sm font-medium'>{label}</div>
             <div className='mb-1 flex items-center justify-between'>
                 <input
+                    ref={inputRef}
                     className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
                     value={displayAmount}
                     onChange={e => handleInputChange(e.target.value)}

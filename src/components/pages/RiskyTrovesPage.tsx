@@ -11,7 +11,7 @@ type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
 
 export const RiskyTrovesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 8;
+    const pageSize = 10;
 
     const select = ({
         numberOfTroves,

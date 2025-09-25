@@ -11,6 +11,7 @@ interface InputBoxProps {
     readOnly?: boolean;
     onFocus?: () => void;
     onBlur?: () => void;
+    autoFocus?: boolean;
 }
 
 export const InputBox = ({
@@ -24,6 +25,7 @@ export const InputBox = ({
     readOnly = false,
     onFocus,
     onBlur,
+    autoFocus = false,
 }: InputBoxProps) => {
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
@@ -39,6 +41,8 @@ export const InputBox = ({
                         className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
                         disabled={disabled}
                         readOnly={readOnly}
+                        // eslint-disable-next-line jsx-a11y/no-autofocus
+                        autoFocus={autoFocus}
                     />
                 </div>
                 {tokenIcon && (

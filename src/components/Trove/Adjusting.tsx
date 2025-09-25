@@ -277,6 +277,8 @@ export const Adjusting: React.FC = () => {
                                 </>
                             }
                             subLabel={`$${collateral.mul(price).prettify()}`}
+                            // eslint-disable-next-line jsx-a11y/no-autofocus
+                            autoFocus
                         />
 
                         <InputBox
