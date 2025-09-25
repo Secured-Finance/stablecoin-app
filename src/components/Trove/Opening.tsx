@@ -230,6 +230,11 @@ export const Opening: React.FC = () => {
                                 : '150%'}
                         </p>
                     }
+                    tooltip={{
+                        title: 'Collateral Ratio',
+                        description:
+                            'The ratio of deposited FIL to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.',
+                    }}
                 />
 
                 <StatCard
@@ -247,6 +252,11 @@ export const Opening: React.FC = () => {
                             </span>
                         </div>
                     }
+                    tooltip={{
+                        title: 'Liquidation Risk',
+                        description:
+                            'The risk of losing your FIL collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.',
+                    }}
                 />
 
                 <StatCard
@@ -261,6 +271,11 @@ export const Opening: React.FC = () => {
                             <span>USDFC</span>
                         </div>
                     }
+                    tooltip={{
+                        title: 'Liquidation Reserve',
+                        description:
+                            'A small deposit set aside when opening a trove. It ensures funds are available for liquidation costs and is refunded upon full repayment.',
+                    }}
                 />
 
                 <StatCard
@@ -280,6 +295,11 @@ export const Opening: React.FC = () => {
                             </span>
                         </div>
                     }
+                    tooltip={{
+                        title: 'Borrowing Fee',
+                        description:
+                            'A one-time fee charged when borrowing USDFC, calculated as a percentage of the loan amount. It varies based on system conditions and helps maintain protocol stability.',
+                    }}
                 />
             </div>
 

@@ -7,6 +7,8 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useTransactionFunction, useMyTransactionState } from '../Transaction';
+import { CustomTooltip } from 'src/components/atoms';
+import { Icon } from 'src/components/Icon';
 
 export function StabilityStats({
     originalDeposit,
@@ -52,7 +54,16 @@ export function StabilityStats({
                     <USDFCIcon />
                     <span>USDFC</span>
                 </Stat>
-                <Stat label='Pool Share'>{originalPoolShare.prettify()}%</Stat>
+                <Stat
+                    label='Pool Share'
+                    tooltip={{
+                        title: 'Pool Share',
+                        description:
+                            'Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.',
+                    }}
+                >
+                    {originalPoolShare.prettify()}%
+                </Stat>
                 <Stat label='Liquidation Gains'>
                     <span>{liquidationGains}</span>
                     <FILIcon className='h-4 w-4' />
@@ -80,13 +91,36 @@ export function StabilityStats({
 function Stat({
     label,
     children,
+    tooltip,
 }: {
     label: string;
     children: React.ReactNode;
+    tooltip?: {
+        title: string;
+        description: string;
+        buttonText?: string;
+        onButtonClick?: () => void;
+    };
 }) {
     return (
         <div>
-            <div className='mb-1 text-sm text-neutral-450'>{label}</div>
+            <div className='mb-1 flex items-center gap-2'>
+                <div className='text-sm text-neutral-450'>{label}</div>
+                {tooltip && (
+                    <CustomTooltip
+                        title={tooltip.title}
+                        description={tooltip.description}
+                        buttonText='Read more'
+                        onButtonClick={tooltip.onButtonClick}
+                        position='top'
+                    >
+                        <Icon
+                            name='info-circle'
+                            className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
+                        />
+                    </CustomTooltip>
+                )}
+            </div>
             <div className='flex items-center gap-1 font-medium'>
                 {children}
             </div>

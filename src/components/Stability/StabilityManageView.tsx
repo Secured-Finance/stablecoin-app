@@ -11,6 +11,8 @@ import {
 import { useAccount } from 'wagmi';
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
+import { CustomTooltip } from 'src/components/atoms';
+import { Icon } from 'src/components/Icon';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
 import { StabilityAmountInput } from './StabilityAmountInput';
@@ -250,8 +252,21 @@ export const StabilityManageView = () => {
                 <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
                     <div className='flex items-center justify-between'>
                         <div>
-                            <div className='mb-1 text-sm font-medium'>
-                                Pool Share
+                            <div className='mb-1 flex items-center gap-2'>
+                                <div className='text-sm font-medium'>
+                                    Pool Share
+                                </div>
+                                <CustomTooltip
+                                    title='Pool Share'
+                                    description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
+                                    buttonText='Read more'
+                                    position='top'
+                                >
+                                    <Icon
+                                        name='info-circle'
+                                        className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
+                                    />
+                                </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
                                 Your percentage of the Stability Pool,
@@ -295,8 +310,21 @@ export const StabilityManageView = () => {
 
                     <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
                         <div>
-                            <div className='mb-1 text-sm font-bold text-neutral-450'>
-                                New Pool Share
+                            <div className='mb-1 flex items-center gap-2'>
+                                <div className='text-sm font-bold text-neutral-450'>
+                                    New Pool Share
+                                </div>
+                                <CustomTooltip
+                                    title='Pool Share'
+                                    description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
+                                    buttonText='Read more'
+                                    position='top'
+                                >
+                                    <Icon
+                                        name='info-circle'
+                                        className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
+                                    />
+                                </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
                                 Your percentage of the Stability Pool after this

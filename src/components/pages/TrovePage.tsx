@@ -3,6 +3,8 @@ import { useAccount } from 'wagmi';
 import { Adjusting } from 'src/components/Trove/Adjusting';
 import { Opening } from 'src/components/Trove/Opening';
 import { Trove } from 'src/components/organisms/Trove/Trove';
+import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
+import { Icon } from 'src/components/Icon';
 
 export const TrovePage = () => {
     const { isConnected } = useAccount();
@@ -16,9 +18,25 @@ export const TrovePage = () => {
                 <div className='w-full'>
                     {hasExistingTrove ? (
                         <div className='w-full'>
-                            <h1 className='text-2xl mb-2 text-center font-bold'>
-                                Manage Trove
-                            </h1>
+                            <div className='mb-2 flex items-center justify-center gap-2'>
+                                <h1 className='text-2xl text-center font-bold'>
+                                    Manage Trove
+                                </h1>
+                                <CustomTooltip
+                                    title='Trove'
+                                    description='A personal vault where you deposit FIL as collateral to borrow USDFC. It must maintain a minimum collateral ratio of 110% to avoid liquidation.'
+                                    buttonText='Read more'
+                                    onButtonClick={() =>
+                                        alert('Learn more about Troves!')
+                                    }
+                                    position='bottom'
+                                >
+                                    <Icon
+                                        name='info-circle'
+                                        className='h-4 w-4 cursor-pointer text-blue-500'
+                                    />
+                                </CustomTooltip>
+                            </div>
                             <p className='mb-8 text-center text-sm text-neutral-450'>
                                 Adjust your Trove&apos;s collateral, borrowed
                                 amount, or both, or close it entirely.

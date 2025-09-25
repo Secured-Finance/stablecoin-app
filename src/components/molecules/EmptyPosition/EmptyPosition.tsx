@@ -31,7 +31,7 @@ export const EmptyPosition = ({
                 href={buttonHref}
                 size={ButtonSizes.md}
                 variant={ButtonVariants.primary}
-                className='w-full rounded-xl'
+                className='w-full rounded-xl font-semibold'
                 external={false}
             >
                 {buttonText}

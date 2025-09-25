@@ -81,7 +81,7 @@ export const Trove = () => {
                 </div>
                 <div>
                     <p className='mb-1 text-sm text-neutral-450'>Collateral</p>
-                    <div className='flex items-baseline gap-1'>
+                    <div className='flex items-center gap-1'>
                         <span className='font-bold'>
                             {trove.collateral.prettify()}
                         </span>

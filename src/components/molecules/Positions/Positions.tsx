@@ -41,58 +41,65 @@ export const Positions = ({
             <h2 className='text-2xl mb-3 text-left font-semibold leading-none text-neutral-900'>
                 My Positions
             </h2>
-            <div className='sm:gap-6 grid grid-cols-1 justify-items-center gap-4 tablet:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-2 tablet:gap-6'>
                 {hasTrove ? (
                     <PositionInfoCard icon={Vault} title='Trove'>
-                        <InfoBlock
-                            label='Total Debt'
-                            value={
-                                <>
-                                    {trove.debt.prettify()} <USDFCIcon />{' '}
-                                    <span>USDFC</span>
-                                </>
-                            }
-                        />
-                        <div className='space-y-3 text-sm text-neutral-700'>
-                            <InfoRow
-                                label='Collateral'
-                                value={
-                                    <span className='flex items-center gap-1'>
-                                        {trove.collateral.prettify()}{' '}
-                                        <FILIcon />
-                                        <span>FIL</span>
-                                    </span>
-                                }
-                            />
-                            <InfoRow
-                                label='Collateral Ratio'
-                                value={
-                                    collateralRatio
-                                        ? `${collateralRatio
-                                              .mul(100)
-                                              .prettify(1)}%`
-                                        : '%'
-                                }
-                            />
-                            <InfoRow
-                                label='Liquidation Risk'
-                                value={
-                                    <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
-                                        Low
-                                    </span>
-                                }
-                            />
+                        <div className='flex flex-col'>
+                            <div className='h-24'>
+                                <InfoBlock
+                                    label='Total Debt'
+                                    value={trove.debt.prettify()}
+                                    icon={
+                                        <>
+                                            <USDFCIcon />
+                                            <span>USDFC</span>
+                                        </>
+                                    }
+                                />
+                            </div>
+                            <div className='h-24 space-y-3 text-sm text-neutral-700'>
+                                <InfoRow
+                                    label='Collateral'
+                                    value={
+                                        <span className='flex items-center gap-1'>
+                                            {trove.collateral.prettify()}{' '}
+                                            <FILIcon className='h-4 w-4' />
+                                            <span>FIL</span>
+                                        </span>
+                                    }
+                                />
+                                <InfoRow
+                                    label='Collateral Ratio'
+                                    value={
+                                        collateralRatio
+                                            ? `${collateralRatio
+                                                  .mul(100)
+                                                  .prettify(1)}%`
+                                            : '%'
+                                    }
+                                />
+                                <InfoRow
+                                    label='Liquidation Risk'
+                                    value={
+                                        <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
+                                            Low
+                                        </span>
+                                    }
+                                />
+                            </div>
+                            <div className='mt-auto'>
+                                <Button
+                                    href='/trove'
+                                    data-testid='button-link'
+                                    size={ButtonSizes.md}
+                                    variant={ButtonVariants.tertiary}
+                                    className='w-full text-sm font-semibold'
+                                    external={false}
+                                >
+                                    Manage Trove
+                                </Button>
+                            </div>
                         </div>
-                        <Button
-                            href='/trove'
-                            data-testid='button-link'
-                            size={ButtonSizes.md}
-                            variant={ButtonVariants.tertiary}
-                            className='mt-6 w-full text-sm'
-                            external={false}
-                        >
-                            Manage Trove
-                        </Button>
                     </PositionInfoCard>
                 ) : (
                     <EmptyPosition
@@ -106,59 +113,65 @@ export const Positions = ({
 
                 {hasStabilityDeposit ? (
                     <PositionInfoCard icon={Layers2} title='Stability Pool'>
-                        <InfoBlock
-                            label='Liquidation Gain'
-                            value={`${liquidationGains}`}
-                            icon={
-                                <>
-                                    <FILIcon />
-                                    <span>FIL</span>
-                                </>
-                            }
-                        />
-                        <div className='space-y-3 text-sm text-neutral-700'>
-                            <InfoRow
-                                label='Deposit'
-                                value={
-                                    <span className='flex items-center gap-1'>
-                                        {originalDeposit.currentDebtToken.prettify()}{' '}
-                                        <USDFCIcon />
-                                        <span>USDFC</span>
-                                    </span>
-                                }
-                            />
-                            <InfoRow
-                                label='Pool Share'
-                                value={`${originalPoolShare.prettify()}%`}
-                            />
-                        </div>
-                        <div className='mt-6 flex gap-2 tablet:gap-3'>
-                            <Button
-                                href='/stability-pool'
-                                size={ButtonSizes.md}
-                                variant={ButtonVariants.tertiary}
-                                className='flex-1 text-xs tablet:text-sm'
-                                external={false}
-                            >
-                                <span className='hidden tablet:inline'>
-                                    Manage Deposit
-                                </span>
-                                <span className='inline tablet:hidden'>
-                                    Manage
-                                </span>
-                            </Button>
-                            <Button
-                                className='flex-1 text-xs tablet:text-sm'
-                                size={ButtonSizes.md}
-                                variant={ButtonVariants.primary}
-                            >
-                                <span className='hidden tablet:inline'>
-                                    Claim Gains
-                                </span>
-                                <span className='inline tablet:hidden'>
-                                    Claim
-                                </span>
-                            </Button>
+                        <div className='flex flex-col'>
+                            <div className='h-24'>
+                                <InfoBlock
+                                    label='Liquidation Gain'
+                                    value={liquidationGains}
+                                    icon={
+                                        <>
+                                            <FILIcon className='h-4 w-4' />
+                                            <span>FIL</span>
+                                        </>
+                                    }
+                                />
+                            </div>
+                            <div className='h-24 space-y-3 text-sm text-neutral-700'>
+                                <InfoRow
+                                    label='Deposit'
+                                    value={
+                                        <span className='flex items-center gap-1'>
+                                            {originalDeposit.currentDebtToken.prettify()}{' '}
+                                            <USDFCIcon />
+                                            <span>USDFC</span>
+                                        </span>
+                                    }
+                                />
+                                <InfoRow
+                                    label='Pool Share'
+                                    value={`${originalPoolShare.prettify()}%`}
+                                />
+                            </div>
+                            <div className='mt-auto'>
+                                <div className='flex gap-2 tablet:gap-3'>
+                                    <Button
+                                        href='/stability-pool'
+                                        size={ButtonSizes.md}
+                                        variant={ButtonVariants.tertiary}
+                                        className='flex-1 text-xs font-semibold tablet:text-sm'
+                                        external={false}
+                                    >
+                                        <span className='hidden tablet:inline'>
+                                            Manage Deposit
+                                        </span>
+                                        <span className='inline tablet:hidden'>
+                                            Manage
+                                        </span>
+                                    </Button>
+                                    <Button
+                                        className='flex-1 text-xs font-semibold tablet:text-sm'
+                                        size={ButtonSizes.md}
+                                        variant={ButtonVariants.primary}
+                                    >
+                                        <span className='hidden tablet:inline'>
+                                            Claim Gains
+                                        </span>
+                                        <span className='inline tablet:hidden'>
+                                            Claim
+                                        </span>
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     </PositionInfoCard>
                 ) : (
@@ -182,7 +195,7 @@ const InfoRow = ({
     label: string;
     value: React.ReactNode;
 }) => (
-    <div className='flex flex-col tablet:flex-row tablet:justify-between'>
+    <div className='flex justify-between'>
         <span className='text-neutral-600'>{label}</span>
         <span className='font-medium'>{value}</span>
     </div>
@@ -198,10 +211,10 @@ const InfoBlock = ({
     icon?: React.ReactNode;
 }) => (
     <div className='mb-6'>
-        <p className='text-sm text-neutral-600'>{label}</p>
+        <p className='mb-1 text-sm text-neutral-600'>{label}</p>
         <div className='text-2xl flex items-center gap-2 font-semibold text-neutral-900'>
-            {value}
-            {icon}
+            <span>{value}</span>
+            <div className='flex items-center gap-1 text-base'>{icon}</div>
         </div>
     </div>
 );

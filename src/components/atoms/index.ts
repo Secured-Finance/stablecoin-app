@@ -1,6 +1,7 @@
 export * from './Alert';
 export * from './Button';
 export * from './Card';
+export * from './CustomTooltip';
 export * from './Identicon';
 export * from './InputBase';
 export * from './LinkButton';
