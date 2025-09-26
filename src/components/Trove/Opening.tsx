@@ -47,7 +47,7 @@ export const Opening: React.FC = () => {
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
 
-    const [collateralInput, setCollateralInput] = useState('');
+    const [collateralInput, setCollateralInput] = useState('0.00');
     const [borrowAmountInput, setBorrowAmountInput] = useState('');
     const [borrowEditedManually, setBorrowEditedManually] = useState(false);
 
@@ -269,7 +269,10 @@ export const Opening: React.FC = () => {
                         <div className='flex items-center justify-end'>
                             <div
                                 className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
-                                style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
+                                style={{
+                                    padding: '6px 12px 6px 6px',
+                                    gap: '6px',
+                                }}
                             >
                                 <div
                                     className={`rounded-full ${liquidationRisk.dotStyle}`}
@@ -366,14 +369,14 @@ export const Opening: React.FC = () => {
                         borrowingFeeDecayToleranceMinutes={60}
                         className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
                     >
-                        Confirm
+                        Create Trove and Borrow USDFC
                     </TroveAction>
                 ) : (
                     <Button
                         disabled
                         className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white'
                     >
-                        Update Trove
+                        Create Trove and Borrow USDFC
                     </Button>
                 )
             ) : (
@@ -385,9 +388,11 @@ export const Opening: React.FC = () => {
                 </Button>
             )}
 
-            <p className='mt-2 text-center text-sm text-neutral-450'>
-                This action will open your wallet to sign the transaction.
-            </p>
+            {isConnected && (
+                <p className='mt-2 text-center text-sm text-neutral-450'>
+                    This action will open your wallet to sign the transaction.
+                </p>
+            )}
         </div>
     );
 };

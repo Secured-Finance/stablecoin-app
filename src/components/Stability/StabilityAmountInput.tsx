@@ -61,10 +61,26 @@ export function StabilityAmountInput({
                     <input
                         // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={true}
-                        className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                        type='number'
+                        className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                            disabled ? 'text-neutral-400' : 'text-neutral-900'
+                        }`}
+                        type='text'
                         step='any'
                         defaultValue={getCleanEditingValue()}
+                        onKeyDown={e => {
+                            if (
+                                !/[0-9.]/.test(e.key) &&
+                                ![
+                                    'Backspace',
+                                    'Delete',
+                                    'ArrowLeft',
+                                    'ArrowRight',
+                                    'Tab',
+                                ].includes(e.key)
+                            ) {
+                                e.preventDefault();
+                            }
+                        }}
                         onChange={e => {
                             const value = e.target.value;
                             if (/^[0-9]*\.?[0-9]*$/.test(value)) {
@@ -78,7 +94,11 @@ export function StabilityAmountInput({
                     />
                 ) : (
                     <div
-                        className='w-full cursor-text text-8 font-semibold text-neutral-900'
+                        className={`w-full text-8 font-semibold ${
+                            disabled
+                                ? 'text-neutral-400'
+                                : 'cursor-text text-neutral-900'
+                        }`}
                         onClick={() => !disabled && setEditing(true)}
                         onKeyDown={e => {
                             if (e.key === 'Enter' || e.key === ' ') {

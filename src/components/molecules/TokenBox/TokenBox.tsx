@@ -88,13 +88,30 @@ export const TokenBox = ({
                             <input
                                 // eslint-disable-next-line jsx-a11y/no-autofocus
                                 autoFocus
-                                type='number'
+                                type='text'
                                 step='any'
-                                className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
+                                className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                    isConnected
+                                        ? 'text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
                                 defaultValue={getCleanInputValue()}
+                                onKeyDown={e => {
+                                    if (
+                                        !/[0-9.]/.test(e.key) &&
+                                        ![
+                                            'Backspace',
+                                            'Delete',
+                                            'ArrowLeft',
+                                            'ArrowRight',
+                                            'Tab',
+                                        ].includes(e.key)
+                                    ) {
+                                        e.preventDefault();
+                                    }
+                                }}
                                 onChange={e => {
                                     const value = e.target.value;
-                                    // Only allow numbers and decimal point
                                     if (/^[0-9]*\.?[0-9]*$/.test(value)) {
                                         onInputChange(value);
                                     }
@@ -103,12 +120,16 @@ export const TokenBox = ({
                                     setInputEditing(false);
                                     onInputBlur?.();
                                 }}
-                                placeholder='0.0'
+                                placeholder='0.00'
                                 disabled={!isConnected}
                             />
                         ) : (
                             <div
-                                className='w-full cursor-text text-8 font-semibold text-neutral-900'
+                                className={`w-full text-8 font-semibold ${
+                                    isConnected
+                                        ? 'cursor-text text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
                                 onClick={() =>
                                     isConnected && setInputEditing(true)
                                 }
@@ -169,10 +190,28 @@ export const TokenBox = ({
                                 <input
                                     // eslint-disable-next-line jsx-a11y/no-autofocus
                                     autoFocus
-                                    type='number'
+                                    type='text'
                                     step='any'
-                                    className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
+                                    className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                        isConnected
+                                            ? 'text-neutral-900'
+                                            : 'text-neutral-400'
+                                    }`}
                                     defaultValue={getCleanOutputValue()}
+                                    onKeyDown={e => {
+                                        if (
+                                            !/[0-9.]/.test(e.key) &&
+                                            ![
+                                                'Backspace',
+                                                'Delete',
+                                                'ArrowLeft',
+                                                'ArrowRight',
+                                                'Tab',
+                                            ].includes(e.key)
+                                        ) {
+                                            e.preventDefault();
+                                        }
+                                    }}
                                     onChange={e => {
                                         const value = e.target.value;
                                         // Only allow numbers and decimal point
@@ -184,12 +223,16 @@ export const TokenBox = ({
                                         setOutputEditing(false);
                                         onOutputBlur?.();
                                     }}
-                                    placeholder='0.0'
+                                    placeholder='0.00'
                                     disabled={!isConnected}
                                 />
                             ) : (
                                 <div
-                                    className='w-full cursor-text text-8 font-semibold text-neutral-900'
+                                    className={`w-full text-8 font-semibold ${
+                                        isConnected
+                                            ? 'cursor-text text-neutral-900'
+                                            : 'text-neutral-400'
+                                    }`}
                                     onClick={() =>
                                         isConnected && setOutputEditing(true)
                                     }
@@ -211,7 +254,13 @@ export const TokenBox = ({
                                 </div>
                             )
                         ) : (
-                            <div className='text-8 font-semibold text-neutral-900'>
+                            <div
+                                className={`text-8 font-semibold ${
+                                    isConnected
+                                        ? 'text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
+                            >
                                 {outputDecimal.isZero
                                     ? '0.00'
                                     : outputDecimal.prettify(2)}

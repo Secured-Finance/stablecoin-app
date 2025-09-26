@@ -9,8 +9,8 @@ import {
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { useTransactionFunction, useMyTransactionState } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
-import { Icon } from 'src/components/Icon';
 import { openDocumentation } from 'src/constants';
+import { Info } from 'lucide-react';
 
 export function StabilityStats({
     originalDeposit,
@@ -51,7 +51,7 @@ export function StabilityStats({
     );
     const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
     return (
-        <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
+        <div className='mb-6 rounded-xl border border-neutral-9 bg-white px-4 py-5'>
             <div className='grid grid-cols-1 gap-4 tablet:grid-cols-3 tablet:gap-2'>
                 <Stat label='Current Deposit'>
                     <span>{originalDeposit.currentDebtToken.prettify()}</span>
@@ -118,10 +118,7 @@ function Stat({
                         onButtonClick={tooltip.onButtonClick}
                         position='top'
                     >
-                        <Icon
-                            name='info-circle'
-                            className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
-                        />
+                        <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                     </CustomTooltip>
                 )}
             </div>

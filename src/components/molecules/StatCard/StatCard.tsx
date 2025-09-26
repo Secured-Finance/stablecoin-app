@@ -1,6 +1,6 @@
+import { Info } from 'lucide-react';
 import React from 'react';
 import { CustomTooltip } from 'src/components/atoms';
-import { Icon } from 'src/components/Icon';
 
 interface StatCardProps {
     title: string;
@@ -23,7 +23,7 @@ export const StatCard = ({
         <div className='rounded-xl border border-neutral-9 bg-white p-6'>
             <div className='flex items-start justify-between'>
                 <div>
-                    <div className='mb-1 flex items-baseline gap-2'>
+                    <div className='mb-1 flex items-center gap-2'>
                         <h3 className='text-left text-sm font-bold text-neutral-450'>
                             {title}
                         </h3>
@@ -34,10 +34,7 @@ export const StatCard = ({
                                 onButtonClick={tooltip.onButtonClick}
                                 position='top'
                             >
-                                <Icon
-                                    name='info-circle'
-                                    className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
-                                />
+                                <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                             </CustomTooltip>
                         )}
                     </div>

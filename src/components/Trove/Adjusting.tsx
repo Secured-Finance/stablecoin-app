@@ -194,10 +194,10 @@ export const Adjusting: React.FC = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: 'Unknown',
-                containerStyle: 'bg-[#F5F5F5] border border-[#D9D9D9]',
-                textStyle: 'text-[#666666] text-sm font-medium',
-                dotStyle: 'bg-[#999999]',
+                text: 'Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
@@ -392,11 +392,17 @@ export const Adjusting: React.FC = () => {
                                 </div>
                                 <div
                                     className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
-                                    style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
+                                    style={{
+                                        padding: '6px 12px 6px 6px',
+                                        gap: '6px',
+                                    }}
                                 >
                                     <div
                                         className={`rounded-full ${liquidationRisk.dotStyle}`}
-                                        style={{ width: '16px', height: '16px' }}
+                                        style={{
+                                            width: '16px',
+                                            height: '16px',
+                                        }}
                                     ></div>
                                     <span className={liquidationRisk.textStyle}>
                                         {liquidationRisk.text}

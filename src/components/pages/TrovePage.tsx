@@ -1,12 +1,12 @@
-import { useSfStablecoinSelector } from 'src/hooks';
-import { useAccount } from 'wagmi';
-import { CURRENCY } from 'src/strings';
+import { Info } from 'lucide-react';
+import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
+import { Trove } from 'src/components/organisms/Trove/Trove';
 import { Adjusting } from 'src/components/Trove/Adjusting';
 import { Opening } from 'src/components/Trove/Opening';
-import { Trove } from 'src/components/organisms/Trove/Trove';
-import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
-import { Icon } from 'src/components/Icon';
 import { openDocumentation } from 'src/constants';
+import { useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
+import { useAccount } from 'wagmi';
 
 export const TrovePage = () => {
     const { isConnected } = useAccount();
@@ -32,10 +32,7 @@ export const TrovePage = () => {
                                     }
                                     position='bottom'
                                 >
-                                    <Icon
-                                        name='info-circle'
-                                        className='h-4 w-4 cursor-pointer text-neutral-400 hover:text-blue-500'
-                                    />
+                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
                             <p className='mb-8 text-center text-sm text-neutral-450'>
@@ -50,9 +47,9 @@ export const TrovePage = () => {
                             </h1>
                             <p className='mb-8 text-center text-sm text-neutral-450'>
                                 A Trove is your personal vault where you can
-                                deposit ${CURRENCY} as collateral to borrow
-                                USDFC with 0% interest, while maintaining
-                                exposure to ${CURRENCY}.
+                                deposit {CURRENCY} as collateral to borrow USDFC
+                                with 0% interest, while maintaining exposure to{' '}
+                                {CURRENCY}.
                             </p>
                         </div>
                     )}

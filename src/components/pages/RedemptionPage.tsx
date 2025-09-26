@@ -160,6 +160,7 @@ export const RedemptionPage = () => {
                                 </span>
                             </>
                         }
+                        inputSubLabel={`$${redeemAmountDecimal.prettify()}`}
                         outputLabel='You will receive'
                         outputValue={filToReceive}
                         outputSubLabel={`$${usdValue}`}
@@ -208,6 +209,7 @@ export const RedemptionPage = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className='pb-2'>{validationMessage}</div>
 
                         <button
                             className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
@@ -223,8 +225,6 @@ export const RedemptionPage = () => {
                                 transaction.
                             </p>
                         )}
-
-                        {validationMessage}
                     </TokenBox>
                 </div>
             </main>

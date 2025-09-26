@@ -12,7 +12,6 @@ import { useAccount } from 'wagmi';
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
-import { Icon } from 'src/components/Icon';
 import { CURRENCY } from 'src/strings';
 import { openDocumentation } from 'src/constants';
 import { useStabilityView } from './context/StabilityViewContext';
@@ -25,6 +24,7 @@ import {
     selectForStabilityDepositChangeValidation,
     validateStabilityDepositChange,
 } from './validation/validateStabilityDepositChange';
+import { Info } from 'lucide-react';
 
 export const StabilityManageView = () => {
     const { isConnected } = useAccount();
@@ -267,10 +267,7 @@ export const StabilityManageView = () => {
                                     }
                                     position='top'
                                 >
-                                    <Icon
-                                        name='info-circle'
-                                        className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
-                                    />
+                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
@@ -327,10 +324,7 @@ export const StabilityManageView = () => {
                                     }
                                     position='top'
                                 >
-                                    <Icon
-                                        name='info-circle'
-                                        className='h-3 w-3 cursor-pointer text-neutral-400 hover:text-blue-500'
-                                    />
+                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
@@ -346,6 +340,8 @@ export const StabilityManageView = () => {
                 </>
             )}
 
+            <div className='mb-2'>{description}</div>
+
             <ActionButton
                 validChange={validChange}
                 isDisabled={isButtonDisabled}
@@ -359,8 +355,6 @@ export const StabilityManageView = () => {
                     This action will open your wallet to sign the transaction.
                 </p>
             )}
-
-            {description}
         </>
     );
 };

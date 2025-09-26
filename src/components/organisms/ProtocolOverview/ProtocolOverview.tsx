@@ -51,7 +51,7 @@ export const ProtocolOverview = ({
     ];
     return (
         <div className='flex flex-col gap-6'>
-            <h2 className='text-2xl text-left font-semibold leading-none'>
+            <h2 className='text-left text-5 font-semibold leading-none text-neutral-900'>
                 Protocol Overview
             </h2>
             <div className='flex flex-col gap-6'>
