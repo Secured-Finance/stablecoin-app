@@ -17,7 +17,12 @@ export const StatItem = ({ stat }: StatItemProps) => {
                     </span>
                 )}
                 {stat.link && (
-                    <a href={stat.link} className='inline-flex items-center'>
+                    <a
+                        href={stat.link}
+                        className='inline-flex items-center'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
                         <ArrowUpRight
                             data-testid='link-arrow'
                             className='ml-1 inline-block h-4 w-4'

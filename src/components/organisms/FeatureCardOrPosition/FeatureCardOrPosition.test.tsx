@@ -39,6 +39,6 @@ describe('FeatureCardsOrPositions', () => {
         expect(screen.getByText('Stability Pool')).toBeInTheDocument();
 
         expect(screen.getByText('5,045.00')).toBeInTheDocument(); // debt
-        expect(screen.getByText('10.00 FIL')).toBeInTheDocument(); // collateral
+        expect(screen.getByText('10.00')).toBeInTheDocument(); // collateral
     });
 });

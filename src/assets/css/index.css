@@ -110,19 +110,15 @@
 @layer utilities {
   .fade-enter {
     @apply opacity-0;
-    position: absolute;
   }
   .fade-enter-active {
     @apply transition-opacity duration-300 opacity-100;
-    position: absolute;
   }
 
   .fade-exit {
     @apply opacity-100;
-    position: absolute;
   }
   .fade-exit-active {
-    @apply transition-opacity duration-200 opacity-0;
-    position: absolute;
+    @apply transition-opacity duration-300 opacity-0;
   }
 }

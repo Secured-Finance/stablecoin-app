@@ -4,9 +4,10 @@ import React from 'react';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Container } from 'theme-ui';
 import { Nav } from './Nav';
-import { SecuredFinanceLogo } from './SecuredFinanceLogo';
+import { USDFCIconLarge } from './SecuredFinanceLogo';
 import { SideNav } from './SideNav';
 import { UserAccount } from './UserAccount';
+import { Link } from 'react-router-dom';
 
 const select = ({ frontend }: SfStablecoinStoreState) => ({
     frontend,
@@ -24,7 +25,17 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Container variant='header' className='border-b border-neutral-9'>
             <div className='relative flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
-                    <SecuredFinanceLogo />
+                    <Link
+                        to='/'
+                        className='flex items-center justify-center gap-2'
+                        aria-label='Home'
+                    >
+                        <USDFCIconLarge />
+                        <span className='hidden font-numerical text-6 font-semibold laptop:block'>
+                            USDFC
+                        </span>
+                    </Link>
+
                     {isFrontendRegistered && (
                         <div className='block desktop:hidden'>
                             <SideNav />

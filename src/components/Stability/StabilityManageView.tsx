@@ -11,6 +11,9 @@ import {
 import { useAccount } from 'wagmi';
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
+import { CustomTooltip } from 'src/components/atoms';
+import { CURRENCY } from 'src/strings';
+import { openDocumentation } from 'src/constants';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
 import { StabilityAmountInput } from './StabilityAmountInput';
@@ -21,6 +24,7 @@ import {
     selectForStabilityDepositChangeValidation,
     validateStabilityDepositChange,
 } from './validation/validateStabilityDepositChange';
+import { Info } from 'lucide-react';
 
 export const StabilityManageView = () => {
     const { isConnected } = useAccount();
@@ -197,7 +201,7 @@ export const StabilityManageView = () => {
             </h1>
             <p className='mb-8 text-center text-sm text-neutral-450'>
                 {originalDeposit.isEmpty
-                    ? 'Deposit USDFC to earn FIL rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.'
+                    ? `Deposit USDFC to earn ${CURRENCY} rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.`
                     : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
             </p>
 
@@ -228,6 +232,7 @@ export const StabilityManageView = () => {
                 }
                 disabled={isDisabled}
                 currentBalance={debtTokenBalance}
+                focusKey={activeTab}
                 onMaxClick={() => {
                     if (activeTab === 'withdraw') {
                         const maxWithdraw = originalDeposit.currentDebtToken;
@@ -250,8 +255,20 @@ export const StabilityManageView = () => {
                 <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
                     <div className='flex items-center justify-between'>
                         <div>
-                            <div className='mb-1 text-sm font-medium'>
-                                Pool Share
+                            <div className='mb-1 flex items-center gap-2'>
+                                <div className='text-sm font-medium'>
+                                    Pool Share
+                                </div>
+                                <CustomTooltip
+                                    title='Pool Share'
+                                    description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
+                                    onButtonClick={() =>
+                                        openDocumentation('stabilityPool')
+                                    }
+                                    position='top'
+                                >
+                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
+                                </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
                                 Your percentage of the Stability Pool,
@@ -276,24 +293,39 @@ export const StabilityManageView = () => {
                                 Pool after this transaction.
                             </div>
                         </div>
-                        <div className='mt-2 flex gap-1 text-base font-medium'>
-                            {validChange?.depositDebtToken
-                                ? originalDeposit.currentDebtToken
-                                      .add(validChange.depositDebtToken)
-                                      .prettify()
-                                : validChange?.withdrawDebtToken
-                                ? originalDeposit.currentDebtToken
-                                      .sub(validChange.withdrawDebtToken)
-                                      .prettify()
-                                : editedDebtToken.prettify()}{' '}
+                        <div className='mt-2 flex items-center gap-1 text-base font-medium'>
+                            <span>
+                                {validChange?.depositDebtToken
+                                    ? originalDeposit.currentDebtToken
+                                          .add(validChange.depositDebtToken)
+                                          .prettify()
+                                    : validChange?.withdrawDebtToken
+                                    ? originalDeposit.currentDebtToken
+                                          .sub(validChange.withdrawDebtToken)
+                                          .prettify()
+                                    : editedDebtToken.prettify()}
+                            </span>
                             <USDFCIcon />
+                            <span>USDFC</span>
                         </div>
                     </div>
 
                     <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
                         <div>
-                            <div className='mb-1 text-sm font-bold text-neutral-450'>
-                                New Pool Share
+                            <div className='mb-1 flex items-center gap-2'>
+                                <div className='text-sm font-bold text-neutral-450'>
+                                    New Pool Share
+                                </div>
+                                <CustomTooltip
+                                    title='Pool Share'
+                                    description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
+                                    onButtonClick={() =>
+                                        openDocumentation('stabilityPool')
+                                    }
+                                    position='top'
+                                >
+                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
+                                </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] text-xs text-neutral-450'>
                                 Your percentage of the Stability Pool after this
@@ -308,6 +340,8 @@ export const StabilityManageView = () => {
                 </>
             )}
 
+            <div className='mb-2'>{description}</div>
+
             <ActionButton
                 validChange={validChange}
                 isDisabled={isButtonDisabled}
@@ -321,8 +355,6 @@ export const StabilityManageView = () => {
                     This action will open your wallet to sign the transaction.
                 </p>
             )}
-
-            {description}
         </>
     );
 };

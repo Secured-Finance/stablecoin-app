@@ -97,4 +97,9 @@ export const squidConfig: any = {
             chainId: '314',
         },
     },
+    tabs: {
+        swap: true,
+        buy: true,
+        send: true,
+    },
 };

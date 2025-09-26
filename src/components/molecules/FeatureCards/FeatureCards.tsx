@@ -2,6 +2,7 @@ import type React from 'react';
 import { cn } from 'src/utils';
 import { BorrowIcon, BridgeIcon, EarnIcon } from './ProtocolIcons';
 import { Card } from 'src/components/atoms';
+import { CURRENCY } from 'src/strings';
 
 type FeatureCardProps = {
     title: string;
@@ -21,7 +22,9 @@ const FeatureCard = ({
     descriptionClassName,
 }: FeatureCardProps) => {
     return (
-        <Card className={cn('w-full max-w-[290px]', className)}>
+        <Card
+            className={cn('w-full max-w-none laptop:max-w-[290px]', className)}
+        >
             <div className='mb-6 flex items-center'>{icon}</div>
             <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
                 {title}
@@ -36,14 +39,14 @@ export function FeatureCards() {
         <div className='grid grid-cols-1 justify-items-center gap-6 laptop:grid-cols-3'>
             <FeatureCard
                 title='Borrow USDFC'
-                description='Create a Trove to deposit FIL as collateral and borrow USDFC.'
+                description={`Create a Trove to deposit ${CURRENCY} as collateral and borrow USDFC.`}
                 icon={<BorrowIcon />}
                 className='bg-primary-500 text-white'
                 descriptionClassName='opacity-90'
             />
             <FeatureCard
-                title='Earn FIL'
-                description='Deposit USDFC into the Stability Pool to earn FIL rewards.'
+                title={`Earn ${CURRENCY}`}
+                description={`Deposit USDFC into the Stability Pool to earn ${CURRENCY} rewards.`}
                 icon={<EarnIcon />}
                 className='bg-warning-200'
                 titleClassName='text-[#332500]'

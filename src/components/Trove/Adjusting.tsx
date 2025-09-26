@@ -8,12 +8,13 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useRef, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { Button, InputBox, TabSwitcher } from 'src/components/atoms';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
-import { useMyTransactionState, useTransactionFunction } from '../Transaction';
+import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
+import { useMyTransactionState } from '../Transaction';
 import { TroveAction } from './TroveAction';
 import { useTroveView } from './context/TroveViewContext';
 import {
@@ -33,6 +34,7 @@ const selector = (state: SfStablecoinStoreState) => {
 };
 
 const TRANSACTION_ID = 'trove-adjustment';
+const GAS_ROOM_ETH = Decimal.from(0.1);
 
 const feeFrom = (
     original: Trove,
@@ -90,8 +92,9 @@ const applyUnsavedNetDebtChanges = (
 
 export const Adjusting: React.FC = () => {
     const { dispatchEvent } = useTroveView();
-    const { trove, fees, price, validationContext } =
+    const { trove, fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
+
     const previousTrove = useRef<Trove>(trove);
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);
     const [netDebt, setNetDebt] = useState<Decimal>(trove.netDebt);
@@ -105,27 +108,32 @@ export const Adjusting: React.FC = () => {
         'collateral' | 'netDebt' | undefined
     >(undefined);
     const [isClosing, setIsClosing] = useState(false);
+    const [hasAttemptedClose, setHasAttemptedClose] = useState(false);
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
     const borrowingRate = fees.borrowingRate();
 
-    const { sfStablecoin } = useSfStablecoin();
-    const [sendTransaction] = useTransactionFunction(
-        'closure',
-        sfStablecoin.send.closeTrove.bind(sfStablecoin.send)
+    // Calculate max collateral including current trove collateral + available account balance minus gas room
+    const maxCollateral = trove.collateral.add(
+        accountBalance.gt(GAS_ROOM_ETH)
+            ? accountBalance.sub(GAS_ROOM_ETH)
+            : Decimal.ZERO
     );
 
     useEffect(() => {
         if (transactionState.type === 'confirmedOneShot') {
-            dispatchEvent('TROVE_ADJUSTED');
-            // Reset fields to current trove values after successful transaction
-            setCollateral(trove.collateral);
-            setNetDebt(trove.netDebt);
-            setCollateralInput(trove.collateral.prettify());
-            setNetDebtInput(trove.netDebt.prettify());
-            setEditingField(undefined);
+            if (isClosing) {
+                dispatchEvent('TROVE_CLOSED');
+            } else {
+                dispatchEvent('TROVE_ADJUSTED');
+                setCollateral(trove.collateral);
+                setNetDebt(trove.netDebt);
+                setCollateralInput(trove.collateral.prettify());
+                setNetDebtInput(trove.netDebt.prettify());
+                setEditingField(undefined);
+            }
         }
-    }, [transactionState.type, dispatchEvent, trove.collateral, trove.netDebt]);
+    }, [transactionState.type, dispatchEvent, trove, isClosing]);
 
     useEffect(() => {
         if (!previousTrove.current.collateral.eq(trove.collateral)) {
@@ -173,6 +181,7 @@ export const Adjusting: React.FC = () => {
               borrowingRate
           )
         : Decimal.ZERO;
+
     const totalDebt = netDebt.add(LIQUIDATION_RESERVE).add(fee);
     const maxBorrowingRate = borrowingRate.add(0.005);
     const updatedTrove = isDirty ? new Trove(collateral, totalDebt) : trove;
@@ -185,51 +194,77 @@ export const Adjusting: React.FC = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: 'Unknown',
-                color: 'text-neutral-600',
-                bg: 'bg-neutral-100',
-                dotBg: 'bg-neutral-400',
+                text: 'Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
-                color: 'text-warning-700',
-                bg: 'bg-warning-100',
-                dotBg: 'bg-warning-500',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-[#5C2E00] text-sm font-medium',
+                dotStyle: 'bg-[#FFAD00]',
             };
         return {
             text: 'High',
-            color: 'text-error-700',
-            bg: 'bg-error-100',
-            dotBg: 'bg-error-500',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-[#5C0000] text-sm font-medium',
+            dotStyle: 'bg-[#FF4D4F]',
         };
     };
 
     const liquidationRisk = getLiquidationRisk(collateralRatio);
 
+    // Update trove validation
     const [troveChange, description] = validateTroveChange(
         trove,
         updatedTrove,
         borrowingRate,
         validationContext
     );
-
     const stableTroveChange = useStableTroveChange(troveChange);
+
+    // Close trove validation
+    const closingTrove = new Trove(Decimal.ZERO, Decimal.ZERO);
+    const [closeChange, closeDescription] = validateTroveChange(
+        trove,
+        closingTrove,
+        borrowingRate,
+        validationContext
+    );
+    const stableCloseChange = useStableTroveChange(closeChange);
+
+    const shouldShowCloseValidation = isClosing && hasAttemptedClose;
+    const closeValidationError = shouldShowCloseValidation
+        ? closeDescription
+        : null;
+
+    const handleTabChange = (tab: string) => {
+        setIsClosing(tab === 'close');
+        setHasAttemptedClose(false);
+        // Reset inputs to current trove state when switching tabs
+        setCollateral(trove.collateral);
+        setNetDebt(trove.netDebt);
+        setCollateralInput(trove.collateral.prettify());
+        setNetDebtInput(trove.netDebt.prettify());
+        setEditingField(undefined);
+    };
 
     if (trove.status !== 'open') {
         return null;
@@ -237,10 +272,9 @@ export const Adjusting: React.FC = () => {
 
     return (
         <>
-            <div className='mb-4'>{description}</div>
             <TabSwitcher
                 activeTab={isClosing ? 'close' : 'update'}
-                setActiveTab={tab => setIsClosing(tab === 'close')}
+                setActiveTab={handleTabChange}
                 disabled={false}
                 tabs={[
                     { key: 'update', label: 'Update Trove' },
@@ -254,7 +288,9 @@ export const Adjusting: React.FC = () => {
                         Update your Trove by modifying its collateral, borrowed
                         amount, or both.
                     </p>
-
+                    {description && !isClosing && (
+                        <div className='pb-6'>{description}</div>
+                    )}
                     <div className='mb-6'>
                         <InputBox
                             label='Collateral'
@@ -263,18 +299,32 @@ export const Adjusting: React.FC = () => {
                             onFocus={() => setEditingField('collateral')}
                             onBlur={() => setEditingField(undefined)}
                             onChange={value => {
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    setCollateralInput(value);
-                                    setCollateral(Decimal.from(value || '0'));
+                                setCollateralInput(value);
+                                const cleanValue =
+                                    value?.replace(/,/g, '') || '0';
+                                try {
+                                    setCollateral(Decimal.from(cleanValue));
+                                } catch {
+                                    setCollateral(Decimal.ZERO);
                                 }
                             }}
                             tokenIcon={
                                 <>
-                                    <FILIcon />
-                                    <span className='font-medium'>FIL</span>
+                                    <FILIcon className='h-8 w-8' />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        {CURRENCY}
+                                    </span>
                                 </>
                             }
-                            subLabel={collateral.mul(price).prettify()}
+                            subLabel={`$${collateral.mul(price).prettify()}`}
+                            maxValue={maxCollateral.prettify()}
+                            maxToken={CURRENCY}
+                            onMaxClick={() => {
+                                setCollateral(maxCollateral);
+                                setCollateralInput(maxCollateral.prettify());
+                            }}
+                            // eslint-disable-next-line jsx-a11y/no-autofocus
+                            autoFocus={true}
                         />
 
                         <InputBox
@@ -284,13 +334,26 @@ export const Adjusting: React.FC = () => {
                             onFocus={() => setEditingField('netDebt')}
                             onBlur={() => setEditingField(undefined)}
                             onChange={value => {
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    setNetDebtInput(value);
-                                    setNetDebt(Decimal.from(value || '0'));
+                                setNetDebtInput(value);
+                                const cleanValue =
+                                    value?.replace(/,/g, '') || '0';
+                                try {
+                                    setNetDebt(Decimal.from(cleanValue));
+                                } catch {
+                                    setNetDebt(Decimal.ZERO);
                                 }
                             }}
-                            tokenIcon={<USDFCIcon />}
-                            subLabel={totalDebt.prettify()}
+                            tokenIcon={
+                                <>
+                                    <USDFCIconLarge />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        USDFC
+                                    </span>
+                                </>
+                            }
+                            subLabel={`$${totalDebt.prettify()}`}
+                            // eslint-disable-next-line jsx-a11y/no-autofocus
+                            autoFocus={false}
                         />
                     </div>
 
@@ -301,9 +364,10 @@ export const Adjusting: React.FC = () => {
                                     <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Collateral Ratio
                                     </h3>
-                                    The ratio of deposited FIL to borrowed
-                                    USDFC. If it falls below 110% (or 150% in
-                                    Recovery Mode), liquidation may occur.
+                                    The ratio of deposited {CURRENCY} to
+                                    borrowed USDFC. If it falls below 110% (or
+                                    150% in Recovery Mode), liquidation may
+                                    occur.
                                 </div>
                                 <p className='text-right font-bold'>
                                     {collateralRatio
@@ -321,19 +385,26 @@ export const Adjusting: React.FC = () => {
                                     <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Liquidation Risk
                                     </h3>
-                                    The risk of losing your FIL collateral if
-                                    your Collateral Ratio drops below 110% under
-                                    normal conditions or 150% in Recovery Mode.
+                                    The risk of losing your {CURRENCY}{' '}
+                                    collateral if your Collateral Ratio drops
+                                    below 110% under normal conditions or 150%
+                                    in Recovery Mode.
                                 </div>
                                 <div
-                                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${liquidationRisk.bg}`}
+                                    className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                    style={{
+                                        padding: '6px 12px 6px 6px',
+                                        gap: '6px',
+                                    }}
                                 >
                                     <div
-                                        className={`h-2 w-2 rounded-full ${liquidationRisk.dotBg}`}
+                                        className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                        style={{
+                                            width: '16px',
+                                            height: '16px',
+                                        }}
                                     ></div>
-                                    <span
-                                        className={`text-xs ${liquidationRisk.color}`}
-                                    >
+                                    <span className={liquidationRisk.textStyle}>
                                         {liquidationRisk.text}
                                     </span>
                                 </div>
@@ -349,6 +420,7 @@ export const Adjusting: React.FC = () => {
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
                                 <USDFCIcon />
+                                <span>USDFC</span>
                             </div>
                         </div>
                     </div>
@@ -378,7 +450,7 @@ export const Adjusting: React.FC = () => {
                 </>
             ) : (
                 <>
-                    <p className='mb-6 text-center text-sm text-gray-500'>
+                    <p className='mb-6 text-left text-sm text-gray-500'>
                         Closing your Trove will repay all your debt and return
                         your remaining collateral.
                     </p>
@@ -388,7 +460,14 @@ export const Adjusting: React.FC = () => {
                             label='You will repay'
                             value={totalDebt.prettify(2)}
                             onChange={() => {}} // Read-only
-                            tokenIcon={<USDFCIcon />}
+                            tokenIcon={
+                                <>
+                                    <USDFCIconLarge />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        USDFC
+                                    </span>
+                                </>
+                            }
                             subLabel={`$${totalDebt.prettify()}`}
                             readOnly={true}
                             type='text'
@@ -400,8 +479,10 @@ export const Adjusting: React.FC = () => {
                             onChange={() => {}} // Read-only
                             tokenIcon={
                                 <>
-                                    <FILIcon />
-                                    <span className='font-medium'>FIL</span>
+                                    <FILIcon className='h-8 w-8' />
+                                    <span className='text-2xl font-medium leading-none'>
+                                        {CURRENCY}
+                                    </span>
                                 </>
                             }
                             subLabel={`$${collateral
@@ -413,23 +494,34 @@ export const Adjusting: React.FC = () => {
                         />
                     </div>
 
-                    {stableTroveChange ? (
+                    {stableCloseChange && hasAttemptedClose ? (
                         <TroveAction
                             transactionId={'closure'}
-                            change={stableTroveChange}
+                            change={stableCloseChange}
                             maxBorrowingRate={maxBorrowingRate}
                             borrowingFeeDecayToleranceMinutes={60}
                         >
                             Repay & Close Trove
                         </TroveAction>
+                    ) : hasAttemptedClose && !stableCloseChange ? (
+                        <Button
+                            disabled
+                            className='text-lg w-full cursor-not-allowed bg-gray-400 py-4 opacity-50'
+                        >
+                            Repay & Close Trove
+                        </Button>
                     ) : (
                         <Button
-                            onClick={() => sendTransaction()}
+                            onClick={() => setHasAttemptedClose(true)}
                             className='text-lg w-full bg-primary-500 py-4 hover:bg-primary-700'
                         >
                             Repay & Close Trove
                         </Button>
                     )}
+                    {closeValidationError && (
+                        <div className='py-2'>{closeValidationError}</div>
+                    )}
+
                     <p className='mt-2 text-center text-sm text-gray-500'>
                         This action will open your wallet to sign the
                         transaction.

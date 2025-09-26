@@ -7,6 +7,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
@@ -34,17 +35,7 @@ export const SideNav: React.FC = () => {
         }
     };
 
-    if (!isVisible) {
-        return (
-            <button
-                onClick={() => setIsVisible(true)}
-                className='flex items-center justify-center laptop:hidden'
-            >
-                <MenuIcon className='h-6 w-6' />
-            </button>
-        );
-    }
-    return (
+    const overlayContent = isVisible && (
         <div
             ref={overlay}
             tabIndex={0}
@@ -127,6 +118,21 @@ export const SideNav: React.FC = () => {
                 </div>
             </aside>
         </div>
+    );
+
+    return (
+        <>
+            <button
+                onClick={() => setIsVisible(true)}
+                className='flex items-center justify-center laptop:hidden'
+                aria-label='Open menu'
+            >
+                <MenuIcon className='h-6 w-6' />
+            </button>
+            {typeof document !== 'undefined' &&
+                overlayContent &&
+                createPortal(overlayContent, document.body)}
+        </>
     );
 };
 

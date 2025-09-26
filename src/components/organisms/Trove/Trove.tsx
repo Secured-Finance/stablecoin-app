@@ -4,6 +4,7 @@ import {
     Decimal,
 } from '@secured-finance/stablecoin-lib-base';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 
 const select = ({
@@ -28,38 +29,38 @@ export const Trove = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: 'Unknown',
-                color: 'text-neutral-600',
-                bg: 'bg-neutral-100',
-                dotBg: 'bg-neutral-400',
+                text: 'Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
-                color: 'text-warning-700',
-                bg: 'bg-warning-100',
-                dotBg: 'bg-warning-500',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-[#5C2E00] text-sm font-medium',
+                dotStyle: 'bg-[#FFAD00]',
             };
         return {
             text: 'High',
-            color: 'text-error-700',
-            bg: 'bg-error-100',
-            dotBg: 'bg-error-500',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-[#5C0000] text-sm font-medium',
+            dotStyle: 'bg-[#FF4D4F]',
         };
     };
 
@@ -68,7 +69,7 @@ export const Trove = () => {
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-            <div className='grid grid-cols-2 gap-6'>
+            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-2 tablet:gap-6'>
                 <div>
                     <p className='mb-1 text-sm text-neutral-450'>Total Debt</p>
                     <div className='flex items-center gap-1'>
@@ -76,6 +77,7 @@ export const Trove = () => {
                             {trove.debt.prettify()}
                         </span>
                         <USDFCIcon />
+                        <span className='text-sm'>USDFC</span>
                     </div>
                 </div>
                 <div>
@@ -84,10 +86,10 @@ export const Trove = () => {
                         <span className='font-bold'>
                             {trove.collateral.prettify()}
                         </span>
-                        <FILIcon />
-                        <span className='text-sm'>FIL</span>
-                        <span className='ml-1 text-xs text-neutral-450'>
-                            {trove.collateral.mul(price).sub(0).prettify()}
+                        <FILIcon className='h-4 w-4' />
+                        <span className='text-sm'>{CURRENCY}</span>
+                        <span className='ml-1 text-sm text-neutral-450'>
+                            ${trove.collateral.mul(price).sub(0).prettify()}
                         </span>
                     </div>
                 </div>
@@ -97,17 +99,19 @@ export const Trove = () => {
                     </p>
                     <div className='flex items-center gap-1'>
                         <span className='font-bold'>
-                            {trove.collateralRatio(price).mul(100).prettify()}%
+                            {collateralRatio
+                                ? `${collateralRatio.mul(100).prettify()}%`
+                                : '150%'}
                         </span>
                         <div
-                            className={`ml-2 inline-flex items-center gap-2 rounded-full px-3 py-1 ${liquidationRisk.bg}`}
+                            className={`ml-2 inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                            style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
                         >
                             <div
-                                className={`h-2 w-2 rounded-full ${liquidationRisk.dotBg}`}
+                                className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                style={{ width: '16px', height: '16px' }}
                             ></div>
-                            <span
-                                className={`text-xs ${liquidationRisk.color}`}
-                            >
+                            <span className={liquidationRisk.textStyle}>
                                 {liquidationRisk.text} Liquidation Risk
                             </span>
                         </div>

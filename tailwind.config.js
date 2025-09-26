@@ -10,6 +10,10 @@ module.exports = {
             stats: '0px 4px 32px 0px rgba(102, 109, 180, 0.15)',
         },
         extend: {
+            maxWidth: {
+                dashboard: '920px',
+                card: '448px',
+            },
             lineHeight: {
                 '3.5': '14px',
                 '4.5': '18px',

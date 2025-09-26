@@ -7,12 +7,13 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
 import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
 } from '../Redemption/validation/validateRedemptionChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
+import { USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TokenBox } from '../molecules';
 
@@ -129,15 +130,15 @@ export const RedemptionPage = () => {
     const usdValue = filReceived.mul(price).prettify(2);
 
     return (
-        <div className='flex min-h-screen w-full flex-col'>
+        <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
-                <div className='mx-auto w-full max-w-3xl'>
-                    <h1 className='mb-3 text-center font-primary text-5/none font-semibold'>
+                <div className='w-full'>
+                    <h1 className='text-2xl mb-3 text-center font-semibold leading-none'>
                         Redeem USDFC
                     </h1>
                     <p className='mb-8 text-center text-sm text-neutral-450'>
-                        Exchange USDFC for FIL at face value by repaying the
-                        system&apos;s least <br />
+                        Exchange USDFC for {CURRENCY} at face value by repaying
+                        the system&apos;s least <br />
                         collateralized Troves. This is not the same as repaying
                         your own debt—if your Trove
                         <br /> is undercollateralized, it may be partially
@@ -146,21 +147,30 @@ export const RedemptionPage = () => {
                     <TokenBox
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
+                        autoFocusInput={true}
                         onInputChange={value => {
                             setRedeemAmount(value);
                             setRedeemAmountDecimal(Decimal.from(value || '0'));
                         }}
-                        inputTokenIcon={<USDFCIcon />}
+                        inputTokenIcon={
+                            <>
+                                <USDFCIconLarge />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
+                                    USDFC
+                                </span>
+                            </>
+                        }
+                        inputSubLabel={`$${redeemAmountDecimal.prettify()}`}
                         outputLabel='You will receive'
                         outputValue={filToReceive}
                         outputSubLabel={`$${usdValue}`}
                         outputTokenIcon={
-                            <div className='flex items-center gap-2'>
-                                <FILIcon />
-                                <span className='text-base font-semibold text-neutral-900'>
-                                    FIL
+                            <>
+                                <FILIcon className='h-8 w-8' />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
+                                    {CURRENCY}
                                 </span>
-                            </div>
+                            </>
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
@@ -176,7 +186,7 @@ export const RedemptionPage = () => {
                                         Redemption Fee
                                     </div>
                                     <div className='max-w-[280px] text-xs text-neutral-450'>
-                                        A percentage of the FIL received,
+                                        A percentage of the {CURRENCY} received,
                                         currently {feePercentage}. It varies
                                         based on USDFC redemption volumes.
                                     </div>
@@ -187,9 +197,11 @@ export const RedemptionPage = () => {
                                     </span>
                                     <div className='flex items-center gap-1'>
                                         <div className='flex h-4 w-4 items-center justify-center rounded-full bg-neutral-150'>
-                                            <FILIcon />
+                                            <FILIcon className='h-4 w-4' />
                                         </div>
-                                        <span className='text-xs'>FIL</span>
+                                        <span className='text-xs'>
+                                            {CURRENCY}
+                                        </span>
                                         <span className='text-xs text-neutral-450'>
                                             {feePercentage}
                                         </span>
@@ -197,6 +209,7 @@ export const RedemptionPage = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className='pb-2'>{validationMessage}</div>
 
                         <button
                             className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
@@ -212,8 +225,6 @@ export const RedemptionPage = () => {
                                 transaction.
                             </p>
                         )}
-
-                        {validationMessage}
                     </TokenBox>
                 </div>
             </main>

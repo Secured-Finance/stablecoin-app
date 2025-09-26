@@ -1,6 +1,7 @@
 import { ArrowDown } from 'lucide-react';
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { Decimal } from '@secured-finance/stablecoin-lib-base';
 
 interface TokenBoxProps {
     inputLabel: string;
@@ -19,6 +20,7 @@ interface TokenBoxProps {
     children?: React.ReactNode;
     maxValue?: string;
     onMaxClick?: () => void;
+    autoFocusInput?: boolean;
 }
 export const TokenBox = ({
     inputLabel,
@@ -37,14 +39,42 @@ export const TokenBox = ({
     children,
     maxValue,
     onMaxClick,
+    autoFocusInput,
 }: TokenBoxProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [inputEditing, setInputEditing] = useState(autoFocusInput || false);
+    const [outputEditing, setOutputEditing] = useState(false);
 
+    // Auto focus input on mount if autoFocusInput is true
     useEffect(() => {
-        if (isConnected) {
-            inputRef.current?.focus();
+        if (autoFocusInput && isConnected) {
+            // Small delay to ensure DOM is ready
+            setTimeout(() => setInputEditing(true), 0);
         }
-    }, [isConnected]);
+    }, [autoFocusInput, isConnected]);
+
+    // Parse strings to Decimals for display
+    const cleanInputValue = inputValue?.replace(/,/g, '') || '';
+    const inputDecimal =
+        cleanInputValue && cleanInputValue !== '' && cleanInputValue !== '.'
+            ? Decimal.from(cleanInputValue) || Decimal.ZERO
+            : Decimal.ZERO;
+
+    const cleanOutputValue = outputValue?.replace(/,/g, '') || '';
+    const outputDecimal =
+        cleanOutputValue && cleanOutputValue !== '' && cleanOutputValue !== '.'
+            ? Decimal.from(cleanOutputValue) || Decimal.ZERO
+            : Decimal.ZERO;
+
+    // Get clean values for editing (removing commas and keeping raw numbers)
+    const getCleanInputValue = () => {
+        const clean = inputValue?.replace(/,/g, '') || '';
+        return clean === '' || clean === '0' ? '' : clean;
+    };
+
+    const getCleanOutputValue = () => {
+        const clean = outputValue?.replace(/,/g, '') || '';
+        return clean === '' || clean === '0' ? '' : clean;
+    };
 
     return (
         <div className='w-full'>
@@ -54,22 +84,68 @@ export const TokenBox = ({
                         <label className='mb-1 block font-primary text-4 font-medium text-neutral-900'>
                             {inputLabel}
                         </label>
-                        <input
-                            type='text'
-                            inputMode='decimal'
-                            className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                            value={inputValue}
-                            ref={inputRef}
-                            onChange={e => {
-                                const value = e.target.value;
-                                if (/^\d*\.?\d*$/.test(value)) {
-                                    onInputChange(value);
+                        {inputEditing ? (
+                            <input
+                                // eslint-disable-next-line jsx-a11y/no-autofocus
+                                autoFocus
+                                type='text'
+                                step='any'
+                                className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                    isConnected
+                                        ? 'text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
+                                defaultValue={getCleanInputValue()}
+                                onKeyDown={e => {
+                                    if (
+                                        !/[0-9.]/.test(e.key) &&
+                                        ![
+                                            'Backspace',
+                                            'Delete',
+                                            'ArrowLeft',
+                                            'ArrowRight',
+                                            'Tab',
+                                        ].includes(e.key)
+                                    ) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                onChange={e => {
+                                    const value = e.target.value;
+                                    if (/^[0-9]*\.?[0-9]*$/.test(value)) {
+                                        onInputChange(value);
+                                    }
+                                }}
+                                onBlur={() => {
+                                    setInputEditing(false);
+                                    onInputBlur?.();
+                                }}
+                                placeholder='0.00'
+                                disabled={!isConnected}
+                            />
+                        ) : (
+                            <div
+                                className={`w-full text-8 font-semibold ${
+                                    isConnected
+                                        ? 'cursor-text text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
+                                onClick={() =>
+                                    isConnected && setInputEditing(true)
                                 }
-                            }}
-                            onBlur={onInputBlur}
-                            placeholder='0.0'
-                            disabled={!isConnected}
-                        />
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        isConnected && setInputEditing(true);
+                                    }
+                                }}
+                                role='button'
+                                tabIndex={isConnected ? 0 : -1}
+                            >
+                                {inputDecimal.isZero
+                                    ? '0.00'
+                                    : inputDecimal.prettify(2)}
+                            </div>
+                        )}
 
                         {inputSubLabel && (
                             <p className='mt-1 text-sm text-neutral-350'>
@@ -77,9 +153,9 @@ export const TokenBox = ({
                             </p>
                         )}
                     </div>
-                    <div className='ml-3 flex flex-col items-end gap-2'>
+                    <div className='ml-3 flex flex-col items-end gap-4'>
                         {inputTokenIcon && (
-                            <div className='flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
+                            <div className='flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-2'>
                                 {inputTokenIcon}
                             </div>
                         )}
@@ -110,24 +186,84 @@ export const TokenBox = ({
                             {outputLabel}
                         </label>
                         {onOutputChange ? (
-                            <input
-                                type='text'
-                                inputMode='decimal'
-                                className='w-full bg-transparent text-8 font-semibold text-neutral-900 outline-none placeholder:text-neutral-350'
-                                value={outputValue}
-                                onChange={e => {
-                                    const value = e.target.value;
-                                    if (/^\d*\.?\d*$/.test(value)) {
-                                        onOutputChange(value);
+                            outputEditing ? (
+                                <input
+                                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                                    autoFocus
+                                    type='text'
+                                    step='any'
+                                    className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                        isConnected
+                                            ? 'text-neutral-900'
+                                            : 'text-neutral-400'
+                                    }`}
+                                    defaultValue={getCleanOutputValue()}
+                                    onKeyDown={e => {
+                                        if (
+                                            !/[0-9.]/.test(e.key) &&
+                                            ![
+                                                'Backspace',
+                                                'Delete',
+                                                'ArrowLeft',
+                                                'ArrowRight',
+                                                'Tab',
+                                            ].includes(e.key)
+                                        ) {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                    onChange={e => {
+                                        const value = e.target.value;
+                                        // Only allow numbers and decimal point
+                                        if (/^[0-9]*\.?[0-9]*$/.test(value)) {
+                                            onOutputChange(value);
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        setOutputEditing(false);
+                                        onOutputBlur?.();
+                                    }}
+                                    placeholder='0.00'
+                                    disabled={!isConnected}
+                                />
+                            ) : (
+                                <div
+                                    className={`w-full text-8 font-semibold ${
+                                        isConnected
+                                            ? 'cursor-text text-neutral-900'
+                                            : 'text-neutral-400'
+                                    }`}
+                                    onClick={() =>
+                                        isConnected && setOutputEditing(true)
                                     }
-                                }}
-                                onBlur={onOutputBlur}
-                                placeholder='0.0'
-                                disabled={!isConnected}
-                            />
+                                    onKeyDown={e => {
+                                        if (
+                                            e.key === 'Enter' ||
+                                            e.key === ' '
+                                        ) {
+                                            isConnected &&
+                                                setOutputEditing(true);
+                                        }
+                                    }}
+                                    role='button'
+                                    tabIndex={isConnected ? 0 : -1}
+                                >
+                                    {outputDecimal.isZero
+                                        ? '0.00'
+                                        : outputDecimal.prettify(2)}
+                                </div>
+                            )
                         ) : (
-                            <div className='text-8 font-semibold text-neutral-900'>
-                                {outputValue || '0.0'}
+                            <div
+                                className={`text-8 font-semibold ${
+                                    isConnected
+                                        ? 'text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
+                            >
+                                {outputDecimal.isZero
+                                    ? '0.00'
+                                    : outputDecimal.prettify(2)}
                             </div>
                         )}
                         {outputSubLabel && (
