@@ -13,6 +13,7 @@ import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
 import { Icon } from 'src/components/Icon';
+import { CURRENCY } from 'src/strings';
 import { openDocumentation } from 'src/constants';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
@@ -200,7 +201,7 @@ export const StabilityManageView = () => {
             </h1>
             <p className='mb-8 text-center text-sm text-neutral-450'>
                 {originalDeposit.isEmpty
-                    ? 'Deposit USDFC to earn FIL rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.'
+                    ? `Deposit USDFC to earn ${CURRENCY} rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.`
                     : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
             </p>
 

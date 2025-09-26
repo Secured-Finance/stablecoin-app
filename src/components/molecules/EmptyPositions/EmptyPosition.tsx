@@ -1,22 +1,23 @@
 import { Layers2, Vault } from 'lucide-react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { PositionInfoCard } from '../PositionInfoCard';
+import { CURRENCY } from 'src/strings';
 
 export const EmptyPositions = () => {
     const emptyStates = [
         {
             icon: <Vault className='h-6 w-6 text-neutral-450' />,
             title: 'No Trove Yet',
-            description: `A Trove is your personal vault where you can deposit FIL
+            description: `A Trove is your personal vault where you can deposit ${CURRENCY}
 as collateral to borrow USDFC with 0% interest, while
-maintaining exposure to FIL.`,
+maintaining exposure to ${CURRENCY}.`,
             href: '/trove',
             buttonText: 'Create Trove',
         },
         {
             icon: <Layers2 className='h-6 w-6 text-neutral-450' />,
             title: 'No Stability Pool Deposit Yet',
-            description: `Deposit USDFC to earn FIL rewards. The pool helps
+            description: `Deposit USDFC to earn ${CURRENCY} rewards. The pool helps
 maintain system stability by covering liquidated debt,
 ensuring a balanced and secure ecosystem.`,
             href: '/stability-pool',

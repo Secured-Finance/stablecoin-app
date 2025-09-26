@@ -14,7 +14,6 @@ import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
-import { CURRENCY } from '../../strings';
 import { GasEstimationState } from './ExpensiveTroveChangeWarning';
 import { TroveAction } from './TroveAction';
 import {
@@ -24,6 +23,7 @@ import {
 
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { StatCard } from 'src/components/molecules/StatCard';
 import { openDocumentation } from 'src/constants';
 
@@ -96,29 +96,38 @@ export const Opening: React.FC = () => {
         if (!ratio)
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                color: 'text-success-700',
-                bg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
-                color: 'text-warning-700',
-                bg: 'bg-warning-500',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-[#5C2E00] text-sm font-medium',
+                dotStyle: 'bg-[#FFAD00]',
             };
-        return { text: 'High', color: 'text-error-700', bg: 'bg-error-500' };
+        return {
+            text: 'High',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-[#5C0000] text-sm font-medium',
+            dotStyle: 'bg-[#FF4D4F]',
+        };
     };
 
     const liquidationRisk = getLiquidationRisk(collateralRatio);
@@ -237,7 +246,7 @@ export const Opening: React.FC = () => {
             <div className='mb-6 mt-6 space-y-4'>
                 <StatCard
                     title='Collateral Ratio'
-                    description='The ratio of deposited FIL to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.'
+                    description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.`}
                     value={
                         <p className='text-right font-bold'>
                             {collateralRatio
@@ -247,8 +256,7 @@ export const Opening: React.FC = () => {
                     }
                     tooltip={{
                         title: 'Collateral Ratio',
-                        description:
-                            'The ratio of deposited FIL to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.',
+                        description: `The ratio of deposited ${CURRENCY} to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.`,
                         onButtonClick: () =>
                             openDocumentation('collateralRatio'),
                     }}
@@ -256,23 +264,26 @@ export const Opening: React.FC = () => {
 
                 <StatCard
                     title='Liquidation Risk'
-                    description='The risk of losing your FIL collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.'
+                    description={`The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`}
                     value={
-                        <div className='flex items-center justify-end gap-2'>
+                        <div className='flex items-center justify-end'>
                             <div
-                                className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
-                            ></div>
-                            <span
-                                className={`font-medium ${liquidationRisk.color}`}
+                                className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
                             >
-                                {liquidationRisk.text}
-                            </span>
+                                <div
+                                    className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                    style={{ width: '16px', height: '16px' }}
+                                ></div>
+                                <span className={liquidationRisk.textStyle}>
+                                    {liquidationRisk.text}
+                                </span>
+                            </div>
                         </div>
                     }
                     tooltip={{
                         title: 'Liquidation Risk',
-                        description:
-                            'The risk of losing your FIL collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.',
+                        description: `The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`,
                         onButtonClick: () =>
                             openDocumentation('liquidationMechanics'),
                     }}

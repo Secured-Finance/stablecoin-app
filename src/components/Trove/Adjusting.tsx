@@ -8,6 +8,7 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useRef, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { Button, InputBox, TabSwitcher } from 'src/components/atoms';
 import { useSfStablecoinSelector } from 'src/hooks';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
@@ -194,37 +195,37 @@ export const Adjusting: React.FC = () => {
         if (!ratio)
             return {
                 text: 'Unknown',
-                color: 'text-neutral-600',
-                bg: 'bg-neutral-100',
-                dotBg: 'bg-neutral-400',
+                containerStyle: 'bg-[#F5F5F5] border border-[#D9D9D9]',
+                textStyle: 'text-[#666666] text-sm font-medium',
+                dotStyle: 'bg-[#999999]',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-100',
-                dotBg: 'bg-success-500',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
-                color: 'text-warning-700',
-                bg: 'bg-warning-100',
-                dotBg: 'bg-warning-500',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-[#5C2E00] text-sm font-medium',
+                dotStyle: 'bg-[#FFAD00]',
             };
         return {
             text: 'High',
-            color: 'text-error-700',
-            bg: 'bg-error-100',
-            dotBg: 'bg-error-500',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-[#5C0000] text-sm font-medium',
+            dotStyle: 'bg-[#FF4D4F]',
         };
     };
 
@@ -311,13 +312,13 @@ export const Adjusting: React.FC = () => {
                                 <>
                                     <FILIcon className='h-8 w-8' />
                                     <span className='text-2xl font-medium leading-none'>
-                                        FIL
+                                        {CURRENCY}
                                     </span>
                                 </>
                             }
                             subLabel={`$${collateral.mul(price).prettify()}`}
                             maxValue={maxCollateral.prettify()}
-                            maxToken='FIL'
+                            maxToken={CURRENCY}
                             onMaxClick={() => {
                                 setCollateral(maxCollateral);
                                 setCollateralInput(maxCollateral.prettify());
@@ -363,9 +364,10 @@ export const Adjusting: React.FC = () => {
                                     <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Collateral Ratio
                                     </h3>
-                                    The ratio of deposited FIL to borrowed
-                                    USDFC. If it falls below 110% (or 150% in
-                                    Recovery Mode), liquidation may occur.
+                                    The ratio of deposited {CURRENCY} to
+                                    borrowed USDFC. If it falls below 110% (or
+                                    150% in Recovery Mode), liquidation may
+                                    occur.
                                 </div>
                                 <p className='text-right font-bold'>
                                     {collateralRatio
@@ -383,19 +385,20 @@ export const Adjusting: React.FC = () => {
                                     <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Liquidation Risk
                                     </h3>
-                                    The risk of losing your FIL collateral if
-                                    your Collateral Ratio drops below 110% under
-                                    normal conditions or 150% in Recovery Mode.
+                                    The risk of losing your {CURRENCY}{' '}
+                                    collateral if your Collateral Ratio drops
+                                    below 110% under normal conditions or 150%
+                                    in Recovery Mode.
                                 </div>
                                 <div
-                                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${liquidationRisk.bg}`}
+                                    className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                    style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
                                 >
                                     <div
-                                        className={`h-2 w-2 rounded-full ${liquidationRisk.dotBg}`}
+                                        className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                        style={{ width: '16px', height: '16px' }}
                                     ></div>
-                                    <span
-                                        className={`text-xs ${liquidationRisk.color}`}
-                                    >
+                                    <span className={liquidationRisk.textStyle}>
                                         {liquidationRisk.text}
                                     </span>
                                 </div>
@@ -472,7 +475,7 @@ export const Adjusting: React.FC = () => {
                                 <>
                                     <FILIcon className='h-8 w-8' />
                                     <span className='text-2xl font-medium leading-none'>
-                                        FIL
+                                        {CURRENCY}
                                     </span>
                                 </>
                             }

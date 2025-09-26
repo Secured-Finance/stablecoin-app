@@ -1,4 +1,5 @@
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import {
     StabilityDeposit,
@@ -71,7 +72,7 @@ export function StabilityStats({
                 <Stat label='Liquidation Gains'>
                     <span>{liquidationGains}</span>
                     <FILIcon className='h-4 w-4' />
-                    <span>FIL</span>
+                    <span>{CURRENCY}</span>
                     <span className='text-sm text-neutral-450'>
                         ${liquidationGainsUSD.prettify()}
                     </span>

@@ -13,6 +13,7 @@ import {
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
 import { AddressUtils, isProdEnv } from 'src/utils';
+import { CURRENCY } from 'src/strings';
 import { filecoin } from 'viem/chains';
 
 type ProtocolOverviewProps = {
@@ -56,7 +57,7 @@ export const ProtocolOverview = ({
             <div className='flex flex-col gap-6'>
                 <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                     <TokenPrice
-                        symbol='FIL'
+                        symbol={CURRENCY}
                         price={editedPrice}
                         sources={priceSources}
                     />
@@ -127,7 +128,7 @@ export const getProtocolStats = (
     const stats: ProtocolStat[] = [
         formatStat(
             'Total Value Locked',
-            `${total.collateral.shorten()} FIL`,
+            `${total.collateral.shorten()} ${CURRENCY}`,
             `$${Decimal.from(total.collateral.mul(price)).shorten()}`
         ),
         formatStat('USDFC Supply', total.debt.shorten()),

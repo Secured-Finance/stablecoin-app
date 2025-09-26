@@ -1,6 +1,7 @@
 import { Decimal, Trove } from '@secured-finance/stablecoin-lib-base';
 import { Layers2, Vault } from 'lucide-react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import { EmptyPosition } from '../EmptyPosition';
@@ -26,6 +27,47 @@ export const Positions = ({
         !trove.collateral.isZero && !trove.netDebt.isZero
             ? trove.collateralRatio(price)
             : undefined;
+
+    // Calculate liquidation risk based on collateral ratio
+    const getLiquidationRisk = (ratio?: Decimal) => {
+        if (!ratio)
+            return {
+                text: 'Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
+            };
+        const ratioPercent = ratio.mul(100);
+        if (ratioPercent.gte(200))
+            return {
+                text: 'Very Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
+            };
+        if (ratioPercent.gte(150))
+            return {
+                text: 'Low',
+                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
+                textStyle: 'text-[#023103] text-sm font-medium',
+                dotStyle: 'bg-[#84FA86]',
+            };
+        if (ratioPercent.gte(120))
+            return {
+                text: 'Medium',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-[#5C2E00] text-sm font-medium',
+                dotStyle: 'bg-[#FFAD00]',
+            };
+        return {
+            text: 'High',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-[#5C0000] text-sm font-medium',
+            dotStyle: 'bg-[#FF4D4F]',
+        };
+    };
+
+    const liquidationRisk = getLiquidationRisk(collateralRatio);
 
     const liquidationGains = originalDeposit.collateralGain.prettify(2);
     const originalPoolShare = originalDeposit.currentDebtToken.mulDiv(
@@ -64,7 +106,7 @@ export const Positions = ({
                                         <span className='flex items-center gap-1'>
                                             {trove.collateral.prettify()}{' '}
                                             <FILIcon className='h-4 w-4' />
-                                            <span>FIL</span>
+                                            <span>{CURRENCY}</span>
                                         </span>
                                     }
                                 />
@@ -81,9 +123,18 @@ export const Positions = ({
                                 <InfoRow
                                     label='Liquidation Risk'
                                     value={
-                                        <span className='rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700'>
-                                            Low
-                                        </span>
+                                        <div
+                                            className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                            style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
+                                        >
+                                            <div
+                                                className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                                style={{ width: '16px', height: '16px' }}
+                                            ></div>
+                                            <span className={liquidationRisk.textStyle}>
+                                                {liquidationRisk.text}
+                                            </span>
+                                        </div>
                                     }
                                 />
                             </div>
@@ -105,7 +156,7 @@ export const Positions = ({
                     <EmptyPosition
                         icon={Vault}
                         title='Trove Yet'
-                        description='A Trove is your personal vault where you can deposit FIL as collateral to borrow USDFC with 0% interest, while maintaining exposure to FIL.'
+                        description={`A Trove is your personal vault where you can deposit ${CURRENCY} as collateral to borrow USDFC with 0% interest, while maintaining exposure to ${CURRENCY}.`}
                         buttonText='Create Trove'
                         buttonHref='/trove'
                     />
@@ -121,7 +172,7 @@ export const Positions = ({
                                     icon={
                                         <>
                                             <FILIcon className='h-4 w-4' />
-                                            <span>FIL</span>
+                                            <span>{CURRENCY}</span>
                                         </>
                                     }
                                 />
@@ -178,7 +229,7 @@ export const Positions = ({
                     <EmptyPosition
                         icon={Layers2}
                         title='Stability Pool Deposit Yet'
-                        description='Deposit USDFC to earn FIL rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.'
+                        description={`Deposit USDFC to earn ${CURRENCY} rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.`}
                         buttonText='Deposit'
                         buttonHref='/stability-pool'
                     />

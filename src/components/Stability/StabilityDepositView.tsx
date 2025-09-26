@@ -9,7 +9,7 @@ import {
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
-import { COIN } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
 import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
 import {
     useMyTransactionState,
@@ -82,9 +82,9 @@ export function StabilityDepositView() {
                 Deposit USDFC into the Stability Pool
             </h1>
             <p className='mb-8 text-center text-sm text-neutral-450'>
-                Deposit USDFC to earn FIL rewards. The pool helps maintain
-                system stability by covering liquidated debt, ensuring a
-                balanced and secure ecosystem.
+                Deposit USDFC to earn {CURRENCY} rewards. The pool helps
+                maintain system stability by covering liquidated debt, ensuring
+                a balanced and secure ecosystem.
             </p>
 
             <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>

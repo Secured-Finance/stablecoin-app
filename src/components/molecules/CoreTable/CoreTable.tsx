@@ -29,6 +29,7 @@ import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
 import { Spinner } from 'theme-ui';
 import { useSfStablecoin } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
@@ -172,7 +173,7 @@ const TroveRow = ({
                     <Tooltip
                         iconElement={
                             <span className='font-numerical text-xs tablet:min-w-[80px] tablet:text-sm'>
-                                {AddressUtils.format(trove.ownerAddress, 3)}
+                                {AddressUtils.format(trove.ownerAddress, 6)}
                             </span>
                         }
                         placement='top'
@@ -206,7 +207,7 @@ const TroveRow = ({
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
             <td className='p-1 text-center text-xs tablet:p-4 tablet:text-sm'>
-                {trove.debtInFront?.shorten() ?? '0'}
+                ${trove.debtInFront?.shorten() ?? '0'}
             </td>
             <td className='p-1 tablet:p-4'>
                 <div className='flex justify-center'>
@@ -288,7 +289,7 @@ export const CoreTable = ({
                                     Collateral
                                 </span>
                                 <span className='text-xs font-normal text-neutral-500'>
-                                    (FIL)
+                                    ({CURRENCY})
                                 </span>
                             </div>
                         </th>

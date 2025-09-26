@@ -1,5 +1,6 @@
 import { useSfStablecoinSelector } from 'src/hooks';
 import { useAccount } from 'wagmi';
+import { CURRENCY } from 'src/strings';
 import { Adjusting } from 'src/components/Trove/Adjusting';
 import { Opening } from 'src/components/Trove/Opening';
 import { Trove } from 'src/components/organisms/Trove/Trove';
@@ -25,7 +26,7 @@ export const TrovePage = () => {
                                 </h1>
                                 <CustomTooltip
                                     title='Trove'
-                                    description='A personal vault where you deposit FIL as collateral to borrow USDFC. It must maintain a minimum collateral ratio of 110% to avoid liquidation.'
+                                    description={`A personal vault where you deposit ${CURRENCY} as collateral to borrow USDFC. It must maintain a minimum collateral ratio of 110% to avoid liquidation.`}
                                     onButtonClick={() =>
                                         openDocumentation('troveSystem')
                                     }
@@ -49,8 +50,9 @@ export const TrovePage = () => {
                             </h1>
                             <p className='mb-8 text-center text-sm text-neutral-450'>
                                 A Trove is your personal vault where you can
-                                deposit FIL as collateral to borrow USDFC with
-                                0% interest, while maintaining exposure to FIL.
+                                deposit ${CURRENCY} as collateral to borrow
+                                USDFC with 0% interest, while maintaining
+                                exposure to ${CURRENCY}.
                             </p>
                         </div>
                     )}
