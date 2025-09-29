@@ -12,7 +12,6 @@ export function StabilityAmountInput({
     maxAmount,
     onMaxClick,
     disabled,
-    currentBalance,
     autoFocus = true,
     focusKey,
 }: {
@@ -22,14 +21,11 @@ export function StabilityAmountInput({
     maxAmount: Decimal;
     onMaxClick: () => void;
     disabled: boolean;
-    currentBalance?: Decimal;
     autoFocus?: boolean;
     focusKey?: string | number;
 }) {
     const { isConnected } = useAccount();
     const [editing, setEditing] = useState(autoFocus);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [editedAmount, setEditedAmount] = useState(displayAmount);
 
     // Auto focus on mount or when focusKey changes if autoFocus is true
     useEffect(() => {
@@ -38,12 +34,6 @@ export function StabilityAmountInput({
         }
     }, [autoFocus, isConnected, disabled, focusKey]);
 
-    useEffect(() => {
-        if (!editing) {
-            setEditedAmount(displayAmount);
-        }
-    }, [displayAmount, editing]);
-
     const cleanAmount = displayAmount?.replace(/,/g, '') || '';
     const decimal =
         cleanAmount && cleanAmount !== '' && cleanAmount !== '.'
@@ -51,7 +41,7 @@ export function StabilityAmountInput({
             : Decimal.ZERO;
 
     const getCleanEditingValue = () =>
-        decimal.isZero ? '0.00' : decimal.toString();
+        decimal.isZero ? '' : decimal.toString();
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
@@ -84,7 +74,6 @@ export function StabilityAmountInput({
                         onChange={e => {
                             const value = e.target.value;
                             if (/^[0-9]*\.?[0-9]*$/.test(value)) {
-                                setEditedAmount(value);
                                 handleInputChange(value);
                             }
                         }}
@@ -123,12 +112,9 @@ export function StabilityAmountInput({
             </div>
             <div className='flex items-center justify-between text-sm text-neutral-450'>
                 <div>
-                    {isConnected && currentBalance && (
-                        <div className='flex gap-1'>
-                            <span>{currentBalance.prettify()}</span>
-                            <span>{COIN}</span>
-                        </div>
-                    )}
+                    <div className='flex gap-1'>
+                        <span>${decimal.prettify()}</span>
+                    </div>
                 </div>
                 <div className='mt-2 flex items-center gap-2'>
                     <span>
@@ -137,7 +123,6 @@ export function StabilityAmountInput({
                     <Button
                         onClick={() => {
                             const maxStr = maxAmount.toString();
-                            setEditedAmount(maxStr);
                             handleInputChange(maxStr);
                             onMaxClick();
                         }}

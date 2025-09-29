@@ -11,6 +11,11 @@ import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
 import { openDocumentation } from 'src/constants';
 import { CURRENCY } from 'src/strings';
 import { EmptyPosition } from '../EmptyPosition';
+import { useSfStablecoin } from 'src/hooks';
+import {
+    useTransactionFunction,
+    useMyTransactionState,
+} from '../../Transaction';
 
 interface PositionsProps {
     debtTokenInStabilityPool: Decimal;
@@ -20,6 +25,7 @@ interface PositionsProps {
         collateralGain: Decimal;
         currentDebtToken: Decimal;
     };
+    claimGainsButton?: React.ReactNode;
 }
 
 const Card = ({
@@ -186,7 +192,16 @@ export const Positions = ({
     trove,
     price,
     originalDeposit,
+    claimGainsButton,
 }: PositionsProps) => {
+    const { sfStablecoin } = useSfStablecoin();
+    const myTransactionState = useMyTransactionState('stability-claim-gains');
+
+    const [sendClaimTransaction] = useTransactionFunction(
+        myTransactionState.type,
+        sfStablecoin.send.withdrawGainsFromStabilityPool.bind(sfStablecoin.send)
+    );
+
     const collateralRatio =
         !trove.collateral.isZero && !trove.netDebt.isZero
             ? trove.collateralRatio(price)
@@ -203,6 +218,19 @@ export const Positions = ({
 
     const hasTrove = !trove.isEmpty;
     const hasStabilityDeposit = !originalDeposit.currentDebtToken.isZero;
+
+    const isClaimDisabled =
+        originalDeposit.collateralGain.isZero ||
+        myTransactionState.type === 'waitingForApproval' ||
+        myTransactionState.type === 'waitingForConfirmation';
+
+    const getClaimButtonText = () => {
+        if (myTransactionState.type === 'waitingForApproval')
+            return 'Waiting for Approval...';
+        if (myTransactionState.type === 'waitingForConfirmation')
+            return 'Processing...';
+        return 'Claim Gains';
+    };
 
     return (
         <div className='mx-auto w-full max-w-[920px]'>
@@ -365,13 +393,17 @@ export const Positions = ({
                             >
                                 Manage Deposit
                             </Button>
-                            <Button
-                                size={ButtonSizes.md}
-                                variant={ButtonVariants.primary}
-                                className='flex-1'
-                            >
-                                Claim Gains
-                            </Button>
+                            {claimGainsButton || (
+                                <Button
+                                    size={ButtonSizes.md}
+                                    variant={ButtonVariants.primary}
+                                    className='flex-1'
+                                    onClick={sendClaimTransaction}
+                                    disabled={isClaimDisabled}
+                                >
+                                    {getClaimButtonText()}
+                                </Button>
+                            )}
                         </ActionRow>
                     </Card>
                 ) : (

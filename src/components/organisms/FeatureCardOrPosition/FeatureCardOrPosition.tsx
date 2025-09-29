@@ -16,6 +16,7 @@ type FeatureCardsOrPositionsProps = {
             currentDebtToken: Decimal;
         };
     };
+    claimGainsButton?: React.ReactNode;
 };
 
 export const FeatureCardsOrPositions = ({
@@ -26,6 +27,7 @@ export const FeatureCardsOrPositions = ({
         price,
         originalDeposit,
     },
+    claimGainsButton,
 }: FeatureCardsOrPositionsProps) => {
     // When wallet is not connected, show feature cards
     if (!isConnected) {
@@ -52,6 +54,7 @@ export const FeatureCardsOrPositions = ({
                         currentDebtToken: Decimal.ZERO,
                     }
                 }
+                claimGainsButton={claimGainsButton}
             />
         );
     }

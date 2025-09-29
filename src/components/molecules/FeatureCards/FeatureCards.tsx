@@ -3,6 +3,7 @@ import { cn } from 'src/utils';
 import { BorrowIcon, BridgeIcon, EarnIcon } from './ProtocolIcons';
 import { Card } from 'src/components/atoms';
 import { CURRENCY } from 'src/strings';
+import { Link } from 'react-router-dom';
 
 type FeatureCardProps = {
     title: string;
@@ -11,6 +12,7 @@ type FeatureCardProps = {
     className?: string;
     titleClassName?: string;
     descriptionClassName?: string;
+    href: string;
 };
 
 const FeatureCard = ({
@@ -20,17 +22,28 @@ const FeatureCard = ({
     className,
     titleClassName,
     descriptionClassName,
+    href,
 }: FeatureCardProps) => {
     return (
-        <Card
-            className={cn('w-full max-w-none laptop:max-w-[290px]', className)}
+        <Link
+            to={href}
+            className='block w-full max-w-none laptop:max-w-[290px]'
         >
-            <div className='mb-6 flex items-center'>{icon}</div>
-            <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
-                {title}
-            </h3>
-            <p className={cn('text-sm', descriptionClassName)}>{description}</p>
-        </Card>
+            <Card
+                className={cn(
+                    'w-full max-w-none transition-colors duration-300 laptop:max-w-[290px]',
+                    className
+                )}
+            >
+                <div className='mb-6 flex items-center'>{icon}</div>
+                <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
+                    {title}
+                </h3>
+                <p className={cn('text-sm', descriptionClassName)}>
+                    {description}
+                </p>
+            </Card>
+        </Link>
     );
 };
 
@@ -41,24 +54,27 @@ export function FeatureCards() {
                 title='Borrow USDFC'
                 description={`Create a Trove to deposit ${CURRENCY} as collateral and borrow USDFC.`}
                 icon={<BorrowIcon />}
-                className='bg-primary-500 text-white'
+                className='bg-[#1A30FF] text-white hover:bg-[#3453A8]'
                 descriptionClassName='opacity-90'
+                href='/trove'
             />
             <FeatureCard
                 title={`Earn ${CURRENCY}`}
                 description={`Deposit USDFC into the Stability Pool to earn ${CURRENCY} rewards.`}
                 icon={<EarnIcon />}
-                className='bg-warning-200'
+                className='bg-[#FFCE45] hover:bg-[#E9B830]'
                 titleClassName='text-[#332500]'
                 descriptionClassName='text-[#332500]'
+                href='/stability-pool'
             />
             <FeatureCard
                 title='Bridge Assets'
                 description='Seamlessly transfer assets to and from the Filecoin network.'
                 icon={<BridgeIcon />}
-                className='bg-neutral-9'
+                className='bg-[#E3E3E3] hover:bg-[#D7D7D7]'
                 titleClassName='text-[#252525]'
-                descriptionClassName='text-secondary-400'
+                descriptionClassName='text-[#252525]'
+                href='/bridge'
             />
         </div>
     );

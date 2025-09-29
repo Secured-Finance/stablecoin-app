@@ -9,6 +9,7 @@ import {
     useSfStablecoinSelector,
 } from 'src/hooks';
 import { useAccount } from 'wagmi';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
@@ -28,6 +29,7 @@ import { Info } from 'lucide-react';
 
 export const StabilityManageView = () => {
     const { isConnected } = useAccount();
+    const { open } = useWeb3Modal();
     const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>(
         'deposit'
     );
@@ -50,7 +52,13 @@ export const StabilityManageView = () => {
             return withdrawAmountInput;
         }
 
-        return editedDebtToken.isZero ? '' : editedDebtToken.prettify(2);
+        // For deposit tab, always start with empty regardless of existing deposit
+        const depositAmount = editedDebtToken.gt(
+            originalDeposit.currentDebtToken
+        )
+            ? editedDebtToken.sub(originalDeposit.currentDebtToken)
+            : Decimal.ZERO;
+        return depositAmount.isZero ? '' : depositAmount.prettify(2);
     };
 
     const displayAmount = getDisplayAmount();
@@ -60,21 +68,32 @@ export const StabilityManageView = () => {
 
     const handleInputChange = (val: string) => {
         if (activeTab === 'withdraw') {
-            setWithdrawAmountInput(val);
             const currentDeposit = originalDeposit.currentDebtToken;
             const withdrawAmount =
                 val === '' ? Decimal.ZERO : Decimal.from(val);
 
-            if (withdrawAmount.lte(currentDeposit)) {
-                const newTotal = currentDeposit.sub(withdrawAmount);
-                setDepositAmount(newTotal.toString());
-            } else {
-                // For invalid withdrawals, set to zero to maintain valid state
-                // The UI will show the withdrawal amount, validation will show error
-                setDepositAmount('0');
-            }
+            // Cap the withdrawal amount to the maximum available deposit
+            const cappedWithdrawAmount = withdrawAmount.gt(currentDeposit)
+                ? currentDeposit
+                : withdrawAmount;
+
+            // Update the input to show the capped amount
+            const cappedInputValue = cappedWithdrawAmount.isZero
+                ? ''
+                : cappedWithdrawAmount.prettify(2);
+
+            setWithdrawAmountInput(cappedInputValue);
+
+            // Calculate the new total deposit after withdrawal
+            const newTotal = currentDeposit.sub(cappedWithdrawAmount);
+            setDepositAmount(newTotal.toString());
         } else {
-            setDepositAmount(val === '' ? '0' : val);
+            // For deposit tab, add the new deposit amount to existing deposit
+            const newDepositAmount =
+                val === '' ? Decimal.ZERO : Decimal.from(val);
+            const totalDeposit =
+                originalDeposit.currentDebtToken.add(newDepositAmount);
+            setDepositAmount(totalDeposit.toString());
         }
     };
 
@@ -111,6 +130,13 @@ export const StabilityManageView = () => {
             setActiveTab('deposit');
         }
     }, [originalDeposit.isEmpty, activeTab]);
+
+    // Clear input fields when the deposit amount changes
+    const currentDepositAmount = originalDeposit.currentDebtToken.toString();
+    useEffect(() => {
+        setWithdrawAmountInput('');
+        dispatch({ type: 'revert' });
+    }, [currentDepositAmount, dispatch]);
 
     const selectBalances = ({
         debtTokenBalance,
@@ -231,7 +257,6 @@ export const StabilityManageView = () => {
                         : debtTokenBalance
                 }
                 disabled={isDisabled}
-                currentBalance={debtTokenBalance}
                 focusKey={activeTab}
                 onMaxClick={() => {
                     if (activeTab === 'withdraw') {
@@ -348,6 +373,8 @@ export const StabilityManageView = () => {
                 getButtonText={getButtonText}
                 onClick={sendTransaction}
                 activeTab={activeTab}
+                isConnected={isConnected}
+                onConnectWallet={open}
             />
 
             {!isConnected && (

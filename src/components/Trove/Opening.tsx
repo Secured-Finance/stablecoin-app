@@ -382,9 +382,12 @@ export const Opening: React.FC = () => {
             ) : (
                 <Button
                     className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
-                    onClick={() => open()}
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        open();
+                    }}
                 >
-                    Connect wallet
+                    Connect Wallet
                 </Button>
             )}
 

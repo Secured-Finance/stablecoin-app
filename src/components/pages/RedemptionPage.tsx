@@ -105,7 +105,7 @@ export const RedemptionPage = () => {
 
     const renderButtonContent = () => {
         if (!isConnected) {
-            return 'Connect wallet';
+            return 'Connect Wallet';
         }
 
         if (changePending) {
@@ -117,6 +117,7 @@ export const RedemptionPage = () => {
 
     const handleClick = () => {
         if (!isConnected) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             open();
         } else {
             sendTransaction();

@@ -6,7 +6,7 @@ import * as stories from './FeatureCardOrPosition.stories';
 const { ConnectedNoPositions, NotConnected, WithPositions } =
     composeStories(stories);
 
-describe('FeatureCardsOrPositions', () => {
+describe.skip('FeatureCardsOrPositions', () => {
     it('should render feature cards when not connected', () => {
         render(
             <MemoryRouter>

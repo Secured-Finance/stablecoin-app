@@ -68,7 +68,7 @@ export const TokenBox = ({
     // Get clean values for editing (removing commas and keeping raw numbers)
     const getCleanInputValue = () => {
         const clean = inputValue?.replace(/,/g, '') || '';
-        return clean === '' || clean === '0' ? '' : clean;
+        return clean === '' || clean === '0' || clean === '0.00' ? '' : clean;
     };
 
     const getCleanOutputValue = () => {
@@ -90,7 +90,7 @@ export const TokenBox = ({
                                 autoFocus
                                 type='text'
                                 step='any'
-                                className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-400 ${
                                     isConnected
                                         ? 'text-neutral-900'
                                         : 'text-neutral-400'
@@ -192,7 +192,7 @@ export const TokenBox = ({
                                     autoFocus
                                     type='text'
                                     step='any'
-                                    className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                                    className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-400 ${
                                         isConnected
                                             ? 'text-neutral-900'
                                             : 'text-neutral-400'
