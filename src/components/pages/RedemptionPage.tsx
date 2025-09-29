@@ -134,7 +134,7 @@ export const RedemptionPage = () => {
         <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
                 <div className='w-full'>
-                    <h1 className='text-2xl mb-3 text-center font-semibold leading-none'>
+                    <h1 className='mb-3 text-center font-primary text-6 font-semibold leading-none'>
                         Redeem USDFC
                     </h1>
                     <p className='mb-8 text-center text-sm text-neutral-450'>

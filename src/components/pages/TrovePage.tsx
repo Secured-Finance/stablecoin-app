@@ -21,7 +21,7 @@ export const TrovePage = () => {
                     {hasExistingTrove ? (
                         <div className='w-full'>
                             <div className='mb-2 flex items-center justify-center gap-2'>
-                                <h1 className='text-2xl text-center font-bold'>
+                                <h1 className='text-center font-primary text-6 font-semibold'>
                                     Manage Trove
                                 </h1>
                                 <CustomTooltip

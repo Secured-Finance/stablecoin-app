@@ -2,6 +2,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { navigateToTop } from 'src/utils/navigation';
 import { Container } from 'theme-ui';
 import { Nav } from './Nav';
 import { USDFCIconLarge } from './SecuredFinanceLogo';
@@ -29,6 +30,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                         to='/'
                         className='flex items-center justify-center gap-2'
                         aria-label='Home'
+                        onClick={() => navigateToTop()}
                     >
                         <USDFCIconLarge />
                         <span className='hidden font-numerical text-6 font-semibold laptop:block'>

@@ -75,7 +75,7 @@ export const SfStablecoinFrontend: React.FC<SfStablecoinFrontendProps> = ({
                             }}
                         >
                             <Header />
-                            <div className='m-0 mx-auto mt-14 flex w-full max-w-dashboard flex-grow flex-col items-center px-5 py-8'>
+                            <div className='m-0 mx-auto flex w-full max-w-dashboard flex-grow flex-col items-center px-5 py-8'>
                                 <AnimatedSwitch>
                                     <Route path='/' exact>
                                         <PageSwitcher />

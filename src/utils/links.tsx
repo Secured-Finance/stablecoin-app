@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { DOCUMENTATION_LINK } from 'src/constants';
+import { getFixedIncomeMarketLink } from './strings';
 
 type MoreLink = {
     text: string;
@@ -8,7 +9,7 @@ type MoreLink = {
     icon?: React.ReactNode;
 };
 
-export const LinkList: MoreLink[] = [
+export const getLinkList = (): MoreLink[] => [
     {
         text: 'Risky Troves',
         href: '/risky-troves',
@@ -26,7 +27,7 @@ export const LinkList: MoreLink[] = [
     },
     {
         text: 'Lend USDFC',
-        href: 'https://app.secured.finance/',
+        href: getFixedIncomeMarketLink(),
         icon: <ArrowUpRight className='h-5 w-5 rounded-full' />,
         isExternal: true,
     },

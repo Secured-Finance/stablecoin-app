@@ -8,20 +8,20 @@ export const BridgePage: React.FC = () => {
 
     return (
         <section className='md:px-16 flex w-full flex-col items-center px-4'>
-            <div className='flex flex-col items-center gap-6 text-center'>
-                <h1 className='text-2xl text-center font-semibold leading-none text-[#002133]'>
+            <div className='flex flex-col items-center gap-4 text-center'>
+                <h1 className='text-center font-primary text-6 font-semibold leading-none text-[#002133]'>
                     Bridge Assets
                 </h1>
-                <p className='mt-2 font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>
+                <p className='font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>
                     Seamlessly transfer assets to and from the Filecoin network.
                 </p>
             </div>
-            <div className='relative mt-5 flex justify-center'>
+            <div className='relative mt-4 flex justify-center'>
                 <iframe
                     className='rounded-xl border border-transparent bg-neutral-50 shadow-card'
                     title='squid_widget'
                     width={isMobile ? '370' : '480'}
-                    height='694'
+                    height='664'
                     src={`https://studio.squidrouter.com/iframe?config=${configQueryParam}`}
                 />
             </div>

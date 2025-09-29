@@ -6,7 +6,7 @@ import { PYTH_ORACLE_LINK } from 'src/constants';
 
 const { Default } = composeStories(stories);
 
-describe('test StatItem component', () => {
+describe('test TokenPrice component', () => {
     it('should render Pyth link with correct href', () => {
         render(
             <MemoryRouter>

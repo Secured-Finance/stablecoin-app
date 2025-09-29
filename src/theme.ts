@@ -363,9 +363,9 @@ const theme: Theme = {
             justifyContent: 'space-between',
             alignItems: 'stretch',
 
-            position: ['fixed'],
+            position: 'sticky',
             top: 0,
-            zIndex: 1,
+            zIndex: 50,
 
             px: ['16px', '20px'],
             py: ['12px', '8px'],

@@ -183,6 +183,7 @@ export const Adjusting: React.FC = () => {
         : Decimal.ZERO;
 
     const totalDebt = netDebt.add(LIQUIDATION_RESERVE).add(fee);
+    const repaymentAmount = totalDebt.sub(LIQUIDATION_RESERVE);
     const maxBorrowingRate = borrowingRate.add(0.005);
     const updatedTrove = isDirty ? new Trove(collateral, totalDebt) : trove;
     const collateralRatio =
@@ -351,7 +352,7 @@ export const Adjusting: React.FC = () => {
                                     </span>
                                 </>
                             }
-                            subLabel={`$${totalDebt.prettify()}`}
+                            subLabel={`$${repaymentAmount.prettify()}`}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus={false}
                         />
@@ -451,14 +452,19 @@ export const Adjusting: React.FC = () => {
             ) : (
                 <>
                     <p className='mb-6 text-left text-sm text-gray-500'>
-                        Closing your Trove will repay all your debt and return
-                        your remaining collateral.
+                        By repaying from your wallet the amount equal to the
+                        Total Debt minus the 20 USDFC covered by the Liquidation
+                        Reserve, all debt will be settled, your collateral will
+                        be returned, and your Trove will be closed. <br />{' '}
+                        <br /> (e.g., If the Total Debt is 220 USDFC, 20 USDFC
+                        is covered by the Liquidation Reserve and 200 USDFC is
+                        repaid from your wallet){' '}
                     </p>
 
                     <div className='mb-6'>
                         <InputBox
                             label='You will repay'
-                            value={totalDebt.prettify(2)}
+                            value={repaymentAmount.prettify(2)}
                             onChange={() => {}} // Read-only
                             tokenIcon={
                                 <>
@@ -468,7 +474,7 @@ export const Adjusting: React.FC = () => {
                                     </span>
                                 </>
                             }
-                            subLabel={`$${totalDebt.prettify()}`}
+                            subLabel={`$${repaymentAmount.prettify()}`}
                             readOnly={true}
                             type='text'
                         />

@@ -218,7 +218,7 @@ export const StabilityManageView = () => {
 
     return (
         <>
-            <h1 className='text-2xl mb-2 text-center font-bold'>
+            <h1 className='mb-2 text-center font-primary text-6 font-semibold'>
                 {originalDeposit.isEmpty
                     ? 'Deposit USDFC into the Stability Pool'
                     : `Manage ${

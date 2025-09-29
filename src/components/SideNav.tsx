@@ -13,17 +13,32 @@ import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
 import { HEADER_LINKS } from 'src/constants';
-import { LinkList } from 'src/utils';
+import { getLinkList } from 'src/utils';
+import { navigateToTop } from 'src/utils/navigation';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [viewportScrollPosition, setViewportScrollPosition] = useState(0);
+    const linkList = getLinkList();
 
     const overlay = useRef<HTMLDivElement>(null);
 
     const { pathname } = useLocation();
+
+    React.useEffect(() => {
+        if (isVisible) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isVisible]);
 
     const handleOutsideClick = (
         e:
@@ -39,7 +54,15 @@ export const SideNav: React.FC = () => {
         <div
             ref={overlay}
             tabIndex={0}
-            className='fixed inset-0 z-50 h-screen w-screen bg-neutral-600/50 laptop:hidden'
+            className='fixed left-0 top-0 z-50 w-screen bg-neutral-600/50 laptop:hidden'
+            style={{
+                height:
+                    Math.max(
+                        document.documentElement.scrollHeight,
+                        document.body.scrollHeight,
+                        window.innerHeight
+                    ) + 'px',
+            }}
             onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     handleOutsideClick(e);
@@ -48,7 +71,14 @@ export const SideNav: React.FC = () => {
             role='button'
             onClick={handleOutsideClick}
         >
-            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'>
+            <aside
+                className='fixed left-0 flex w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'
+                style={{
+                    top: `${viewportScrollPosition}px`,
+                    height: '100vh',
+                    zIndex: 60,
+                }}
+            >
                 <div className='flex items-center justify-between'>
                     <SecuredFinanceLogo />
                     <button onClick={() => setIsVisible(false)}>
@@ -66,7 +96,9 @@ export const SideNav: React.FC = () => {
                                     'text-primary-500': pathname === link.to,
                                 }
                             )}
-                            onClick={() => setIsVisible(false)}
+                            onClick={() =>
+                                navigateToTop(() => setIsVisible(false))
+                            }
                         >
                             {link.label}
                         </NavLink>
@@ -93,14 +125,18 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
-                            {LinkList.map(link =>
+                            {linkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink
                                         key={link.text}
                                         text={link.text}
                                         icon={link.icon}
                                         link={link.href}
-                                        onClick={() => setIsVisible(false)}
+                                        onClick={() =>
+                                            navigateToTop(() =>
+                                                setIsVisible(false)
+                                            )
+                                        }
                                     />
                                 ) : (
                                     <MobileItemLink
@@ -108,7 +144,11 @@ export const SideNav: React.FC = () => {
                                         text={link.text}
                                         label={link.text}
                                         link={link.href}
-                                        onClick={() => setIsVisible(false)}
+                                        onClick={() =>
+                                            navigateToTop(() =>
+                                                setIsVisible(false)
+                                            )
+                                        }
                                         isActive={pathname === link.href}
                                     />
                                 )
@@ -123,7 +163,10 @@ export const SideNav: React.FC = () => {
     return (
         <>
             <button
-                onClick={() => setIsVisible(true)}
+                onClick={() => {
+                    setViewportScrollPosition(window.scrollY);
+                    setIsVisible(true);
+                }}
                 className='flex items-center justify-center laptop:hidden'
                 aria-label='Open menu'
             >

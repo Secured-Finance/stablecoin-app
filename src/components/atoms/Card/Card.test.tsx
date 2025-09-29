@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 const { Default } = composeStories(stories);
 
-describe('Empty Positions component', () => {
+describe('Card component', () => {
     it('should have a button with text Create Trove', () => {
         render(
             <MemoryRouter>

@@ -234,7 +234,7 @@ export const Positions = ({
 
     return (
         <div className='mx-auto w-full max-w-[920px]'>
-            <h2 className='mb-3 text-left text-5 font-semibold text-neutral-900'>
+            <h2 className='mb-3 text-left font-primary text-5 font-semibold text-neutral-900'>
                 My Positions
             </h2>
             <div className='grid grid-cols-1 items-stretch gap-6 tablet:grid-cols-2'>
