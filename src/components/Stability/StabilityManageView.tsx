@@ -2,19 +2,20 @@ import {
     Decimal,
     SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { CustomTooltip } from 'src/components/atoms';
+import { openDocumentation } from 'src/constants';
 import {
     useSfStablecoin,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
-import { CustomTooltip } from 'src/components/atoms';
-import { CURRENCY } from 'src/strings';
-import { openDocumentation } from 'src/constants';
 import { useStabilityView } from './context/StabilityViewContext';
 import { ActionButton } from './StabilityActionButton';
 import { StabilityAmountInput } from './StabilityAmountInput';
@@ -25,7 +26,6 @@ import {
     selectForStabilityDepositChangeValidation,
     validateStabilityDepositChange,
 } from './validation/validateStabilityDepositChange';
-import { Info } from 'lucide-react';
 
 export const StabilityManageView = () => {
     const { isConnected } = useAccount();
@@ -338,7 +338,7 @@ export const StabilityManageView = () => {
                     <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
                         <div>
                             <div className='mb-1 flex items-center gap-2'>
-                                <div className='text-sm font-bold text-neutral-450'>
+                                <div className='text-4 font-bold text-neutral-450'>
                                     New Pool Share
                                 </div>
                                 <CustomTooltip
@@ -352,7 +352,7 @@ export const StabilityManageView = () => {
                                     <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
-                            <div className='max-w-[280px] text-xs text-neutral-450'>
+                            <div className='max-w-[280px] font-primary text-sm text-neutral-450'>
                                 Your percentage of the Stability Pool after this
                                 transaction, determining your share of
                                 liquidated collateral and rewards.
@@ -377,7 +377,7 @@ export const StabilityManageView = () => {
                 onConnectWallet={open}
             />
 
-            {!isConnected && (
+            {isConnected && (
                 <p className='text-center text-xs text-neutral-450'>
                     This action will open your wallet to sign the transaction.
                 </p>

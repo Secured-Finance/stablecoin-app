@@ -10,6 +10,7 @@ import {
     getCurrentNetworkLabel,
     getSupportedChains,
 } from 'src/utils';
+import { navigateToTop } from 'src/utils/navigation';
 import { useAccount, useWalletClient } from 'wagmi';
 
 export const UserAccount: React.FC = () => {
@@ -30,6 +31,19 @@ export const UserAccount: React.FC = () => {
             });
         }
     }, [isOpen, networks, open, wallet.data]);
+
+    // Scroll lock when wallet modal is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
 
     const currentLabel = getCurrentNetworkLabel();
 
@@ -82,7 +96,7 @@ export const UserAccount: React.FC = () => {
 
             {isConnected ? (
                 <button
-                    onClick={() => open()}
+                    onClick={() => navigateToTop(() => open())}
                     aria-label='Wallet menu'
                     className='flex items-center gap-2 rounded-3xl border border-neutral-300 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
                 >
@@ -99,7 +113,7 @@ export const UserAccount: React.FC = () => {
                 </button>
             ) : (
                 <Button
-                    onClick={() => open()}
+                    onClick={() => navigateToTop(() => open())}
                     mobileText={'Connect'}
                     size={isMobile ? ButtonSizes.sm : ButtonSizes.md}
                     className='rounded-3xl'

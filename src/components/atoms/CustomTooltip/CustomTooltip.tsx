@@ -36,7 +36,7 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
             placement={responsivePlacement}
             render={attrs => (
                 <div style={{ width: tooltipWidth }} {...attrs}>
-                    <div className='shadow-lg flex flex-col gap-4 rounded-2xl border border-black bg-[#23242C] p-4 tablet:gap-6 tablet:p-6'>
+                    <div className='shadow-lg z-[60] flex flex-col gap-4 rounded-2xl border border-black bg-[#23242C] p-4 tablet:gap-6 tablet:p-6'>
                         <div className='flex flex-col gap-2 tablet:gap-3'>
                             <h3 className='text-sm font-semibold leading-[1.4] text-white tablet:text-base'>
                                 {title}

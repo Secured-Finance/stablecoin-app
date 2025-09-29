@@ -150,9 +150,11 @@ export function StabilityDepositView() {
                 {isConnected ? getButtonText() : 'Connect Wallet'}
             </button>
 
-            <p className='text-center text-xs text-neutral-450'>
-                This action will open your wallet to sign the transaction.
-            </p>
+            {isConnected && (
+                <p className='text-center text-xs text-neutral-450'>
+                    This action will open your wallet to sign the transaction.
+                </p>
+            )}
         </>
     );
 }

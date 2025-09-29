@@ -183,17 +183,17 @@ export const RedemptionPage = () => {
                         <div className='mb-6 w-full rounded-xl border border-neutral-9 bg-white p-6'>
                             <div className='flex items-center justify-between'>
                                 <div>
-                                    <div className='mb-1 font-primary text-4 font-medium text-neutral-900'>
+                                    <div className='mb-1 font-primary text-4 font-normal text-neutral-450'>
                                         Redemption Fee
                                     </div>
-                                    <div className='max-w-[280px] text-xs text-neutral-450'>
+                                    <div className='max-w-[280px] text-sm text-neutral-450'>
                                         A percentage of the {CURRENCY} received,
                                         currently {feePercentage}. It varies
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <span className='text-sm font-medium text-neutral-900'>
+                                    <span className='font-primary text-4 font-medium text-neutral-450'>
                                         {redemptionFee}
                                     </span>
                                     <div className='flex items-center gap-1'>
@@ -203,7 +203,7 @@ export const RedemptionPage = () => {
                                         <span className='text-xs'>
                                             {CURRENCY}
                                         </span>
-                                        <span className='text-xs text-neutral-450'>
+                                        <span className='font-primary text-sm text-neutral-450'>
                                             {feePercentage}
                                         </span>
                                     </div>
@@ -220,7 +220,7 @@ export const RedemptionPage = () => {
                             {renderButtonContent()}
                         </button>
 
-                        {!isConnected && (
+                        {isConnected && (
                             <p className='text-center text-xs text-neutral-450'>
                                 This action will open your wallet to sign the
                                 transaction.

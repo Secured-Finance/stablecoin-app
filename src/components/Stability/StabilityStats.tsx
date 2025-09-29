@@ -52,23 +52,28 @@ export function StabilityStats({
     const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white px-4 py-5'>
-            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-3 tablet:gap-2'>
-                <Stat label='Current Deposit'>
-                    <span>{originalDeposit.currentDebtToken.prettify()}</span>
-                    <USDFCIcon />
-                    <span>USDFC</span>
-                </Stat>
-                <Stat
-                    label='Pool Share'
-                    tooltip={{
-                        title: 'Pool Share',
-                        description:
-                            'Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.',
-                        onButtonClick: () => openDocumentation('stabilityPool'),
-                    }}
-                >
-                    {originalPoolShare.prettify()}%
-                </Stat>
+            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-3 tablet:gap-6'>
+                <div className='flex justify-between gap-8'>
+                    <Stat label='Current Deposit'>
+                        <span>
+                            {originalDeposit.currentDebtToken.prettify()}
+                        </span>
+                        <USDFCIcon />
+                        <span>USDFC</span>
+                    </Stat>
+                    <Stat
+                        label='Pool Share'
+                        tooltip={{
+                            title: 'Pool Share',
+                            description:
+                                'Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.',
+                            onButtonClick: () =>
+                                openDocumentation('stabilityPool'),
+                        }}
+                    >
+                        {originalPoolShare.prettify()}%
+                    </Stat>
+                </div>
                 <Stat label='Liquidation Gains'>
                     <span>{liquidationGains}</span>
                     <FILIcon className='h-4 w-4' />
