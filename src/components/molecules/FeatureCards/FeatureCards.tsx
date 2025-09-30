@@ -31,12 +31,14 @@ const FeatureCard = ({
         >
             <Card
                 className={cn(
-                    'w-full max-w-none transition-colors duration-300 hover:scale-105 laptop:max-w-[290px]',
+                    'w-full max-w-none transition-colors duration-300 laptop:max-w-[290px]',
                     className
                 )}
             >
                 <div className='mb-6 flex items-center'>{icon}</div>
-                <h3 className={cn('mb-2 text-xl font-bold', titleClassName)}>
+                <h3
+                    className={cn('mb-2 text-xl font-semibold', titleClassName)}
+                >
                     {title}
                 </h3>
                 <p className={cn('text-sm', descriptionClassName)}>
