@@ -51,15 +51,15 @@ export function StabilityStats({
     );
     const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
     return (
-        <div className='mb-6 rounded-xl border border-neutral-200 bg-white p-4 font-primary tablet:rounded-[20px] tablet:border-[#F0F0F0] tablet:p-6'>
+        <div className='mb-6 rounded-xl border border-neutral-200 bg-white p-4 font-primary tablet:rounded-[20px] tablet:border-neutral-150 tablet:p-6'>
             <div className='flex flex-col gap-6 tablet:flex-row tablet:items-start tablet:gap-8'>
                 <div className='flex flex-col gap-4 tablet:flex-row tablet:gap-8'>
                     <Stat label='Deposit'>
-                        <span className='text-base font-medium text-[#002133]'>
+                        <span className='text-base font-medium text-neutral-900'>
                             {originalDeposit.currentDebtToken.prettify()}
                         </span>
                         <USDFCIcon className='h-4 w-4' />
-                        <span className='font-primary text-base font-normal text-[#002133]'>
+                        <span className='font-primary text-base font-normal text-neutral-900'>
                             USDFC
                         </span>
                     </Stat>
@@ -73,32 +73,32 @@ export function StabilityStats({
                                 openDocumentation('stabilityPool'),
                         }}
                     >
-                        <span className='text-base font-medium text-[#002133]'>
+                        <span className='text-base font-medium text-neutral-900'>
                             {originalPoolShare.prettify()}%
                         </span>
                     </Stat>
                 </div>
 
                 <div className='flex flex-col gap-3'>
-                    <div className='text-base font-medium text-[#565656]'>
+                    <div className='text-base font-medium text-neutral-450'>
                         Liquidation Gains
                     </div>
                     <div className='flex flex-wrap items-center gap-2'>
-                        <span className='text-base font-medium text-[#002133]'>
+                        <span className='text-base font-medium text-neutral-900'>
                             {liquidationGains}
                         </span>
                         <FILIcon className='h-4 w-4' />
-                        <span className='text-base font-normal text-[#002133]'>
+                        <span className='text-base font-normal text-neutral-900'>
                             {CURRENCY}
                         </span>
-                        <span className='text-sm font-normal text-[#565656]'>
+                        <span className='text-sm font-normal text-neutral-450'>
                             ${liquidationGainsUSD.prettify()}
                         </span>
                         <button
                             className={`max-w-24 text-left text-sm font-semibold ${
                                 isClaimDisabled
                                     ? 'cursor-not-allowed text-neutral-400'
-                                    : 'hover:text-primary-600 cursor-pointer text-[#002133]'
+                                    : 'hover:text-primary-600 cursor-pointer text-neutral-900'
                             }`}
                             onClick={sendClaimTransaction}
                             disabled={isClaimDisabled}
@@ -129,7 +129,7 @@ function Stat({
     return (
         <div className='flex min-w-0 flex-col gap-3'>
             <div className='flex items-center gap-1.5'>
-                <div className='font-primary text-base font-medium text-[#565656]'>
+                <div className='font-primary text-base font-medium text-neutral-450'>
                     {label}
                 </div>
                 {tooltip && (

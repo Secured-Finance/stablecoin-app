@@ -30,37 +30,37 @@ export const Trove = () => {
         if (!ratio)
             return {
                 text: 'Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
                 containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
-                textStyle: 'text-[#5C2E00] text-sm font-medium',
-                dotStyle: 'bg-[#FFAD00]',
+                textStyle: 'text-warning-700 text-sm font-medium',
+                dotStyle: 'bg-warning-500',
             };
         return {
             text: 'High',
             containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
-            textStyle: 'text-[#5C0000] text-sm font-medium',
-            dotStyle: 'bg-[#FF4D4F]',
+            textStyle: 'text-error-700 text-sm font-medium',
+            dotStyle: 'bg-error-500',
         };
     };
 

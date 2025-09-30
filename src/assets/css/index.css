@@ -123,8 +123,3 @@
     @apply transition-opacity duration-300 opacity-0;
   }
 }
-
-*{
-  /* outline: red 1px dashed; */
-  /* background-color: black; */
-}

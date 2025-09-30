@@ -27,7 +27,7 @@ ensuring a balanced and secure ecosystem.`,
 export const EmptyPositions = () => {
     return (
         <div className='w-full'>
-            <h2 className='text-2xl mb-4 text-center font-semibold leading-none'>
+            <h2 className='mb-4 text-center text-2xl font-semibold leading-none'>
                 My Positions
             </h2>
 

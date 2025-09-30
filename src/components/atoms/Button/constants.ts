@@ -31,6 +31,6 @@ export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.md]: 'text-3.5 leading-4.5',
     [ButtonSizes.lg]: 'text-4 leading-5',
     [ButtonSizes.xl]:
-        'text-4 leading-5 font-semibold font-primary laptop:text-[20px] laptop:leading-6',
+        'text-4 leading-5 font-semibold font-primary laptop:text-5 laptop:leading-6',
     [ButtonSizes.pill]: 'text-3 leading-3.75 font-medium',
 };

@@ -201,37 +201,37 @@ export const Adjusting: React.FC = () => {
         if (!ratio)
             return {
                 text: 'Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-                textStyle: 'text-[#023103] text-sm font-medium',
-                dotStyle: 'bg-[#84FA86]',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
                 containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
-                textStyle: 'text-[#5C2E00] text-sm font-medium',
-                dotStyle: 'bg-[#FFAD00]',
+                textStyle: 'text-warning-700 text-sm font-medium',
+                dotStyle: 'bg-warning-500',
             };
         return {
             text: 'High',
             containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
-            textStyle: 'text-[#5C0000] text-sm font-medium',
-            dotStyle: 'bg-[#FF4D4F]',
+            textStyle: 'text-error-700 text-sm font-medium',
+            dotStyle: 'bg-error-500',
         };
     };
 
@@ -422,16 +422,16 @@ export const Adjusting: React.FC = () => {
 
                     <div className='mb-6 flex w-full flex-col font-primary'>
                         {/* Card - Total Debt */}
-                        <div className='flex w-full flex-col items-start justify-between gap-4 rounded-t-[20px] border border-[#F0F0F0] bg-white p-6 tablet:flex-row tablet:items-center tablet:gap-0'>
-                            <h3 className='flex-grow text-[20px] font-medium leading-6 text-[#565656]'>
+                        <div className='flex w-full flex-col items-start justify-between gap-4 rounded-t-[20px] border border-neutral-150 bg-white p-6 tablet:flex-row tablet:items-center tablet:gap-0'>
+                            <h3 className='flex-grow text-5 font-medium leading-6 text-neutral-450'>
                                 Total Debt
                             </h3>
                             <div className='flex items-center justify-center gap-2'>
-                                <span className='truncate text-[20px] font-medium leading-6 text-[#002133]'>
+                                <span className='truncate text-5 font-medium leading-6 text-neutral-900'>
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
                                 <USDFCIcon className='h-6 w-6' />
-                                <span className='text-[20px] font-normal leading-6 text-[#002133]'>
+                                <span className='text-5 font-normal leading-6 text-neutral-900'>
                                     USDFC
                                 </span>
                             </div>
@@ -444,7 +444,7 @@ export const Adjusting: React.FC = () => {
                                 change={stableTroveChange}
                                 maxBorrowingRate={maxBorrowingRate}
                                 borrowingFeeDecayToleranceMinutes={60}
-                                className='flex w-full items-center justify-center gap-2.5 rounded-b-[20px] bg-[#1A30FF] p-6 text-[20px] font-semibold leading-6 text-white hover:bg-[#1A30FF]/90'
+                                className='flex w-full items-center justify-center gap-2.5 rounded-b-[20px] bg-primary-500 p-6 text-5 font-semibold leading-6 text-white hover:bg-primary-500/90'
                             >
                                 Update Trove
                             </TroveAction>
@@ -452,7 +452,7 @@ export const Adjusting: React.FC = () => {
                             <Button
                                 disabled
                                 size={ButtonSizes.xl}
-                                className='w-full rounded-b-[20px] bg-[#1A30FF] text-white opacity-50'
+                                className='w-full rounded-b-[20px] bg-primary-500 text-white opacity-50'
                             >
                                 Update Trove
                             </Button>
@@ -483,7 +483,7 @@ export const Adjusting: React.FC = () => {
                             tokenIcon={
                                 <>
                                     <USDFCIconLarge />
-                                    <span className='text-lg laptop:text-2xl font-medium leading-none'>
+                                    <span className='text-lg font-medium leading-none laptop:text-2xl'>
                                         USDFC
                                     </span>
                                 </>
@@ -500,7 +500,7 @@ export const Adjusting: React.FC = () => {
                             tokenIcon={
                                 <>
                                     <FILIcon className='h-8 w-8' />
-                                    <span className='text-lg laptop:text-2xl font-medium leading-none'>
+                                    <span className='text-lg font-medium leading-none laptop:text-2xl'>
                                         {CURRENCY}
                                     </span>
                                 </>
@@ -526,14 +526,14 @@ export const Adjusting: React.FC = () => {
                     ) : hasAttemptedClose && !stableCloseChange ? (
                         <Button
                             disabled
-                            className='text-lg w-full cursor-not-allowed bg-gray-400 py-4 opacity-50'
+                            className='w-full cursor-not-allowed bg-gray-400 py-4 text-lg opacity-50'
                         >
                             Repay & Close Trove
                         </Button>
                     ) : (
                         <Button
                             onClick={() => setHasAttemptedClose(true)}
-                            className='text-lg w-full bg-primary-500 py-4 hover:bg-primary-700'
+                            className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700'
                         >
                             Repay & Close Trove
                         </Button>

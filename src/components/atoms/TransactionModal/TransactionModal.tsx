@@ -77,7 +77,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
                 {/* Text Content */}
                 <div className='flex w-full flex-col items-center gap-4 text-center'>
-                    <h2 className='text-xl tablet:text-2xl font-semibold text-black'>
+                    <h2 className='text-xl font-semibold text-black tablet:text-2xl'>
                         {title}
                     </h2>
                     <p className='max-w-[350px] text-sm leading-relaxed text-gray-700 tablet:max-w-[400px] tablet:text-base'>

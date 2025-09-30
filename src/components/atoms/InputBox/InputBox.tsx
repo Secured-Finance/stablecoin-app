@@ -105,14 +105,14 @@ export const InputBox = ({
                                 setEditing(false);
                                 onBlur?.();
                             }}
-                            className='w-full bg-transparent font-primary text-[32px] font-medium leading-none text-neutral-900 outline-none placeholder:text-neutral-350'
+                            className='w-full bg-transparent font-primary text-8 font-medium leading-none text-neutral-900 outline-none placeholder:text-neutral-350'
                             disabled={disabled}
                             readOnly={readOnly}
                             placeholder='0.00'
                         />
                     ) : (
                         <div
-                            className='w-full cursor-text truncate font-primary text-[32px] font-medium leading-none text-neutral-900'
+                            className='w-full cursor-text truncate font-primary text-8 font-medium leading-none text-neutral-900'
                             onClick={() =>
                                 !disabled && !readOnly && setEditing(true)
                             }

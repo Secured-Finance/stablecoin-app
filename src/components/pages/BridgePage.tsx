@@ -9,10 +9,10 @@ export const BridgePage: React.FC = () => {
     return (
         <section className='md:px-16 flex w-full flex-col items-center px-4'>
             <div className='flex flex-col items-center gap-4 text-center'>
-                <h1 className='text-center font-primary text-6 font-semibold leading-none text-[#002133]'>
+                <h1 className='text-center font-primary text-6 font-semibold leading-none text-neutral-900'>
                     Bridge Assets
                 </h1>
-                <p className='font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>
+                <p className='font-primary text-4 font-normal leading-[23px] text-neutral-450'>
                     Seamlessly transfer assets to and from the Filecoin network.
                 </p>
             </div>

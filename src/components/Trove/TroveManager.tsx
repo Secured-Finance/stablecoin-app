@@ -217,7 +217,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
     return (
         <>
             {description}
-            <p className='mb-6 text-center text-sm text-[#565656]'>
+            <p className='mb-6 text-center text-sm text-neutral-450'>
                 Closing your Trove will repay all your debt and return your
                 remaining collateral.
             </p>
@@ -232,13 +232,13 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             type='text'
                             value={debt?.toString()}
                             readOnly
-                            className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
+                            className='h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 text-xl font-bold'
                         />
                         <div className='ml-4 flex items-center gap-2'>
                             <USDFCIcon />
                         </div>
                     </div>
-                    <p className='mt-1 text-sm text-[#565656]'>
+                    <p className='mt-1 text-sm text-neutral-450'>
                         ${debt?.toString()}
                     </p>
                 </div>
@@ -252,14 +252,14 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             type='text'
                             value='331.24'
                             readOnly
-                            className='text-xl h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 font-bold'
+                            className='h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 text-xl font-bold'
                         />
                         <div className='ml-4 flex items-center gap-2'>
                             <FILIcon className='h-4 w-4' />
                             <span className='font-medium'>FIL</span>
                         </div>
                     </div>
-                    <p className='mt-1 text-sm text-[#565656]'>$1463.26</p>
+                    <p className='mt-1 text-sm text-neutral-450'>$1463.26</p>
                 </div>
             </div>
 
@@ -273,12 +273,12 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                     Repay & Close Trove
                 </TroveAction>
             ) : (
-                <Button className='text-lg w-full bg-[#1a30ff] py-4 hover:bg-[#0f1b99]'>
+                <Button className='w-full bg-[#1a30ff] py-4 text-lg hover:bg-[#0f1b99]'>
                     Repay & Close Trove
                 </Button>
             )}
 
-            <p className='mt-2 text-center text-sm text-[#565656]'>
+            <p className='mt-2 text-center text-sm text-neutral-450'>
                 This action will open your wallet to sign the transaction.
             </p>
         </>

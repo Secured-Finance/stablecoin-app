@@ -50,7 +50,7 @@ export function StabilityAmountInput({
                     <input
                         // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={true}
-                        className={`text-2xl w-full bg-transparent font-primary font-medium leading-none outline-none placeholder:text-neutral-350 laptop:text-[32px] ${
+                        className={`w-full bg-transparent font-primary text-2xl font-medium leading-none outline-none placeholder:text-neutral-350 laptop:text-8 ${
                             disabled ? 'text-neutral-400' : 'text-neutral-900'
                         }`}
                         type='text'
@@ -82,7 +82,7 @@ export function StabilityAmountInput({
                     />
                 ) : (
                     <div
-                        className={`text-2xl w-full font-primary font-medium leading-none laptop:text-[32px] ${
+                        className={`w-full font-primary text-2xl font-medium leading-none laptop:text-8 ${
                             disabled
                                 ? 'text-neutral-400'
                                 : 'cursor-text text-neutral-900'
@@ -107,7 +107,7 @@ export function StabilityAmountInput({
                     style={{ minWidth: '90px' }}
                 >
                     <USDFCIconLarge />
-                    <span className='text-lg laptop:text-2xl font-medium leading-none text-neutral-900'>
+                    <span className='text-lg font-medium leading-none text-neutral-900 laptop:text-2xl'>
                         USDFC
                     </span>
                 </div>

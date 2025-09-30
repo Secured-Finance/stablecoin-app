@@ -59,7 +59,7 @@ const CardHeader = ({
 }) => (
     <div className='flex items-center justify-between'>
         <div className={`flex items-center gap-3 ${className ?? ''}`}>
-            <div className='flex h-10 w-10 items-center justify-center rounded-lg border border-[#1A30FF33] bg-[#1A30FF0D]'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-lg border border-primary-500/20 bg-primary-500/5'>
                 {icon}
             </div>
             <span className='text-5 font-semibold text-neutral-900'>
@@ -153,37 +153,37 @@ const getLiquidationRisk = (ratio?: Decimal) => {
     if (!ratio)
         return {
             text: 'Low',
-            containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-            textStyle: 'text-[#023103] text-sm font-medium',
-            dotStyle: 'bg-[#84FA86]',
+            containerStyle: 'bg-success-50 border border-success-100',
+            textStyle: 'text-success-700 text-sm font-medium',
+            dotStyle: 'bg-success-500',
         };
     const ratioPercent = ratio.mul(100);
     if (ratioPercent.gte(200))
         return {
             text: 'Very Low',
-            containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-            textStyle: 'text-[#023103] text-sm font-medium',
-            dotStyle: 'bg-[#84FA86]',
+            containerStyle: 'bg-success-50 border border-success-100',
+            textStyle: 'text-success-700 text-sm font-medium',
+            dotStyle: 'bg-success-500',
         };
     if (ratioPercent.gte(150))
         return {
             text: 'Low',
-            containerStyle: 'bg-[#DFFEE0] border border-[#C9FDCA]',
-            textStyle: 'text-[#023103] text-sm font-medium',
-            dotStyle: 'bg-[#84FA86]',
+            containerStyle: 'bg-success-50 border border-success-100',
+            textStyle: 'text-success-700 text-sm font-medium',
+            dotStyle: 'bg-success-500',
         };
     if (ratioPercent.gte(120))
         return {
             text: 'Medium',
             containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
-            textStyle: 'text-[#5C2E00] text-sm font-medium',
-            dotStyle: 'bg-[#FFAD00]',
+            textStyle: 'text-warning-700 text-sm font-medium',
+            dotStyle: 'bg-warning-500',
         };
     return {
         text: 'High',
         containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
-        textStyle: 'text-[#5C0000] text-sm font-medium',
-        dotStyle: 'bg-[#FF4D4F]',
+        textStyle: 'text-error-700 text-sm font-medium',
+        dotStyle: 'bg-error-500',
     };
 };
 
@@ -245,7 +245,7 @@ export const Positions = ({
                                 icon={
                                     <Vault
                                         size={20}
-                                        className='text-[#1A30FF]'
+                                        className='text-primary-500'
                                     />
                                 }
                                 title='Trove'
@@ -332,7 +332,7 @@ export const Positions = ({
                                 icon={
                                     <Layers2
                                         size={20}
-                                        className='text-[#1A30FF]'
+                                        className='text-primary-500'
                                     />
                                 }
                                 title='Stability Pool'

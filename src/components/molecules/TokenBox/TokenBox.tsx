@@ -81,7 +81,7 @@ export const TokenBox = ({
             <div className='w-full space-y-1'>
                 <div className='shadow-sm flex h-32 w-full items-center justify-between rounded-xl border border-neutral-9 bg-white p-4'>
                     <div className='flex-1'>
-                        <label className='mb-1 block font-primary text-4 font-medium text-neutral-900'>
+                        <label className='mb-1 block font-primary text-base font-medium text-neutral-900'>
                             {inputLabel}
                         </label>
                         {inputEditing ? (
@@ -90,7 +90,7 @@ export const TokenBox = ({
                                 autoFocus
                                 type='text'
                                 step='any'
-                                className={`w-full bg-transparent font-primary text-[32px] font-medium leading-none outline-none placeholder:text-neutral-400 ${
+                                className={`w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
                                     isConnected
                                         ? 'text-neutral-900'
                                         : 'text-neutral-400'
@@ -125,7 +125,7 @@ export const TokenBox = ({
                             />
                         ) : (
                             <div
-                                className={`w-full font-primary text-[32px] font-medium leading-none ${
+                                className={`w-full font-primary text-8 font-medium leading-none ${
                                     isConnected
                                         ? 'cursor-text text-neutral-900'
                                         : 'text-neutral-400'
@@ -182,7 +182,7 @@ export const TokenBox = ({
 
                 <div className='shadow-sm flex h-32 w-full items-center justify-between rounded-xl border border-neutral-9 bg-white p-4'>
                     <div className='flex-1'>
-                        <label className='mb-1 block font-primary text-4 font-medium text-neutral-900'>
+                        <label className='mb-1 block font-primary text-base font-medium text-neutral-900'>
                             {outputLabel}
                         </label>
                         {onOutputChange ? (
@@ -192,7 +192,7 @@ export const TokenBox = ({
                                     autoFocus
                                     type='text'
                                     step='any'
-                                    className={`w-full bg-transparent font-primary text-[32px] font-medium leading-none outline-none placeholder:text-neutral-400 ${
+                                    className={`w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
                                         isConnected
                                             ? 'text-neutral-900'
                                             : 'text-neutral-400'
@@ -228,7 +228,7 @@ export const TokenBox = ({
                                 />
                             ) : (
                                 <div
-                                    className={`w-full font-primary text-[32px] font-medium leading-none ${
+                                    className={`w-full font-primary text-8 font-medium leading-none ${
                                         isConnected
                                             ? 'cursor-text text-neutral-900'
                                             : 'text-neutral-400'
@@ -255,7 +255,7 @@ export const TokenBox = ({
                             )
                         ) : (
                             <div
-                                className={`font-primary text-[32px] font-medium leading-none ${
+                                className={`font-primary text-8 font-medium leading-none ${
                                     isConnected
                                         ? 'text-neutral-900'
                                         : 'text-neutral-400'

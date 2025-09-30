@@ -57,7 +57,7 @@ export const TrovePage = () => {
                     {!hasExistingTrove && <Opening />}
                     {hasExistingTrove && (
                         <>
-                            <h1 className='text-2xl mb-8 text-left font-semibold leading-none'>
+                            <h1 className='mb-8 text-left text-2xl font-semibold leading-none'>
                                 Your Trove
                             </h1>
                             {trove && <Trove />}

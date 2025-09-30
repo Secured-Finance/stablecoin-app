@@ -78,7 +78,7 @@ export function StabilityDepositView() {
 
     return (
         <>
-            <h1 className='text-2xl mb-2 text-center font-bold'>
+            <h1 className='mb-2 text-center text-2xl font-bold'>
                 Deposit USDFC into the Stability Pool
             </h1>
             <p className='mb-8 text-center text-sm text-neutral-450'>

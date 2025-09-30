@@ -31,12 +31,12 @@ const FeatureCard = ({
         >
             <Card
                 className={cn(
-                    'w-full max-w-none transition-colors duration-300 laptop:max-w-[290px]',
+                    'w-full max-w-none transition-colors duration-300 hover:scale-105 laptop:max-w-[290px]',
                     className
                 )}
             >
                 <div className='mb-6 flex items-center'>{icon}</div>
-                <h3 className={cn('text-xl mb-2 font-bold', titleClassName)}>
+                <h3 className={cn('mb-2 text-xl font-bold', titleClassName)}>
                     {title}
                 </h3>
                 <p className={cn('text-sm', descriptionClassName)}>
@@ -54,7 +54,7 @@ export function FeatureCards() {
                 title='Borrow USDFC'
                 description={`Create a Trove to deposit ${CURRENCY} as collateral and borrow USDFC.`}
                 icon={<BorrowIcon />}
-                className='bg-[#1A30FF] text-white hover:bg-[#3453A8]'
+                className='bg-primary-500 text-white hover:bg-secondary-500'
                 descriptionClassName='opacity-90'
                 href='/trove'
             />

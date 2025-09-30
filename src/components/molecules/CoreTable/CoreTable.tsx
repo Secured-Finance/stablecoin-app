@@ -164,7 +164,7 @@ const TroveRow = ({
     return (
         <tr
             className={clsx(
-                'border-t border-[#f0f0f0]',
+                'border-t border-neutral-150',
                 index % 2 === 0 ? 'bg-[#FAFAFA]' : 'bg-[#FFFFFF]'
             )}
         >
@@ -243,7 +243,7 @@ const TroveRow = ({
                             {/* Tablet+: Full liquidate button */}
                             <Button
                                 variant={ButtonVariants.tertiary}
-                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
+                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-neutral-450 hover:bg-neutral-150 hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
                                 disabled={isLiquidationDisabled}
                             >
                                 Liquidate Trove
@@ -275,7 +275,7 @@ export const CoreTable = ({
         <div className='w-full overflow-hidden rounded-xl border border-gray-200 bg-white'>
             <table className='min-w-full table-fixed'>
                 <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
-                    <tr className='text-left text-xs text-[#565656] tablet:text-sm'>
+                    <tr className='text-left text-xs text-neutral-450 tablet:text-sm'>
                         <th className='p-1 text-center tablet:p-4'>
                             <span className='tablet:hidden'>Owner</span>
                             <span className='hidden tablet:inline'>
@@ -361,9 +361,9 @@ export const CoreTable = ({
                 </tbody>
             </table>
 
-            <div className='flex items-center justify-between border-t border-[#f0f0f0] p-3 tablet:p-4'>
+            <div className='flex items-center justify-between border-t border-neutral-150 p-3 tablet:p-4'>
                 <div className='flex items-center gap-2'>
-                    <span className='text-xs text-[#565656] tablet:text-sm'>
+                    <span className='text-xs text-neutral-450 tablet:text-sm'>
                         Page {currentPage} of {totalPages}
                     </span>
                 </div>
