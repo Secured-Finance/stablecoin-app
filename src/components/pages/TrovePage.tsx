@@ -42,10 +42,10 @@ export const TrovePage = () => {
                         </div>
                     ) : (
                         <div className='w-full'>
-                            <h1 className='text-2xl mb-2 text-center font-bold'>
+                            <h1 className='mb-2 text-center text-6 font-semibold'>
                                 Create a Trove to Borrow USDFC
                             </h1>
-                            <p className='mb-8 text-center text-sm text-neutral-450'>
+                            <p className='mb-8 text-center font-primary text-sm text-neutral-450'>
                                 A Trove is your personal vault where you can
                                 deposit {CURRENCY} as collateral to borrow USDFC
                                 with 0% interest, while maintaining exposure to{' '}

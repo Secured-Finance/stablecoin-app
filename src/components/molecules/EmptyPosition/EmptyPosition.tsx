@@ -27,7 +27,7 @@ export const EmptyPosition = ({
                     <h3 className='font-primary text-[20px] font-semibold leading-[24px] text-[#002133]'>
                         {`No ${title}`}
                     </h3>
-                    <p className='text-[16px] font-normal leading-[23px] text-[#565656]'>
+                    <p className='font-primary text-[16px] font-normal leading-[23px] text-[#565656]'>
                         {description}
                     </p>
                 </div>

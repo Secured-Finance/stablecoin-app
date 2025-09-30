@@ -101,7 +101,7 @@
     src: url('./../fonts/inter/InterDisplay-Medium.woff2') format('woff2');
   }
   body {
-    @apply font-secondary;
+    @apply font-primary;
     height: 100dvh;
     background-color: #FAFAFA;
     backdrop-filter: blur(50px);
@@ -122,4 +122,9 @@
   .fade-exit-active {
     @apply transition-opacity duration-300 opacity-0;
   }
+}
+
+*{
+  /* outline: red 1px dashed; */
+  /* background-color: black; */
 }

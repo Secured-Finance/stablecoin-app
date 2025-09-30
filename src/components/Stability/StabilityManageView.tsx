@@ -308,17 +308,17 @@ export const StabilityManageView = () => {
                 </div>
             ) : (
                 <>
-                    <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
+                    <div className='mb-6 flex flex-col gap-4 rounded-xl border border-neutral-9 bg-white p-4 tablet:flex-row tablet:justify-between tablet:gap-0'>
                         <div>
-                            <div className='mb-1 text-sm font-bold text-neutral-450'>
+                            <div className='mb-1 text-4 font-medium text-neutral-450'>
                                 New Total Deposit
                             </div>
-                            <div className='max-w-[280px] text-xs text-neutral-450'>
+                            <div className='max-w-[280px] text-sm font-normal text-neutral-450'>
                                 Your updated deposit amount in the Stability
                                 Pool after this transaction.
                             </div>
                         </div>
-                        <div className='mt-2 flex items-center gap-1 text-base font-medium'>
+                        <div className='flex items-center gap-1 text-base font-medium tablet:mt-2'>
                             <span>
                                 {validChange?.depositDebtToken
                                     ? originalDeposit.currentDebtToken
@@ -335,10 +335,10 @@ export const StabilityManageView = () => {
                         </div>
                     </div>
 
-                    <div className='mb-6 flex justify-between rounded-xl border border-neutral-9 bg-white p-4'>
+                    <div className='mb-6 flex flex-col gap-4 rounded-xl border border-neutral-9 bg-white p-4 tablet:flex-row tablet:justify-between tablet:gap-0'>
                         <div>
                             <div className='mb-1 flex items-center gap-2'>
-                                <div className='text-4 font-bold text-neutral-450'>
+                                <div className='mb-1 text-4 font-medium text-neutral-450'>
                                     New Pool Share
                                 </div>
                                 <CustomTooltip
@@ -358,7 +358,7 @@ export const StabilityManageView = () => {
                                 liquidated collateral and rewards.
                             </div>
                         </div>
-                        <div className='mt-2 text-base font-medium'>
+                        <div className='text-base font-medium tablet:mt-2'>
                             {newPoolShare.prettify()}%
                         </div>
                     </div>

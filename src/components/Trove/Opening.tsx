@@ -8,7 +8,6 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useState } from 'react';
-import { Button } from 'src/components/atoms';
 import { TokenBox } from 'src/components/molecules/TokenBox/TokenBox';
 import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
@@ -339,57 +338,62 @@ export const Opening: React.FC = () => {
                 />
             </div>
 
-            <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-                <div className='flex items-center justify-between'>
-                    <h3 className='font-bold'>Total Debt</h3>
-                    <div className='flex items-center gap-1'>
-                        <span className='font-bold'>
+            <div className='mb-6 flex w-full flex-col font-primary'>
+                {/* Card - Total Debt */}
+                <div className='flex h-[72px] w-full items-start justify-between rounded-t-[20px] border border-[#F0F0F0] bg-white p-6'>
+                    <h3 className='flex-grow text-[20px] font-medium leading-6 text-[#565656]'>
+                        Total Debt
+                    </h3>
+                    <div className='flex items-center justify-center gap-2'>
+                        <span className='text-[20px] font-medium leading-6 text-[#002133]'>
                             {totalDebt.prettify()}
                         </span>
-                        <USDFCIcon />
-
-                        <span>USDFC</span>
+                        <USDFCIcon className='h-6 w-6' />
+                        <span className='text-[20px] font-normal leading-6 text-[#002133]'>
+                            USDFC
+                        </span>
                     </div>
                 </div>
-            </div>
 
-            {isConnected ? (
-                gasEstimationState.type === 'inProgress' ? (
-                    <Button
-                        disabled
-                        className='text-lg w-full bg-primary-500 py-4'
-                    >
-                        <Spinner size={24} sx={{ color: 'background' }} />
-                    </Button>
-                ) : stableTroveChange ? (
-                    <TroveAction
-                        transactionId={TRANSACTION_ID}
-                        change={stableTroveChange}
-                        maxBorrowingRate={maxBorrowingRate}
-                        borrowingFeeDecayToleranceMinutes={60}
-                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
-                    >
-                        Create Trove and Borrow USDFC
-                    </TroveAction>
+                {/* Button */}
+                {isConnected ? (
+                    gasEstimationState.type === 'inProgress' ? (
+                        <button
+                            disabled
+                            className='flex h-[72px] w-full cursor-not-allowed items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-[#1A30FF] p-6 font-primary text-[20px] font-semibold leading-6 text-white'
+                        >
+                            <Spinner size={24} sx={{ color: 'background' }} />
+                        </button>
+                    ) : stableTroveChange ? (
+                        <TroveAction
+                            transactionId={TRANSACTION_ID}
+                            change={stableTroveChange}
+                            maxBorrowingRate={maxBorrowingRate}
+                            borrowingFeeDecayToleranceMinutes={60}
+                            className='flex h-[72px] w-full items-center justify-center gap-2.5 rounded-b-[20px] bg-[#1A30FF] p-6 text-[20px] font-semibold leading-6 text-white hover:bg-[#1A30FF]/90'
+                        >
+                            Create Trove and Borrow USDFC
+                        </TroveAction>
+                    ) : (
+                        <button
+                            disabled
+                            className='flex w-full cursor-not-allowed items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-[#1A30FF] p-6 font-primary text-[20px] font-semibold leading-6 text-white opacity-50'
+                        >
+                            Create Trove and Borrow USDFC
+                        </button>
+                    )
                 ) : (
-                    <Button
-                        disabled
-                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white'
+                    <button
+                        className='flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-[#1A30FF] p-6 font-primary text-[20px] font-semibold leading-6 text-white hover:bg-[#1A30FF]/90'
+                        onClick={() => {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            open();
+                        }}
                     >
-                        Create Trove and Borrow USDFC
-                    </Button>
-                )
-            ) : (
-                <Button
-                    className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
-                    onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        open();
-                    }}
-                >
-                    Connect Wallet
-                </Button>
-            )}
+                        Connect Wallet
+                    </button>
+                )}
+            </div>
 
             {isConnected && (
                 <p className='mt-2 text-center text-sm text-neutral-450'>

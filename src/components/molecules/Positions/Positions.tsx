@@ -309,7 +309,7 @@ export const Positions = ({
                             href='trove'
                             size={ButtonSizes.md}
                             variant={ButtonVariants.tertiary}
-                            className='w-full'
+                            className='w-full border-neutral-9 font-semibold'
                             external={false}
                         >
                             Manage Trove
@@ -388,7 +388,7 @@ export const Positions = ({
                                 href='/stability-pool'
                                 size={ButtonSizes.md}
                                 variant={ButtonVariants.tertiary}
-                                className='flex-1'
+                                className='flex-1 border-neutral-9 font-semibold'
                                 external={false}
                             >
                                 Manage Deposit
@@ -397,7 +397,7 @@ export const Positions = ({
                                 <Button
                                     size={ButtonSizes.md}
                                     variant={ButtonVariants.primary}
-                                    className='flex-1'
+                                    className='flex-1 font-semibold'
                                     onClick={sendClaimTransaction}
                                     disabled={isClaimDisabled}
                                 >

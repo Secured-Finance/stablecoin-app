@@ -20,6 +20,7 @@ export const sizeStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.sm]: 'rounded-md px-3 py-2',
     [ButtonSizes.md]: 'rounded-md px-3.5 py-2.5',
     [ButtonSizes.lg]: 'rounded-lg py-3 px-5',
+    [ButtonSizes.xl]: 'h-12 p-4 laptop:h-[72px] laptop:p-6',
     [ButtonSizes.pill]: 'rounded-full px-1.5 py-1',
 };
 
@@ -29,5 +30,7 @@ export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.sm]: 'text-3 leading-3.5',
     [ButtonSizes.md]: 'text-3.5 leading-4.5',
     [ButtonSizes.lg]: 'text-4 leading-5',
+    [ButtonSizes.xl]:
+        'text-4 leading-5 font-semibold font-primary laptop:text-[20px] laptop:leading-6',
     [ButtonSizes.pill]: 'text-3 leading-3.75 font-medium',
 };

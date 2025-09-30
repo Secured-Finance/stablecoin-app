@@ -104,14 +104,20 @@ export const Trove = () => {
                                 : '150%'}
                         </span>
                         <div
-                            className={`ml-2 inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
-                            style={{ padding: '6px 12px 6px 6px', gap: '6px' }}
+                            className={`ml-2 flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                            style={{
+                                padding: '6px 12px 6px 6px',
+                                gap: '6px',
+                                minWidth: 'fit-content',
+                            }}
                         >
                             <div
                                 className={`rounded-full ${liquidationRisk.dotStyle}`}
                                 style={{ width: '16px', height: '16px' }}
                             ></div>
-                            <span className={liquidationRisk.textStyle}>
+                            <span
+                                className={`${liquidationRisk.textStyle} whitespace-normal`}
+                            >
                                 {liquidationRisk.text} Liquidation Risk
                             </span>
                         </div>

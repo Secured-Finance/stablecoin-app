@@ -1,5 +1,5 @@
 import { Decimal, TroveChange } from '@secured-finance/stablecoin-lib-base';
-import { Button } from 'src/components/atoms';
+import { Button, ButtonSizes } from 'src/components/atoms';
 import { useSfStablecoin } from 'src/hooks';
 import { useTransactionFunction } from '../Transaction';
 
@@ -45,7 +45,11 @@ export const TroveAction: React.FC<TroveActionProps> = ({
     );
 
     return (
-        <Button onClick={sendTransaction} className={className}>
+        <Button
+            onClick={sendTransaction}
+            className={className}
+            size={ButtonSizes.xl}
+        >
             {children}
         </Button>
     );

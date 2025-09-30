@@ -2,7 +2,6 @@ import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { useEffect, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
-import { COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
 
 export function StabilityAmountInput({
@@ -51,7 +50,7 @@ export function StabilityAmountInput({
                     <input
                         // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={true}
-                        className={`w-full bg-transparent text-8 font-semibold outline-none placeholder:text-neutral-350 ${
+                        className={`text-2xl w-full bg-transparent font-primary font-medium leading-none outline-none placeholder:text-neutral-350 laptop:text-[32px] ${
                             disabled ? 'text-neutral-400' : 'text-neutral-900'
                         }`}
                         type='text'
@@ -83,7 +82,7 @@ export function StabilityAmountInput({
                     />
                 ) : (
                     <div
-                        className={`w-full text-8 font-semibold ${
+                        className={`text-2xl w-full font-primary font-medium leading-none laptop:text-[32px] ${
                             disabled
                                 ? 'text-neutral-400'
                                 : 'cursor-text text-neutral-900'
@@ -103,23 +102,24 @@ export function StabilityAmountInput({
                             : '0.00'}
                     </div>
                 )}
-                <div className='ml-2 flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
+                <div
+                    className='ml-2 flex shrink-0 items-center gap-1.5 rounded-full border border-neutral-175 px-2 py-1 laptop:ml-3 laptop:gap-2 laptop:px-3 laptop:py-1.5'
+                    style={{ minWidth: '90px' }}
+                >
                     <USDFCIconLarge />
-                    <span className='text-2xl font-medium leading-none text-neutral-900'>
+                    <span className='text-lg laptop:text-2xl font-medium leading-none text-neutral-900'>
                         USDFC
                     </span>
                 </div>
             </div>
-            <div className='flex items-center justify-between text-sm text-neutral-450'>
-                <div>
+            <div className='flex items-center justify-between font-primary text-base font-normal leading-none text-neutral-450'>
+                <div className='min-w-0 flex-1'>
                     <div className='flex gap-1'>
-                        <span>${decimal.prettify()}</span>
+                        <span className='truncate'>${decimal.prettify(2)}</span>
                     </div>
                 </div>
                 <div className='mt-2 flex items-center gap-2'>
-                    <span>
-                        {maxAmount.prettify(2)} {COIN}
-                    </span>
+                    <span>{maxAmount.prettify(2)} USDFC</span>
                     <Button
                         onClick={() => {
                             const maxStr = maxAmount.toString();
