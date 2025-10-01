@@ -74,7 +74,7 @@ export const InputBox = ({
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-            <span className='mb-2 block font-primary text-sm font-medium'>
+            <span className='mb-2 block font-primary text-4 font-medium leading-[100%]'>
                 {label}
             </span>
             <div className='flex items-center'>

@@ -133,18 +133,18 @@ export const RedemptionPage = () => {
     return (
         <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
-                <div className='w-full'>
-                    <h1 className='mb-3 text-center font-primary text-6 font-semibold leading-none'>
+                <div className='mb-[52px] flex w-full flex-col items-center gap-6 px-16'>
+                    <h1 className='text-center font-primary text-6 font-semibold leading-[29px] text-neutral-900'>
                         Redeem USDFC
                     </h1>
-                    <p className='mb-8 text-center text-sm text-neutral-450'>
+                    <p className='w-full text-center font-primary text-4 font-normal leading-[144%] text-neutral-450'>
                         Exchange USDFC for {CURRENCY} at face value by repaying
-                        the system&apos;s least <br />
-                        collateralized Troves. This is not the same as repaying
-                        your own debt—if your Trove
-                        <br /> is undercollateralized, it may be partially
-                        redeemed.
+                        the system&apos;s least collateralized Troves. This is
+                        not the same as repaying your own debt—if your Trove is
+                        undercollateralized, it may be partially redeemed.
                     </p>
+                </div>
+                <div className='w-full'>
                     <TokenBox
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
@@ -180,33 +180,31 @@ export const RedemptionPage = () => {
                         }}
                         isConnected={isConnected}
                     >
-                        <div className='mb-6 w-full rounded-xl border border-neutral-9 bg-white p-6'>
-                            <div className='flex items-center justify-between'>
-                                <div>
-                                    <div className='mb-1 font-primary text-4 font-normal text-neutral-450'>
+                        <div className='mb-6 flex w-full flex-col items-start gap-6 rounded-[20px] border border-neutral-150 bg-white p-6'>
+                            <div className='flex w-full flex-col items-start gap-4 tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-2'>
+                                <div className='flex w-full flex-col items-start justify-center gap-1.5 tablet:max-w-[420px]'>
+                                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
                                         Redemption Fee
                                     </div>
-                                    <div className='max-w-[280px] text-sm text-neutral-450'>
+                                    <div className='w-full font-primary text-sm font-normal leading-[140%] text-neutral-450'>
                                         A percentage of the {CURRENCY} received,
-                                        currently {feePercentage}. It varies
+                                        starting at a minimum of 0.5%. It varies
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <span className='font-primary text-4 font-medium text-neutral-450'>
-                                        {redemptionFee}
-                                    </span>
-                                    <div className='flex items-center gap-1'>
-                                        <div className='flex h-4 w-4 items-center justify-center rounded-full bg-neutral-150'>
-                                            <FILIcon className='h-4 w-4' />
-                                        </div>
-                                        <span className='text-xs'>
+                                    <div className='flex items-center justify-center gap-2'>
+                                        <span className='font-primary text-4 font-medium leading-[19px] text-neutral-900'>
+                                            {redemptionFee}
+                                        </span>
+                                        <FILIcon className='h-6 w-6' />
+                                        <span className='font-primary text-4 font-normal leading-[19px] text-neutral-900'>
                                             {CURRENCY}
                                         </span>
-                                        <span className='font-primary text-sm text-neutral-450'>
-                                            {feePercentage}
-                                        </span>
                                     </div>
+                                    <span className='font-primary text-sm font-normal leading-[17px] text-neutral-450'>
+                                        {feePercentage}
+                                    </span>
                                 </div>
                             </div>
                         </div>

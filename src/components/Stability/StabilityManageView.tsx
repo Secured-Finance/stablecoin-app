@@ -212,24 +212,26 @@ export const StabilityManageView = () => {
 
     return (
         <>
-            <h1 className='mb-2 text-center font-primary text-6 font-semibold'>
-                {originalDeposit.isEmpty
-                    ? 'Deposit USDFC into the Stability Pool'
-                    : `Manage ${
-                          activeTab === 'deposit' ? 'Deposit' : 'Withdrawal'
-                      }`}
-            </h1>
-            <p className='mb-8 text-center text-sm text-neutral-450'>
-                {originalDeposit.isEmpty
-                    ? `Deposit USDFC to earn ${CURRENCY} rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.`
-                    : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
-            </p>
+            <div className='mb-[52px] flex w-full flex-col items-center'>
+                <h1 className='mb-6 w-full max-w-[720px] px-4 text-center font-primary text-5 font-semibold leading-[100%] text-neutral-900 tablet:px-16'>
+                    {originalDeposit.isEmpty
+                        ? 'Deposit USDFC into the Stability Pool'
+                        : 'Manage Deposit'}
+                </h1>
+                <p className='w-full max-w-[720px] px-4 text-center font-primary text-4 font-normal leading-[144%] text-neutral-450 tablet:px-16'>
+                    {originalDeposit.isEmpty
+                        ? `Deposit USDFC to earn ${CURRENCY} rewards. The pool helps maintain system stability by covering liquidated debt, ensuring a balanced and secure ecosystem.`
+                        : 'Adjust your Stability Pool deposit by adding more USDFC or withdrawing a portion or the full amount.'}
+                </p>
+            </div>
 
-            <StabilityStats
-                originalDeposit={originalDeposit}
-                originalPoolShare={originalPoolShare}
-                liquidationGains={liquidationGains}
-            />
+            {!originalDeposit.isEmpty && (
+                <StabilityStats
+                    originalDeposit={originalDeposit}
+                    originalPoolShare={originalPoolShare}
+                    liquidationGains={liquidationGains}
+                />
+            )}
 
             <TabSwitcher
                 activeTab={activeTab}
@@ -241,8 +243,8 @@ export const StabilityManageView = () => {
             <StabilityAmountInput
                 label={
                     originalDeposit.isEmpty || activeTab === 'deposit'
-                        ? 'Deposit Amount'
-                        : 'Withdraw Amount'
+                        ? 'Deposit'
+                        : 'Withdraw'
                 }
                 displayAmount={displayAmount}
                 handleInputChange={handleInputChange}
@@ -276,7 +278,7 @@ export const StabilityManageView = () => {
                     <div className='flex items-center justify-between'>
                         <div>
                             <div className='mb-1 flex items-center gap-2'>
-                                <div className='text-sm font-medium'>
+                                <div className='font-primary text-4 font-medium leading-[100%]'>
                                     Pool Share
                                 </div>
                                 <CustomTooltip
@@ -290,7 +292,7 @@ export const StabilityManageView = () => {
                                     <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
-                            <div className='max-w-[280px] text-xs text-neutral-450'>
+                            <div className='max-w-[420px] font-primary text-sm font-normal leading-[140%] text-neutral-450'>
                                 Your percentage of the Stability Pool,
                                 determining your share of liquidated collateral
                                 and rewards.

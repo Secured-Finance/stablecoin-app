@@ -12,7 +12,7 @@ import {
     PYTH_ORACLE_LINK,
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
-import { AddressUtils, isProdEnv } from 'src/utils';
+import { isProdEnv } from 'src/utils';
 import { CURRENCY } from 'src/strings';
 import { filecoin } from 'viem/chains';
 
@@ -150,7 +150,7 @@ export const getProtocolStats = (
         ),
         formatStat(
             'Smart Contract',
-            AddressUtils.format(contextData?.addresses?.debtToken || '', 8),
+            (contextData?.addresses?.debtToken || '').slice(-7),
             undefined,
             contextData?.addresses?.debtToken
                 ? `${

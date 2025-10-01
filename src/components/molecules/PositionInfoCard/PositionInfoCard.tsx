@@ -40,7 +40,7 @@ export const PositionInfoCard = ({
                         )}
                     />
                 </div>
-                <h3 className='text-xl font-semibold text-neutral-900'>
+                <h3 className='font-primary text-5 font-semibold leading-6 text-neutral-900'>
                     {title}
                 </h3>
             </div>

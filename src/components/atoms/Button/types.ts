@@ -13,4 +13,5 @@ export enum ButtonSizes {
     lg = 'lg',
     xl = 'xl',
     pill = 'pill',
+    wallet = 'wallet',
 }

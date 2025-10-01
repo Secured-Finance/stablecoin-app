@@ -1,11 +1,11 @@
-import { useSfStablecoinSelector } from 'src/hooks';
 import {
-    SfStablecoinStoreState,
     Decimal,
+    SfStablecoinStoreState,
 } from '@secured-finance/stablecoin-lib-base';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { CURRENCY } from 'src/strings';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
+import { useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 
 const select = ({
     trove,
@@ -68,66 +68,80 @@ export const Trove = () => {
     const liquidationRisk = getLiquidationRisk(collateralRatio);
 
     return (
-        <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
-            <div className='grid grid-cols-1 gap-4 tablet:grid-cols-2 tablet:gap-6'>
-                <div>
-                    <p className='mb-1 text-sm text-neutral-450'>Total Debt</p>
-                    <div className='flex items-center gap-1'>
-                        <span className='font-bold'>
+        <div className='mb-6 rounded-[20px] border border-neutral-150 bg-white p-6'>
+            <div className='grid grid-cols-1 gap-8 tablet:grid-cols-2'>
+                {/* Total Debt */}
+                <div className='flex flex-col items-start gap-3'>
+                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
+                        Total Debt
+                    </div>
+                    <div className='flex items-center gap-2'>
+                        <span className='font-primary text-4 font-medium leading-[19px] text-neutral-900'>
                             {trove.debt.prettify()}
                         </span>
-                        <USDFCIcon />
-                        <span className='text-sm'>USDFC</span>
-                    </div>
-                </div>
-                <div>
-                    <p className='mb-1 text-sm text-neutral-450'>Collateral</p>
-                    <div className='flex items-center gap-1'>
-                        <span className='font-bold'>
-                            {trove.collateral.prettify()}
-                        </span>
-                        <FILIcon className='h-4 w-4' />
-                        <span className='text-sm'>{CURRENCY}</span>
-                        <span className='ml-1 text-sm text-neutral-450'>
-                            ${trove.collateral.mul(price).sub(0).prettify()}
+                        <USDFCIcon className='h-4 w-4' />
+                        <span className='font-primary text-4 font-normal leading-[19px] text-neutral-900'>
+                            USDFC
                         </span>
                     </div>
                 </div>
-                <div>
-                    <p className='mb-1 text-sm text-neutral-450'>
+
+                {/* Collateral */}
+                <div className='flex flex-col items-start gap-3'>
+                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
+                        Collateral
+                    </div>
+                    <div className='flex min-w-0 items-center gap-4'>
+                        <div className='flex min-w-0 items-center gap-2'>
+                            <span className='truncate font-primary text-4 font-medium leading-[19px] text-neutral-900'>
+                                {trove.collateral.prettify()}
+                            </span>
+                            <FILIcon className='h-4 w-4 shrink-0' />
+                            <span className='whitespace-nowrap font-primary text-4 font-normal leading-[19px] text-neutral-900'>
+                                {CURRENCY}
+                            </span>
+                        </div>
+                        <span className='whitespace-nowrap font-primary text-sm font-normal leading-[17px] text-neutral-450'>
+                            ${trove.collateral.mul(price).prettify()}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Collateral Ratio */}
+                <div className='flex flex-col items-start gap-3'>
+                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
                         Collateral Ratio
-                    </p>
-                    <div className='flex items-center gap-1'>
-                        <span className='font-bold'>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                        <span className='font-primary text-4 font-medium leading-[19px] text-neutral-900'>
                             {collateralRatio
                                 ? `${collateralRatio.mul(100).prettify()}%`
                                 : '150%'}
                         </span>
                         <div
-                            className={`ml-2 flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                            className={`flex items-center rounded-full ${liquidationRisk.containerStyle}`}
                             style={{
-                                padding: '6px 12px 6px 6px',
-                                gap: '6px',
-                                minWidth: 'fit-content',
+                                padding: '3px 8px 3px 3px',
+                                gap: '4px',
                             }}
                         >
                             <div
                                 className={`rounded-full ${liquidationRisk.dotStyle}`}
                                 style={{ width: '16px', height: '16px' }}
                             ></div>
-                            <span
-                                className={`${liquidationRisk.textStyle} whitespace-normal`}
-                            >
+                            <span className='font-primary text-xs font-medium leading-[15px] tracking-[0.01em] text-success-700'>
                                 {liquidationRisk.text} Liquidation Risk
                             </span>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <p className='mb-1 text-sm text-neutral-450'>
+
+                {/* Debt in Front */}
+                <div className='flex flex-col items-start gap-3'>
+                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
                         Debt in Front
-                    </p>
-                    <div className='font-bold'>
+                    </div>
+                    <div className='truncate font-primary text-4 font-medium leading-[19px] text-neutral-900'>
                         ${debtInFrontAmount.prettify()}
                     </div>
                 </div>

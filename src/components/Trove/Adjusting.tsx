@@ -427,7 +427,10 @@ export const Adjusting: React.FC = () => {
                                 Total Debt
                             </h3>
                             <div className='flex items-center justify-center gap-2'>
-                                <span className='truncate text-5 font-medium leading-6 text-neutral-900'>
+                                <span className='text-5 font-medium leading-6 text-neutral-900 tablet:hidden'>
+                                    {totalDebt.shorten()}
+                                </span>
+                                <span className='hidden truncate text-5 font-medium leading-6 text-neutral-900 tablet:inline'>
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
                                 <USDFCIcon className='h-6 w-6' />

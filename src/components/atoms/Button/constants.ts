@@ -22,6 +22,7 @@ export const sizeStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.lg]: 'rounded-lg py-3 px-5',
     [ButtonSizes.xl]: 'h-12 p-4 laptop:h-[72px] laptop:p-6',
     [ButtonSizes.pill]: 'rounded-full px-1.5 py-1',
+    [ButtonSizes.wallet]: 'rounded-full h-[43px] px-4',
 };
 
 export const textStyle: { [key in ButtonSizes]: string } = {
@@ -33,4 +34,5 @@ export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.xl]:
         'text-4 leading-5 font-semibold font-primary laptop:text-5 laptop:leading-6',
     [ButtonSizes.pill]: 'text-3 leading-3.75 font-medium',
+    [ButtonSizes.wallet]: 'text-4 leading-[19px] font-semibold',
 };

@@ -27,23 +27,38 @@ const FeatureCard = ({
     return (
         <Link
             to={href}
-            className='block w-full max-w-none laptop:max-w-[290px]'
+            className='block w-full max-w-none laptop:h-[204px] laptop:max-w-[290.67px]'
         >
             <Card
                 className={cn(
-                    'w-full max-w-none transition-colors duration-300 laptop:max-w-[290px]',
+                    'flex h-full w-full max-w-none flex-col items-start gap-6 rounded-xl p-6 transition-colors duration-300 laptop:h-[204px] laptop:max-w-[290.67px] laptop:rounded-[20px] laptop:p-6',
                     className
                 )}
             >
-                <div className='mb-6 flex items-center'>{icon}</div>
-                <h3
-                    className={cn('mb-2 text-xl font-semibold', titleClassName)}
-                >
-                    {title}
-                </h3>
-                <p className={cn('text-sm', descriptionClassName)}>
-                    {description}
-                </p>
+                {/* Illustration Container */}
+                <div className='flex h-[60px] w-full items-center self-stretch'>
+                    {icon}
+                </div>
+
+                {/* Text Container */}
+                <div className='flex w-full flex-col items-start gap-3 self-stretch'>
+                    <h3
+                        className={cn(
+                            'w-full self-stretch font-primary text-5 font-semibold leading-[100%]',
+                            titleClassName
+                        )}
+                    >
+                        {title}
+                    </h3>
+                    <p
+                        className={cn(
+                            'w-full self-stretch font-primary text-sm font-medium leading-[130%]',
+                            descriptionClassName
+                        )}
+                    >
+                        {description}
+                    </p>
+                </div>
             </Card>
         </Link>
     );
@@ -56,7 +71,7 @@ export function FeatureCards() {
                 title='Borrow USDFC'
                 description={`Create a Trove to deposit ${CURRENCY} as collateral and borrow USDFC.`}
                 icon={<BorrowIcon />}
-                className='bg-primary-500 text-white hover:bg-secondary-500'
+                className='bg-borrowBg text-white hover:bg-borrowHover hover:shadow-[0px_4px_10px_rgba(26,48,255,0.2)]'
                 descriptionClassName='opacity-90'
                 href='/trove'
             />
@@ -64,18 +79,16 @@ export function FeatureCards() {
                 title={`Earn ${CURRENCY}`}
                 description={`Deposit USDFC into the Stability Pool to earn ${CURRENCY} rewards.`}
                 icon={<EarnIcon />}
-                className='bg-[#FFCE45] hover:bg-[#E9B830]'
-                titleClassName='text-[#332500]'
-                descriptionClassName='text-[#332500]'
+                className='bg-earnBg text-earnText hover:bg-earnHover hover:shadow-[0px_4px_10px_rgba(233,184,48,0.2)]'
+                descriptionClassName='opacity-90'
                 href='/stability-pool'
             />
             <FeatureCard
                 title='Bridge Assets'
                 description='Seamlessly transfer assets to and from the Filecoin network.'
                 icon={<BridgeIcon />}
-                className='bg-[#E3E3E3] hover:bg-[#D7D7D7]'
-                titleClassName='text-[#252525]'
-                descriptionClassName='text-[#252525]'
+                className='bg-bridgeBg text-bridgeText hover:bg-bridgeHover hover:shadow-[0px_4px_10px_rgba(208,207,207,0.15)]'
+                descriptionClassName='opacity-90'
                 href='/bridge'
             />
         </div>

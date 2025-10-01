@@ -24,7 +24,7 @@ export const StatCard = ({
             <div className='flex items-start justify-between'>
                 <div>
                     <div className='mb-1 flex items-center gap-2'>
-                        <h3 className='text-left text-sm font-bold text-neutral-450'>
+                        <h3 className='text-left font-primary text-sm font-semibold text-neutral-450'>
                             {title}
                         </h3>
                         {tooltip && (
@@ -38,7 +38,7 @@ export const StatCard = ({
                             </CustomTooltip>
                         )}
                     </div>
-                    <div className='text-sm text-neutral-450 tablet:max-w-[60%]'>
+                    <div className='font-primary text-sm font-medium leading-[130%] text-neutral-450 tablet:max-w-[60%]'>
                         {description}
                     </div>
                 </div>

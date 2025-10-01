@@ -15,10 +15,12 @@ export function TokenPrice({ symbol, price, sources }: TokenPriceProps) {
         <div className='flex flex-col gap-4 tablet:flex-row tablet:items-center tablet:justify-between'>
             <div className='flex items-center gap-2'>
                 <div className='flex h-8 w-8 items-center'>
-                    <FILIcon className='h-8 w-8' />
+                    <FILIcon className='h-6 w-6' />
                 </div>
-                <span className='font-medium'>{symbol}</span>
-                <span className='font-primary text-secondary-400'>
+                <span className='font-primary text-xl font-medium text-neutral-900'>
+                    {symbol}
+                </span>
+                <span className='font-primary text-xl font-normal text-secondary-400'>
                     {price} USD
                 </span>
             </div>

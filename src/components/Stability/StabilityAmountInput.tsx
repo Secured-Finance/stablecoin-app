@@ -44,7 +44,9 @@ export function StabilityAmountInput({
 
     return (
         <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-4'>
-            <div className='mb-2 text-sm font-medium'>{label}</div>
+            <div className='mb-2 font-primary text-4 font-medium leading-[100%]'>
+                {label}
+            </div>
             <div className='mb-1 flex items-center justify-between'>
                 {editing ? (
                     <input

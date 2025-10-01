@@ -80,7 +80,7 @@ export const TokenBox = ({
         <div className='w-full'>
             <div className='w-full space-y-1'>
                 <div className='shadow-sm flex h-32 w-full items-center justify-between rounded-xl border border-neutral-9 bg-white p-4'>
-                    <div className='flex-1'>
+                    <div className='min-w-0 flex-1'>
                         <label className='mb-1 block font-primary text-base font-medium text-neutral-900'>
                             {inputLabel}
                         </label>
@@ -125,7 +125,7 @@ export const TokenBox = ({
                             />
                         ) : (
                             <div
-                                className={`flex h-[48px] w-full items-center font-primary text-8 font-medium leading-none ${
+                                className={`flex h-[48px] w-full items-center overflow-hidden font-primary text-8 font-medium leading-none ${
                                     isConnected
                                         ? 'cursor-text text-neutral-900'
                                         : 'text-neutral-400'
@@ -141,9 +141,11 @@ export const TokenBox = ({
                                 role='button'
                                 tabIndex={isConnected ? 0 : -1}
                             >
-                                {inputDecimal.isZero
-                                    ? '0.00'
-                                    : inputDecimal.prettify(2)}
+                                <span className='truncate'>
+                                    {inputDecimal.isZero
+                                        ? '0.00'
+                                        : inputDecimal.prettify(2)}
+                                </span>
                             </div>
                         )}
 
@@ -153,7 +155,7 @@ export const TokenBox = ({
                             </p>
                         )}
                     </div>
-                    <div className='ml-3 flex flex-col items-end gap-4'>
+                    <div className='ml-3 flex shrink-0 flex-col items-end gap-4'>
                         {inputTokenIcon && (
                             <div className='flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-2'>
                                 {inputTokenIcon}
@@ -161,7 +163,9 @@ export const TokenBox = ({
                         )}
                         {maxValue && onMaxClick && isConnected && (
                             <div className='flex items-center gap-2 text-sm text-neutral-350'>
-                                <span>{maxValue}</span>
+                                <span className='whitespace-nowrap'>
+                                    {maxValue}
+                                </span>
                                 <Button
                                     onClick={onMaxClick}
                                     size={ButtonSizes.pill}
@@ -181,7 +185,7 @@ export const TokenBox = ({
                 </div>
 
                 <div className='shadow-sm flex h-32 w-full items-center justify-between rounded-xl border border-neutral-9 bg-white p-4'>
-                    <div className='flex-1'>
+                    <div className='min-w-0 flex-1'>
                         <label className='mb-1 block font-primary text-base font-medium text-neutral-900'>
                             {outputLabel}
                         </label>
@@ -228,7 +232,7 @@ export const TokenBox = ({
                                 />
                             ) : (
                                 <div
-                                    className={`flex h-[48px] w-full items-center font-primary text-8 font-medium leading-none ${
+                                    className={`flex h-[48px] w-full items-center overflow-hidden font-primary text-8 font-medium leading-none ${
                                         isConnected
                                             ? 'cursor-text text-neutral-900'
                                             : 'text-neutral-400'
@@ -248,22 +252,26 @@ export const TokenBox = ({
                                     role='button'
                                     tabIndex={isConnected ? 0 : -1}
                                 >
-                                    {outputDecimal.isZero
-                                        ? '0.00'
-                                        : outputDecimal.prettify(2)}
+                                    <span className='truncate'>
+                                        {outputDecimal.isZero
+                                            ? '0.00'
+                                            : outputDecimal.prettify(2)}
+                                    </span>
                                 </div>
                             )
                         ) : (
                             <div
-                                className={`flex h-[48px] items-center font-primary text-8 font-medium leading-none ${
+                                className={`flex h-[48px] items-center overflow-hidden font-primary text-8 font-medium leading-none ${
                                     isConnected
                                         ? 'text-neutral-900'
                                         : 'text-neutral-400'
                                 }`}
                             >
-                                {outputDecimal.isZero
-                                    ? '0.00'
-                                    : outputDecimal.prettify(2)}
+                                <span className='truncate'>
+                                    {outputDecimal.isZero
+                                        ? '0.00'
+                                        : outputDecimal.prettify(2)}
+                                </span>
                             </div>
                         )}
                         {outputSubLabel && (
@@ -273,7 +281,7 @@ export const TokenBox = ({
                         )}
                     </div>
                     {outputTokenIcon && (
-                        <div className='ml-3 flex items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
+                        <div className='ml-3 flex shrink-0 items-center gap-2 rounded-full border border-neutral-175 px-3 py-1.5'>
                             {outputTokenIcon}
                         </div>
                     )}
