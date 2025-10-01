@@ -2,7 +2,7 @@ import { Menu } from '@headlessui/react';
 import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 import { ChevronDownIcon } from 'lucide-react';
 import React, { useEffect } from 'react';
-import { Button, ButtonSizes, Identicon } from 'src/components/atoms';
+import { Button, ButtonSizes } from 'src/components/atoms';
 import { NETWORK_SWITCH_LINKS } from 'src/constants';
 import { useBreakpoint, useSfStablecoin } from 'src/hooks';
 import {
@@ -51,7 +51,7 @@ export const UserAccount: React.FC = () => {
         <div className='flex flex-row items-center gap-2 laptop:gap-2'>
             <Menu as='div' className='relative text-left tablet:inline-block'>
                 <Menu.Button
-                    className='flex items-center gap-2 rounded-3xl border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
+                    className='flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-50 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:gap-2.5 laptop:px-4 laptop:py-3'
                     aria-label='Network switcher'
                 >
                     <span className='relative flex h-2 w-2 items-center justify-center'>
@@ -65,7 +65,7 @@ export const UserAccount: React.FC = () => {
                     <ChevronDownIcon className='h-3.5 w-3.5 laptop:h-4 laptop:w-4' />
                 </Menu.Button>
 
-                <Menu.Items className='shadow-lg absolute right-0 z-10 mt-1 w-28 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                <Menu.Items className='shadow-lg absolute right-0 z-10 mt-1 w-28 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none laptop:w-32 desktop:w-full'>
                     {Object.entries(NETWORK_SWITCH_LINKS).map(([key, href]) => {
                         const label =
                             key === 'mainnet' ? 'Mainnet' : 'Calibration';
@@ -80,7 +80,7 @@ export const UserAccount: React.FC = () => {
                                                 window.location.href = href;
                                             }
                                         }}
-                                        className='flex w-full items-center justify-between gap-2 p-2 text-sm text-neutral-900'
+                                        className='flex w-full items-center justify-between gap-2 p-2 text-xs text-neutral-900 laptop:text-sm'
                                     >
                                         <span>{label}</span>
                                         {isCurrent && (
@@ -98,17 +98,13 @@ export const UserAccount: React.FC = () => {
                 <button
                     onClick={() => navigateToTop(() => open())}
                     aria-label='Wallet menu'
-                    className='flex items-center gap-2 rounded-3xl border border-neutral-300 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:h-10 laptop:px-3.5'
+                    className='flex items-center gap-2 rounded-full border border-neutral-300 px-3 py-2 hover:border-primary-500 focus:outline-none active:bg-primary-300/30 laptop:gap-2.5 laptop:px-4 laptop:py-3'
                 >
-                    <Identicon
-                        value={account.toLowerCase()}
-                        size={isMobile ? 14 : 16}
-                    />
                     <span
-                        className='typography-desktop-body-5 hidden text-neutral-900 laptop:block'
+                        className='text-3 font-semibold leading-[100%] text-neutral-900 laptop:text-4'
                         data-cy='wallet-address'
                     >
-                        {AddressUtils.format(account.toLowerCase(), 6)}
+                        {AddressUtils.format(account.toLowerCase(), 5, 3)}
                     </span>
                 </button>
             ) : (
@@ -116,7 +112,7 @@ export const UserAccount: React.FC = () => {
                     onClick={() => navigateToTop(() => open())}
                     mobileText={'Connect'}
                     size={isMobile ? ButtonSizes.sm : ButtonSizes.md}
-                    className='rounded-3xl'
+                    className='!rounded-full !px-4 !py-3 !text-4 !font-semibold !leading-[100%]'
                 >
                     Connect Wallet
                 </Button>

@@ -361,15 +361,17 @@ const theme: Theme = {
         header: {
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'stretch',
+            alignItems: 'center',
 
             position: 'sticky',
             top: 0,
             zIndex: 50,
 
+            height: '75px',
             px: ['16px', '20px'],
-            py: ['12px', '8px'],
-            bg: 'rgba(255, 255, 255, 1)',
+            bg: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(25px)',
+            borderBottom: '0.5px solid #E3E3E3',
         },
 
         footer: {

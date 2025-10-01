@@ -23,7 +23,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
         frontendTag === AddressZero || frontend.status === 'registered';
 
     return (
-        <Container variant='header' className='border-b border-neutral-9'>
+        <Container variant='header'>
             <div className='relative flex w-full items-center justify-between gap-3 desktop:gap-8'>
                 <div className='flex items-center gap-2'>
                     <Link

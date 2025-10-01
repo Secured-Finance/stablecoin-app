@@ -125,12 +125,6 @@ export const StabilityManageView = () => {
         setWithdrawAmountInput('');
     }, [activeTab, dispatch]);
 
-    useEffect(() => {
-        if (originalDeposit.isEmpty && activeTab === 'withdraw') {
-            setActiveTab('deposit');
-        }
-    }, [originalDeposit.isEmpty, activeTab]);
-
     // Clear input fields when the deposit amount changes
     const currentDepositAmount = originalDeposit.currentDebtToken.toString();
     useEffect(() => {
@@ -241,6 +235,7 @@ export const StabilityManageView = () => {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 disabled={isDisabled}
+                hasDeposit={!originalDeposit.isEmpty}
             />
 
             <StabilityAmountInput
@@ -365,20 +360,22 @@ export const StabilityManageView = () => {
                 </>
             )}
 
-            <div className='mb-2'>{description}</div>
+            <div className='mt-6'>{description}</div>
 
-            <ActionButton
-                validChange={validChange}
-                isDisabled={isButtonDisabled}
-                getButtonText={getButtonText}
-                onClick={sendTransaction}
-                activeTab={activeTab}
-                isConnected={isConnected}
-                onConnectWallet={open}
-            />
+            <div className='mt-6'>
+                <ActionButton
+                    validChange={validChange}
+                    isDisabled={isButtonDisabled}
+                    getButtonText={getButtonText}
+                    onClick={sendTransaction}
+                    activeTab={activeTab}
+                    isConnected={isConnected}
+                    onConnectWallet={open}
+                />
+            </div>
 
             {isConnected && (
-                <p className='text-center text-xs text-neutral-450'>
+                <p className='mt-2 text-center text-xs text-neutral-450'>
                     This action will open your wallet to sign the transaction.
                 </p>
             )}

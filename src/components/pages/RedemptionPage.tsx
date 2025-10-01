@@ -210,18 +210,22 @@ export const RedemptionPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='pb-2'>{validationMessage}</div>
+                        <div className='mt-6'>{validationMessage}</div>
 
-                        <button
-                            className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
-                            disabled={isConnected && (!isValid || hintsPending)}
-                            onClick={handleClick}
-                        >
-                            {renderButtonContent()}
-                        </button>
+                        <div className='mt-6'>
+                            <button
+                                className='w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
+                                disabled={
+                                    isConnected && (!isValid || hintsPending)
+                                }
+                                onClick={handleClick}
+                            >
+                                {renderButtonContent()}
+                            </button>
+                        </div>
 
                         {isConnected && (
-                            <p className='text-center text-xs text-neutral-450'>
+                            <p className='mt-2 text-center text-xs text-neutral-450'>
                                 This action will open your wallet to sign the
                                 transaction.
                             </p>
