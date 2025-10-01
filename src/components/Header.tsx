@@ -33,7 +33,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                         onClick={() => navigateToTop()}
                     >
                         <USDFCIconLarge />
-                        <span className='hidden font-numerical text-6 font-semibold laptop:block'>
+                        <span className='hidden h-[31px] w-[78px] items-center font-numerical text-6 font-semibold laptop:flex'>
                             USDFC
                         </span>
                     </Link>

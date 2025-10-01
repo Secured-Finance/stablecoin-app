@@ -22,7 +22,7 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                             className='flex flex-row items-center gap-2 whitespace-nowrap text-3.5 leading-4 text-neutral-800 outline-none'
                             aria-label='More menu'
                         >
-                            <span className='flex items-center gap-2 font-primary'>
+                            <span className='flex items-center gap-2 font-primary text-4'>
                                 <span
                                     className={clsx(
                                         'h-2 w-2 rounded-full bg-primary-500  transition-all  duration-200',
@@ -53,38 +53,43 @@ export const MenuPopover = ({ currentPath }: { currentPath: string }) => {
                             leaveTo='opacity-0 translate-y-5'
                         >
                             <Popover.Panel
-                                className='shadow-lg absolute right-0 top-full z-50 mt-2 w-48 rounded-lg bg-white py-2'
+                                className='absolute right-0 top-full z-50 mt-2 flex w-[170px] flex-col items-start rounded-xl border border-neutral-9 bg-white py-2 shadow-[0px_4px_8px_4px_rgba(0,0,0,0.06)]'
                                 role='menu'
                             >
-                                <div className='relative flex flex-col overflow-hidden rounded-b-md bg-white py-1.5'>
-                                    {linklist.map((link, index) => {
-                                        return (
-                                            <button
-                                                key={index}
-                                                role='menuitem'
-                                                onClick={close}
-                                                className='block text-sm hover:bg-neutral-100'
-                                            >
-                                                {link.isExternal ? (
-                                                    <MenuExternalLink
-                                                        text={link.text}
-                                                        icon={link.icon}
-                                                        link={link.href}
-                                                    />
-                                                ) : (
-                                                    <MenuItem
-                                                        text={link.text}
-                                                        link={link.href}
-                                                        isActive={
-                                                            currentPath ===
-                                                            link.href
-                                                        }
-                                                    />
-                                                )}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
+                                {linklist.map((link, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            onClick={close}
+                                            onKeyDown={e => {
+                                                if (
+                                                    e.key === 'Enter' ||
+                                                    e.key === ' '
+                                                ) {
+                                                    close();
+                                                }
+                                            }}
+                                            role='none'
+                                        >
+                                            {link.isExternal ? (
+                                                <MenuExternalLink
+                                                    text={link.text}
+                                                    icon={link.icon}
+                                                    link={link.href}
+                                                />
+                                            ) : (
+                                                <MenuItem
+                                                    text={link.text}
+                                                    link={link.href}
+                                                    isActive={
+                                                        currentPath ===
+                                                        link.href
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </Popover.Panel>
                         </Transition>
                     </>

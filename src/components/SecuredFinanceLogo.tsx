@@ -13,4 +13,6 @@ export const USDFCIcon = ({ className }: { className?: string }) => (
     <USDFCLogoSmall className={className} />
 );
 
-export const USDFCIconLarge = () => <USDFCLogoSmall className='h-8 w-8' />;
+export const USDFCIconLarge = () => (
+    <USDFCLogoSmall className='h-[34px] w-[34px]' />
+);

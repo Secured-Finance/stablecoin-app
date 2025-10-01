@@ -27,7 +27,9 @@ describe('MenuPopover component', () => {
         );
         expect(screen.queryByRole('menu')).not.toBeInTheDocument();
         fireEvent.click(screen.getByRole('button'));
-        expect(await screen.findByRole('menu')).toBeInTheDocument();
-        expect(screen.queryAllByRole('menuitem')).toHaveLength(linkList.length);
+        const menu = await screen.findByRole('menu');
+        expect(menu).toBeInTheDocument();
+        const links = screen.getAllByRole('link');
+        expect(links).toHaveLength(linkList.length);
     });
 });
