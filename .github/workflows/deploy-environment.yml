@@ -6,14 +6,18 @@ on:
       environment:
         description: 'Environment to deploy'
         required: true
-        default: 'uat'
+        default: 'uat-v1'
         type: choice
         options:
-          - 'uat'
-          - 'staging'
+          - 'uat-v1'
+          - 'uat-v2'
+          - 'staging-v1'
+          - 'staging-v2'
+          - 'development-v1'
+          - 'development-v2'
+          - 'production-v1'
+          - 'production-v2'
           - 'ci-build'
-          - 'development'
-          - 'production' #We should probably create a new workflow for this one
       ref:
         description: 'Branch, tag or commit to deploy'
         required: true

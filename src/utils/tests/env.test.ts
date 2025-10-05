@@ -91,6 +91,18 @@ describe('getEnvironment', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    it('should return the development if versions are specified', () => {
+        process.env.SF_ENV = 'development-v1';
+        let env = getEnvironment();
+        expect(env).toBe(Environment.DEVELOPMENT);
+        expect(typeof env).toBe('string');
+
+        process.env.SF_ENV = 'development-v2';
+        env = getEnvironment();
+        expect(env).toBe(Environment.DEVELOPMENT);
+        expect(typeof env).toBe('string');
+    });
+
     it('should return development if variable is not set', () => {
         process.env.SF_ENV = '';
         const spy = jest.spyOn(console, 'warn').mockImplementation();
