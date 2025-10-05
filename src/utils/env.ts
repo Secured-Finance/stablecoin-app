@@ -42,8 +42,7 @@ export const getGoogleAnalyticsTag = () => {
 };
 
 export const getEnvironment = () => {
-    const env = process.env.SF_ENV;
-    const SF_ENV = env ? env.split('-')[0] : undefined;
+    const SF_ENV = process.env.SF_ENV;
 
     if (SF_ENV && Object.values(Environment).includes(SF_ENV as Environment)) {
         return SF_ENV as Environment;
