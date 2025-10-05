@@ -9,11 +9,15 @@ on:
         default: 'uat'
         type: choice
         options:
-          - 'uat'
-          - 'staging'
+          - 'uat' # uat-v1
+          - 'uat-v2'
+          - 'staging' # staging-v1
+          - 'staging-v2'
+          - 'development' # development-v1
+          - 'development-v2'
+          - 'production' # production-v1
+          - 'production-v2'
           - 'ci-build'
-          - 'development'
-          - 'production' #We should probably create a new workflow for this one
       ref:
         description: 'Branch, tag or commit to deploy'
         required: true
