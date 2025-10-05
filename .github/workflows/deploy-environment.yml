@@ -6,16 +6,16 @@ on:
       environment:
         description: 'Environment to deploy'
         required: true
-        default: 'uat-v1'
+        default: 'uat'
         type: choice
         options:
-          - 'uat-v1'
+          - 'uat' # uat-v1
           - 'uat-v2'
-          - 'staging-v1'
+          - 'staging' # staging-v1
           - 'staging-v2'
-          - 'development-v1'
+          - 'development' # development-v1
           - 'development-v2'
-          - 'production-v1'
+          - 'production' # production-v1
           - 'production-v2'
           - 'ci-build'
       ref:
