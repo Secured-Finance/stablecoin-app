@@ -18,7 +18,7 @@ export const EmptyPosition = ({
 }: EmptyPositionProps) => {
     return (
         <div className='flex h-full w-full max-w-[448px] flex-col justify-between rounded-[20px] border border-neutral-150 bg-white p-6 tablet:p-10'>
-            <div className='mx-auto h-[228px] w-full max-w-[368px] flex-col items-center gap-6'>
+            <div className='mx-auto h-[240px] w-full max-w-[368px] flex-col items-center gap-6'>
                 <div className='flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border border-neutral-150 bg-[#FAFAFA]'>
                     <Icon size={24} className='text-[#A6A6A6]' />
                 </div>

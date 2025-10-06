@@ -36,7 +36,7 @@ const Card = ({
     className?: string;
 }) => (
     <div
-        className={`flex h-[496px] w-full max-w-[448px] flex-col gap-10 rounded-2xl border border-neutral-200 bg-white p-6 tablet:p-10 ${className}`}
+        className={`flex w-full max-w-[448px] flex-col gap-2 rounded-2xl border border-neutral-200 bg-white p-6 tablet:p-10 ${className}`}
     >
         {children}
     </div>
@@ -240,7 +240,7 @@ export const Positions = ({
             <div className='grid grid-cols-1 items-stretch gap-6 tablet:grid-cols-2'>
                 {hasTrove ? (
                     <Card className='flex h-full flex-col'>
-                        <div className='grid flex-1 grid-rows-5 gap-6'>
+                        <div className='flex flex-1 flex-col gap-6'>
                             <CardHeader
                                 icon={
                                     <Vault
@@ -304,7 +304,6 @@ export const Positions = ({
                                 className='row-span-1'
                             />
                         </div>
-
                         <Button
                             href='trove'
                             size={ButtonSizes.md}
@@ -327,7 +326,7 @@ export const Positions = ({
 
                 {hasStabilityDeposit ? (
                     <Card className='flex h-full flex-col'>
-                        <div className='grid flex-1 grid-rows-5 gap-6'>
+                        <div className='flex flex-1 flex-col gap-6'>
                             <CardHeader
                                 icon={
                                     <Layers2

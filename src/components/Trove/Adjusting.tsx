@@ -365,8 +365,8 @@ export const Adjusting: React.FC = () => {
 
                     <div className='mb-6 space-y-4'>
                         <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                            <div className='flex flex-col gap-4 tablet:flex-row tablet:items-start tablet:justify-between tablet:gap-0'>
-                                <div className='text-sm text-gray-500 tablet:max-w-[60%]'>
+                            <div className='flex items-start justify-between'>
+                                <div className='max-w-[60%] text-sm text-gray-500'>
                                     <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
                                         New Collateral Ratio
                                     </h3>
@@ -420,47 +420,38 @@ export const Adjusting: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className='mb-6 flex w-full flex-col font-primary'>
-                        {/* Card - Total Debt */}
-                        <div className='flex w-full flex-col items-start justify-between gap-4 rounded-t-[20px] border border-neutral-150 bg-white p-6 tablet:flex-row tablet:items-center tablet:gap-0'>
-                            <h3 className='flex-grow text-5 font-medium leading-6 text-neutral-450'>
-                                Total Debt
-                            </h3>
-                            <div className='flex items-center justify-center gap-2'>
-                                <span className='text-5 font-medium leading-6 text-neutral-900 tablet:hidden'>
-                                    {totalDebt.shorten()}
-                                </span>
-                                <span className='hidden truncate text-5 font-medium leading-6 text-neutral-900 tablet:inline'>
+                    <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
+                        <div className='flex items-center justify-between'>
+                            <h3 className='font-bold'>Total Debt</h3>
+                            <div className='flex items-center gap-1'>
+                                <span className='font-bold'>
                                     {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
-                                <USDFCIcon className='h-6 w-6' />
-                                <span className='text-5 font-normal leading-6 text-neutral-900'>
-                                    USDFC
-                                </span>
+                                <USDFCIcon />
+                                <span>USDFC</span>
                             </div>
                         </div>
-
-                        {/* Button */}
-                        {stableTroveChange ? (
-                            <TroveAction
-                                transactionId={TRANSACTION_ID}
-                                change={stableTroveChange}
-                                maxBorrowingRate={maxBorrowingRate}
-                                borrowingFeeDecayToleranceMinutes={60}
-                                className='flex w-full items-center justify-center gap-2.5 rounded-b-[20px] bg-primary-500 p-6 text-5 font-semibold leading-6 text-white hover:bg-primary-500/90'
-                            >
-                                Update Trove
-                            </TroveAction>
-                        ) : (
-                            <Button
-                                disabled
-                                size={ButtonSizes.xl}
-                                className='w-full rounded-b-[20px] bg-primary-500 text-white opacity-50'
-                            >
-                                Update Trove
-                            </Button>
-                        )}
                     </div>
+
+                    {stableTroveChange ? (
+                        <TroveAction
+                            transactionId={TRANSACTION_ID}
+                            change={stableTroveChange}
+                            maxBorrowingRate={maxBorrowingRate}
+                            borrowingFeeDecayToleranceMinutes={60}
+                            className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
+                        >
+                            Update Trove
+                        </TroveAction>
+                    ) : (
+                        <Button
+                            disabled
+                            size={ButtonSizes.xl}
+                            className='mb-3 w-full rounded-xl bg-neutral-250 py-3.5 font-medium text-white'
+                        >
+                            Update Trove
+                        </Button>
+                    )}
                     <p className='mt-2 text-center text-sm text-gray-500'>
                         This action will open your wallet to sign the
                         transaction.

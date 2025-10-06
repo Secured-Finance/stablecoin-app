@@ -129,10 +129,10 @@ export const RiskyTrovesPage = () => {
         <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center gap-6 px-0 py-8 tablet:px-4'>
                 <div className='flex w-full flex-col gap-6 px-4 tablet:px-0'>
-                    <h1 className='text-left font-primary text-6 font-semibold leading-none'>
+                    <h1 className='text-center font-primary text-5 font-semibold leading-none'>
                         Risky Troves
                     </h1>
-                    <p className='mb-4 max-w-3xl font-primary text-base font-normal text-neutral-450 tablet:text-base'>
+                    <p className='mb-4 text-center font-primary text-base font-normal text-neutral-450 tablet:text-base'>
                         Track and liquidate risky Troves to maintain protocol
                         stability and earn rewards. Troves with a collateral
                         ratio below 110% (or 150% in Recovery Mode) are at risk,

@@ -25,6 +25,7 @@ import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { CURRENCY } from 'src/strings';
 import { StatCard } from 'src/components/molecules/StatCard';
 import { openDocumentation } from 'src/constants';
+import { Button, ButtonSizes } from '../atoms';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -338,62 +339,59 @@ export const Opening: React.FC = () => {
                 />
             </div>
 
-            <div className='mb-6 flex w-full flex-col font-primary'>
-                {/* Card - Total Debt */}
-                <div className='flex h-[72px] w-full items-start justify-between rounded-t-[20px] border border-neutral-150 bg-white p-6'>
-                    <h3 className='flex-grow text-5 font-medium leading-6 text-neutral-450'>
-                        Total Debt
-                    </h3>
-                    <div className='flex items-center justify-center gap-2'>
-                        <span className='text-5 font-medium leading-6 text-neutral-900'>
+            <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
+                <div className='flex items-center justify-between'>
+                    <h3 className='font-bold'>Total Debt</h3>
+                    <div className='flex items-center gap-1'>
+                        <span className='font-bold'>
                             {totalDebt.prettify()}
                         </span>
-                        <USDFCIcon className='h-6 w-6' />
-                        <span className='text-5 font-normal leading-6 text-neutral-900'>
-                            USDFC
-                        </span>
+                        <USDFCIcon />
+
+                        <span>USDFC</span>
                     </div>
                 </div>
-
-                {/* Button */}
-                {isConnected ? (
-                    gasEstimationState.type === 'inProgress' ? (
-                        <button
-                            disabled
-                            className='flex h-[72px] w-full cursor-not-allowed items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-primary-500 p-6 font-primary text-5 font-semibold leading-6 text-white'
-                        >
-                            <Spinner size={24} className='text-white' />
-                        </button>
-                    ) : stableTroveChange ? (
-                        <TroveAction
-                            transactionId={TRANSACTION_ID}
-                            change={stableTroveChange}
-                            maxBorrowingRate={maxBorrowingRate}
-                            borrowingFeeDecayToleranceMinutes={60}
-                            className='flex h-[72px] w-full items-center justify-center gap-2.5 rounded-b-[20px] bg-primary-500 p-6 text-5 font-semibold leading-6 text-white hover:bg-primary-500/90'
-                        >
-                            Create Trove and Borrow USDFC
-                        </TroveAction>
-                    ) : (
-                        <button
-                            disabled
-                            className='flex w-full cursor-not-allowed items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-primary-500 p-6 font-primary text-5 font-semibold leading-6 text-white opacity-50'
-                        >
-                            Create Trove and Borrow USDFC
-                        </button>
-                    )
-                ) : (
-                    <button
-                        className='flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-b-[20px] border-none bg-primary-500 p-6 font-primary text-5 font-semibold leading-6 text-white hover:bg-primary-500/90'
-                        onClick={() => {
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                            open();
-                        }}
-                    >
-                        Connect Wallet
-                    </button>
-                )}
             </div>
+
+            {isConnected ? (
+                gasEstimationState.type === 'inProgress' ? (
+                    <Button
+                        disabled
+                        className='w-full bg-primary-500 py-4 text-lg'
+                    >
+                        <Spinner size={24} sx={{ color: 'background' }} />
+                    </Button>
+                ) : stableTroveChange ? (
+                    <TroveAction
+                        transactionId={TRANSACTION_ID}
+                        change={stableTroveChange}
+                        maxBorrowingRate={maxBorrowingRate}
+                        borrowingFeeDecayToleranceMinutes={60}
+                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
+                    >
+                        Create Trove and Borrow USDFC
+                    </TroveAction>
+                ) : (
+                    <Button
+                        disabled
+                        className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white'
+                        size={ButtonSizes.xl}
+                    >
+                        Create Trove and Borrow USDFC
+                    </Button>
+                )
+            ) : (
+                <Button
+                    className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        open();
+                    }}
+                    size={ButtonSizes.xl}
+                >
+                    Connect Wallet
+                </Button>
+            )}
 
             {isConnected && (
                 <p className='mt-2 text-center text-sm text-neutral-450'>
