@@ -129,7 +129,9 @@ export const Trove = () => {
                                 className={`rounded-full ${liquidationRisk.dotStyle}`}
                                 style={{ width: '16px', height: '16px' }}
                             ></div>
-                            <span className='font-primary text-xs font-medium leading-[15px] tracking-[0.01em] text-success-700'>
+                            <span
+                                className={`font-primary text-xs font-medium leading-[15px] tracking-[0.01em] ${liquidationRisk.textStyle}`}
+                            >
                                 {liquidationRisk.text} Liquidation Risk
                             </span>
                         </div>

@@ -1,5 +1,8 @@
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
+import { StatusModal } from 'src/components/atoms/StatusModal/StatusModal';
 import { Trove } from 'src/components/organisms/Trove/Trove';
 import { Adjusting } from 'src/components/Trove/Adjusting';
 import { Opening } from 'src/components/Trove/Opening';
@@ -8,11 +11,34 @@ import { useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
 
+const select = ({
+    collateralSurplusBalance,
+    trove,
+}: SfStablecoinStoreState) => ({
+    hasSurplusCollateral: !collateralSurplusBalance.isZero,
+    collateralSurplusBalance,
+    trove: trove,
+});
+
 export const TrovePage = () => {
     const { isConnected } = useAccount();
 
-    const trove = useSfStablecoinSelector(state => state.trove);
-    const hasExistingTrove = !trove.isEmpty && isConnected;
+    const store = useSfStablecoinSelector(select);
+    const hasExistingTrove = !store.trove.isEmpty && isConnected;
+
+    const [showLiquidationModal, setShowLiquidationModal] = useState(false);
+    const [hasSeenLiquidation, setHasSeenLiquidation] = useState(false);
+
+    useEffect(() => {
+        if (store.hasSurplusCollateral && !hasSeenLiquidation) {
+            setShowLiquidationModal(true);
+        }
+    }, [store.hasSurplusCollateral, hasSeenLiquidation]);
+
+    const handleCloseLiquidationModal = () => {
+        setShowLiquidationModal(false);
+        setHasSeenLiquidation(true);
+    };
 
     return (
         <div className='flex w-full flex-col'>
@@ -62,12 +88,52 @@ export const TrovePage = () => {
                                     <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
-                            {trove && <Trove />}
+                            {store.trove && <Trove />}
                             <Adjusting />
                         </>
                     )}
                 </div>
             </main>
+            <StatusModal
+                isOpen={showLiquidationModal}
+                type='warning'
+                title='Trove Liquidated'
+                description={
+                    store.hasSurplusCollateral
+                        ? 'Your Trove was liquidated because the collateral ratio fell below the minimum threshold. Your debt has been cleared and you have surplus collateral to claim.'
+                        : 'Your Trove was liquidated because the collateral ratio fell below the minimum threshold. Your debt has been cleared and collateral was used to cover it.'
+                }
+                details={
+                    store.hasSurplusCollateral
+                        ? [
+                              {
+                                  label: 'Surplus Collateral:',
+                                  value: `${store.collateralSurplusBalance.prettify()} ${CURRENCY}`,
+                                  valueClassName: 'font-medium text-green-700',
+                              },
+                          ]
+                        : undefined
+                }
+                detailsClassName='border-green-200 bg-green-50'
+                onClose={handleCloseLiquidationModal}
+                customActions={
+                    store.hasSurplusCollateral
+                        ? [
+                              {
+                                  label: 'Claim Surplus',
+                                  onClick: handleCloseLiquidationModal,
+                                  variant: 'primary',
+                              },
+                          ]
+                        : [
+                              {
+                                  label: 'Close',
+                                  onClick: handleCloseLiquidationModal,
+                                  variant: 'primary',
+                              },
+                          ]
+                }
+            />
         </div>
     );
 };
