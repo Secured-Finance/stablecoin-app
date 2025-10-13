@@ -1,44 +1,184 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import { Info } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
 import { StatusModal } from 'src/components/atoms/StatusModal/StatusModal';
 import { Trove } from 'src/components/organisms/Trove/Trove';
 import { Adjusting } from 'src/components/Trove/Adjusting';
 import { Opening } from 'src/components/Trove/Opening';
 import { openDocumentation } from 'src/constants';
-import { useSfStablecoinSelector } from 'src/hooks';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
+import { useTroveView } from 'src/components/Trove/context/TroveViewContext';
+import {
+    useMyTransactionState,
+    useTransactionFunction,
+} from 'src/components/Transaction';
 
 const select = ({
-    collateralSurplusBalance,
     trove,
+    collateralSurplusBalance,
 }: SfStablecoinStoreState) => ({
+    trove,
+    troveStatus: trove.status,
     hasSurplusCollateral: !collateralSurplusBalance.isZero,
     collateralSurplusBalance,
-    trove: trove,
 });
 
-export const TrovePage = () => {
-    const { isConnected } = useAccount();
+const STORAGE_KEYS = {
+    LIQUIDATION: 'sf.trove.liquidation.acknowledged',
+    REDEMPTION: 'sf.trove.redemption.acknowledged',
+} as const;
 
+const CLAIM_TRANSACTION_ID = 'claim-coll-surplus';
+
+type ModalType = 'liquidation' | 'redemption';
+
+export const TrovePage = () => {
+    const { isConnected, address } = useAccount();
     const store = useSfStablecoinSelector(select);
+    const { view, dispatchEvent } = useTroveView();
+    const {
+        sfStablecoin: { send: sfStablecoin },
+    } = useSfStablecoin();
+
     const hasExistingTrove = !store.trove.isEmpty && isConnected;
+    const claimTransactionState = useMyTransactionState(CLAIM_TRANSACTION_ID);
+
+    const [sendClaimTransaction] = useTransactionFunction(
+        CLAIM_TRANSACTION_ID,
+        sfStablecoin.claimCollateralSurplus.bind(sfStablecoin)
+    );
 
     const [showLiquidationModal, setShowLiquidationModal] = useState(false);
-    const [hasSeenLiquidation, setHasSeenLiquidation] = useState(false);
+    const [showRedemptionModal, setShowRedemptionModal] = useState(false);
 
+    const storageKeys = useMemo(
+        () =>
+            address
+                ? {
+                      liquidation: `${STORAGE_KEYS.LIQUIDATION}:${address}`,
+                      redemption: `${STORAGE_KEYS.REDEMPTION}:${address}`,
+                  }
+                : null,
+        [address]
+    );
+
+    // Unified modal management for LIQUIDATED and REDEEMED views
     useEffect(() => {
-        if (store.hasSurplusCollateral && !hasSeenLiquidation) {
-            setShowLiquidationModal(true);
-        }
-    }, [store.hasSurplusCollateral, hasSeenLiquidation]);
+        if (!storageKeys) return;
 
-    const handleCloseLiquidationModal = () => {
+        if (view === 'LIQUIDATED') {
+            const hasSeenModal = localStorage.getItem(storageKeys.liquidation);
+            if (!hasSeenModal) {
+                setShowLiquidationModal(true);
+            }
+        } else if (view === 'REDEEMED') {
+            const hasSeenModal = localStorage.getItem(storageKeys.redemption);
+            if (!hasSeenModal) {
+                setShowRedemptionModal(true);
+            }
+        } else {
+            // Clear storage when view changes away from LIQUIDATED/REDEEMED
+            localStorage.removeItem(storageKeys.liquidation);
+            localStorage.removeItem(storageKeys.redemption);
+        }
+    }, [view, storageKeys]);
+
+    const handleCloseModal = useCallback(
+        (modalType: ModalType) => {
+            if (!storageKeys) return;
+
+            const setModal =
+                modalType === 'liquidation'
+                    ? setShowLiquidationModal
+                    : setShowRedemptionModal;
+            const storageKey =
+                modalType === 'liquidation'
+                    ? storageKeys.liquidation
+                    : storageKeys.redemption;
+
+            setModal(false);
+
+            // Only persist dismissal if no surplus exists
+            // If surplus exists, modal should reappear until claimed
+            if (!store.hasSurplusCollateral) {
+                localStorage.setItem(storageKey, 'true');
+            }
+        },
+        [storageKeys, store.hasSurplusCollateral]
+    );
+
+    const handleClaimClick = useCallback(async () => {
+        // Close status modal before initiating transaction
+        // to avoid modal overlay conflicts
         setShowLiquidationModal(false);
-        setHasSeenLiquidation(true);
-    };
+        setShowRedemptionModal(false);
+        await sendClaimTransaction();
+    }, [sendClaimTransaction]);
+
+    // Handle successful claim transaction
+    useEffect(() => {
+        if (claimTransactionState.type === 'confirmedOneShot') {
+            dispatchEvent('TROVE_SURPLUS_COLLATERAL_CLAIMED');
+            setShowLiquidationModal(false);
+            setShowRedemptionModal(false);
+        }
+    }, [claimTransactionState.type, dispatchEvent]);
+
+    const getModalActions = useCallback(
+        (modalType: ModalType) => {
+            if (!store.hasSurplusCollateral) {
+                return [
+                    {
+                        label: 'Close',
+                        onClick: () => handleCloseModal(modalType),
+                        variant: 'primary' as const,
+                    },
+                ];
+            }
+
+            return [
+                {
+                    label: `Claim ${store.collateralSurplusBalance.prettify()} ${CURRENCY}`,
+                    onClick: handleClaimClick,
+                    variant: 'primary' as const,
+                    loading:
+                        claimTransactionState.type === 'waitingForApproval',
+                },
+                {
+                    label: 'Close',
+                    onClick: () => handleCloseModal(modalType),
+                    variant: 'secondary' as const,
+                },
+            ];
+        },
+        [
+            store.hasSurplusCollateral,
+            store.collateralSurplusBalance,
+            claimTransactionState.type,
+            handleClaimClick,
+            handleCloseModal,
+        ]
+    );
+
+    const surplusDetails = useMemo(
+        () =>
+            store.hasSurplusCollateral
+                ? [
+                      {
+                          label: 'Surplus Collateral:',
+                          value: `${store.collateralSurplusBalance.prettify()} ${CURRENCY}`,
+                          valueClassName: 'font-medium text-green-700',
+                      },
+                  ]
+                : undefined,
+        [store.hasSurplusCollateral, store.collateralSurplusBalance]
+    );
+
+    const shouldShowOpening =
+        view === 'LIQUIDATED' || view === 'REDEEMED' || view === 'NONE';
 
     return (
         <div className='flex w-full flex-col'>
@@ -70,8 +210,8 @@ export const TrovePage = () => {
                         </div>
                     )}
 
-                    {!hasExistingTrove && <Opening />}
-                    {hasExistingTrove && (
+                    {shouldShowOpening && <Opening />}
+                    {hasExistingTrove && !shouldShowOpening && (
                         <>
                             <div className='mb-6 flex items-center gap-2'>
                                 <h2 className='font-primary text-5 font-semibold leading-6 text-neutral-900'>
@@ -88,12 +228,13 @@ export const TrovePage = () => {
                                     <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
                                 </CustomTooltip>
                             </div>
-                            {store.trove && <Trove />}
+                            <Trove />
                             <Adjusting />
                         </>
                     )}
                 </div>
             </main>
+
             <StatusModal
                 isOpen={showLiquidationModal}
                 type='warning'
@@ -103,36 +244,25 @@ export const TrovePage = () => {
                         ? 'Your Trove was liquidated because the collateral ratio fell below the minimum threshold. Your debt has been cleared and you have surplus collateral to claim.'
                         : 'Your Trove was liquidated because the collateral ratio fell below the minimum threshold. Your debt has been cleared and collateral was used to cover it.'
                 }
-                details={
-                    store.hasSurplusCollateral
-                        ? [
-                              {
-                                  label: 'Surplus Collateral:',
-                                  value: `${store.collateralSurplusBalance.prettify()} ${CURRENCY}`,
-                                  valueClassName: 'font-medium text-green-700',
-                              },
-                          ]
-                        : undefined
-                }
+                details={surplusDetails}
                 detailsClassName='border-green-200 bg-green-50'
-                onClose={handleCloseLiquidationModal}
-                customActions={
+                onClose={() => handleCloseModal('liquidation')}
+                customActions={getModalActions('liquidation')}
+            />
+
+            <StatusModal
+                isOpen={showRedemptionModal}
+                type='info'
+                title='Trove Redeemed'
+                description={
                     store.hasSurplusCollateral
-                        ? [
-                              {
-                                  label: 'Claim Surplus',
-                                  onClick: handleCloseLiquidationModal,
-                                  variant: 'primary',
-                              },
-                          ]
-                        : [
-                              {
-                                  label: 'Close',
-                                  onClick: handleCloseLiquidationModal,
-                                  variant: 'primary',
-                              },
-                          ]
+                        ? 'Your Trove was redeemed by another user. Your debt has been paid off and you have surplus collateral to claim.'
+                        : 'Your Trove was redeemed by another user. Your debt has been paid off using your collateral.'
                 }
+                details={surplusDetails}
+                detailsClassName='border-green-200 bg-green-50'
+                onClose={() => handleCloseModal('redemption')}
+                customActions={getModalActions('redemption')}
             />
         </div>
     );

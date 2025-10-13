@@ -508,26 +508,21 @@ export const Adjusting: React.FC = () => {
                         />
                     </div>
 
-                    {stableCloseChange && hasAttemptedClose ? (
+                    {stableCloseChange ? (
                         <TroveAction
                             transactionId={'closure'}
                             change={stableCloseChange}
                             maxBorrowingRate={maxBorrowingRate}
                             borrowingFeeDecayToleranceMinutes={60}
+                            className='w-full rounded-lg bg-primary-500 py-4 text-lg hover:bg-primary-700'
                         >
                             Repay & Close Trove
                         </TroveAction>
-                    ) : hasAttemptedClose && !stableCloseChange ? (
-                        <Button
-                            disabled
-                            className='w-full cursor-not-allowed bg-gray-400 py-4 text-lg opacity-50'
-                        >
-                            Repay & Close Trove
-                        </Button>
                     ) : (
                         <Button
+                            disabled={!stableCloseChange}
                             onClick={() => setHasAttemptedClose(true)}
-                            className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700'
+                            className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-50'
                         >
                             Repay & Close Trove
                         </Button>

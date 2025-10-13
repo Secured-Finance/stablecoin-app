@@ -4,6 +4,7 @@ import {
     FeatureCards,
     Positions,
 } from 'src/components/molecules';
+import { TroveView } from 'src/components/Trove/context/types';
 
 type FeatureCardsOrPositionsProps = {
     data: {
@@ -15,6 +16,7 @@ type FeatureCardsOrPositionsProps = {
             collateralGain: Decimal;
             currentDebtToken: Decimal;
         };
+        troveView?: TroveView;
     };
     claimGainsButton?: React.ReactNode;
 };
@@ -26,6 +28,7 @@ export const FeatureCardsOrPositions = ({
         trove,
         price,
         originalDeposit,
+        troveView,
     },
     claimGainsButton,
 }: FeatureCardsOrPositionsProps) => {
@@ -55,6 +58,7 @@ export const FeatureCardsOrPositions = ({
                     }
                 }
                 claimGainsButton={claimGainsButton}
+                troveView={troveView}
             />
         );
     }

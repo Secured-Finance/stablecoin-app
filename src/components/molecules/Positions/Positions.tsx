@@ -16,6 +16,7 @@ import {
     useTransactionFunction,
     useMyTransactionState,
 } from '../../Transaction';
+import { TroveView } from 'src/components/Trove/context/types';
 
 interface PositionsProps {
     debtTokenInStabilityPool: Decimal;
@@ -26,6 +27,7 @@ interface PositionsProps {
         currentDebtToken: Decimal;
     };
     claimGainsButton?: React.ReactNode;
+    troveView?: TroveView;
 }
 
 const Card = ({
@@ -193,6 +195,7 @@ export const Positions = ({
     price,
     originalDeposit,
     claimGainsButton,
+    troveView,
 }: PositionsProps) => {
     const { sfStablecoin } = useSfStablecoin();
     const myTransactionState = useMyTransactionState('stability-claim-gains');
@@ -240,7 +243,7 @@ export const Positions = ({
             <div className='grid grid-cols-1 items-stretch gap-6 tablet:grid-cols-2'>
                 {hasTrove ? (
                     <Card className='flex h-full flex-col'>
-                        <div className='flex flex-1 flex-col gap-6'>
+                        <div className='flex flex-1 flex-col gap-3'>
                             <CardHeader
                                 icon={
                                     <Vault
@@ -321,12 +324,19 @@ export const Positions = ({
                         description={`A Trove is your personal vault where you can deposit ${CURRENCY} as collateral to borrow USDFC with 0% interest, while maintaining exposure to ${CURRENCY}.`}
                         buttonText='Create Trove'
                         buttonHref='/trove'
+                        tip={
+                            troveView === 'LIQUIDATED'
+                                ? 'Previously Liquidated'
+                                : troveView === 'REDEEMED'
+                                ? 'Previously Redeemed'
+                                : undefined
+                        }
                     />
                 )}
 
                 {hasStabilityDeposit ? (
                     <Card className='flex h-full flex-col'>
-                        <div className='flex flex-1 flex-col gap-6'>
+                        <div className='flex flex-1 flex-col gap-3'>
                             <CardHeader
                                 icon={
                                     <Layers2

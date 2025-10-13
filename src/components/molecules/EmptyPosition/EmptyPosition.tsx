@@ -1,5 +1,5 @@
-import { LucideIcon } from 'lucide-react';
-import { Button } from 'src/components/atoms';
+import { AlertCircle, LucideIcon } from 'lucide-react';
+import { Button, Tooltip } from 'src/components/atoms';
 
 interface EmptyPositionProps {
     icon: LucideIcon;
@@ -7,6 +7,7 @@ interface EmptyPositionProps {
     description: string;
     buttonText: string;
     buttonHref: string;
+    tip?: string;
 }
 
 export const EmptyPosition = ({
@@ -15,6 +16,7 @@ export const EmptyPosition = ({
     description,
     buttonText,
     buttonHref,
+    tip,
 }: EmptyPositionProps) => {
     return (
         <div className='flex h-full w-full max-w-[448px] flex-col justify-between rounded-[20px] border border-neutral-150 bg-white p-6 tablet:p-10'>
@@ -24,9 +26,21 @@ export const EmptyPosition = ({
                 </div>
 
                 <div className='mt-6 flex flex-1 flex-col justify-center gap-2 text-left'>
-                    <h3 className='font-primary text-5 font-semibold leading-[24px] text-neutral-900'>
-                        {`No ${title}`}
-                    </h3>
+                    <div className='flex items-center gap-2'>
+                        <h3 className='font-primary text-5 font-semibold leading-[24px] text-neutral-900'>
+                            {`No ${title}`}
+                        </h3>
+                        {tip && (
+                            <Tooltip
+                                iconElement={
+                                    <AlertCircle className='text-warning-600 h-4 w-4 cursor-pointer hover:text-warning-700' />
+                                }
+                                placement='right'
+                            >
+                                {tip}
+                            </Tooltip>
+                        )}
+                    </div>
                     <p className='font-primary text-4 font-normal leading-[23px] text-neutral-450'>
                         {description}
                     </p>
