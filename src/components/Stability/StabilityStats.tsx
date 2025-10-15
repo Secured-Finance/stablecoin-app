@@ -11,15 +11,14 @@ import { useTransactionFunction, useMyTransactionState } from '../Transaction';
 import { CustomTooltip } from 'src/components/atoms';
 import { openDocumentation } from 'src/constants';
 import { Info } from 'lucide-react';
+import Tippy from '@tippyjs/react/headless';
 
 export function StabilityStats({
     originalDeposit,
     originalPoolShare,
-    liquidationGains,
 }: {
     originalDeposit: StabilityDeposit;
     originalPoolShare: Decimal;
-    liquidationGains: string;
 }) {
     const { sfStablecoin } = useSfStablecoin();
     const myTransactionState = useMyTransactionState('stability-claim-gains');
@@ -46,10 +45,8 @@ export function StabilityStats({
         return 'Claim Gains';
     };
 
-    const liquidationGainsDecimal = Decimal.from(
-        (liquidationGains || '0').replace(/,/g, '')
-    );
-    const liquidationGainsUSD = liquidationGainsDecimal.mul(price);
+    const liquidationGains = originalDeposit.collateralGain.prettify(2);
+    const liquidationGainsUSD = originalDeposit.collateralGain.mul(price);
     return (
         <div className='mb-6 flex flex-col gap-6'>
             <h2 className='font-primary text-5 font-semibold leading-6 text-neutral-900'>
@@ -98,19 +95,34 @@ export function StabilityStats({
                                 </span>
                             </div>
                             <span className='font-primary text-sm font-normal leading-[17px] text-neutral-450'>
-                                ${liquidationGainsUSD.prettify()}
+                                ${liquidationGainsUSD.prettify(2)}
                             </span>
-                            <button
-                                className={`font-primary text-sm font-semibold leading-[17px] tablet:ml-0 ${
-                                    isClaimDisabled
-                                        ? 'cursor-not-allowed text-neutral-400'
-                                        : 'hover:text-primary-600 cursor-pointer text-neutral-900'
-                                }`}
-                                onClick={sendClaimTransaction}
-                                disabled={isClaimDisabled}
-                            >
-                                {getClaimButtonText()}
-                            </button>
+                            {isClaimDisabled ? (
+                                <Tippy
+                                    placement='top'
+                                    render={attrs => (
+                                        <div {...attrs}>
+                                            <div className='shadow-lg rounded-lg bg-neutral-800 px-3 py-2 text-xs text-white'>
+                                                {originalDeposit.collateralGain
+                                                    .isZero
+                                                    ? 'No gains to claim'
+                                                    : 'Transaction in progress...'}
+                                            </div>
+                                        </div>
+                                    )}
+                                >
+                                    <span className='cursor-pointer font-primary text-sm font-semibold leading-[17px] text-neutral-400 tablet:ml-0'>
+                                        {getClaimButtonText()}
+                                    </span>
+                                </Tippy>
+                            ) : (
+                                <button
+                                    className='cursor-pointer font-primary text-sm font-semibold leading-[17px] text-neutral-900 underline hover:text-primary-500 tablet:ml-0'
+                                    onClick={sendClaimTransaction}
+                                >
+                                    {getClaimButtonText()}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

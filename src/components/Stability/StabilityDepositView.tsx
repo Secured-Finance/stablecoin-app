@@ -135,7 +135,7 @@ export function StabilityDepositView() {
             <button
                 className={`mb-3 w-full rounded-xl py-3.5 font-medium text-white ${
                     isDisabled
-                        ? 'cursor-not-allowed bg-gray-400'
+                        ? 'cursor-default bg-gray-400'
                         : 'bg-primary-500 hover:bg-primary-700'
                 }`}
                 onClick={() => {

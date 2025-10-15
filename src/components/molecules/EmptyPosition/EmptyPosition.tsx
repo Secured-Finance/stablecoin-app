@@ -1,5 +1,5 @@
-import { AlertCircle, LucideIcon } from 'lucide-react';
-import { Button, Tooltip } from 'src/components/atoms';
+import { InfoIcon, LucideIcon } from 'lucide-react';
+import { Button, CustomTooltip } from 'src/components/atoms';
 
 interface EmptyPositionProps {
     icon: LucideIcon;
@@ -31,14 +31,17 @@ export const EmptyPosition = ({
                             {`No ${title}`}
                         </h3>
                         {tip && (
-                            <Tooltip
-                                iconElement={
-                                    <AlertCircle className='text-warning-600 h-4 w-4 cursor-pointer hover:text-warning-700' />
+                            <CustomTooltip
+                                title={tip}
+                                description={
+                                    tip === 'Previously Liquidated'
+                                        ? 'Your Trove was liquidated because its collateral ratio fell below the minimum threshold.'
+                                        : 'Your Trove was redeemed against when USDFC was redeemed for collateral.'
                                 }
-                                placement='right'
+                                position='right'
                             >
-                                {tip}
-                            </Tooltip>
+                                <InfoIcon className='h-5 w-5 cursor-pointer text-neutral-500 hover:text-warning-700' />
+                            </CustomTooltip>
                         )}
                     </div>
                     <p className='font-primary text-4 font-normal leading-[23px] text-neutral-450'>

@@ -8,6 +8,7 @@ import { ActionDescription, Amount } from 'src/components/ActionDescription';
 import { Alert } from 'src/components/atoms';
 import { DOCUMENTATION_LINKS } from 'src/constants';
 import { COIN, CURRENCY } from 'src/strings';
+import { Spinner } from 'theme-ui';
 
 export const selectForRedemptionChangeValidation = ({
     debtTokenBalance,
@@ -139,6 +140,18 @@ export const validateRedemptionChange = (
                 </ActionDescription>,
             ];
         }
+    }
+
+    if (hintsPending && debtToken.nonZero) {
+        return [
+            false,
+            <ActionDescription key={0}>
+                <span className='flex items-center gap-2'>
+                    Calculating redemption...
+                    <Spinner size={18} sx={{ color: 'primary' }} />
+                </span>
+            </ActionDescription>,
+        ];
     }
 
     return [false, undefined];

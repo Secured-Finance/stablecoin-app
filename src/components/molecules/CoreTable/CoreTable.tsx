@@ -15,6 +15,7 @@ import {
     ChevronLeft,
     ChevronRight,
     Copy,
+    Info,
     RotateCw,
     Trash2,
 } from 'lucide-react';
@@ -22,6 +23,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Button,
     ButtonVariants,
+    CustomTooltip,
     LinkButton,
     Tooltip,
 } from 'src/components/atoms';
@@ -29,7 +31,7 @@ import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
 import { Spinner } from 'theme-ui';
 import { useSfStablecoin } from 'src/hooks';
-import { CURRENCY } from 'src/strings';
+import { CURRENCY, COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
@@ -243,7 +245,7 @@ const TroveRow = ({
                             {/* Tablet+: Full liquidate button */}
                             <Button
                                 variant={ButtonVariants.tertiary}
-                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-neutral-450 hover:bg-neutral-150 hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
+                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-neutral-450 hover:bg-neutral-150 hover:text-[#333333] disabled:cursor-default disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
                                 disabled={isLiquidationDisabled}
                             >
                                 Liquidate Trove
@@ -312,7 +314,7 @@ export const CoreTable = ({
                             </span>
                         </th>
                         <th className='relative p-1 text-center tablet:p-4'>
-                            <span className='group inline-block'>
+                            <span className='inline-flex items-center gap-1'>
                                 <span className='tablet:hidden'>
                                     Debt
                                     <br />
@@ -321,12 +323,13 @@ export const CoreTable = ({
                                 <span className='hidden tablet:inline'>
                                     Debt In Front
                                 </span>
-                                <div className='pointer-events-none absolute right-0 top-full z-10 w-48 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100 tablet:left-0 tablet:right-auto tablet:ml-6 tablet:w-56'>
-                                    It totals the debt of all troves that face
-                                    higher liquidation risk—that is, those with
-                                    lower collateral ratios—than the current
-                                    trove.
-                                </div>
+                                <CustomTooltip
+                                    title='Debt in Front'
+                                    description={`Represents the sum of the ${COIN} debt of all Troves with a lower collateral ratio than you. This metric shows how much ${COIN} must be redeemed before your Trove is affected.`}
+                                    position='bottom'
+                                >
+                                    <Info className='h-4 w-4 cursor-pointer text-neutral-400 hover:text-blue-500' />
+                                </CustomTooltip>
                             </span>
                         </th>
                         <th className='p-1 text-center tablet:p-4'></th>

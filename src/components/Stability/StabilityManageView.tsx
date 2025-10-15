@@ -156,8 +156,6 @@ export const StabilityManageView = () => {
         debtTokenInStabilityPoolAfterChange
     );
 
-    const liquidationGains = originalDeposit.collateralGain.prettify(2);
-
     // Compute action deltas for display (currently unused, kept for future UX variants)
     // const depositDelta = editedDebtToken.gt(originalDeposit.currentDebtToken)
     //     ? editedDebtToken.sub(originalDeposit.currentDebtToken)
@@ -229,7 +227,6 @@ export const StabilityManageView = () => {
                 <StabilityStats
                     originalDeposit={originalDeposit}
                     originalPoolShare={originalPoolShare}
-                    liquidationGains={liquidationGains}
                 />
             )}
 

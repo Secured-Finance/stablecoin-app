@@ -16,7 +16,7 @@ import {
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
 import { useSfStablecoin } from 'src/hooks';
-import { getSetPriceEnabled, isProdEnv } from 'src/utils';
+import { getSetPriceEnabled, isProdEnv, getFrontendTag } from 'src/utils';
 import { CURRENCY } from 'src/strings';
 import { filecoin } from 'viem/chains';
 import { useAccount } from 'wagmi';
@@ -50,8 +50,11 @@ export const ProtocolOverview = ({
         },
     } = useSfStablecoin();
 
-    const { isConnected } = useAccount();
-    const canSetPrice = _priceFeedIsTestnet && getSetPriceEnabled();
+    const { isConnected, address } = useAccount();
+    const isFrontendTag =
+        address?.toLowerCase() === getFrontendTag().toLowerCase();
+    const canSetPrice =
+        _priceFeedIsTestnet && getSetPriceEnabled() && isFrontendTag;
 
     const [editedPrice, setEditedPrice] = useState(data.price.toString(2));
 

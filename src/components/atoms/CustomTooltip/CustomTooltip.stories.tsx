@@ -39,6 +39,9 @@ const Template: StoryFn<typeof CustomTooltip> = args => (
 );
 
 export const Default = Template.bind({});
+Default.args = {
+    onButtonClick: () => void 0,
+};
 Default.play = async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const icon = await canvas.findByTestId('custom-tooltip-icon');
@@ -58,7 +61,7 @@ Default.play = async ({ canvasElement }) => {
 export const WithCustomButton = Template.bind({});
 WithCustomButton.args = {
     buttonText: 'Learn More',
-    onButtonClick: () => alert('Custom button clicked!'),
+    onButtonClick: () => void 0,
 };
 WithCustomButton.play = async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -120,4 +123,23 @@ LongContent.play = async ({ canvasElement }) => {
     const icon = await canvas.findByTestId('custom-tooltip-icon');
     await userEvent.unhover(icon);
     await userEvent.hover(icon);
+};
+
+export const WithoutButton = Template.bind({});
+WithoutButton.args = {
+    title: 'Tooltip Without Button',
+    description:
+        'This tooltip has no button because onButtonClick was not provided.',
+};
+WithoutButton.play = async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const icon = await canvas.findByTestId('custom-tooltip-icon');
+    await userEvent.unhover(icon);
+    await userEvent.hover(icon);
+    await waitFor(async () => {
+        await expect(
+            screen.getByText('Tooltip Without Button')
+        ).toBeInTheDocument();
+        await expect(screen.queryByText('Read more')).not.toBeInTheDocument();
+    });
 };

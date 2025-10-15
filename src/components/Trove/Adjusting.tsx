@@ -522,7 +522,7 @@ export const Adjusting: React.FC = () => {
                         <Button
                             disabled={!stableCloseChange}
                             onClick={() => setHasAttemptedClose(true)}
-                            className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-50'
+                            className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700 disabled:cursor-default disabled:bg-gray-400 disabled:opacity-50'
                         >
                             Repay & Close Trove
                         </Button>

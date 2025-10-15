@@ -30,7 +30,7 @@ export function TabSwitcher<T extends string>({
                                 : 'border-none bg-transparent text-neutral-900'
                         } ${
                             isTabDisabled
-                                ? 'cursor-not-allowed opacity-50'
+                                ? 'cursor-default opacity-50'
                                 : 'cursor-pointer'
                         }`}
                         onClick={() =>

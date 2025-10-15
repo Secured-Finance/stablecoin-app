@@ -249,7 +249,9 @@ export const Opening: React.FC = () => {
                     description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.`}
                     value={
                         <p className='text-right font-bold'>
-                            {collateralRatio
+                            {!isConnected
+                                ? 'N/A'
+                                : collateralRatio
                                 ? `${collateralRatio.mul(100).prettify()}%`
                                 : '150%'}
                         </p>

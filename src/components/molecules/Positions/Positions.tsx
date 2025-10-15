@@ -363,7 +363,7 @@ export const Positions = ({
                                         <FILIcon className='h-6 w-6' />
                                         <span className='flex gap-3 font-primary text-4 font-normal text-neutral-900'>
                                             {CURRENCY} $
-                                            {liquidationGainsUSD.prettify()}
+                                            {liquidationGainsUSD.prettify(2)}
                                         </span>
                                     </>
                                 }

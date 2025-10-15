@@ -41,7 +41,7 @@ export function ActionButton({
         return (
             <button
                 disabled
-                className='mb-3 w-full cursor-not-allowed rounded-xl bg-neutral-250 py-3 text-white'
+                className='mb-3 w-full cursor-default rounded-xl bg-neutral-250 py-3 text-white'
             >
                 {activeTab === 'deposit' ? 'Deposit' : 'Withdraw'} {COIN}
             </button>
@@ -53,7 +53,7 @@ export function ActionButton({
         <button
             className={`mb-3 w-full rounded-xl py-3 font-medium text-white ${
                 isDisabled
-                    ? 'cursor-not-allowed bg-gray-400'
+                    ? 'cursor-default bg-gray-400'
                     : 'bg-primary-500 hover:bg-primary-700'
             }`}
             disabled={isDisabled}
