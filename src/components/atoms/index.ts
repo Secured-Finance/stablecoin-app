@@ -1,6 +1,7 @@
 export * from './Alert';
 export * from './Button';
 export * from './Card';
+export * from './CustomTooltip';
 export * from './Identicon';
 export * from './InputBase';
 export * from './LinkButton';
@@ -13,3 +14,4 @@ export * from './StatItem';
 export * from './TabSwitcher';
 export * from './TokenPrice';
 export * from './Tooltip';
+export * from './TransactionModal';

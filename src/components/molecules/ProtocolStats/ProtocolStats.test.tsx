@@ -7,7 +7,7 @@ const { Default } = composeStories(stories);
 describe('test StatItem component', () => {
     it('should render button with a text', () => {
         render(<Default />);
-        const Borrowing_Fee = screen.getByText('Borrowing Fee');
-        expect(Borrowing_Fee).toBeInTheDocument();
+        const BorrowingFeeElements = screen.getAllByText('Borrowing Fee');
+        expect(BorrowingFeeElements[0]).toBeInTheDocument();
     });
 });

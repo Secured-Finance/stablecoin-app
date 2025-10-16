@@ -4,6 +4,7 @@ import {
     FeatureCards,
     Positions,
 } from 'src/components/molecules';
+import { TroveView } from 'src/components/Trove/context/types';
 
 type FeatureCardsOrPositionsProps = {
     data: {
@@ -15,7 +16,9 @@ type FeatureCardsOrPositionsProps = {
             collateralGain: Decimal;
             currentDebtToken: Decimal;
         };
+        troveView?: TroveView;
     };
+    claimGainsButton?: React.ReactNode;
 };
 
 export const FeatureCardsOrPositions = ({
@@ -25,7 +28,9 @@ export const FeatureCardsOrPositions = ({
         trove,
         price,
         originalDeposit,
+        troveView,
     },
+    claimGainsButton,
 }: FeatureCardsOrPositionsProps) => {
     // When wallet is not connected, show feature cards
     if (!isConnected) {
@@ -52,6 +57,8 @@ export const FeatureCardsOrPositions = ({
                         currentDebtToken: Decimal.ZERO,
                     }
                 }
+                claimGainsButton={claimGainsButton}
+                troveView={troveView}
             />
         );
     }

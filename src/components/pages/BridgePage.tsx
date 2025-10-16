@@ -7,13 +7,21 @@ export const BridgePage: React.FC = () => {
     const configQueryParam = encodeURIComponent(JSON.stringify(squidConfig));
 
     return (
-        <section className='w-full'>
-            <div className='border-red relative mt-5 flex justify-center'>
+        <section className='md:px-16 flex w-full flex-col items-center px-4'>
+            <div className='flex flex-col items-center gap-4 text-center'>
+                <h1 className='text-center font-primary text-6 font-semibold leading-none text-neutral-900'>
+                    Bridge Assets
+                </h1>
+                <p className='font-primary text-4 font-normal leading-[23px] text-neutral-450'>
+                    Seamlessly transfer assets to and from the Filecoin network.
+                </p>
+            </div>
+            <div className='relative mt-4 flex justify-center'>
                 <iframe
                     className='rounded-xl border border-transparent bg-neutral-50 shadow-card'
                     title='squid_widget'
                     width={isMobile ? '370' : '480'}
-                    height='694'
+                    height='664'
                     src={`https://studio.squidrouter.com/iframe?config=${configQueryParam}`}
                 />
             </div>

@@ -4,24 +4,24 @@ import YellowIcon from 'src/assets/icons/yellow.svg';
 
 export function BorrowIcon() {
     return (
-        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
-            <BlueIcon className='h-16 w-32' />
+        <div className='flex h-[60px] w-[242.67px] items-start justify-start'>
+            <BlueIcon className='h-[60px] w-[120px]' />
         </div>
     );
 }
 
 export function EarnIcon() {
     return (
-        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
-            <YellowIcon className='h-16 w-32' />
+        <div className='flex h-[60px] w-[242.67px] items-start justify-start'>
+            <YellowIcon className='h-[60px] w-[120px]' />
         </div>
     );
 }
 
 export function BridgeIcon() {
     return (
-        <div className='mb-6 flex h-16 w-60 items-start justify-start'>
-            <GreyIcon className='h-16 w-32 drop-shadow-2xl' />
+        <div className='flex h-[60px] w-[242.67px] items-start justify-start'>
+            <GreyIcon className='h-[60px] w-[120px]' />
         </div>
     );
 }

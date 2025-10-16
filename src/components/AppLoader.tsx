@@ -1,10 +1,6 @@
-import { Flex, Heading, Spinner } from 'theme-ui';
-
 export const AppLoader = () => (
-    <Flex
-        sx={{ alignItems: 'center', justifyContent: 'center', height: '100vh' }}
-    >
-        <Spinner sx={{ m: 2, color: '#002133' }} size={32} />
-        <Heading sx={{ color: '#002133' }}>Loading...</Heading>
-    </Flex>
+    <div className='flex h-screen items-center justify-center'>
+        <div className='m-2 h-8 w-8 animate-spin rounded-full border-4 border-neutral-200 border-l-neutral-900'></div>
+        <h1 className='text-neutral-900'>Loading...</h1>
+    </div>
 );

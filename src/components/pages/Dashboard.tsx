@@ -8,6 +8,7 @@ import {
     ProtocolOverview,
 } from 'src/components/organisms';
 import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
+import { useTroveView } from 'src/components/Trove/context/TroveViewContext';
 import {
     useAddToken,
     useSfStablecoin,
@@ -51,6 +52,7 @@ export const Dashboard: React.FC = () => {
     const contextData = { deploymentDate, addresses, chainId };
 
     const [{ originalDeposit }] = useSfStablecoinReducer(reduce, init);
+    const { view } = useTroveView();
 
     const { isConnected, address } = useAccount();
     const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
@@ -83,8 +85,8 @@ export const Dashboard: React.FC = () => {
         setIsTokenAdded(tokenAdded);
     }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
     return (
-        <div className='flex w-full flex-col px-4 pt-5 laptop:pt-3'>
-            <div className='flex flex-col p-4'>
+        <div className='flex w-full flex-col'>
+            <div className='flex flex-col px-4 py-3'>
                 {!isConnected ? (
                     <Alert color='info'>
                         Connect Wallet to start using {COIN}.
@@ -125,7 +127,7 @@ export const Dashboard: React.FC = () => {
                 )}
             </div>
 
-            <div className='flex w-full flex-col gap-16 px-4 py-4'>
+            <div className='flex w-full flex-col gap-12 px-4 py-2'>
                 <FeatureCardsOrPositions
                     data={{
                         isConnected,
@@ -133,6 +135,7 @@ export const Dashboard: React.FC = () => {
                         trove: data.trove,
                         price: data.price,
                         originalDeposit,
+                        troveView: view,
                     }}
                 />
                 <ProtocolOverview data={data} contextData={contextData} />

@@ -153,8 +153,8 @@ export const Redemption: React.FC = ({}) => {
                         }
                     />
                 </div>
-                {description}
-                <div className='flex justify-end gap-2'>
+                <div className='mt-6'>{description}</div>
+                <div className='mt-6 flex justify-end gap-2'>
                     {hintsPending ? (
                         <Button disabled>
                             <Spinner

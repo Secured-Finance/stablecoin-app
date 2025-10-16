@@ -7,23 +7,28 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
-import React, { useState } from 'react';
-import { Button } from 'src/components/atoms';
+import React, { useEffect, useState } from 'react';
 import { TokenBox } from 'src/components/molecules/TokenBox/TokenBox';
-import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
+import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
-import { CURRENCY } from '../../strings';
 import { GasEstimationState } from './ExpensiveTroveChangeWarning';
 import { TroveAction } from './TroveAction';
 import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
+import { useTroveView } from './context/TroveViewContext';
+import { useMyTransactionState } from '../Transaction';
 
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { CURRENCY } from 'src/strings';
+import { StatCard } from 'src/components/molecules/StatCard';
+import { openDocumentation } from 'src/constants';
+import { Button, ButtonSizes } from '../atoms';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
@@ -41,16 +46,37 @@ const GAS_ROOM_ETH = Decimal.from(0.1);
 export const Opening: React.FC = () => {
     const { isConnected } = useAccount();
     const { open } = useWeb3Modal();
+    const { dispatchEvent } = useTroveView();
     const { fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
 
-    const [collateral, setCollateral] = useState<Decimal>(Decimal.ZERO);
-    const [borrowAmount, setBorrowAmount] = useState<Decimal>(Decimal.ZERO);
-
     const [collateralInput, setCollateralInput] = useState('0.00');
-    const [borrowAmountInput, setBorrowAmountInput] = useState('0.00');
+    const [borrowAmountInput, setBorrowAmountInput] = useState('');
     const [borrowEditedManually, setBorrowEditedManually] = useState(false);
+
+    // Parse inputs to decimals safely
+    const collateral = (() => {
+        try {
+            const cleanValue = collateralInput?.replace(/,/g, '') || '0';
+            return cleanValue && cleanValue !== ''
+                ? Decimal.from(cleanValue)
+                : Decimal.ZERO;
+        } catch {
+            return Decimal.ZERO;
+        }
+    })();
+
+    const borrowAmount = (() => {
+        try {
+            const cleanValue = borrowAmountInput?.replace(/,/g, '') || '0';
+            return cleanValue && cleanValue !== ''
+                ? Decimal.from(cleanValue)
+                : Decimal.ZERO;
+        } catch {
+            return Decimal.ZERO;
+        }
+    })();
 
     const maxBorrowingRate = borrowingRate.add(0.005);
 
@@ -62,8 +88,6 @@ export const Opening: React.FC = () => {
     const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
         ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const collateralMaxedOut = collateral.eq(maxCollateral);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -73,30 +97,39 @@ export const Opening: React.FC = () => {
     const getLiquidationRisk = (ratio?: Decimal) => {
         if (!ratio)
             return {
-                text: '',
-                color: 'text-neutral-450',
-                bg: 'bg-neutral-250',
+                text: 'Low',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         const ratioPercent = ratio.mul(100);
         if (ratioPercent.gte(200))
             return {
                 text: 'Very Low',
-                color: 'text-success-700',
-                bg: 'bg-success-500',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(150))
             return {
                 text: 'Low',
-                color: 'text-success-700',
-                bg: 'bg-success-500',
+                containerStyle: 'bg-success-50 border border-success-100',
+                textStyle: 'text-success-700 text-sm font-medium',
+                dotStyle: 'bg-success-500',
             };
         if (ratioPercent.gte(120))
             return {
                 text: 'Medium',
-                color: 'text-warning-700',
-                bg: 'bg-warning-500',
+                containerStyle: 'bg-[#FFF7E0] border border-[#FFE4A3]',
+                textStyle: 'text-warning-700 text-sm font-medium',
+                dotStyle: 'bg-warning-500',
             };
-        return { text: 'High', color: 'text-error-700', bg: 'bg-error-500' };
+        return {
+            text: 'High',
+            containerStyle: 'bg-[#FFE4E1] border border-[#FFACA3]',
+            textStyle: 'text-error-700 text-sm font-medium',
+            dotStyle: 'bg-error-500',
+        };
     };
 
     const liquidationRisk = getLiquidationRisk(collateralRatio);
@@ -112,28 +145,35 @@ export const Opening: React.FC = () => {
     const [gasEstimationState] = useState<GasEstimationState>({ type: 'idle' });
 
     const TRANSACTION_ID = 'trove-creation';
+    const transactionState = useMyTransactionState(TRANSACTION_ID);
+
+    useEffect(() => {
+        if (transactionState.type === 'confirmedOneShot') {
+            dispatchEvent('TROVE_OPENED');
+        }
+    }, [transactionState.type, dispatchEvent]);
 
     return (
         <div className='w-full flex-col items-center'>
             <TokenBox
                 inputLabel='Collateral'
                 inputValue={collateralInput}
+                autoFocusInput={true}
                 onInputChange={value => {
-                    if (value.trim() === '') {
-                        setCollateral(Decimal.ZERO);
-                        setCollateralInput('');
-                        return;
-                    }
                     setCollateralInput(value);
-                    const parsed = Decimal.from(value);
-                    if (parsed) setCollateral(parsed);
                 }}
                 onInputBlur={() => {
-                    // If user hasn't manually edited borrow amount or it's empty, compute a recommended value
+                    // Handle negative values by setting to 0
+                    if (collateral.lt(Decimal.ZERO)) {
+                        setCollateralInput('0');
+                        return;
+                    }
+
+                    // If user hasn't manually edited borrow amount, compute a recommended value
                     if (
                         !borrowEditedManually ||
                         !borrowAmountInput ||
-                        borrowAmountInput === '0' ||
+                        borrowAmountInput === '' ||
                         borrowAmount.isZero
                     ) {
                         if (!collateral.isZero) {
@@ -150,42 +190,52 @@ export const Opening: React.FC = () => {
                             const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
-                            setBorrowAmount(finalDebt);
-                            setBorrowAmountInput(finalDebt.prettify());
+                            setBorrowAmountInput(
+                                finalDebt.prettify(DEBT_TOKEN_PRECISION)
+                            );
                         }
                     }
                 }}
                 inputTokenIcon={
-                    <div className='flex items-center gap-2'>
-                        <FILIcon />
-                        <span className='text-base font-semibold text-neutral-900'>
+                    <>
+                        <FILIcon className='h-8 w-8' />
+                        <span className='text-2xl font-medium leading-none text-neutral-900'>
                             {CURRENCY}
                         </span>
-                    </div>
+                    </>
                 }
-                inputSubLabel={`$${collateral.mul(price).prettify()}`}
+                inputSubLabel={`$${collateral
+                    .mul(price)
+                    .prettify(COLLATERAL_PRECISION)}`}
                 outputLabel='You will borrow'
                 outputValue={borrowAmountInput}
                 onOutputChange={value => {
                     setBorrowEditedManually(true);
                     setBorrowAmountInput(value);
-                    const parsed = Decimal.from(value || '0');
-                    if (parsed) setBorrowAmount(parsed);
                 }}
                 onOutputBlur={() => {
-                    // Normalize formatting on blur only; do not override user intent
-                    const parsed =
-                        Decimal.from(borrowAmountInput || '0') || Decimal.ZERO;
-                    setBorrowAmount(parsed);
-                    setBorrowAmountInput(parsed.prettify());
+                    // Handle negative values by setting to 0
+                    if (borrowAmount.lt(Decimal.ZERO)) {
+                        setBorrowAmountInput('0');
+                    }
                 }}
-                outputTokenIcon={<USDFCIcon />}
-                outputSubLabel={`$${borrowAmount.prettify()}`}
+                outputTokenIcon={
+                    <>
+                        <USDFCIconLarge />
+                        <span className='text-2xl font-medium leading-none text-neutral-900'>
+                            USDFC
+                        </span>
+                    </>
+                }
+                outputSubLabel={`$${borrowAmount.prettify(
+                    DEBT_TOKEN_PRECISION
+                )}`}
                 isConnected={isConnected}
-                maxValue={maxCollateral.prettify()}
+                maxValue={maxCollateral.prettify(COLLATERAL_PRECISION)}
                 onMaxClick={() => {
-                    setCollateral(maxCollateral);
-                    setCollateralInput(maxCollateral.prettify());
+                    setCollateralInput(
+                        maxCollateral.prettify(COLLATERAL_PRECISION)
+                    );
                     // On explicit Max, recompute recommended borrow amount only if user hasn't edited manually
                     if (!borrowEditedManually) {
                         if (!maxCollateral.isZero) {
@@ -202,111 +252,123 @@ export const Opening: React.FC = () => {
                             const finalDebt = allowedDebt.gt(MINIMUM_NET_DEBT)
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
-                            setBorrowAmount(finalDebt);
-                            setBorrowAmountInput(finalDebt.prettify());
+                            setBorrowAmountInput(
+                                finalDebt.prettify(DEBT_TOKEN_PRECISION)
+                            );
                         }
                     }
                 }}
             />
 
-            <div className='mb-6 mt-8'>{description}</div>
+            <div className='mb-6 mt-8 min-h-[40px]'>{description}</div>
 
             <div className='mb-6 mt-6 space-y-4'>
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Collateral Ratio
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                The ratio of deposited FIL to borrowed USDFC. If
-                                it falls below 110% (or 150% in Recovery Mode),
-                                liquidation may occur.
-                            </div>
-                        </div>
-                        <div>
-                            <p className='text-right font-bold'>
-                                {collateralRatio?.mul(100)?.prettify()}%
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                <StatCard
+                    title='Collateral Ratio'
+                    description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.`}
+                    value={
+                        <p className='text-right font-bold'>
+                            {!isConnected
+                                ? 'N/A'
+                                : collateralRatio
+                                ? `${collateralRatio
+                                      .mul(100)
+                                      .prettify(DEBT_TOKEN_PRECISION)}%`
+                                : '150%'}
+                        </p>
+                    }
+                    tooltip={{
+                        title: 'Collateral Ratio',
+                        description: `The ratio of deposited ${CURRENCY} to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.`,
+                        onButtonClick: () =>
+                            openDocumentation('collateralRatio'),
+                    }}
+                />
 
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Liquidation Risk
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                The risk of losing your FIL collateral if your
-                                Collateral Ratio drops below 110% under normal
-                                conditions or 150% in Recovery Mode.
-                            </div>
-                        </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-2'>
+                <StatCard
+                    title='Liquidation Risk'
+                    description={`The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`}
+                    value={
+                        !isConnected ? (
+                            <p className='text-right font-bold'>N/A</p>
+                        ) : (
+                            <div className='flex items-center justify-end'>
                                 <div
-                                    className={`h-3 w-3 rounded-full ${liquidationRisk.bg}`}
-                                ></div>
-                                <span
-                                    className={`font-medium ${liquidationRisk.color}`}
+                                    className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                    style={{
+                                        padding: '6px 12px 6px 6px',
+                                        gap: '6px',
+                                    }}
                                 >
-                                    {liquidationRisk.text}
-                                </span>
+                                    <div
+                                        className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                        style={{
+                                            width: '16px',
+                                            height: '16px',
+                                        }}
+                                    ></div>
+                                    <span className={liquidationRisk.textStyle}>
+                                        {liquidationRisk.text}
+                                    </span>
+                                </div>
                             </div>
+                        )
+                    }
+                    tooltip={{
+                        title: 'Liquidation Risk',
+                        description: `The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`,
+                        onButtonClick: () =>
+                            openDocumentation('liquidationMechanics'),
+                    }}
+                />
+
+                <StatCard
+                    title='Liquidation Reserve'
+                    description="An amount added to your debt to cover liquidator gas costs in case your Trove is liquidated. It's refunded if you fully repay your debt and close your Trove."
+                    value={
+                        <div className='flex items-center justify-end gap-1'>
+                            <span className='font-bold'>
+                                {LIQUIDATION_RESERVE.prettify(
+                                    DEBT_TOKEN_PRECISION
+                                )}
+                            </span>
+                            <USDFCIcon />
+                            <span>USDFC</span>
                         </div>
-                    </div>
-                </div>
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Liquidation Reserve
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                An amount added to your debt to cover liquidator
-                                gas costs in case your Trove is liquidated.
-                                It&apos;s refunded if you fully repay your debt
-                                and close your Trove.
-                            </div>
-                        </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-1'>
+                    }
+                    tooltip={{
+                        title: 'Liquidation Reserve',
+                        description:
+                            'A small deposit set aside when opening a trove. It ensures funds are available for liquidation costs and is refunded upon full repayment.',
+                        onButtonClick: () =>
+                            openDocumentation('liquidationReserve'),
+                    }}
+                />
+
+                <StatCard
+                    title='Borrowing Fee'
+                    description={`A one-time ${feePct.prettify()} fee charged when borrowing USDFC, added to the loan balance.`}
+                    value={
+                        <div className='flex flex-col items-end tablet:flex-row tablet:items-center tablet:justify-end tablet:gap-1'>
+                            <div className='flex items-center gap-1'>
                                 <span className='font-bold'>
-                                    {LIQUIDATION_RESERVE.toString()}
+                                    {fee.prettify(DEBT_TOKEN_PRECISION)}
                                 </span>
                                 <USDFCIcon />
+                                <span>USDFC</span>
                             </div>
+                            <span className='text-sm font-normal text-neutral-450'>
+                                {feePct.prettify()}
+                            </span>
                         </div>
-                    </div>
-                </div>
-
-                <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <div className='flex items-start justify-between'>
-                        <div>
-                            <h3 className='mb-1 text-left text-sm font-bold text-neutral-450'>
-                                Borrowing Fee
-                            </h3>
-                            <div className='max-w-[60%] text-sm text-neutral-450'>
-                                A one-time {feePct.prettify()} fee charged when
-                                borrowing USDFC, added to the loan balance.
-                            </div>
-                        </div>
-                        <div>
-                            <div className='flex items-center justify-end gap-1'>
-                                <span className='font-bold'>
-                                    {fee.prettify()}
-                                </span>
-                                <USDFCIcon />
-
-                                <span className='ml-1 text-sm font-normal text-neutral-450'>
-                                    {feePct.prettify()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    }
+                    tooltip={{
+                        title: 'Borrowing Fee',
+                        description:
+                            'A one-time fee charged when borrowing USDFC, calculated as a percentage of the loan amount. It varies based on system conditions and helps maintain protocol stability.',
+                        onButtonClick: () => openDocumentation('borrowingFee'),
+                    }}
+                />
             </div>
 
             <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>
@@ -314,9 +376,11 @@ export const Opening: React.FC = () => {
                     <h3 className='font-bold'>Total Debt</h3>
                     <div className='flex items-center gap-1'>
                         <span className='font-bold'>
-                            {totalDebt.prettify()}
+                            {totalDebt.prettify(DEBT_TOKEN_PRECISION)}
                         </span>
                         <USDFCIcon />
+
+                        <span>USDFC</span>
                     </div>
                 </div>
             </div>
@@ -325,7 +389,7 @@ export const Opening: React.FC = () => {
                 gasEstimationState.type === 'inProgress' ? (
                     <Button
                         disabled
-                        className='text-lg w-full bg-primary-500 py-4'
+                        className='w-full bg-primary-500 py-4 text-lg'
                     >
                         <Spinner size={24} sx={{ color: 'background' }} />
                     </Button>
@@ -337,28 +401,35 @@ export const Opening: React.FC = () => {
                         borrowingFeeDecayToleranceMinutes={60}
                         className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
                     >
-                        Confirm
+                        Create Trove and Borrow USDFC
                     </TroveAction>
                 ) : (
                     <Button
                         disabled
                         className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white'
+                        size={ButtonSizes.xl}
                     >
-                        Update Trove
+                        Create Trove and Borrow USDFC
                     </Button>
                 )
             ) : (
                 <Button
                     className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white hover:bg-primary-500/90'
-                    onClick={() => open()}
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        open();
+                    }}
+                    size={ButtonSizes.xl}
                 >
-                    Connect wallet
+                    Connect Wallet
                 </Button>
             )}
 
-            <p className='mt-2 text-center text-sm text-neutral-450'>
-                This action will open your wallet to sign the transaction.
-            </p>
+            {isConnected && (
+                <p className='mt-2 text-center text-sm text-neutral-450'>
+                    This action will open your wallet to sign the transaction.
+                </p>
+            )}
         </div>
     );
 };
