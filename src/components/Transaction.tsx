@@ -314,6 +314,7 @@ export const TransactionMonitor: React.FC = () => {
                     transactionHash: getTransactionHash(),
                     onViewTransaction: handleViewTransaction,
                 };
+            case 'confirmedOneShot':
             case 'confirmed':
                 return {
                     type: 'confirmed' as const,
@@ -435,29 +436,6 @@ export const TransactionMonitor: React.FC = () => {
             };
         }
     }, [provider, id, tx, setTransactionState]);
-
-    useEffect(() => {
-        if (transactionState.type === 'confirmedOneShot' && id) {
-            // hack: the txn confirmed state lasts 5 seconds which blocks other states, review with Dani
-            setTransactionState({ type: 'confirmed', id });
-        } else if (
-            transactionState.type === 'confirmed' ||
-            transactionState.type === 'failed' ||
-            transactionState.type === 'cancelled'
-        ) {
-            let cancelled = false;
-
-            setTimeout(() => {
-                if (!cancelled) {
-                    setTransactionState({ type: 'idle' });
-                }
-            }, 5000);
-
-            return () => {
-                cancelled = true;
-            };
-        }
-    }, [transactionState.type, setTransactionState, id]);
 
     if (transactionState.type === 'idle' || !modalProps) {
         return null;

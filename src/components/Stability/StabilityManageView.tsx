@@ -335,16 +335,6 @@ export const StabilityManageView = () => {
                                 <div className='mb-1 text-4 font-medium text-neutral-450'>
                                     New Pool Share
                                 </div>
-                                <CustomTooltip
-                                    title='Pool Share'
-                                    description='Your percentage of the Stability Pool, determining your share of liquidated collateral and rewards.'
-                                    onButtonClick={() =>
-                                        openDocumentation('stabilityPool')
-                                    }
-                                    position='top'
-                                >
-                                    <Info className='h-5 w-5 cursor-pointer text-neutral-400 hover:text-blue-500' />
-                                </CustomTooltip>
                             </div>
                             <div className='max-w-[280px] font-primary text-sm text-neutral-450'>
                                 Your percentage of the Stability Pool after this

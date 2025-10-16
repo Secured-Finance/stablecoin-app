@@ -2,7 +2,6 @@ import {
     Decimal,
     Difference,
     LIQUIDATION_RESERVE,
-    Percent,
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
@@ -16,7 +15,7 @@ import {
     TabSwitcher,
 } from 'src/components/atoms';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { DEBT_TOKEN_PRECISION } from 'src/utils';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState } from '../Transaction';
@@ -104,16 +103,15 @@ export const Adjusting: React.FC = () => {
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);
     const [netDebt, setNetDebt] = useState<Decimal>(trove.netDebt);
     const [collateralInput, setCollateralInput] = useState<string>(
-        trove.collateral.prettify()
+        trove.collateral.prettify(COLLATERAL_PRECISION)
     );
     const [netDebtInput, setNetDebtInput] = useState<string>(
-        trove.netDebt.prettify()
+        trove.netDebt.prettify(DEBT_TOKEN_PRECISION)
     );
     const [editingField, setEditingField] = useState<
         'collateral' | 'netDebt' | undefined
     >(undefined);
     const [isClosing, setIsClosing] = useState(false);
-    const [hasAttemptedClose, setHasAttemptedClose] = useState(false);
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
     const borrowingRate = fees.borrowingRate();
@@ -133,8 +131,10 @@ export const Adjusting: React.FC = () => {
                 dispatchEvent('TROVE_ADJUSTED');
                 setCollateral(trove.collateral);
                 setNetDebt(trove.netDebt);
-                setCollateralInput(trove.collateral.prettify());
-                setNetDebtInput(trove.netDebt.prettify());
+                setCollateralInput(
+                    trove.collateral.prettify(COLLATERAL_PRECISION)
+                );
+                setNetDebtInput(trove.netDebt.prettify(DEBT_TOKEN_PRECISION));
                 setEditingField(undefined);
             }
         }
@@ -152,7 +152,9 @@ export const Adjusting: React.FC = () => {
             );
             setCollateral(nextCollateral);
             if (editingField !== 'collateral') {
-                setCollateralInput(nextCollateral.prettify());
+                setCollateralInput(
+                    nextCollateral.prettify(COLLATERAL_PRECISION)
+                );
             }
         }
         if (!previousTrove.current.netDebt.eq(trove.netDebt)) {
@@ -166,7 +168,7 @@ export const Adjusting: React.FC = () => {
             );
             setNetDebt(nextNetDebt);
             if (editingField !== 'netDebt') {
-                setNetDebtInput(nextNetDebt.prettify());
+                setNetDebtInput(nextNetDebt.prettify(DEBT_TOKEN_PRECISION));
             }
         }
         previousTrove.current = trove;
@@ -256,19 +258,13 @@ export const Adjusting: React.FC = () => {
     );
     const stableCloseChange = useStableTroveChange(closeChange);
 
-    const shouldShowCloseValidation = isClosing && hasAttemptedClose;
-    const closeValidationError = shouldShowCloseValidation
-        ? closeDescription
-        : null;
-
     const handleTabChange = (tab: string) => {
         setIsClosing(tab === 'close');
-        setHasAttemptedClose(false);
         // Reset inputs to current trove state when switching tabs
         setCollateral(trove.collateral);
         setNetDebt(trove.netDebt);
-        setCollateralInput(trove.collateral.prettify());
-        setNetDebtInput(trove.netDebt.prettify());
+        setCollateralInput(trove.collateral.prettify(COLLATERAL_PRECISION));
+        setNetDebtInput(trove.netDebt.prettify(DEBT_TOKEN_PRECISION));
         setEditingField(undefined);
     };
 
@@ -294,9 +290,8 @@ export const Adjusting: React.FC = () => {
                         Update your Trove by modifying its collateral, borrowed
                         amount, or both.
                     </p>
-                    {description && !isClosing && (
-                        <div className='pb-6'>{description}</div>
-                    )}
+
+                    <div className='mb-6 min-h-[40px]'>{description}</div>
                     <div className='mb-6'>
                         <InputBox
                             label='Collateral'
@@ -322,12 +317,18 @@ export const Adjusting: React.FC = () => {
                                     </span>
                                 </>
                             }
-                            subLabel={`$${collateral.mul(price).prettify()}`}
-                            maxValue={maxCollateral.prettify()}
+                            subLabel={`$${collateral
+                                .mul(price)
+                                .prettify(COLLATERAL_PRECISION)}`}
+                            maxValue={maxCollateral.prettify(
+                                COLLATERAL_PRECISION
+                            )}
                             maxToken={CURRENCY}
                             onMaxClick={() => {
                                 setCollateral(maxCollateral);
-                                setCollateralInput(maxCollateral.prettify());
+                                setCollateralInput(
+                                    maxCollateral.prettify(COLLATERAL_PRECISION)
+                                );
                             }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus={true}
@@ -357,7 +358,9 @@ export const Adjusting: React.FC = () => {
                                     </span>
                                 </>
                             }
-                            subLabel={`$${repaymentAmount.prettify()}`}
+                            subLabel={`$${repaymentAmount.prettify(
+                                DEBT_TOKEN_PRECISION
+                            )}`}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus={false}
                         />
@@ -377,9 +380,9 @@ export const Adjusting: React.FC = () => {
                                 </div>
                                 <p className='text-left font-bold tablet:text-right'>
                                     {collateralRatio
-                                        ? new Percent(
-                                              collateralRatio
-                                          ).prettify()
+                                        ? `${collateralRatio
+                                              .mul(100)
+                                              .prettify(DEBT_TOKEN_PRECISION)}%`
                                         : 'N/A'}
                                 </p>
                             </div>
@@ -469,10 +472,16 @@ export const Adjusting: React.FC = () => {
                         repaid from your wallet){' '}
                     </p>
 
+                    {closeDescription && (
+                        <div className='mb-6'>{closeDescription}</div>
+                    )}
+
                     <div className='mb-6'>
                         <InputBox
                             label='You will repay'
-                            value={repaymentAmount.prettify(2)}
+                            value={repaymentAmount.prettify(
+                                DEBT_TOKEN_PRECISION
+                            )}
                             onChange={() => {}} // Read-only
                             tokenIcon={
                                 <>
@@ -482,14 +491,16 @@ export const Adjusting: React.FC = () => {
                                     </span>
                                 </>
                             }
-                            subLabel={`$${repaymentAmount.prettify()}`}
+                            subLabel={`$${repaymentAmount.prettify(
+                                DEBT_TOKEN_PRECISION
+                            )}`}
                             readOnly={true}
                             type='text'
                         />
 
                         <InputBox
                             label='You will reclaim'
-                            value={collateral.prettify()}
+                            value={collateral.prettify(COLLATERAL_PRECISION)}
                             onChange={() => {}} // Read-only
                             tokenIcon={
                                 <>
@@ -502,7 +513,7 @@ export const Adjusting: React.FC = () => {
                             subLabel={`$${collateral
                                 .mul(price)
                                 .sub(fee)
-                                .prettify()}`}
+                                .prettify(COLLATERAL_PRECISION)}`}
                             readOnly={true}
                             type='text'
                         />
@@ -520,15 +531,11 @@ export const Adjusting: React.FC = () => {
                         </TroveAction>
                     ) : (
                         <Button
-                            disabled={!stableCloseChange}
-                            onClick={() => setHasAttemptedClose(true)}
+                            disabled
                             className='w-full bg-primary-500 py-4 text-lg hover:bg-primary-700 disabled:cursor-default disabled:bg-gray-400 disabled:opacity-50'
                         >
                             Repay & Close Trove
                         </Button>
-                    )}
-                    {closeValidationError && (
-                        <div className='py-2'>{closeValidationError}</div>
                     )}
 
                     <p className='mt-2 text-center text-sm text-gray-500'>

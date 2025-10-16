@@ -1,4 +1,4 @@
-import { InfoIcon, LucideIcon } from 'lucide-react';
+import { AlertTriangle, LucideIcon } from 'lucide-react';
 import { Button, CustomTooltip } from 'src/components/atoms';
 
 interface EmptyPositionProps {
@@ -21,16 +21,12 @@ export const EmptyPosition = ({
     return (
         <div className='flex h-full w-full max-w-[448px] flex-col justify-between rounded-[20px] border border-neutral-150 bg-white p-6 tablet:p-10'>
             <div className='mx-auto h-[240px] w-full max-w-[368px] flex-col items-center gap-6'>
-                <div className='flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border border-neutral-150 bg-[#FAFAFA]'>
-                    <Icon size={24} className='text-[#A6A6A6]' />
-                </div>
-
-                <div className='mt-6 flex flex-1 flex-col justify-center gap-2 text-left'>
-                    <div className='flex items-center gap-2'>
-                        <h3 className='font-primary text-5 font-semibold leading-[24px] text-neutral-900'>
-                            {`No ${title}`}
-                        </h3>
-                        {tip && (
+                <div className='relative'>
+                    <div className='flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border border-neutral-150 bg-[#FAFAFA]'>
+                        <Icon size={24} className='text-[#A6A6A6]' />
+                    </div>
+                    {tip && (
+                        <div className='absolute -right-2 -top-2'>
                             <CustomTooltip
                                 title={tip}
                                 description={
@@ -40,10 +36,16 @@ export const EmptyPosition = ({
                                 }
                                 position='right'
                             >
-                                <InfoIcon className='h-5 w-5 cursor-pointer text-neutral-500 hover:text-warning-700' />
+                                <AlertTriangle className='text-warning-600 h-5 w-5 cursor-pointer hover:text-warning-700' />
                             </CustomTooltip>
-                        )}
-                    </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className='mt-6 flex flex-1 flex-col justify-center gap-2 text-left'>
+                    <h3 className='font-primary text-5 font-semibold leading-[24px] text-neutral-900'>
+                        {`No ${title}`}
+                    </h3>
                     <p className='font-primary text-4 font-normal leading-[23px] text-neutral-450'>
                         {description}
                     </p>

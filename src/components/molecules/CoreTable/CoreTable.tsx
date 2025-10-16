@@ -2,9 +2,9 @@ import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
     MINIMUM_COLLATERAL_RATIO,
-    Percent,
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
+import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import {
     BlockPolledSfStablecoinStore,
     EthersSfStablecoinWithStore,
@@ -79,7 +79,7 @@ const CollateralRatioBadge = ({ ratio }: CollateralRatioBadgeProps) => {
                 getCollateralRatioColor(ratio)
             )}
         >
-            {new Percent(ratio).prettify()}
+            {`${ratio.mul(100).prettify(DEBT_TOKEN_PRECISION)}%`}
         </span>
     );
 };
