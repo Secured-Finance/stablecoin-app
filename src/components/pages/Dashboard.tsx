@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { PriceManager } from 'src/components/PriceManager';
 import { Stability } from 'src/components/Stability/Stability';
 import { SystemStats } from 'src/components/SystemStats';
@@ -9,11 +9,10 @@ import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
 import { useAccount } from 'wagmi';
 import { useAddToken, useSfStablecoin } from 'src/hooks';
-import { X } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
     const { isConnected, address } = useAccount();
-    const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
+    const isPromptingRef = useRef(false);
 
     const {
         sfStablecoin: {
@@ -25,29 +24,39 @@ export const Dashboard: React.FC = () => {
         debtToken: addresses.debtToken,
     });
 
-    const checkIfTokenAdded = useCallback(() => {
-        if (!addresses.debtToken) return false;
-        return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
-    }, [addresses.debtToken]);
-
-    const dismissTokenBanner = () => {
-        if (addresses.debtToken) {
-            localStorage.setItem(`token_${addresses.debtToken}`, 'true');
-        }
-        setIsTokenAdded(true);
-    };
-
-    const handleAddToken = async () => {
-        const success = await addToken();
-        if (success) dismissTokenBanner();
-    };
-
     useEffect(() => {
         if (!isConnected || !address || !addresses.debtToken) return;
 
-        const tokenAdded = checkIfTokenAdded();
-        setIsTokenAdded(tokenAdded);
-    }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
+        if (
+            !addresses.debtToken.startsWith('0x') ||
+            addresses.debtToken.length !== 42
+        ) {
+            return;
+        }
+
+        if (isPromptingRef.current) return;
+
+        const storageKey = `token_prompted_${address}_${addresses.debtToken}`;
+        if (localStorage.getItem(storageKey)) return;
+
+        const timer = setTimeout(() => {
+            isPromptingRef.current = true;
+            localStorage.setItem(storageKey, 'true');
+
+            const promptToken = async () => {
+                try {
+                    await addToken();
+                } finally {
+                    isPromptingRef.current = false;
+                }
+            };
+
+            promptToken();
+        }, 500);
+
+        return () => clearTimeout(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isConnected, address, addresses.debtToken]);
 
     return (
         <section className='w-full'>
@@ -57,42 +66,19 @@ export const Dashboard: React.FC = () => {
                         Connect Wallet to start using {COIN}.
                     </Alert>
                 ) : (
-                    <div className='flex flex-col gap-2'>
-                        {isTokenAdded ? (
-                            <Alert color='info'>
-                                Use {COIN} to earn stable yield in the{' '}
-                                <Link
-                                    className='font-semibold text-primary-500'
-                                    href={getFixedIncomeMarketLink()}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    aria-label='Fixed Income'
-                                >
-                                    Fixed Income market
-                                </Link>
-                                .
-                            </Alert>
-                        ) : (
-                            <div className='relative flex flex-col gap-2'>
-                                <Alert color='info'>
-                                    Add {COIN} to Wallet,&nbsp;
-                                    <button
-                                        className='font-semibold text-primary-500'
-                                        onClick={handleAddToken}
-                                    >
-                                        Click here
-                                    </button>
-                                    <button
-                                        className='absolute right-2 top-2 mt-1 flex h-4 w-4 items-center justify-center text-gray-500 hover:text-gray-700'
-                                        onClick={dismissTokenBanner}
-                                        aria-label='Dismiss'
-                                    >
-                                        <X className='h-4 w-4' />
-                                    </button>
-                                </Alert>
-                            </div>
-                        )}
-                    </div>
+                    <Alert color='info'>
+                        Use {COIN} to earn stable yield in the{' '}
+                        <Link
+                            className='font-semibold text-primary-500'
+                            href={getFixedIncomeMarketLink()}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label='Fixed Income'
+                        >
+                            Fixed Income market
+                        </Link>
+                        .
+                    </Alert>
                 )}
             </section>
 
