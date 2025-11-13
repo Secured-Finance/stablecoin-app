@@ -6,10 +6,8 @@ interface UseAddTokenParams {
     debtToken: string | undefined;
 }
 
-// Global map to track ongoing watchAsset calls
-const ongoingCalls = new Map<string, Promise<boolean>>();
-
 export function useAddToken({ debtToken }: UseAddTokenParams) {
+    const ongoingCalls = new Map<string, Promise<boolean>>();
     const { data: walletClient } = useWalletClient();
     const isCallingRef = useRef(false);
 
@@ -44,10 +42,21 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
             const success = await callPromise;
 
             return success;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (e: any) {
+            ongoingCalls.delete(callKey);
+            if (e.code === '4001') {
+                await addToken();
+            }
+            if (e.code === '4100') {
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                return;
+            }
         } finally {
             isCallingRef.current = false;
             ongoingCalls.delete(callKey);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletClient, debtToken]);
 
     return { addToken };

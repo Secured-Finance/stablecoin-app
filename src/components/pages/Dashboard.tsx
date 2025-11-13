@@ -5,10 +5,10 @@ import { Stability } from 'src/components/Stability/Stability';
 import { SystemStats } from 'src/components/SystemStats';
 import { Trove } from 'src/components/Trove/Trove';
 import { Alert } from 'src/components/atoms';
+import { useAddToken, useSfStablecoin } from 'src/hooks';
 import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
 import { useAccount } from 'wagmi';
-import { useAddToken, useSfStablecoin } from 'src/hooks';
 
 export const Dashboard: React.FC = () => {
     const { isConnected, address } = useAccount();
@@ -41,11 +41,13 @@ export const Dashboard: React.FC = () => {
 
         const timer = setTimeout(() => {
             isPromptingRef.current = true;
-            localStorage.setItem(storageKey, 'true');
 
             const promptToken = async () => {
                 try {
-                    await addToken();
+                    const success = await addToken();
+                    if (success) {
+                        localStorage.setItem(storageKey, 'true');
+                    }
                 } finally {
                     isPromptingRef.current = false;
                 }
