@@ -1,5 +1,10 @@
 import { useCallback, useRef } from 'react';
 import { COIN } from 'src/strings';
+import {
+    ProviderRpcError,
+    UnauthorizedProviderError,
+    UserRejectedRequestError,
+} from 'viem';
 import { useWalletClient } from 'wagmi';
 
 interface UseAddTokenParams {
@@ -7,7 +12,7 @@ interface UseAddTokenParams {
 }
 
 export function useAddToken({ debtToken }: UseAddTokenParams) {
-    const ongoingCalls = new Map<string, Promise<boolean>>();
+    const ongoingCallsRef = useRef(new Map<string, Promise<boolean>>());
     const { data: walletClient } = useWalletClient();
     const isCallingRef = useRef(false);
 
@@ -19,8 +24,8 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
 
         // Check if there's already an ongoing call for this token
         const callKey = `${walletClient.account.address}_${debtToken}`;
-        if (ongoingCalls.has(callKey)) {
-            return ongoingCalls.get(callKey);
+        if (ongoingCallsRef.current.has(callKey)) {
+            return ongoingCallsRef.current.get(callKey);
         }
 
         isCallingRef.current = true;
@@ -37,26 +42,33 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
             });
 
             // Store the promise to prevent duplicate calls
-            ongoingCalls.set(callKey, callPromise);
+            ongoingCallsRef.current.set(callKey, callPromise);
 
             const success = await callPromise;
 
             return success;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (e: any) {
-            ongoingCalls.delete(callKey);
-            if (e.code === '4001') {
-                await addToken();
-            }
-            if (e.code === '4100') {
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                return;
+        } catch (e: unknown) {
+            ongoingCallsRef.current.delete(callKey);
+
+            // Type guard for ProviderRpcError
+            if (typeof e === 'object' && e !== null && 'code' in e) {
+                const error = e as ProviderRpcError;
+
+                // User rejected the request - retry
+                if (error.code === UserRejectedRequestError.code) {
+                    await addToken();
+                }
+
+                // Provider is unauthorized (wallet locked) - wait and return
+                if (error.code === UnauthorizedProviderError.code) {
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    return;
+                }
             }
         } finally {
             isCallingRef.current = false;
-            ongoingCalls.delete(callKey);
+            ongoingCallsRef.current.delete(callKey);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletClient, debtToken]);
 
     return { addToken };

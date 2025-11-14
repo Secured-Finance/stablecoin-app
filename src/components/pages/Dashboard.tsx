@@ -8,6 +8,7 @@ import { Alert } from 'src/components/atoms';
 import { useAddToken, useSfStablecoin } from 'src/hooks';
 import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
+import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
 export const Dashboard: React.FC = () => {
@@ -27,10 +28,7 @@ export const Dashboard: React.FC = () => {
     useEffect(() => {
         if (!isConnected || !address || !addresses.debtToken) return;
 
-        if (
-            !addresses.debtToken.startsWith('0x') ||
-            addresses.debtToken.length !== 42
-        ) {
+        if (!isAddress(addresses.debtToken)) {
             return;
         }
 
