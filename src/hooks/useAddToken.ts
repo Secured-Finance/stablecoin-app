@@ -1,10 +1,6 @@
 import { useCallback, useRef } from 'react';
 import { COIN } from 'src/strings';
-import {
-    ProviderRpcError,
-    UnauthorizedProviderError,
-    UserRejectedRequestError,
-} from 'viem';
+import { UnauthorizedProviderError, UserRejectedRequestError } from 'viem';
 import { useWalletClient } from 'wagmi';
 
 interface UseAddTokenParams {
@@ -50,21 +46,19 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
         } catch (e: unknown) {
             ongoingCallsRef.current.delete(callKey);
 
-            // Type guard for ProviderRpcError
-            if (typeof e === 'object' && e !== null && 'code' in e) {
-                const error = e as ProviderRpcError;
-
-                // User rejected the request - retry
-                if (error.code === UserRejectedRequestError.code) {
-                    await addToken();
-                }
-
-                // Provider is unauthorized (wallet locked) - wait and return
-                if (error.code === UnauthorizedProviderError.code) {
-                    await new Promise(resolve => setTimeout(resolve, 3000));
-                    return;
-                }
+            // User rejected the request - return silently
+            if (e instanceof UserRejectedRequestError) {
+                return;
             }
+
+            // Provider is unauthorized (wallet locked) - wait and return
+            if (e instanceof UnauthorizedProviderError) {
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                return;
+            }
+
+            // Log unexpected errors for debugging
+            console.error('Unexpected error in addToken:', e);
         } finally {
             isCallingRef.current = false;
             ongoingCallsRef.current.delete(callKey);
