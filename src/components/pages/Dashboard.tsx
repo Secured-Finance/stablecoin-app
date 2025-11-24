@@ -55,8 +55,7 @@ export const Dashboard: React.FC = () => {
         }, 500);
 
         return () => clearTimeout(timer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isConnected, address, addresses.debtToken]);
+    }, [isConnected, address, addresses.debtToken, addToken]);
 
     return (
         <section className='w-full'>
