@@ -10,21 +10,15 @@ interface UseAddTokenParams {
 export function useAddToken({ debtToken }: UseAddTokenParams) {
     const ongoingCallsRef = useRef(new Map<string, Promise<boolean>>());
     const { data: walletClient } = useWalletClient();
-    const isCallingRef = useRef(false);
 
     const addToken = useCallback(async () => {
         if (!walletClient || !debtToken) return;
-
-        // Prevent concurrent calls
-        if (isCallingRef.current) return;
 
         // Check if there's already an ongoing call for this token
         const callKey = `${walletClient.account.address}_${debtToken}`;
         if (ongoingCallsRef.current.has(callKey)) {
             return ongoingCallsRef.current.get(callKey);
         }
-
-        isCallingRef.current = true;
 
         try {
             const callPromise = walletClient.watchAsset({
@@ -44,23 +38,18 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
 
             return success;
         } catch (e: unknown) {
-            ongoingCallsRef.current.delete(callKey);
-
             // User rejected the request - return silently
             if (e instanceof UserRejectedRequestError) {
                 return;
             }
 
-            // Provider is unauthorized (wallet locked) - wait and return
             if (e instanceof UnauthorizedProviderError) {
-                await new Promise(resolve => setTimeout(resolve, 3000));
                 return;
             }
 
             // Log unexpected errors for debugging
             console.error('Unexpected error in addToken:', e);
         } finally {
-            isCallingRef.current = false;
             ongoingCallsRef.current.delete(callKey);
         }
     }, [walletClient, debtToken]);
