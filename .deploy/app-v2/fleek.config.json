@@ -1,9 +1,0 @@
-{
-    "sites": [
-      {
-        "slug": "app-stablecoin-v2",
-        "distDir": ".deploy/app-v2/build",
-        "buildCommand": ""
-      }
-    ]
-  }
