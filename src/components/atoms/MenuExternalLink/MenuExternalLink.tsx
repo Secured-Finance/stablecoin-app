@@ -14,26 +14,24 @@ export const MenuExternalLink = ({
     return (
         <Link
             href={link}
-            className='flex h-full w-full cursor-pointer items-center px-5 py-[11px] hover:bg-neutral-100 focus:outline-none'
+            className='flex h-[43px] w-[170px] cursor-pointer items-center justify-between gap-0.5 px-6 py-3 hover:bg-neutral-100 focus:outline-none'
             target='_blank'
             rel='noopener noreferrer'
             aria-label='Menu Item'
             data-cy={formatDataCy(text)}
         >
-            <div className='flex w-full cursor-pointer items-center gap-2'>
-                {icon && (
-                    <div className='flex h-5 w-5 items-center justify-center'>
-                        {icon}
-                    </div>
+            <p
+                className={clsx(
+                    'typography-desktop-body-5 text-left text-4 text-neutral-800'
                 )}
-                <p
-                    className={clsx(
-                        'typography-desktop-body-5 grow text-left text-neutral-800'
-                    )}
-                >
-                    {text}
-                </p>
-            </div>
+            >
+                {text}
+            </p>
+            {icon && (
+                <div className='flex h-5 w-5 shrink-0 items-center justify-center'>
+                    {icon}
+                </div>
+            )}
         </Link>
     );
 };

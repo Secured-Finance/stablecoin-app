@@ -9,6 +9,7 @@ const mockData = {
         collateral: Decimal.from('1000'),
         debt: Decimal.from('500'),
         collateralRatio: (price: Decimal) => Decimal.from(price),
+        collateralRatioIsBelowCritical: (_price: Decimal) => false,
     } as Trove,
     debtTokenInStabilityPool: Decimal.from('50'),
     borrowingRate: Decimal.from('0.02'),

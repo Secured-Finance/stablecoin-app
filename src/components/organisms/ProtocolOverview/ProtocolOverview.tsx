@@ -1,6 +1,9 @@
 import { Decimal, Percent, Trove } from '@secured-finance/stablecoin-lib-base';
 import packageJson from 'package.json';
+import { useEffect, useState } from 'react';
+import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { TokenPrice } from 'src/components/atoms';
+import { Transaction } from 'src/components/Transaction';
 import {
     ProtocolStat,
     ProtocolStats,
@@ -12,8 +15,11 @@ import {
     PYTH_ORACLE_LINK,
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
-import { AddressUtils, isProdEnv } from 'src/utils';
+import { useSfStablecoin } from 'src/hooks';
+import { getSetPriceEnabled, isProdEnv, getFrontendTag } from 'src/utils';
+import { CURRENCY } from 'src/strings';
 import { filecoin } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
 type ProtocolOverviewProps = {
     data: {
@@ -37,7 +43,41 @@ export const ProtocolOverview = ({
     data,
     contextData,
 }: ProtocolOverviewProps) => {
-    const editedPrice = data.price.toString(2);
+    const {
+        sfStablecoin: {
+            send: sfStablecoin,
+            connection: { _priceFeedIsTestnet },
+        },
+    } = useSfStablecoin();
+
+    const { isConnected, address } = useAccount();
+    const isFrontendTag =
+        address?.toLowerCase() === getFrontendTag().toLowerCase();
+    const canSetPrice =
+        _priceFeedIsTestnet && getSetPriceEnabled() && isFrontendTag;
+
+    const [editedPrice, setEditedPrice] = useState(data.price.toString(2));
+
+    useEffect(() => {
+        setEditedPrice(data.price.toString(2));
+    }, [data.price]);
+
+    const displayPrice = (() => {
+        try {
+            const parsed = parseFloat(editedPrice);
+            if (isNaN(parsed) || parsed < 0 || editedPrice.trim() === '') {
+                return data.price.shorten();
+            }
+            return Decimal.from(editedPrice).shorten();
+        } catch {
+            return data.price.shorten();
+        }
+    })();
+
+    const isRecoveryMode = data.total.collateralRatioIsBelowCritical(
+        data.price
+    );
+
     const priceSources = [
         { name: 'Pyth', href: PYTH_ORACLE_LINK },
         {
@@ -48,22 +88,49 @@ export const ProtocolOverview = ({
                     : TELLOR_ORACLE_LINKS.testnet,
         },
     ];
+
     return (
-        <div className='flex flex-col gap-6'>
-            <h2 className='font-primary text-5/none font-semibold'>
+        <div className='flex flex-col gap-5'>
+            <h2 className='text-left text-5 font-semibold leading-none text-neutral-900'>
                 Protocol Overview
             </h2>
             <div className='flex flex-col gap-6'>
                 <div className='rounded-xl border border-neutral-9 bg-white p-6'>
                     <TokenPrice
-                        symbol='FIL'
+                        symbol={CURRENCY}
                         price={editedPrice}
+                        displayPrice={displayPrice}
                         sources={priceSources}
+                        canSetPrice={canSetPrice && isConnected}
+                        onPriceChange={setEditedPrice}
+                        setPriceAction={
+                            canSetPrice &&
+                            isConnected && (
+                                <Transaction
+                                    id='set-price-protocol'
+                                    tooltip='Set'
+                                    tooltipPlacement='bottom'
+                                    send={overrides => {
+                                        if (!editedPrice) {
+                                            throw new Error('Invalid price');
+                                        }
+                                        return sfStablecoin.setPrice(
+                                            Decimal.from(editedPrice),
+                                            overrides
+                                        );
+                                    }}
+                                >
+                                    <button>
+                                        <TrendingUpIcon />
+                                    </button>
+                                </Transaction>
+                            )
+                        }
                     />
                 </div>
 
                 <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                    <RecoveryMode isActive={false} />
+                    <RecoveryMode isActive={isRecoveryMode} />
                 </div>
 
                 <div className='overflow-hidden rounded-xl border border-neutral-9 bg-white'>
@@ -127,7 +194,7 @@ export const getProtocolStats = (
     const stats: ProtocolStat[] = [
         formatStat(
             'Total Value Locked',
-            `${total.collateral.shorten()} FIL`,
+            `${total.collateral.shorten()} ${CURRENCY}`,
             `$${Decimal.from(total.collateral.mul(price)).shorten()}`
         ),
         formatStat('USDFC Supply', total.debt.shorten()),
@@ -149,7 +216,7 @@ export const getProtocolStats = (
         ),
         formatStat(
             'Smart Contract',
-            AddressUtils.format(contextData?.addresses?.debtToken || '', 8),
+            (contextData?.addresses?.debtToken || '').slice(-7),
             undefined,
             contextData?.addresses?.debtToken
                 ? `${

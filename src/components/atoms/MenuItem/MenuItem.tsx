@@ -13,18 +13,16 @@ export const MenuItem = ({
     return (
         <NavLink
             to={link}
-            className='flex h-full w-full cursor-pointer items-center px-5 py-[11px] hover:bg-neutral-100 focus:outline-none'
+            className='flex h-[43px] w-[170px] cursor-pointer items-center gap-0.5 px-6 py-3 hover:bg-neutral-100 focus:outline-none'
         >
-            <div className='flex w-full cursor-pointer items-center gap-2'>
-                <p
-                    className={clsx(
-                        'typography-desktop-body-5 grow text-left text-neutral-800',
-                        { 'text-primary-500': isActive }
-                    )}
-                >
-                    {text}
-                </p>
-            </div>
+            <p
+                className={clsx(
+                    'typography-desktop-body-5 grow text-left text-4 text-neutral-800',
+                    { 'text-primary-500': isActive }
+                )}
+            >
+                {text}
+            </p>
         </NavLink>
     );
 };

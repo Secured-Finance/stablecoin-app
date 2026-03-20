@@ -93,14 +93,29 @@
     font-weight: 400;
     src: url('./../fonts/inter/InterDisplay-Regular.woff2') format('woff2');
   }
+
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: url('./../fonts/inter/InterDisplay-Medium.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    src: url('./../fonts/inter/InterDisplay-SemiBold.woff2') format('woff2');
+  }
+
   @font-face {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
-    src: url('./../fonts/inter/InterDisplay-Medium.woff2') format('woff2');
+    src: url('./../fonts/inter/InterDisplay-Bold.woff2') format('woff2');
   }
   body {
-    @apply font-secondary;
+    @apply font-primary;
     height: 100dvh;
     background-color: #FAFAFA;
     backdrop-filter: blur(50px);
@@ -110,19 +125,15 @@
 @layer utilities {
   .fade-enter {
     @apply opacity-0;
-    position: absolute;
   }
   .fade-enter-active {
     @apply transition-opacity duration-300 opacity-100;
-    position: absolute;
   }
 
   .fade-exit {
     @apply opacity-100;
-    position: absolute;
   }
   .fade-exit-active {
-    @apply transition-opacity duration-200 opacity-0;
-    position: absolute;
+    @apply transition-opacity duration-300 opacity-0;
   }
 }

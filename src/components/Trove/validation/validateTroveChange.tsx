@@ -15,6 +15,7 @@ import {
 import { Alert } from 'src/components/atoms';
 import { COIN, CURRENCY } from 'src/strings';
 import { ActionDescription, Amount } from '../../ActionDescription';
+import { DEBT_TOKEN_PRECISION } from 'src/utils';
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
 const ccrPercent = new Percent(CRITICAL_COLLATERAL_RATIO).toString(0);
@@ -410,11 +411,14 @@ const validateTroveClosure = (
             <Alert>
                 You only have{' '}
                 <Amount>
-                    {debtTokenBalance.prettify()} {COIN}
+                    {debtTokenBalance.prettify(DEBT_TOKEN_PRECISION)} {COIN}
                 </Amount>{' '}
                 in your wallet. You need{' '}
                 <Amount>
-                    {repayDebtToken.sub(debtTokenBalance).prettify()} {COIN}
+                    {repayDebtToken
+                        .sub(debtTokenBalance)
+                        .prettify(DEBT_TOKEN_PRECISION)}{' '}
+                    {COIN}
                 </Amount>{' '}
                 more to close your Trove.
             </Alert>

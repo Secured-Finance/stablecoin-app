@@ -7,12 +7,13 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
 import {
     selectForRedemptionChangeValidation,
     validateRedemptionChange,
 } from '../Redemption/validation/validateRedemptionChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
+import { USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
 import { TokenBox } from '../molecules';
 
@@ -104,7 +105,7 @@ export const RedemptionPage = () => {
 
     const renderButtonContent = () => {
         if (!isConnected) {
-            return 'Connect wallet';
+            return 'Connect Wallet';
         }
 
         if (changePending) {
@@ -116,6 +117,7 @@ export const RedemptionPage = () => {
 
     const handleClick = () => {
         if (!isConnected) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             open();
         } else {
             sendTransaction();
@@ -129,38 +131,47 @@ export const RedemptionPage = () => {
     const usdValue = filReceived.mul(price).prettify(2);
 
     return (
-        <div className='flex min-h-screen w-full flex-col'>
+        <div className='flex w-full flex-col'>
             <main className='flex flex-grow flex-col items-center justify-center px-4 py-8'>
-                <div className='mx-auto w-full max-w-3xl'>
-                    <h1 className='mb-3 text-center font-primary text-5/none font-semibold'>
+                <div className='mb-[52px] flex w-full flex-col items-center gap-6 px-16'>
+                    <h1 className='text-center font-primary text-6 font-semibold leading-[29px] text-neutral-900'>
                         Redeem USDFC
                     </h1>
-                    <p className='mb-8 text-center text-sm text-neutral-450'>
-                        Exchange USDFC for FIL at face value by repaying the
-                        system&apos;s least <br />
-                        collateralized Troves. This is not the same as repaying
-                        your own debt—if your Trove
-                        <br /> is undercollateralized, it may be partially
-                        redeemed.
+                    <p className='w-full text-center font-primary text-4 font-normal leading-[144%] text-neutral-450'>
+                        Exchange USDFC for {CURRENCY} at face value by repaying
+                        the system&apos;s least collateralized Troves. This is
+                        not the same as repaying your own debt—if your Trove is
+                        undercollateralized, it may be partially redeemed.
                     </p>
+                </div>
+                <div className='w-full'>
                     <TokenBox
                         inputLabel='Redeem'
                         inputValue={redeemAmount}
+                        autoFocusInput={true}
                         onInputChange={value => {
                             setRedeemAmount(value);
                             setRedeemAmountDecimal(Decimal.from(value || '0'));
                         }}
-                        inputTokenIcon={<USDFCIcon />}
+                        inputTokenIcon={
+                            <>
+                                <USDFCIconLarge />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
+                                    USDFC
+                                </span>
+                            </>
+                        }
+                        inputSubLabel={`$${redeemAmountDecimal.prettify()}`}
                         outputLabel='You will receive'
                         outputValue={filToReceive}
                         outputSubLabel={`$${usdValue}`}
                         outputTokenIcon={
-                            <div className='flex items-center gap-2'>
-                                <FILIcon />
-                                <span className='text-base font-semibold text-neutral-900'>
-                                    FIL
+                            <>
+                                <FILIcon className='h-8 w-8' />
+                                <span className='text-2xl font-medium leading-none text-neutral-900'>
+                                    {CURRENCY}
                                 </span>
-                            </div>
+                            </>
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
@@ -169,51 +180,54 @@ export const RedemptionPage = () => {
                         }}
                         isConnected={isConnected}
                     >
-                        <div className='mb-6 w-full rounded-xl border border-neutral-9 bg-white p-6'>
-                            <div className='flex items-center justify-between'>
-                                <div>
-                                    <div className='mb-1 font-primary text-4 font-medium text-neutral-900'>
+                        <div className='mb-6 flex w-full flex-col items-start gap-6 rounded-[20px] border border-neutral-150 bg-white p-6'>
+                            <div className='flex w-full flex-col items-start gap-4 tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-2'>
+                                <div className='flex w-full flex-col items-start justify-center gap-1.5 tablet:max-w-[420px]'>
+                                    <div className='font-primary text-4 font-medium leading-[19px] text-neutral-450'>
                                         Redemption Fee
                                     </div>
-                                    <div className='max-w-[280px] text-xs text-neutral-450'>
-                                        A percentage of the FIL received,
-                                        currently {feePercentage}. It varies
+                                    <div className='w-full font-primary text-sm font-normal leading-[140%] text-neutral-450'>
+                                        A percentage of the {CURRENCY} received,
+                                        starting at a minimum of 0.5%. It varies
                                         based on USDFC redemption volumes.
                                     </div>
                                 </div>
                                 <div className='flex items-center gap-2'>
-                                    <span className='text-sm font-medium text-neutral-900'>
-                                        {redemptionFee}
-                                    </span>
-                                    <div className='flex items-center gap-1'>
-                                        <div className='flex h-4 w-4 items-center justify-center rounded-full bg-neutral-150'>
-                                            <FILIcon />
-                                        </div>
-                                        <span className='text-xs'>FIL</span>
-                                        <span className='text-xs text-neutral-450'>
-                                            {feePercentage}
+                                    <div className='flex items-center justify-center gap-2'>
+                                        <span className='font-primary text-4 font-medium leading-[19px] text-neutral-900'>
+                                            {redemptionFee}
+                                        </span>
+                                        <FILIcon className='h-6 w-6' />
+                                        <span className='font-primary text-4 font-normal leading-[19px] text-neutral-900'>
+                                            {CURRENCY}
                                         </span>
                                     </div>
+                                    <span className='font-primary text-sm font-normal leading-[17px] text-neutral-450'>
+                                        {feePercentage}
+                                    </span>
                                 </div>
                             </div>
                         </div>
+                        <div className='mt-6'>{validationMessage}</div>
 
-                        <button
-                            className='mb-3 w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
-                            disabled={isConnected && (!isValid || hintsPending)}
-                            onClick={handleClick}
-                        >
-                            {renderButtonContent()}
-                        </button>
+                        <div className='mt-6'>
+                            <button
+                                className='w-full rounded-xl bg-primary-500 py-3.5 font-medium text-white disabled:opacity-60'
+                                disabled={
+                                    isConnected && (!isValid || hintsPending)
+                                }
+                                onClick={handleClick}
+                            >
+                                {renderButtonContent()}
+                            </button>
+                        </div>
 
-                        {!isConnected && (
-                            <p className='text-center text-xs text-neutral-450'>
+                        {isConnected && (
+                            <p className='mt-2 text-center text-xs text-neutral-450'>
                                 This action will open your wallet to sign the
                                 transaction.
                             </p>
                         )}
-
-                        {validationMessage}
                     </TokenBox>
                 </div>
             </main>

@@ -2,27 +2,36 @@ import {
     CRITICAL_COLLATERAL_RATIO,
     Decimal,
     MINIMUM_COLLATERAL_RATIO,
-    Percent,
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
+import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import {
     BlockPolledSfStablecoinStore,
     EthersSfStablecoinWithStore,
 } from '@secured-finance/stablecoin-lib-ethers';
 import clsx from 'clsx';
-import { CheckIcon, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import {
+    CheckIcon,
+    ChevronLeft,
+    ChevronRight,
+    Copy,
+    Info,
+    RotateCw,
+    Trash2,
+} from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Button,
     ButtonVariants,
+    CustomTooltip,
     LinkButton,
     Tooltip,
 } from 'src/components/atoms';
 import { Transaction } from 'src/components/Transaction';
 import { AddressUtils } from 'src/utils';
 import { Spinner } from 'theme-ui';
-import RedoIcon from 'src/assets/icons/refresh.svg';
 import { useSfStablecoin } from 'src/hooks';
+import { CURRENCY, COIN } from 'src/strings';
 import { useAccount } from 'wagmi';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
@@ -43,7 +52,6 @@ interface CoreTableProps {
 interface TroveRowProps {
     trove: TroveWithDebtInFront;
     price: Decimal;
-    isConnected: boolean;
     sfStablecoin: EthersSfStablecoinWithStore<BlockPolledSfStablecoinStore>;
     index: number;
     recoveryMode: boolean;
@@ -71,7 +79,7 @@ const CollateralRatioBadge = ({ ratio }: CollateralRatioBadgeProps) => {
                 getCollateralRatioColor(ratio)
             )}
         >
-            {new Percent(ratio).prettify()}
+            {`${ratio.mul(100).prettify(DEBT_TOKEN_PRECISION)}%`}
         </span>
     );
 };
@@ -106,13 +114,13 @@ const liquidatableInRecoveryMode = (
 const TroveRow = ({
     trove,
     price,
-    isConnected,
     sfStablecoin,
     index,
     recoveryMode,
     totalCollateralRatio,
     debtTokenInStabilityPool,
 }: TroveRowProps) => {
+    const { isConnected } = useAccount();
     const [copied, setCopied] = useState<string | undefined>();
 
     useEffect(() => {
@@ -128,21 +136,45 @@ const TroveRow = ({
         }
     }, [copied]);
 
-    const calculateCollateralRatio = (trove: UserTrove) =>
-        trove.collateralRatio(price);
+    const calculateCollateralRatio = useCallback(
+        (trove: UserTrove) => trove.collateralRatio(price),
+        [price]
+    );
+
+    // Calculate if liquidation is disabled
+    const liquidationRequirement = useMemo(
+        () =>
+            recoveryMode
+                ? liquidatableInRecoveryMode(
+                      trove,
+                      price,
+                      totalCollateralRatio,
+                      debtTokenInStabilityPool
+                  )
+                : liquidatableInNormalMode(trove, price),
+        [
+            trove,
+            price,
+            recoveryMode,
+            totalCollateralRatio,
+            debtTokenInStabilityPool,
+        ]
+    );
+
+    const isLiquidationDisabled = !isConnected || !liquidationRequirement[0];
 
     return (
         <tr
             className={clsx(
-                'border-t border-[#f0f0f0]',
+                'border-t border-neutral-150',
                 index % 2 === 0 ? 'bg-[#FAFAFA]' : 'bg-[#FFFFFF]'
             )}
         >
-            <td className='min-w-36 p-4 '>
-                <div className='flex items-center gap-3 laptop:justify-center'>
+            <td className='p-1 tablet:p-4'>
+                <div className='flex items-center justify-center'>
                     <Tooltip
                         iconElement={
-                            <span className='inline-block w-[100px] font-numerical'>
+                            <span className='font-numerical text-xs tablet:min-w-[80px] tablet:text-sm'>
                                 {AddressUtils.format(trove.ownerAddress, 6)}
                             </span>
                         }
@@ -151,33 +183,41 @@ const TroveRow = ({
                         {trove.ownerAddress}
                     </Tooltip>
 
-                    <button onClick={() => setCopied(trove.ownerAddress)}>
+                    <button
+                        onClick={() => setCopied(trove.ownerAddress)}
+                        className='ml-0.5 tablet:ml-1'
+                        aria-label={`Copy address ${AddressUtils.format(
+                            trove.ownerAddress,
+                            3
+                        )}`}
+                    >
                         {copied === trove.ownerAddress ? (
-                            <CheckIcon className='h-4 w-4 text-success-700' />
+                            <CheckIcon className='h-3 w-3 text-success-700 tablet:h-4 tablet:w-4' />
                         ) : (
-                            <Copy className='h-4 w-4 text-gray-400' />
+                            <Copy className='h-3 w-3 text-gray-400 tablet:h-4 tablet:w-4' />
                         )}
                     </button>
                 </div>
             </td>
-            <td className='min-w-30 p-4 text-center'>
-                {trove.collateral.prettify()}
+            <td className='p-1 text-center text-xs tablet:p-4 tablet:text-sm'>
+                {trove.collateral.shorten()}
             </td>
-            <td className='min-w-30 p-4 text-center'>
-                {trove.debt.prettify()}
+            <td className='p-1 text-center text-xs tablet:p-4 tablet:text-sm'>
+                {trove.debt.shorten()}
             </td>
-            <td className='min-w-30 p-4 text-center'>
+            <td className='p-1 text-center tablet:p-4'>
                 <CollateralRatioBadge ratio={calculateCollateralRatio(trove)} />
             </td>
-            <td className='min-w-30 p-4 text-center'>
-                {trove.debtInFront?.prettify()}
+            <td className='p-1 text-center text-xs tablet:p-4 tablet:text-sm'>
+                ${trove.debtInFront?.shorten() ?? '0'}
             </td>
-            <td className='min-w-[180px] p-4'>
-                <div className='flex justify-center truncate'>
+            <td className='p-1 tablet:p-4'>
+                <div className='flex justify-center'>
                     <Transaction
-                        id='liquidate'
+                        id={`liquidate-${trove.ownerAddress}`}
                         tooltip='Liquidate'
                         requires={[
+                            [isConnected, 'Please connect your wallet'],
                             recoveryMode
                                 ? liquidatableInRecoveryMode(
                                       trove,
@@ -192,13 +232,25 @@ const TroveRow = ({
                             trove.ownerAddress
                         )}
                     >
-                        <Button
-                            variant={ButtonVariants.tertiary}
-                            className='h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-[#565656] hover:bg-[#F0F0F0] hover:text-[#333333] disabled:cursor-not-allowed disabled:border-[#E3E3E3] disabled:bg-[#F7F7F7] disabled:text-[#B0B0B0]'
-                            disabled={!isConnected}
-                        >
-                            Liquidate Trove
-                        </Button>
+                        <div>
+                            {/* Mobile: Trash icon only */}
+                            <button
+                                className='p-1 text-error-500 disabled:text-neutral-600 tablet:hidden'
+                                disabled={isLiquidationDisabled}
+                                aria-label='Liquidate trove'
+                            >
+                                <Trash2 className='h-4 w-4' />
+                            </button>
+
+                            {/* Tablet+: Full liquidate button */}
+                            <Button
+                                variant={ButtonVariants.tertiary}
+                                className='hidden h-10 w-36 truncate rounded-xl border border-[#E3E3E3] bg-[#FAFAFA] px-3 py-1.5 text-sm font-medium text-neutral-450 hover:bg-neutral-150 hover:text-[#333333] disabled:cursor-default disabled:border-[#E3E3E3] disabled:bg-[#E8E8E8] disabled:text-[#888888] tablet:block'
+                                disabled={isLiquidationDisabled}
+                            >
+                                Liquidate Trove
+                            </Button>
+                        </div>
                     </Transaction>
                 </div>
             </td>
@@ -220,37 +272,67 @@ export const CoreTable = ({
     debtTokenInStabilityPool,
 }: CoreTableProps) => {
     const { sfStablecoin } = useSfStablecoin();
-    const { isConnected } = useAccount();
 
     return (
-        <div className='w-full rounded-xl border border-gray-200'>
-            <table className='w-full bg-white'>
-                <thead className='border-b border-gray-200 bg-white'>
-                    <tr className='text-left text-sm text-[#565656]'>
-                        <th className='min-w-[150px] p-4 text-center'>
-                            Address
-                        </th>
-                        <th className='min-w-30 p-4 text-center'>
-                            Collateral (FIL)
-                        </th>
-                        <th className='min-w-30 p-4 text-center'>
-                            Debt (USDFC)
-                        </th>
-                        <th className='min-w-30 p-4 text-center'>
-                            Collateral Ratio
-                        </th>
-                        <th className='min-w-30 relative p-4 text-center'>
-                            <span className='group inline-block'>
-                                Debt In Front
-                                <div className='pointer-events-none absolute left-0 top-full z-10 ml-6 w-56 rounded border bg-white p-2 text-left text-xs text-gray-800 opacity-0 transition-opacity group-hover:opacity-100'>
-                                    It totals the debt of all troves that face
-                                    higher liquidation risk—that is, those with
-                                    lower collateral ratios—than the current
-                                    trove.
-                                </div>
+        <div className='w-full overflow-hidden rounded-xl border border-gray-200 bg-white'>
+            <table className='min-w-full table-fixed'>
+                <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
+                    <tr className='text-left text-xs text-neutral-450 tablet:text-sm'>
+                        <th className='p-1 text-center tablet:p-4'>
+                            <span className='tablet:hidden'>Owner</span>
+                            <span className='hidden tablet:inline'>
+                                Address
                             </span>
                         </th>
-                        <th className='min-w-[180px] p-4 text-center'></th>
+                        <th className='p-1 text-center tablet:p-4'>
+                            <div className='flex flex-col items-center'>
+                                <span className='tablet:hidden'>Coll.</span>
+                                <span className='hidden tablet:inline'>
+                                    Collateral
+                                </span>
+                                <span className='text-xs font-normal text-neutral-500'>
+                                    ({CURRENCY})
+                                </span>
+                            </div>
+                        </th>
+                        <th className='p-1 text-center tablet:p-4'>
+                            <div className='flex flex-col items-center'>
+                                <span>Debt</span>
+                                <span className='text-xs font-normal text-neutral-500'>
+                                    (USDFC)
+                                </span>
+                            </div>
+                        </th>
+                        <th className='p-1 text-center tablet:p-4'>
+                            <span className='tablet:hidden'>
+                                Coll.
+                                <br />
+                                Ratio
+                            </span>
+                            <span className='hidden tablet:inline'>
+                                Collateral Ratio
+                            </span>
+                        </th>
+                        <th className='relative p-1 text-center tablet:p-4'>
+                            <span className='inline-flex items-center gap-1'>
+                                <span className='tablet:hidden'>
+                                    Debt
+                                    <br />
+                                    In Front
+                                </span>
+                                <span className='hidden tablet:inline'>
+                                    Debt In Front
+                                </span>
+                                <CustomTooltip
+                                    title='Debt in Front'
+                                    description={`Represents the sum of the ${COIN} debt of all Troves with a lower collateral ratio than you. This metric shows how much ${COIN} must be redeemed before your Trove is affected.`}
+                                    position='bottom'
+                                >
+                                    <Info className='h-4 w-4 cursor-pointer text-neutral-400 hover:text-blue-500' />
+                                </CustomTooltip>
+                            </span>
+                        </th>
+                        <th className='p-1 text-center tablet:p-4'></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -266,10 +348,9 @@ export const CoreTable = ({
                     ) : (
                         troves.map((trove, index) => (
                             <TroveRow
-                                key={index}
+                                key={`${trove.ownerAddress}-${index}`}
                                 trove={trove}
                                 price={price}
-                                isConnected={isConnected}
                                 sfStablecoin={sfStablecoin}
                                 index={index}
                                 recoveryMode={recoveryMode}
@@ -283,46 +364,65 @@ export const CoreTable = ({
                 </tbody>
             </table>
 
-            {troves.length >= 0 && (
-                <div className='flex items-center justify-between border-t border-[#f0f0f0] p-4'>
-                    <div className='flex items-center'>
-                        <LinkButton
-                            onClick={onPrevious}
-                            disabled={currentPage === 1}
-                            leftIcon={<ChevronLeft size={16} />}
-                        >
-                            Previous
-                        </LinkButton>
-                        <LinkButton
-                            onClick={onNext}
-                            disabled={currentPage === totalPages}
-                            rightIcon={<ChevronRight size={16} />}
-                            className='ml-4'
-                        >
-                            Next
-                        </LinkButton>
-                    </div>
-                    <div className='flex items-center justify-between gap-2 text-sm text-[#565656]'>
-                        <span>
-                            Page {currentPage} of {totalPages}
-                        </span>
-
-                        <div className='flex items-center'>
-                            <button
-                                className='flex h-6 w-6 items-center justify-center'
-                                onClick={forceReload}
-                                disabled={loading}
-                            >
-                                {loading ? (
-                                    <Spinner size={20} />
-                                ) : (
-                                    <RedoIcon size={20} />
-                                )}
-                            </button>
-                        </div>
-                    </div>
+            <div className='flex items-center justify-between border-t border-neutral-150 p-3 tablet:p-4'>
+                <div className='flex items-center gap-2'>
+                    <span className='text-xs text-neutral-450 tablet:text-sm'>
+                        Page {currentPage} of {totalPages}
+                    </span>
                 </div>
-            )}
+
+                <div className='flex items-center gap-1'>
+                    {/* Mobile: Icon-only buttons */}
+                    <button
+                        onClick={onPrevious}
+                        disabled={currentPage === 1}
+                        className='p-1 disabled:text-neutral-400 tablet:hidden'
+                        aria-label='Previous page'
+                    >
+                        <ChevronLeft className='h-4 w-4' />
+                    </button>
+
+                    <button
+                        onClick={onNext}
+                        disabled={currentPage === totalPages}
+                        className='p-1 disabled:text-neutral-400 tablet:hidden'
+                        aria-label='Next page'
+                    >
+                        <ChevronRight className='h-4 w-4' />
+                    </button>
+
+                    {/* Tablet+: Text buttons */}
+                    <LinkButton
+                        onClick={onPrevious}
+                        disabled={currentPage === 1}
+                        leftIcon={<ChevronLeft size={16} />}
+                        className='hidden tablet:flex'
+                    >
+                        Previous
+                    </LinkButton>
+                    <LinkButton
+                        onClick={onNext}
+                        disabled={currentPage === totalPages}
+                        rightIcon={<ChevronRight size={16} />}
+                        className='ml-4 hidden tablet:flex'
+                    >
+                        Next
+                    </LinkButton>
+
+                    <button
+                        className='flex items-center justify-center p-1'
+                        onClick={forceReload}
+                        disabled={loading}
+                        aria-label={loading ? 'Reloading...' : 'Reload data'}
+                    >
+                        {loading ? (
+                            <Spinner size={16} />
+                        ) : (
+                            <RotateCw size={16} />
+                        )}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
