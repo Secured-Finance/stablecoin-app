@@ -6,8 +6,9 @@ import {
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useEffect, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { DOCUMENTATION_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { CURRENCY } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
 import { useAccount } from 'wagmi';
 import {
     selectForRedemptionChangeValidation,
@@ -139,9 +140,21 @@ export const RedemptionPage = () => {
                     </h1>
                     <p className='w-full text-center font-primary text-4 font-normal leading-[144%] text-neutral-450'>
                         Exchange USDFC for {CURRENCY} at face value by repaying
-                        the system&apos;s least collateralized Troves. This is
-                        not the same as repaying your own debt—if your Trove is
-                        undercollateralized, it may be partially redeemed.
+                        the system&apos;s Troves with the lowest collateral
+                        ratios. If the targeted Trove is undercollateralized,
+                        only part of it may be redeemed. Redemption is not for
+                        repaying your loan. To repay it, adjust or close your
+                        Trove. Learn more in the{' '}
+                        <a
+                            className='font-semibold text-primary-500'
+                            href={DOCUMENTATION_LINKS.redemption}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label={`${COIN} Redemption`}
+                        >
+                            Secured Finance Docs
+                        </a>
+                        .
                     </p>
                 </div>
                 <div className='w-full'>
