@@ -3,21 +3,21 @@ import packageJson from 'package.json';
 import { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { TokenPrice } from 'src/components/atoms';
-import { Transaction } from 'src/components/Transaction';
 import {
     ProtocolStat,
     ProtocolStats,
     RecoveryMode,
     VersionStats,
 } from 'src/components/molecules';
+import { Transaction } from 'src/components/Transaction';
 import {
     BLOCKCHAIN_EXPLORER_LINKS,
     PYTH_ORACLE_LINK,
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
 import { useSfStablecoin } from 'src/hooks';
-import { getSetPriceEnabled, isProdEnv, getFrontendTag } from 'src/utils';
 import { CURRENCY } from 'src/strings';
+import { getFrontendTag, getSetPriceEnabled, isProdEnv } from 'src/utils';
 import { filecoin } from 'viem/chains';
 import { useAccount } from 'wagmi';
 

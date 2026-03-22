@@ -4,7 +4,6 @@ import {
     MINIMUM_COLLATERAL_RATIO,
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
-import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import {
     BlockPolledSfStablecoinStore,
     EthersSfStablecoinWithStore,
@@ -28,10 +27,10 @@ import {
     Tooltip,
 } from 'src/components/atoms';
 import { Transaction } from 'src/components/Transaction';
-import { AddressUtils } from 'src/utils';
-import { Spinner } from 'theme-ui';
 import { useSfStablecoin } from 'src/hooks';
-import { CURRENCY, COIN } from 'src/strings';
+import { COIN, CURRENCY } from 'src/strings';
+import { AddressUtils, DEBT_TOKEN_PRECISION } from 'src/utils';
+import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };

@@ -3,6 +3,22 @@ interface RecoveryModeProps {
 }
 
 export const RecoveryMode = ({ isActive }: RecoveryModeProps) => {
+    const statusStyles = isActive
+        ? {
+              border: 'border-red-100',
+              bg: 'bg-red-50',
+              dot: 'bg-red-500',
+              text: 'text-red-700',
+              label: 'Active',
+          }
+        : {
+              border: 'border-success-100',
+              bg: 'bg-success-50',
+              dot: 'bg-success-500',
+              text: 'text-success-700',
+              label: 'Inactive',
+          };
+
     return (
         <div className='flex flex-col items-start gap-4 tablet:flex-row tablet:items-center tablet:justify-between tablet:gap-0'>
             <div className='flex min-h-[65px] w-full flex-col items-start justify-center gap-1.5 tablet:w-[440px]'>
@@ -15,18 +31,16 @@ export const RecoveryMode = ({ isActive }: RecoveryModeProps) => {
                     to restore stability.
                 </p>
             </div>
-            <div className='flex items-center gap-1 rounded-2xl border-success-100 bg-success-50 px-2 py-1.5'>
+            <div
+                className={`flex items-center gap-1 rounded-3xl border px-2 py-1.5 ${statusStyles.border} ${statusStyles.bg}`}
+            >
                 <div
-                    className={`h-3 w-3 rounded-3xl ${
-                        isActive ? 'bg-red-500' : 'bg-success-500'
-                    }`}
+                    className={`h-3 w-3 rounded-3xl ${statusStyles.dot}`}
                 ></div>
                 <span
-                    className={
-                        'font-primary text-3.5 font-medium text-success-700'
-                    }
+                    className={`font-primary text-3.5 font-medium ${statusStyles.text}`}
                 >
-                    {isActive ? 'Active' : 'Inactive'}
+                    {statusStyles.label}
                 </span>
             </div>
         </div>
