@@ -219,9 +219,6 @@ const MobileItemExternalLink = ({
             onClick={onClick}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                <div className='flex h-5 w-5 items-center justify-center'>
-                    {icon}
-                </div>
                 <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
                     {text}
                 </p>
