@@ -136,4 +136,5 @@
   .fade-exit-active {
     @apply transition-opacity duration-300 opacity-0;
   }
+
 }

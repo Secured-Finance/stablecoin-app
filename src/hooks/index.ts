@@ -10,3 +10,4 @@ export * from './useSfStablecoinSelector';
 export * from './useSfStablecoinStore';
 export * from './useStableTroveChange';
 export * from './useTransaction';
+export * from './useAddToken';

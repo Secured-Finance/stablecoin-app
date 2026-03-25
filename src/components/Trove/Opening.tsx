@@ -7,28 +7,27 @@ import {
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React, { useEffect, useState } from 'react';
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
+import { StatCard } from 'src/components/molecules/StatCard';
 import { TokenBox } from 'src/components/molecules/TokenBox/TokenBox';
 import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
+import { openDocumentation } from 'src/constants';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
+import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
+import { Button, ButtonSizes } from '../atoms';
+import { useMyTransactionState } from '../Transaction';
+import { useTroveView } from './context/TroveViewContext';
 import { GasEstimationState } from './ExpensiveTroveChangeWarning';
 import { TroveAction } from './TroveAction';
 import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-import { useTroveView } from './context/TroveViewContext';
-import { useMyTransactionState } from '../Transaction';
-
-import { useWeb3Modal } from '@web3modal/wagmi/react';
-import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { CURRENCY } from 'src/strings';
-import { StatCard } from 'src/components/molecules/StatCard';
-import { openDocumentation } from 'src/constants';
-import { Button, ButtonSizes } from '../atoms';
-import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 
 const selector = (state: SfStablecoinStoreState) => {
     const { fees, price, accountBalance } = state;
