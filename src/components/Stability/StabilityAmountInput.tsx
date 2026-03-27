@@ -81,6 +81,7 @@ export function StabilityAmountInput({
                         onBlur={() => setEditing(false)}
                         placeholder='0.00'
                         disabled={disabled}
+                        inputMode='decimal'
                     />
                 ) : (
                     <div

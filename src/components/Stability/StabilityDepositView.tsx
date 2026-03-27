@@ -1,20 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import {
-    useSfStablecoin,
-    useSfStablecoinReducer,
-    useSfStablecoinSelector,
-} from 'src/hooks';
-import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
-import { Decimal } from '@secured-finance/stablecoin-lib-base';
+    Decimal,
+    SfStablecoinStoreState,
+} from '@secured-finance/stablecoin-lib-base';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useEffect, useState } from 'react';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
-import { COIN, CURRENCY } from 'src/strings';
 import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
 import {
     useMyTransactionState,
     useTransactionFunction,
 } from 'src/components/Transaction';
+import {
+    useSfStablecoin,
+    useSfStablecoinReducer,
+    useSfStablecoinSelector,
+} from 'src/hooks';
+import { COIN, CURRENCY } from 'src/strings';
+import { useAccount } from 'wagmi';
 
 export function StabilityDepositView() {
     const { isConnected } = useAccount();
@@ -100,6 +102,7 @@ export function StabilityDepositView() {
                         disabled={isDisabled}
                         placeholder='0.00'
                         min='0'
+                        inputMode='decimal'
                     />
                     <div className='ml-2 flex items-center'>
                         <USDFCIcon />

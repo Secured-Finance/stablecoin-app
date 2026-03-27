@@ -43,6 +43,7 @@ export function TokenPrice({
                             type='number'
                             step='any'
                             min='0'
+                            inputMode='decimal'
                             value={price}
                             onChange={e => onPriceChange?.(e.target.value)}
                             onBlur={() => setIsEditing(false)}
