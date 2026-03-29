@@ -15,6 +15,7 @@ import { AppLoader } from 'src/components/AppLoader';
 import { Icon } from 'src/components/Icon';
 import { TransactionProvider } from 'src/components/Transaction';
 import { getConfig } from 'src/configs';
+import { rpcUrls } from 'src/constants';
 import { useAsyncValue } from 'src/hooks/AsyncValue';
 import { SfStablecoinProvider } from 'src/hooks/SfStablecoinContext';
 import { SfStablecoinFrontend } from 'src/SfStablecoinFrontend';
@@ -32,7 +33,6 @@ import { filecoin, filecoinCalibration } from 'viem/chains';
 import { http, WagmiProvider } from 'wagmi';
 import '../assets/css/index.css';
 import theme from '../theme';
-import { rpcUrls } from 'src/constants';
 
 const gaTag = getGoogleAnalyticsTag();
 
@@ -105,7 +105,7 @@ if (typeof window !== 'undefined') {
 const metadata = {
     name: 'USDFC',
     description: 'Stablecoin',
-    url: 'https://app.usdfc.net/', // origin must match your domain & subdomain
+    url: 'https://legacy.usdfc.net/', // origin must match your domain & subdomain
     icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 

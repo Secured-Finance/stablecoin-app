@@ -32,12 +32,12 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
 export const NETWORK_LINKS = {
     mainnet: {
         label: 'Mainnet',
-        href: 'https://app.usdfc.net/#',
+        href: 'https://legacy.usdfc.net/#',
         key: 'mainnet',
     },
     testnet: {
         label: 'Calibration',
-        href: 'https://stg.usdfc.net/#',
+        href: 'https://stg-legacy.usdfc.net/#',
         key: 'testnet',
     },
 } as const;
