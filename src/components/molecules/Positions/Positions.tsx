@@ -8,15 +8,15 @@ import {
     CustomTooltip,
 } from 'src/components/atoms';
 import { USDFCIcon } from 'src/components/SecuredFinanceLogo';
-import { openDocumentation } from 'src/constants';
-import { CURRENCY } from 'src/strings';
-import { EmptyPosition } from '../EmptyPosition';
-import { useSfStablecoin } from 'src/hooks';
-import {
-    useTransactionFunction,
-    useMyTransactionState,
-} from '../../Transaction';
 import { TroveView } from 'src/components/Trove/context/types';
+import { openDocumentation } from 'src/constants';
+import { useSfStablecoin } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
+import {
+    useMyTransactionState,
+    useTransactionFunction,
+} from '../../Transaction';
+import { EmptyPosition } from '../EmptyPosition';
 
 interface PositionsProps {
     debtTokenInStabilityPool: Decimal;
@@ -38,7 +38,7 @@ const Card = ({
     className?: string;
 }) => (
     <div
-        className={`flex w-full max-w-[448px] flex-col gap-2 rounded-2xl border border-neutral-200 bg-white p-6 tablet:p-10 ${className}`}
+        className={`flex w-full flex-col gap-2 rounded-2xl border border-neutral-200 bg-white p-6 tablet:p-10 ${className}`}
     >
         {children}
     </div>

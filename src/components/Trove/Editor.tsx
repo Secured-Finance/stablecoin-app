@@ -262,6 +262,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                 onBlur={() => setEditing(undefined)}
                 variant='editor'
                 className='!border-none !p-0 outline-none'
+                inputMode='decimal'
             />
         </Row>
     ) : (

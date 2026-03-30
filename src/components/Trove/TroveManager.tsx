@@ -7,12 +7,14 @@ import {
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import { useEffect } from 'react';
+import FILIcon from 'src/assets/icons/filecoin-network.svg';
 import { Button } from 'src/components/atoms';
 import {
     SfStablecoinStoreUpdate,
     useSfStablecoinReducer,
     useSfStablecoinSelector,
 } from 'src/hooks';
+import { USDFCIcon } from '../SecuredFinanceLogo';
 import { useMyTransactionState } from '../Transaction';
 import { useTroveView } from './context/TroveViewContext';
 import { TroveAction } from './TroveAction';
@@ -20,8 +22,6 @@ import {
     selectForTroveChangeValidation,
     validateTroveChange,
 } from './validation/validateTroveChange';
-import { USDFCIcon } from '../SecuredFinanceLogo';
-import FILIcon from 'src/assets/icons/filecoin-network.svg';
 const init = ({ trove }: SfStablecoinStoreState) => ({
     original: trove,
     edited: new Trove(trove.collateral, trove.debt),
@@ -233,6 +233,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             value={debt?.toString()}
                             readOnly
                             className='h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 text-xl font-bold'
+                            inputMode='decimal'
                         />
                         <div className='ml-4 flex items-center gap-2'>
                             <USDFCIcon />
@@ -253,6 +254,7 @@ export const TroveManager: React.FC<TroveManagerProps> = ({
                             value='331.24'
                             readOnly
                             className='h-12 flex-1 rounded-md border border-[#e3e3e3] bg-white px-3 py-2 text-xl font-bold'
+                            inputMode='decimal'
                         />
                         <div className='ml-4 flex items-center gap-2'>
                             <FILIcon className='h-4 w-4' />

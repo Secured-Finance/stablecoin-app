@@ -63,7 +63,7 @@ export const Dashboard: React.FC = () => {
 
     const checkIfTokenAdded = useCallback(() => {
         if (!addresses.debtToken) return false;
-        return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
+        return localStorage.getItem(`token_${addresses.debtToken}`) === 'true';
     }, [addresses.debtToken]);
 
     const dismissTokenBanner = () => {
@@ -84,6 +84,7 @@ export const Dashboard: React.FC = () => {
         const tokenAdded = checkIfTokenAdded();
         setIsTokenAdded(tokenAdded);
     }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
+
     return (
         <div className='flex w-full flex-col'>
             <div className='flex flex-col px-4 py-3'>
