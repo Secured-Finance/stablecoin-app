@@ -15,6 +15,7 @@ on:
           - 'production'
           - 'legacy' # legacy-prod
           - 'stg-legacy' # legacy-stg
+          - 'ci-build'
       ref:
         description: 'Branch, tag or commit to deploy'
         required: true
