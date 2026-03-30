@@ -1,6 +1,7 @@
 import { IconName, IconProp, library } from '@fortawesome/fontawesome-svg-core';
 import {
     faDiscord,
+    faGithub,
     faMedium,
     faXTwitter,
 } from '@fortawesome/free-brands-svg-icons';
@@ -78,7 +79,7 @@ library.add(
     faArrowDown
 );
 
-library.add(faXTwitter, faMedium, faDiscord);
+library.add(faXTwitter, faMedium, faDiscord, faGithub);
 
 const getIcon = (name: IconName): IconProp => {
     switch (name) {
@@ -92,6 +93,8 @@ const getIcon = (name: IconName): IconProp => {
             return ['fab', 'medium'];
         case 'discord':
             return ['fab', 'discord'];
+        case 'github':
+            return ['fab', 'github'];
         default:
             return name;
     }

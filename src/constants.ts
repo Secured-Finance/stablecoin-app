@@ -1,20 +1,26 @@
-export const LINKS = [
+export const HEADER_LINKS = [
     {
         to: '/',
         label: 'Dashboard',
     },
     {
-        to: '/risky-troves',
-        label: 'Risky Troves',
+        to: '/trove',
+        label: 'Trove',
     },
     {
-        to: '/bridge',
-        label: 'Bridge',
+        to: '/stability-pool',
+        label: 'Stability Pool',
     },
+    // {
+    //     to: '/stake',
+    //     label: 'Stake SFC',
+    // },
 ];
 
 export const DOCUMENTATION_LINK =
     'https://docs.secured.finance/stablecoin-protocol-guide';
+
+const USDFC_DOCS_BASE = 'https://docs.secured.finance/usdfc-stablecoin';
 
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
@@ -22,6 +28,18 @@ export const DOCUMENTATION_LINKS = {
     liquidation: `${DOCUMENTATION_LINK}/key-features/stability-pool-and-liquidation#what-are-liquidations`,
     redemption: `${DOCUMENTATION_LINK}/key-features/redemption`,
     recoveryMode: `${DOCUMENTATION_LINK}/key-features/recovery-mode`,
+    troveSystem: `${USDFC_DOCS_BASE}/core-mechanics/the-trove-system`,
+    stabilityPool: `${USDFC_DOCS_BASE}/getting-started/using-the-stability-pool`,
+    collateralRatio: `${USDFC_DOCS_BASE}/getting-started/monitoring-your-position#collateral-ratio`,
+    liquidationMechanics: `${USDFC_DOCS_BASE}/core-mechanics/liquidation`,
+    liquidationReserve: `${USDFC_DOCS_BASE}/core-mechanics/mint-and-borrow#id-1.-liquidation-reserve`,
+    borrowingFee: `${USDFC_DOCS_BASE}/core-mechanics/the-trove-system#debt-calculations`,
+};
+
+export const openDocumentation = (
+    section: keyof typeof DOCUMENTATION_LINKS
+) => {
+    window.open(DOCUMENTATION_LINKS[section], '_blank');
 };
 
 export const BLOCKCHAIN_EXPLORER_LINKS = {
@@ -29,20 +47,11 @@ export const BLOCKCHAIN_EXPLORER_LINKS = {
     testnet: 'https://calibration.filfox.info',
 };
 
-export const NETWORK_LINKS = {
-    mainnet: {
-        label: 'Mainnet',
-        href: 'https://legacy.usdfc.net/#',
-        key: 'mainnet',
-    },
-    testnet: {
-        label: 'Calibration',
-        href: 'https://stg-legacy.usdfc.net/#',
-        key: 'testnet',
-    },
-} as const;
+export const NETWORK_SWITCH_LINKS = {
+    mainnet: 'https://app.usdfc.net/#',
+    testnet: 'https://stg.usdfc.net/#',
+};
 
-export type NetworkKey = keyof typeof NETWORK_LINKS;
 export const PYTH_ORACLE_LINK =
     'https://www.pyth.network/price-feeds/crypto-fil-usd';
 
@@ -57,3 +66,28 @@ export const rpcUrls = {
     mainnet: `https://rpc.ankr.com/filecoin/${ankerApiKey}`,
     testnet: `https://rpc.ankr.com/filecoin_testnet/${ankerApiKey}`,
 };
+
+export const coinGeckoUrl = 'https://www.coingecko.com/en/coins/usdfc';
+
+export const SOCIAL_LINKS = [
+    {
+        href: 'https://github.com/Secured-Finance/stablecoin-app',
+        iconName: 'github',
+        ariaLabel: 'GitHub',
+    },
+    {
+        href: 'https://discord.gg/3kytCrv3qY',
+        iconName: 'discord',
+        ariaLabel: 'Discord',
+    },
+    {
+        href: 'https://x.com/USDFC_Protocol',
+        iconName: 'x-twitter',
+        ariaLabel: 'Twitter',
+    },
+    {
+        href: 'https://blog.secured.finance/',
+        iconName: 'medium',
+        ariaLabel: 'Medium',
+    },
+];

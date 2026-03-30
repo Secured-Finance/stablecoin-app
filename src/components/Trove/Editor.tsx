@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import ArrowRight from 'src/assets/icons/arrow-right.svg';
-import { Button, ButtonSizes } from 'src/components/atoms';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { Flex, Input, SxProp, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
 
@@ -262,6 +262,7 @@ export const EditableRow: React.FC<EditableRowProps> = ({
                 onBlur={() => setEditing(undefined)}
                 variant='editor'
                 className='!border-none !p-0 outline-none'
+                inputMode='decimal'
             />
         </Row>
     ) : (
@@ -278,7 +279,8 @@ export const EditableRow: React.FC<EditableRowProps> = ({
             >
                 {maxAmount && (
                     <Button
-                        size={ButtonSizes.xs}
+                        size={ButtonSizes.pill}
+                        variant={ButtonVariants.pill}
                         onClick={event => {
                             setEditedAmount(maxAmount);
                             event.stopPropagation();

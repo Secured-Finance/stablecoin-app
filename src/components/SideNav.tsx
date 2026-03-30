@@ -7,18 +7,22 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import ArrowDownSimple from 'src/assets/icons/arrow-down-simple.svg';
 import MenuIcon from 'src/assets/icons/menu.svg';
 import XIcon from 'src/assets/icons/x.svg';
-import { LINKS, NETWORK_LINKS } from 'src/constants';
-import { getCurrentNetworkKey, LinkList } from 'src/utils';
+import { HEADER_LINKS } from 'src/constants';
+import { getLinkList } from 'src/utils';
+import { navigateToTop } from 'src/utils/navigation';
 import { UrlObject } from 'url';
 import { SecuredFinanceLogo } from './SecuredFinanceLogo';
 
 export const SideNav: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [viewportScrollPosition, setViewportScrollPosition] = useState(0);
+    const linkList = getLinkList();
 
     const overlay = useRef<HTMLDivElement>(null);
 
@@ -27,6 +31,18 @@ export const SideNav: React.FC = () => {
     const availableNetworks = Object.values(NETWORK_LINKS).filter(
         net => net.key !== currentKey
     );
+
+    React.useEffect(() => {
+        if (isVisible) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isVisible]);
 
     const handleOutsideClick = (
         e:
@@ -38,21 +54,19 @@ export const SideNav: React.FC = () => {
         }
     };
 
-    if (!isVisible) {
-        return (
-            <button
-                onClick={() => setIsVisible(true)}
-                className='flex items-center justify-center laptop:hidden'
-            >
-                <MenuIcon className='h-6 w-6' />
-            </button>
-        );
-    }
-    return (
+    const overlayContent = isVisible && (
         <div
             ref={overlay}
             tabIndex={0}
-            className='fixed inset-0 z-50 h-screen w-screen bg-neutral-600/50 laptop:hidden'
+            className='fixed left-0 top-0 z-50 w-screen bg-neutral-600/50 laptop:hidden'
+            style={{
+                height:
+                    Math.max(
+                        document.documentElement.scrollHeight,
+                        document.body.scrollHeight,
+                        window.innerHeight
+                    ) + 'px',
+            }}
             onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     handleOutsideClick(e);
@@ -61,7 +75,14 @@ export const SideNav: React.FC = () => {
             role='button'
             onClick={handleOutsideClick}
         >
-            <aside className='flex h-full w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'>
+            <aside
+                className='fixed left-0 flex w-3/4 min-w-[280px] flex-col gap-8 bg-neutral-50 p-4 shadow-sidenav'
+                style={{
+                    top: `${viewportScrollPosition}px`,
+                    height: '100vh',
+                    zIndex: 60,
+                }}
+            >
                 <div className='flex items-center justify-between'>
                     <SecuredFinanceLogo />
                     <button onClick={() => setIsVisible(false)}>
@@ -69,7 +90,7 @@ export const SideNav: React.FC = () => {
                     </button>
                 </div>
                 <div className='flex flex-col items-start gap-4'>
-                    {LINKS.map(link => (
+                    {HEADER_LINKS.map(link => (
                         <NavLink
                             key={link.label}
                             to={link.to}
@@ -79,7 +100,9 @@ export const SideNav: React.FC = () => {
                                     'text-primary-500': pathname === link.to,
                                 }
                             )}
-                            onClick={() => setIsVisible(false)}
+                            onClick={() =>
+                                navigateToTop(() => setIsVisible(false))
+                            }
                         >
                             {link.label}
                         </NavLink>
@@ -106,26 +129,18 @@ export const SideNav: React.FC = () => {
                     </button>
                     {showMore && (
                         <div className='w-full'>
-                            <div className='flex gap-2 px-3 py-[11px] laptop:hidden'>
-                                {availableNetworks.map(
-                                    ({ key, label, href }) => (
-                                        <a key={key} href={href}>
-                                            <span className='typography-desktop-body-3 font-semibold text-neutral-800'>
-                                                {label}
-                                            </span>
-                                        </a>
-                                    )
-                                )}
-                            </div>
-
-                            {LinkList.map(link =>
+                            {linkList.map(link =>
                                 link.isExternal ? (
                                     <MobileItemExternalLink
                                         key={link.text}
                                         text={link.text}
                                         icon={link.icon}
                                         link={link.href}
-                                        onClick={() => setIsVisible(false)}
+                                        onClick={() =>
+                                            navigateToTop(() =>
+                                                setIsVisible(false)
+                                            )
+                                        }
                                     />
                                 ) : (
                                     <MobileItemLink
@@ -133,7 +148,11 @@ export const SideNav: React.FC = () => {
                                         text={link.text}
                                         label={link.text}
                                         link={link.href}
-                                        onClick={() => setIsVisible(false)}
+                                        onClick={() =>
+                                            navigateToTop(() =>
+                                                setIsVisible(false)
+                                            )
+                                        }
                                         isActive={pathname === link.href}
                                     />
                                 )
@@ -143,6 +162,24 @@ export const SideNav: React.FC = () => {
                 </div>
             </aside>
         </div>
+    );
+
+    return (
+        <>
+            <button
+                onClick={() => {
+                    setViewportScrollPosition(window.scrollY);
+                    setIsVisible(true);
+                }}
+                className='flex items-center justify-center laptop:hidden'
+                aria-label='Open menu'
+            >
+                <MenuIcon className='h-6 w-6' />
+            </button>
+            {typeof document !== 'undefined' &&
+                overlayContent &&
+                createPortal(overlayContent, document.body)}
+        </>
     );
 };
 
@@ -186,14 +223,12 @@ const MobileItemExternalLink = ({
             onClick={onClick}
         >
             <div className='flex w-full cursor-pointer items-center gap-2'>
-                {icon && (
-                    <div className='flex h-5 w-5 items-center justify-center'>
-                        {icon}
-                    </div>
-                )}
                 <p className='typography-desktop-body-3 font-semibold text-neutral-800'>
                     {text}
                 </p>
+                <div className='flex h-5 w-5 items-center justify-center'>
+                    {icon}
+                </div>
             </div>
         </NextLink>
     );
