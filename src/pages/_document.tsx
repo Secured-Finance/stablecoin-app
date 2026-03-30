@@ -19,7 +19,7 @@ export default function Document() {
                             name: 'USDFC',
                             applicationCategory: 'FinanceApplication',
                             operatingSystem: 'iOS, Android, Web',
-                            url: 'https://app.usdfc.net/',
+                            url: 'https://legacy.usdfc.net/',
                         }),
                     }}
                 />
