@@ -85,7 +85,7 @@ export const TransactionStatus: React.FC<TransactionStatusProps> = ({
     return (
         <div
             className={clsx(
-                'fixed bottom-0 left-0 flex w-full items-center gap-2 overflow-hidden px-5 py-4',
+                'sticky bottom-0 z-50 flex w-full items-center gap-2 overflow-hidden px-5 py-4',
                 {
                     'bg-[#D4FCD8]': state === 'confirmed',
                     'bg-warning-300': state === 'cancelled',

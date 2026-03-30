@@ -1,25 +1,63 @@
+import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { PriceManager } from 'src/components/PriceManager';
-import { Stability } from 'src/components/Stability/Stability';
-import { SystemStats } from 'src/components/SystemStats';
-import { Trove } from 'src/components/Trove/Trove';
 import { Alert } from 'src/components/atoms';
+import {
+    FeatureCardsOrPositions,
+    ProtocolOverview,
+} from 'src/components/organisms';
+import { init, reduce } from 'src/components/Stability/StabilityDepositManager';
+import { useTroveView } from 'src/components/Trove/context/TroveViewContext';
+import {
+    useAddToken,
+    useSfStablecoin,
+    useSfStablecoinReducer,
+    useSfStablecoinSelector,
+} from 'src/hooks';
 import { COIN } from 'src/strings';
 import { getFixedIncomeMarketLink } from 'src/utils';
 import { useAccount } from 'wagmi';
 import { useAddToken, useSfStablecoin } from 'src/hooks';
 import { X } from 'lucide-react';
 
-export const Dashboard: React.FC = () => {
-    const { isConnected, address } = useAccount();
-    const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
+const select = ({
+    numberOfTroves,
+    price,
+    total,
+    debtTokenInStabilityPool,
+    borrowingRate,
+    redemptionRate,
+    totalStakedProtocolToken,
+    frontend,
+    trove,
+}: SfStablecoinStoreState) => ({
+    numberOfTroves,
+    price,
+    total,
+    debtTokenInStabilityPool,
+    borrowingRate,
+    redemptionRate,
+    totalStakedProtocolToken,
+    kickbackRate:
+        frontend.status === 'registered' ? frontend.kickbackRate : null,
+    trove,
+});
 
+export const Dashboard: React.FC = () => {
+    const data = useSfStablecoinSelector(select);
     const {
         sfStablecoin: {
-            connection: { addresses },
+            connection: { deploymentDate, addresses, chainId },
         },
     } = useSfStablecoin();
+    const contextData = { deploymentDate, addresses, chainId };
+
+    const [{ originalDeposit }] = useSfStablecoinReducer(reduce, init);
+    const { view } = useTroveView();
+
+    const { isConnected, address } = useAccount();
+    const [isTokenAdded, setIsTokenAdded] = useState<boolean | null>(null);
 
     const { addToken } = useAddToken({
         debtToken: addresses.debtToken,
@@ -27,7 +65,7 @@ export const Dashboard: React.FC = () => {
 
     const checkIfTokenAdded = useCallback(() => {
         if (!addresses.debtToken) return false;
-        return Boolean(localStorage.getItem(`token_${addresses.debtToken}`));
+        return localStorage.getItem(`token_${addresses.debtToken}`) === 'true';
     }, [addresses.debtToken]);
 
     const dismissTokenBanner = () => {
@@ -50,64 +88,61 @@ export const Dashboard: React.FC = () => {
     }, [isConnected, address, addresses.debtToken, checkIfTokenAdded]);
 
     return (
-        <section className='w-full'>
-            <section className='mx-auto w-full pt-5 laptop:pt-6'>
+        <div className='flex w-full flex-col'>
+            <div className='flex flex-col px-4 py-3'>
                 {!isConnected ? (
                     <Alert color='info'>
                         Connect Wallet to start using {COIN}.
                     </Alert>
+                ) : isTokenAdded ? (
+                    <Alert color='info'>
+                        Use {COIN} to earn stable yield in the{' '}
+                        <Link
+                            className='font-semibold text-primary-500'
+                            href={getFixedIncomeMarketLink()}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label='Fixed Income'
+                        >
+                            Fixed Income market
+                        </Link>
+                        .
+                    </Alert>
                 ) : (
-                    <div className='flex flex-col gap-2'>
-                        {isTokenAdded ? (
-                            <Alert color='info'>
-                                Use {COIN} to earn stable yield in the{' '}
-                                <Link
-                                    className='font-semibold text-primary-500'
-                                    href={getFixedIncomeMarketLink()}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    aria-label='Fixed Income'
-                                >
-                                    Fixed Income market
-                                </Link>
-                                .
-                            </Alert>
-                        ) : (
-                            <div className='relative flex flex-col gap-2'>
-                                <Alert color='info'>
-                                    Add {COIN} to Wallet,&nbsp;
-                                    <button
-                                        className='font-semibold text-primary-500'
-                                        onClick={handleAddToken}
-                                    >
-                                        Click here
-                                    </button>
-                                    <button
-                                        className='absolute right-2 top-2 mt-1 flex h-4 w-4 items-center justify-center text-gray-500 hover:text-gray-700'
-                                        onClick={dismissTokenBanner}
-                                        aria-label='Dismiss'
-                                    >
-                                        <X className='h-4 w-4' />
-                                    </button>
-                                </Alert>
-                            </div>
-                        )}
+                    <div className='relative'>
+                        <Alert color='info'>
+                            Add {COIN} to Wallet,&nbsp;
+                            <button
+                                className='font-semibold text-primary-500'
+                                onClick={handleAddToken}
+                            >
+                                Click here
+                            </button>
+                            <button
+                                className='absolute right-2 top-2 mt-1 flex h-4 w-4 items-center justify-center text-gray-500 hover:text-gray-700'
+                                onClick={dismissTokenBanner}
+                                aria-label='Dismiss'
+                            >
+                                <X className='h-4 w-4' />
+                            </button>
+                        </Alert>
                     </div>
                 )}
-            </section>
+            </div>
 
-            <section className='mx-auto flex w-full flex-col items-start gap-6 pt-5 laptop:flex-row laptop:gap-5 laptop:pt-6'>
-                <div className='mx-auto flex w-full flex-col gap-6 laptop:w-[58%]'>
-                    <Trove />
-                    <Stability />
-                </div>
-                <aside className='flex w-full flex-col gap-5 laptop:w-[42%]'>
-                    <div className='hidden laptop:block'>
-                        <SystemStats />
-                    </div>
-                    <PriceManager />
-                </aside>
-            </section>
-        </section>
+            <div className='flex w-full flex-col gap-12 px-4 py-2'>
+                <FeatureCardsOrPositions
+                    data={{
+                        isConnected,
+                        debtTokenInStabilityPool: data.debtTokenInStabilityPool,
+                        trove: data.trove,
+                        price: data.price,
+                        originalDeposit,
+                        troveView: view,
+                    }}
+                />
+                <ProtocolOverview data={data} contextData={contextData} />
+            </div>
+        </div>
     );
 };

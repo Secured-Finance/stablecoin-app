@@ -10,6 +10,8 @@ export const variantStyle: { [key in ButtonVariants]: string } = {
         'border-primary-500 bg-transparent text-primary-500 hover:border-primary-700 hover:text-primary-700 active:border-primary-500 active:bg-primary-300/10 active:text-primary-500 disabled:border-primary-500/30 disabled:text-primary-500/30 disabled:bg-transparent',
     [ButtonVariants.tertiary]:
         'border-neutral-600 bg-transparent text-neutral-900 hover:border-neutral-300 active:border-neutral-500 active:bg-neutral-100 active:text-neutral-600 disabled:border-neutral-200 disabled:bg-neutral-50 disabled:text-neutral-300',
+    [ButtonVariants.pill]:
+        'border-transparent bg-neutral-150 text-neutral-900 hover:bg-neutral-200 active:bg-neutral-250',
 };
 
 export const sizeStyle: { [key in ButtonSizes]: string } = {
@@ -18,6 +20,9 @@ export const sizeStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.sm]: 'rounded-md px-3 py-2',
     [ButtonSizes.md]: 'rounded-md px-3.5 py-2.5',
     [ButtonSizes.lg]: 'rounded-lg py-3 px-5',
+    [ButtonSizes.xl]: 'h-12 p-4 laptop:h-[72px] laptop:p-6',
+    [ButtonSizes.pill]: 'rounded-full px-1.5 py-1',
+    [ButtonSizes.wallet]: 'rounded-full h-[43px] px-4',
 };
 
 export const textStyle: { [key in ButtonSizes]: string } = {
@@ -26,4 +31,8 @@ export const textStyle: { [key in ButtonSizes]: string } = {
     [ButtonSizes.sm]: 'text-3 leading-3.5',
     [ButtonSizes.md]: 'text-3.5 leading-4.5',
     [ButtonSizes.lg]: 'text-4 leading-5',
+    [ButtonSizes.xl]:
+        'text-4 leading-5 font-semibold font-primary laptop:text-5 laptop:leading-6',
+    [ButtonSizes.pill]: 'text-3 leading-3.75 font-medium',
+    [ButtonSizes.wallet]: 'text-4 leading-[19px] font-semibold',
 };

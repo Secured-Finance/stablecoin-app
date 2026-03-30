@@ -16,10 +16,12 @@ import {
 } from '@secured-finance/stablecoin-lib-ethers';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-import { Tooltip } from 'src/components/atoms';
+import { Tooltip, TransactionModal } from 'src/components/atoms';
+import { BLOCKCHAIN_EXPLORER_LINKS } from 'src/constants';
 import { useSfStablecoin } from 'src/hooks';
+import { isProdEnv } from 'src/utils';
 import type { TooltipProps } from './Tooltip';
-import { TransactionStatus } from './TransactionStatus';
+import { useChainId } from 'wagmi';
 
 type TransactionIdle = {
     type: 'idle';
@@ -266,6 +268,7 @@ const tryToGetRevertReason = async (
 export const TransactionMonitor: React.FC = () => {
     const { provider } = useSfStablecoin();
     const [transactionState, setTransactionState] = useTransactionState();
+    const chainId = useChainId();
 
     const id =
         transactionState.type !== 'idle' ? transactionState.id : undefined;
@@ -273,6 +276,76 @@ export const TransactionMonitor: React.FC = () => {
         transactionState.type === 'waitingForConfirmation'
             ? transactionState.tx
             : undefined;
+
+    const getTransactionHash = () => {
+        return tx?.rawSentTransaction.hash;
+    };
+
+    const getExplorerUrl = () => {
+        const isMainnet = chainId === 314 || isProdEnv();
+        return isMainnet
+            ? BLOCKCHAIN_EXPLORER_LINKS.mainnet
+            : BLOCKCHAIN_EXPLORER_LINKS.testnet;
+    };
+
+    const handleViewTransaction = () => {
+        const hash = getTransactionHash();
+        if (hash) {
+            const explorerUrl = getExplorerUrl();
+            window.open(`${explorerUrl}/tx/${hash}`, '_blank');
+        }
+    };
+
+    const getModalProps = () => {
+        switch (transactionState.type) {
+            case 'waitingForApproval':
+                return {
+                    type: 'confirm' as const,
+                    title: 'Confirm in Your Wallet',
+                    description:
+                        'Please confirm the transaction in your wallet to proceed. If no prompt appears, check your connection and try again.',
+                };
+            case 'waitingForConfirmation':
+                return {
+                    type: 'processing' as const,
+                    title: 'Transaction Processing',
+                    description:
+                        'Your transaction is being processed. This may take 1 to 2 minutes to complete.',
+                    transactionHash: getTransactionHash(),
+                    onViewTransaction: handleViewTransaction,
+                };
+            case 'confirmedOneShot':
+            case 'confirmed':
+                return {
+                    type: 'confirmed' as const,
+                    title: 'Transaction Confirmed',
+                    description:
+                        'Your transaction has been successfully confirmed.',
+                    transactionHash: getTransactionHash(),
+                    onViewTransaction: handleViewTransaction,
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            case 'failed':
+                return {
+                    type: 'failed' as const,
+                    title: 'Transaction Failed',
+                    description: (transactionState as TransactionFailed).error
+                        .message,
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            case 'cancelled':
+                return {
+                    type: 'failed' as const,
+                    title: 'Transaction Cancelled',
+                    description: 'The transaction was cancelled.',
+                    onClose: () => setTransactionState({ type: 'idle' }),
+                };
+            default:
+                return null;
+        }
+    };
+
+    const modalProps = getModalProps();
 
     useEffect(() => {
         if (id && tx) {
@@ -364,44 +437,9 @@ export const TransactionMonitor: React.FC = () => {
         }
     }, [provider, id, tx, setTransactionState]);
 
-    useEffect(() => {
-        if (transactionState.type === 'confirmedOneShot' && id) {
-            // hack: the txn confirmed state lasts 5 seconds which blocks other states, review with Dani
-            setTransactionState({ type: 'confirmed', id });
-        } else if (
-            transactionState.type === 'confirmed' ||
-            transactionState.type === 'failed' ||
-            transactionState.type === 'cancelled'
-        ) {
-            let cancelled = false;
-
-            setTimeout(() => {
-                if (!cancelled) {
-                    setTransactionState({ type: 'idle' });
-                }
-            }, 5000);
-
-            return () => {
-                cancelled = true;
-            };
-        }
-    }, [transactionState.type, setTransactionState, id]);
-
-    if (
-        transactionState.type === 'idle' ||
-        transactionState.type === 'waitingForApproval'
-    ) {
+    if (transactionState.type === 'idle' || !modalProps) {
         return null;
     }
 
-    return (
-        <TransactionStatus
-            state={transactionState.type}
-            message={
-                transactionState.type === 'failed'
-                    ? transactionState.error.message
-                    : undefined
-            }
-        />
-    );
+    return <TransactionModal isOpen={true} {...modalProps} />;
 };

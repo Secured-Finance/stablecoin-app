@@ -1,0 +1,9 @@
+{
+    "sites": [
+      {
+        "slug": "dev-stablecoin-v1",
+        "distDir": ".deploy/dev-v1/build",
+        "buildCommand": ""
+      }
+    ]
+  }

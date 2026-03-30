@@ -8,3 +8,11 @@ export const SecuredFinanceLogo = () => (
         <USDFCLogoSmall className='flex h-[25px] w-[25px] desktop:hidden' />
     </NavLink>
 );
+
+export const USDFCIcon = ({ className }: { className?: string }) => (
+    <USDFCLogoSmall className={className} />
+);
+
+export const USDFCIconLarge = () => (
+    <USDFCLogoSmall className='h-[34px] w-[34px]' />
+);

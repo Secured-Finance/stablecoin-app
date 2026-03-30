@@ -1,0 +1,9 @@
+{
+    "sites": [
+      {
+        "slug": "stg-stablecoin-v1",
+        "distDir": ".deploy/stg-v1/build",
+        "buildCommand": ""
+      }
+    ]
+  }

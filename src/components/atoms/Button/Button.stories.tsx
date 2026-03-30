@@ -2,6 +2,7 @@ import type { Meta, StoryFn } from '@storybook/react';
 import { Button } from './';
 import { FIGMA_STORYBOOK_LINK } from './constants';
 import { ButtonSizes, ButtonVariants } from './types';
+import { MemoryRouter } from 'react-router-dom';
 
 export default {
     title: 'Atoms/Button',
@@ -29,7 +30,9 @@ export default {
 } as Meta<typeof Button>;
 
 const Template: StoryFn<typeof Button> = args => (
-    <Button {...args}>{args.children}</Button>
+    <MemoryRouter>
+        <Button {...args}>{args.children}</Button>
+    </MemoryRouter>
 );
 
 export const Default = () => {

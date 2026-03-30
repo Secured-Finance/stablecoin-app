@@ -17,7 +17,7 @@ export function useAddToken({ debtToken }: UseAddTokenParams) {
                 address: debtToken,
                 symbol: COIN,
                 decimals: 18,
-                image: 'https://legacy.usdfc.net/apple-touch-icon.png',
+                image: 'https://app.usdfc.net/apple-touch-icon.png',
             },
         });
 
