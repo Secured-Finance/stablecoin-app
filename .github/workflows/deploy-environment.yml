@@ -9,14 +9,12 @@ on:
         default: 'uat'
         type: choice
         options:
-          - 'uat' # uat-v1
-          - 'uat-v2'
-          - 'staging' # staging-v1
-          - 'staging-v2'
-          - 'development' # development-v1
-          - 'development-v2'
-          - 'production' # production-v1
-          - 'production-v2'
+          - 'uat'
+          - 'staging'
+          - 'development'
+          - 'production'
+          - 'legacy' # legacy-prod
+          - 'stg-legacy' # legacy-stg
           - 'ci-build'
       ref:
         description: 'Branch, tag or commit to deploy'
@@ -67,7 +65,6 @@ jobs:
           path: ./build
           service: filebase
           pinName: 'build'
-          # pinName: '${{ vars.FILEBASE_ENV }}-deployment-${{ steps.timestamp.outputs.time }}'
           filebaseBucket: ${{ vars.FILEBASE_BUCKET }}
           filebaseKey: ${{ secrets.FILEBASE_KEY }}
           filebaseSecret: ${{ secrets.FILEBASE_SECRET }}
