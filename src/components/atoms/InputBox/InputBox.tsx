@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
+import React, { useEffect, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from '../index';
 
 interface InputBoxProps {
@@ -109,6 +109,7 @@ export const InputBox = ({
                             disabled={disabled}
                             readOnly={readOnly}
                             placeholder='0.00'
+                            inputMode='decimal'
                         />
                     ) : (
                         <div

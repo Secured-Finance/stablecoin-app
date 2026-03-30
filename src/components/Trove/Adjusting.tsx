@@ -2,20 +2,24 @@ import {
     Decimal,
     Difference,
     LIQUIDATION_RESERVE,
+    Percent,
     SfStablecoinStoreState,
     Trove,
 } from '@secured-finance/stablecoin-lib-base';
 import React, { useEffect, useRef, useState } from 'react';
 import FILIcon from 'src/assets/icons/filecoin-network.svg';
-import { CURRENCY } from 'src/strings';
 import {
     Button,
     ButtonSizes,
     InputBox,
     TabSwitcher,
 } from 'src/components/atoms';
+import { StatCard } from 'src/components/molecules/StatCard';
+import { openDocumentation } from 'src/constants';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
+import { useAccount } from 'wagmi';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
 import { useMyTransactionState } from '../Transaction';
@@ -95,6 +99,7 @@ const applyUnsavedNetDebtChanges = (
 };
 
 export const Adjusting: React.FC = () => {
+    const { isConnected } = useAccount();
     const { dispatchEvent } = useTroveView();
     const { trove, fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
@@ -115,6 +120,7 @@ export const Adjusting: React.FC = () => {
 
     const transactionState = useMyTransactionState(TRANSACTION_ID);
     const borrowingRate = fees.borrowingRate();
+    const feePct = new Percent(borrowingRate);
 
     // Calculate max collateral including current trove collateral + available account balance minus gas room
     const maxCollateral = trove.collateral.add(
@@ -367,60 +373,119 @@ export const Adjusting: React.FC = () => {
                     </div>
 
                     <div className='mb-6 space-y-4'>
-                        <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                            <div className='flex items-start justify-between'>
-                                <div className='max-w-[60%] text-sm text-gray-500'>
-                                    <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
-                                        New Collateral Ratio
-                                    </h3>
-                                    The ratio of deposited {CURRENCY} to
-                                    borrowed USDFC. If it falls below 110% (or
-                                    150% in Recovery Mode), liquidation may
-                                    occur.
-                                </div>
-                                <p className='text-left font-bold tablet:text-right'>
-                                    {collateralRatio
+                        <StatCard
+                            title='Collateral Ratio'
+                            description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.`}
+                            value={
+                                <p className='text-right font-bold'>
+                                    {!isConnected
+                                        ? 'N/A'
+                                        : collateralRatio
                                         ? `${collateralRatio
                                               .mul(100)
                                               .prettify(DEBT_TOKEN_PRECISION)}%`
-                                        : 'N/A'}
+                                        : '150%'}
                                 </p>
-                            </div>
-                        </div>
+                            }
+                            tooltip={{
+                                title: 'Collateral Ratio',
+                                description: `The ratio of deposited ${CURRENCY} to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.`,
+                                onButtonClick: () =>
+                                    openDocumentation('collateralRatio'),
+                            }}
+                        />
 
-                        <div className='rounded-xl border border-neutral-9 bg-white p-6'>
-                            <div className='flex flex-col gap-4 tablet:flex-row tablet:items-start tablet:justify-between tablet:gap-0'>
-                                <div className='text-sm text-gray-500 tablet:max-w-[60%]'>
-                                    <h3 className='mb-1 text-left text-sm font-bold text-gray-500'>
-                                        New Liquidation Risk
-                                    </h3>
-                                    The risk of losing your {CURRENCY}{' '}
-                                    collateral if your Collateral Ratio drops
-                                    below 110% under normal conditions or 150%
-                                    in Recovery Mode.
+                        <StatCard
+                            title='Liquidation Risk'
+                            description={`The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`}
+                            value={
+                                !isConnected ? (
+                                    <p className='text-right font-medium'>
+                                        N/A
+                                    </p>
+                                ) : (
+                                    <div className='flex items-center justify-end'>
+                                        <div
+                                            className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
+                                            style={{
+                                                padding: '6px 12px 6px 6px',
+                                                gap: '6px',
+                                            }}
+                                        >
+                                            <div
+                                                className={`rounded-full ${liquidationRisk.dotStyle}`}
+                                                style={{
+                                                    width: '16px',
+                                                    height: '16px',
+                                                }}
+                                            ></div>
+                                            <span
+                                                className={
+                                                    liquidationRisk.textStyle
+                                                }
+                                            >
+                                                {liquidationRisk.text}
+                                            </span>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            tooltip={{
+                                title: 'Liquidation Risk',
+                                description: `The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`,
+                                onButtonClick: () =>
+                                    openDocumentation('liquidationMechanics'),
+                            }}
+                        />
+
+                        <StatCard
+                            title='Liquidation Reserve'
+                            description="An amount added to your debt to cover liquidator gas costs in case your Trove is liquidated. It's refunded if you fully repay your debt and close your Trove."
+                            value={
+                                <div className='flex items-center justify-end gap-1'>
+                                    <span className='font-bold'>
+                                        {LIQUIDATION_RESERVE.prettify(
+                                            DEBT_TOKEN_PRECISION
+                                        )}
+                                    </span>
+                                    <USDFCIcon />
+                                    <span>USDFC</span>
                                 </div>
-                                <div
-                                    className={`inline-flex items-center rounded-full ${liquidationRisk.containerStyle}`}
-                                    style={{
-                                        padding: '6px 12px 6px 6px',
-                                        gap: '6px',
-                                    }}
-                                >
-                                    <div
-                                        className={`rounded-full ${liquidationRisk.dotStyle}`}
-                                        style={{
-                                            width: '16px',
-                                            height: '16px',
-                                        }}
-                                    ></div>
-                                    <span
-                                        className={`${liquidationRisk.textStyle} whitespace-normal`}
-                                    >
-                                        {liquidationRisk.text}
+                            }
+                            tooltip={{
+                                title: 'Liquidation Reserve',
+                                description:
+                                    'A small deposit set aside when opening a trove. It ensures funds are available for liquidation costs and is refunded upon full repayment.',
+                                onButtonClick: () =>
+                                    openDocumentation('liquidationReserve'),
+                            }}
+                        />
+
+                        <StatCard
+                            title='Borrowing Fee'
+                            description={`A one-time ${feePct.prettify()} fee charged when borrowing USDFC, added to the loan balance.`}
+                            value={
+                                <div className='flex flex-col items-end tablet:flex-row tablet:items-center tablet:justify-end tablet:gap-1'>
+                                    <div className='flex items-center gap-1'>
+                                        <span className='font-bold'>
+                                            {fee.prettify(DEBT_TOKEN_PRECISION)}
+                                        </span>
+                                        <USDFCIcon />
+                                        <span>USDFC</span>
+                                    </div>
+                                    <span className='text-sm font-normal text-neutral-450'>
+                                        {feePct.prettify()}
                                     </span>
                                 </div>
-                            </div>
-                        </div>
+                            }
+                            tooltip={{
+                                title: 'Borrowing Fee',
+                                description:
+                                    'A one-time fee charged when borrowing USDFC, calculated as a percentage of the loan amount. It varies based on system conditions and helps maintain protocol stability.',
+                                onButtonClick: () =>
+                                    openDocumentation('borrowingFee'),
+                            }}
+                        />
                     </div>
 
                     <div className='mb-6 rounded-xl border border-neutral-9 bg-white p-6'>

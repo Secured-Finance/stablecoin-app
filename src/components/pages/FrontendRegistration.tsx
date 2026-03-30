@@ -82,6 +82,7 @@ export const FrontendRegistration: React.FC = () => {
                                     kickbackRate.mul(100).toString()
                                 );
                             }}
+                            inputMode='decimal'
                         />
                     </div>
 

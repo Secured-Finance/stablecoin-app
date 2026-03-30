@@ -1,7 +1,7 @@
-import { ArrowDown } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
+import { ArrowDown } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 
 interface TokenBoxProps {
     inputLabel: string;
@@ -122,6 +122,7 @@ export const TokenBox = ({
                                 }}
                                 placeholder='0.00'
                                 disabled={!isConnected}
+                                inputMode='decimal'
                             />
                         ) : (
                             <div
@@ -229,6 +230,7 @@ export const TokenBox = ({
                                     }}
                                     placeholder='0.00'
                                     disabled={!isConnected}
+                                    inputMode='decimal'
                                 />
                             ) : (
                                 <div
