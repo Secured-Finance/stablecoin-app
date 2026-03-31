@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { DOCUMENTATION_LINK } from 'src/constants';
-import { getFixedIncomeMarketLink } from './strings';
+import { getFixedIncomeMarketLink, getLegacyUSDFCLink } from './strings';
 
 type MoreLink = {
     text: string;
@@ -34,6 +34,12 @@ export const getLinkList = (): MoreLink[] => [
     {
         text: 'Docs',
         href: DOCUMENTATION_LINK,
+        icon: <ArrowUpRight className='h-5 w-5' />,
+        isExternal: true,
+    },
+    {
+        text: 'Legacy UI',
+        href: getLegacyUSDFCLink(),
         icon: <ArrowUpRight className='h-5 w-5' />,
         isExternal: true,
     },

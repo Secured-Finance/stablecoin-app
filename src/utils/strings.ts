@@ -13,6 +13,12 @@ export const FIXED_INCOME_MARKET_LINKS = {
     [Environment.PRODUCTION]: 'https://app.secured.finance/?chain_id=314',
 };
 
+export const LEGACY_USDFC_LINKS = {
+    [Environment.DEVELOPMENT]: 'https://stg-legacy.usdfc.net/#',
+    [Environment.STAGING]: 'https://stg-legacy.usdfc.net/#',
+    [Environment.PRODUCTION]: 'https://legacy.usdfc.net/#',
+};
+
 export type EnvShort = 'dev' | 'stg' | 'prod';
 
 export const ENV_SHORTS: Record<Environment, EnvShort> = {
@@ -31,6 +37,10 @@ export const getEnvShort = (): EnvShort => {
 
 export const getFixedIncomeMarketLink = () => {
     return FIXED_INCOME_MARKET_LINKS[getEnvironment()];
+};
+
+export const getLegacyUSDFCLink = () => {
+    return LEGACY_USDFC_LINKS[getEnvironment()];
 };
 
 export const prefixTilde = (value: string): string => {
