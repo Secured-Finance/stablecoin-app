@@ -2,6 +2,7 @@ import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { useEffect, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
+import { useBreakpoint } from 'src/hooks';
 import { useAccount } from 'wagmi';
 
 export function StabilityAmountInput({
@@ -24,14 +25,15 @@ export function StabilityAmountInput({
     focusKey?: string | number;
 }) {
     const { isConnected } = useAccount();
-    const [editing, setEditing] = useState(autoFocus);
+    const isMobile = useBreakpoint('tablet');
+    const [editing, setEditing] = useState(autoFocus && !isMobile);
 
     // Auto focus on mount or when focusKey changes if autoFocus is true
     useEffect(() => {
-        if (autoFocus && isConnected && !disabled) {
+        if (autoFocus && !isMobile && isConnected && !disabled) {
             setEditing(true);
         }
-    }, [autoFocus, isConnected, disabled, focusKey]);
+    }, [autoFocus, isMobile, isConnected, disabled, focusKey]);
 
     const cleanAmount = displayAmount?.replace(/,/g, '') || '';
     const decimal =
@@ -51,7 +53,7 @@ export function StabilityAmountInput({
                 {editing ? (
                     <input
                         // eslint-disable-next-line jsx-a11y/no-autofocus
-                        autoFocus={true}
+                        autoFocus={autoFocus && !isMobile}
                         className={`w-full bg-transparent font-primary text-2xl font-medium leading-none outline-none placeholder:text-neutral-350 laptop:text-8 ${
                             disabled ? 'text-neutral-400' : 'text-neutral-900'
                         }`}

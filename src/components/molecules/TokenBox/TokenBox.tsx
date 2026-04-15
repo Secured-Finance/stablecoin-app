@@ -2,6 +2,7 @@ import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { ArrowDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { useBreakpoint } from 'src/hooks';
 
 interface TokenBoxProps {
     inputLabel: string;
@@ -22,6 +23,7 @@ interface TokenBoxProps {
     onMaxClick?: () => void;
     autoFocusInput?: boolean;
 }
+
 export const TokenBox = ({
     inputLabel,
     inputValue,
@@ -41,16 +43,19 @@ export const TokenBox = ({
     onMaxClick,
     autoFocusInput,
 }: TokenBoxProps) => {
-    const [inputEditing, setInputEditing] = useState(autoFocusInput || false);
+    const isMobile = useBreakpoint('tablet');
+    const [inputEditing, setInputEditing] = useState(
+        (autoFocusInput && !isMobile) || false
+    );
     const [outputEditing, setOutputEditing] = useState(false);
 
     // Auto focus input on mount if autoFocusInput is true
     useEffect(() => {
-        if (autoFocusInput && isConnected) {
+        if (autoFocusInput && isConnected && !isMobile) {
             // Small delay to ensure DOM is ready
             setTimeout(() => setInputEditing(true), 0);
         }
-    }, [autoFocusInput, isConnected]);
+    }, [autoFocusInput, isConnected, isMobile]);
 
     // Parse strings to Decimals for display
     const cleanInputValue = inputValue?.replace(/,/g, '') || '';
