@@ -1,4 +1,6 @@
 export * from './address';
+export * from './cnFn';
+export * from './decimal';
 export * from './env';
 export * from './equals';
 export * from './formatNumbers';
@@ -7,4 +9,3 @@ export * from './links';
 export * from './networks';
 export * from './numbers';
 export * from './strings';
-export * from './cnFn';

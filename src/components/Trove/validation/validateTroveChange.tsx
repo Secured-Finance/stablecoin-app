@@ -14,8 +14,8 @@ import {
 } from '@secured-finance/stablecoin-lib-base';
 import { Alert } from 'src/components/atoms';
 import { COIN, CURRENCY } from 'src/strings';
-import { ActionDescription, Amount } from '../../ActionDescription';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
+import { ActionDescription, Amount } from '../../ActionDescription';
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
 const ccrPercent = new Percent(CRITICAL_COLLATERAL_RATIO).toString(0);
@@ -135,7 +135,10 @@ export const validateTroveChange = (
     originalTrove: Trove,
     adjustedTrove: Trove,
     borrowingRate: Decimal,
-    selectedState: TroveChangeValidationSelectedState
+    selectedState: TroveChangeValidationSelectedState,
+    isCollateralMaxedOut?: boolean,
+    collateral?: Decimal,
+    maxCollateral?: Decimal
 ): [
     validChange:
         | Exclude<TroveChange<Decimal>, { type: 'invalidCreation' }>
@@ -165,6 +168,22 @@ export const validateTroveChange = (
         recoveryMode,
         wouldTriggerRecoveryMode,
     };
+
+    if (isCollateralMaxedOut) {
+        return [
+            undefined,
+            <Alert key={0}>
+                The amount you are trying to deposit exceeds your balance after
+                transaction fees by{' '}
+                <Amount>
+                    {collateral && maxCollateral
+                        ? collateral.sub(maxCollateral).prettify()
+                        : '0'}{' '}
+                    {CURRENCY}.
+                </Amount>
+            </Alert>,
+        ];
+    }
 
     if (change.type === 'invalidCreation') {
         // Trying to create a Trove with negative net debt
