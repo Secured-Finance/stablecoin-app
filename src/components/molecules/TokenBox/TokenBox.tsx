@@ -1,6 +1,6 @@
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { ArrowDown } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { useBreakpoint } from 'src/hooks';
 
@@ -48,6 +48,8 @@ export const TokenBox = ({
         (autoFocusInput && !isMobile) || false
     );
     const [outputEditing, setOutputEditing] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const outputRef = useRef<HTMLInputElement>(null);
 
     // Auto focus input on mount if autoFocusInput is true
     useEffect(() => {
@@ -56,6 +58,20 @@ export const TokenBox = ({
             setTimeout(() => setInputEditing(true), 0);
         }
     }, [autoFocusInput, isConnected, isMobile]);
+
+    // Focus input when inputEditing becomes true
+    useEffect(() => {
+        if (inputEditing && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [inputEditing]);
+
+    // Focus output when outputEditing becomes true
+    useEffect(() => {
+        if (outputEditing && outputRef.current) {
+            outputRef.current.focus();
+        }
+    }, [outputEditing]);
 
     // Parse strings to Decimals for display
     const cleanInputValue = inputValue?.replace(/,/g, '') || '';
@@ -91,8 +107,7 @@ export const TokenBox = ({
                         </label>
                         {inputEditing ? (
                             <input
-                                // eslint-disable-next-line jsx-a11y/no-autofocus
-                                autoFocus
+                                ref={inputRef}
                                 type='text'
                                 step='any'
                                 className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
@@ -198,8 +213,7 @@ export const TokenBox = ({
                         {onOutputChange ? (
                             outputEditing ? (
                                 <input
-                                    // eslint-disable-next-line jsx-a11y/no-autofocus
-                                    autoFocus
+                                    ref={outputRef}
                                     type='text'
                                     step='any'
                                     className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${

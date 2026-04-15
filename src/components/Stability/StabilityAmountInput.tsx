@@ -1,5 +1,5 @@
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
 import { USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { useBreakpoint } from 'src/hooks';
@@ -27,6 +27,7 @@ export function StabilityAmountInput({
     const { isConnected } = useAccount();
     const isMobile = useBreakpoint('tablet');
     const [editing, setEditing] = useState(autoFocus && !isMobile);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // Auto focus on mount or when focusKey changes if autoFocus is true
     useEffect(() => {
@@ -34,6 +35,13 @@ export function StabilityAmountInput({
             setEditing(true);
         }
     }, [autoFocus, isMobile, isConnected, disabled, focusKey]);
+
+    // Focus input when editing becomes true
+    useEffect(() => {
+        if (editing && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
 
     const cleanAmount = displayAmount?.replace(/,/g, '') || '';
     const decimal =
@@ -52,8 +60,7 @@ export function StabilityAmountInput({
             <div className='mb-1 flex items-center justify-between'>
                 {editing ? (
                     <input
-                        // eslint-disable-next-line jsx-a11y/no-autofocus
-                        autoFocus={autoFocus && !isMobile}
+                        ref={inputRef}
                         className={`w-full bg-transparent font-primary text-2xl font-medium leading-none outline-none placeholder:text-neutral-350 laptop:text-8 ${
                             disabled ? 'text-neutral-400' : 'text-neutral-900'
                         }`}
