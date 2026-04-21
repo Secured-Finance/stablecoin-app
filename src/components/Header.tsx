@@ -34,7 +34,7 @@ export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
                         onClick={() => navigateToTop()}
                     >
                         <USDFCLogoSmall className='flex h-[34px] w-[34px] laptop:hidden' />
-                        <USDFCLogo className='hidden h-[34px] w-[112px] laptop:flex' />
+                        <USDFCLogo className='hidden h-[34px] w-[120px] laptop:flex' />
                     </Link>
 
                     {isFrontendRegistered && (
