@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import ArrowRight from 'src/assets/icons/arrow-right.svg';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
+import { useBreakpoint } from 'src/hooks';
 import { Flex, Input, SxProp, ThemeUICSSProperties } from 'theme-ui';
 import { Icon } from '../Icon';
 
@@ -246,13 +247,14 @@ export const EditableRow: React.FC<EditableRowProps> = ({
     maxedOut,
 }) => {
     const [editing, setEditing] = editingState;
+    const isMobile = useBreakpoint('tablet');
     // const [invalid, setInvalid] = useState(false);
 
     return editing === inputId ? (
         <Row showBorder isActive {...{ label, labelFor: inputId, unit }}>
             <Input
                 // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
+                autoFocus={!isMobile}
                 id={inputId}
                 type='number'
                 step='any'

@@ -16,7 +16,7 @@ import {
 } from 'src/components/atoms';
 import { StatCard } from 'src/components/molecules/StatCard';
 import { openDocumentation } from 'src/constants';
-import { useSfStablecoinSelector } from 'src/hooks';
+import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
 import { useAccount } from 'wagmi';
@@ -100,6 +100,7 @@ const applyUnsavedNetDebtChanges = (
 
 export const Adjusting: React.FC = () => {
     const { isConnected } = useAccount();
+    const isMobile = useBreakpoint('tablet');
     const { dispatchEvent } = useTroveView();
     const { trove, fees, price, accountBalance, validationContext } =
         useSfStablecoinSelector(selector);
@@ -337,7 +338,7 @@ export const Adjusting: React.FC = () => {
                                 );
                             }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
-                            autoFocus={true}
+                            autoFocus={!isMobile}
                         />
 
                         <InputBox

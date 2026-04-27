@@ -1,5 +1,5 @@
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from '../index';
 
 interface InputBoxProps {
@@ -37,6 +37,7 @@ export const InputBox = ({
 }: InputBoxProps) => {
     const [editing, setEditing] = useState(autoFocus && !disabled && !readOnly);
     const [editedValue, setEditedValue] = useState(value);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // Auto focus on mount if autoFocus is true
     useEffect(() => {
@@ -44,6 +45,13 @@ export const InputBox = ({
             setEditing(true);
         }
     }, [autoFocus, disabled, readOnly]);
+
+    // Focus input when editing becomes true
+    useEffect(() => {
+        if (editing && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [editing]);
 
     // Sync edited value when parent value changes and not editing
     React.useEffect(() => {
@@ -81,8 +89,7 @@ export const InputBox = ({
                 <div className='min-w-0 flex-1'>
                     {editing ? (
                         <input
-                            // eslint-disable-next-line jsx-a11y/no-autofocus
-                            autoFocus={autoFocus}
+                            ref={inputRef}
                             type={type}
                             step='any'
                             value={editedValue}

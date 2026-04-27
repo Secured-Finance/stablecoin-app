@@ -16,7 +16,11 @@ import { USDFCIcon, USDFCIconLarge } from 'src/components/SecuredFinanceLogo';
 import { openDocumentation } from 'src/constants';
 import { useSfStablecoinSelector, useStableTroveChange } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
-import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
+import {
+    COLLATERAL_PRECISION,
+    DEBT_TOKEN_PRECISION,
+    truncateDecimal,
+} from 'src/utils';
 import { Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
 import { Button, ButtonSizes } from '../atoms';
@@ -84,9 +88,17 @@ export const Opening: React.FC = () => {
     const totalDebt = borrowAmount.add(LIQUIDATION_RESERVE).add(fee);
     const isDirty = !collateral.isZero || !borrowAmount.isZero;
     const trove = isDirty ? new Trove(collateral, totalDebt) : EMPTY_TROVE;
-    const maxCollateral = accountBalance.gt(GAS_ROOM_ETH)
+    const rawMaxCollateral = accountBalance.gt(GAS_ROOM_ETH)
         ? accountBalance.sub(GAS_ROOM_ETH)
         : Decimal.ZERO;
+
+    const maxCollateral = truncateDecimal(
+        rawMaxCollateral,
+        COLLATERAL_PRECISION
+    );
+
+    const isCollateralMaxedOut =
+        collateral.gt(rawMaxCollateral) || collateral.eq(accountBalance);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -137,7 +149,10 @@ export const Opening: React.FC = () => {
         EMPTY_TROVE,
         trove,
         borrowingRate,
-        validationContext
+        validationContext,
+        isCollateralMaxedOut,
+        collateral,
+        rawMaxCollateral
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);

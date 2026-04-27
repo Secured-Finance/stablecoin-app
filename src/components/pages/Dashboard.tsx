@@ -59,16 +59,25 @@ export const Dashboard: React.FC = () => {
 
     const { addToken } = useAddToken({
         debtToken: addresses.debtToken,
+        address: address,
     });
 
     const checkIfTokenAdded = useCallback(() => {
         if (!addresses.debtToken) return false;
-        return localStorage.getItem(`token_${addresses.debtToken}`) === 'true';
-    }, [addresses.debtToken]);
+        return (
+            localStorage.getItem(`token_${address}_${addresses.debtToken}`) ===
+            'true'
+        );
+    }, [address, addresses.debtToken]);
 
     const dismissTokenBanner = () => {
+        if (!address || !addresses.debtToken) return;
+
         if (addresses.debtToken) {
-            localStorage.setItem(`token_${addresses.debtToken}`, 'true');
+            localStorage.setItem(
+                `token_${address}_${addresses.debtToken}`,
+                'true'
+            );
         }
         setIsTokenAdded(true);
     };
