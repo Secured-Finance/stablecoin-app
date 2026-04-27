@@ -138,7 +138,7 @@ export const validateTroveChange = (
     selectedState: TroveChangeValidationSelectedState,
     isCollateralMaxedOut?: boolean,
     collateral?: Decimal,
-    maxCollateral?: Decimal
+    rawMaxCollateral?: Decimal
 ): [
     validChange:
         | Exclude<TroveChange<Decimal>, { type: 'invalidCreation' }>
@@ -176,8 +176,8 @@ export const validateTroveChange = (
                 The amount you are trying to deposit exceeds your balance after
                 transaction fees by{' '}
                 <Amount>
-                    {collateral && maxCollateral
-                        ? collateral.sub(maxCollateral).prettify()
+                    {collateral && rawMaxCollateral
+                        ? collateral.sub(rawMaxCollateral).prettify()
                         : '0'}{' '}
                     {CURRENCY}.
                 </Amount>

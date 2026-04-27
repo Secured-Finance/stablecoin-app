@@ -98,7 +98,7 @@ export const Opening: React.FC = () => {
     );
 
     const isCollateralMaxedOut =
-        collateral.gt(maxCollateral) || collateral.eq(accountBalance);
+        collateral.gt(rawMaxCollateral) || collateral.eq(accountBalance);
     const collateralRatio =
         !collateral.isZero && !borrowAmount.isZero
             ? trove.collateralRatio(price)
@@ -152,7 +152,7 @@ export const Opening: React.FC = () => {
         validationContext,
         isCollateralMaxedOut,
         collateral,
-        maxCollateral
+        rawMaxCollateral
     );
 
     const stableTroveChange = useStableTroveChange(troveChange);

@@ -71,6 +71,8 @@ export const Dashboard: React.FC = () => {
     }, [address, addresses.debtToken]);
 
     const dismissTokenBanner = () => {
+        if (!address || !addresses.debtToken) return;
+
         if (addresses.debtToken) {
             localStorage.setItem(
                 `token_${address}_${addresses.debtToken}`,

@@ -45,7 +45,7 @@ export const TokenBox = ({
 }: TokenBoxProps) => {
     const isMobile = useBreakpoint('tablet');
     const [inputEditing, setInputEditing] = useState(
-        (autoFocusInput && !isMobile) || false
+        (autoFocusInput && isConnected && !isMobile) || false
     );
     const [outputEditing, setOutputEditing] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);

@@ -26,7 +26,9 @@ export function StabilityAmountInput({
 }) {
     const { isConnected } = useAccount();
     const isMobile = useBreakpoint('tablet');
-    const [editing, setEditing] = useState(autoFocus && !isMobile);
+    const [editing, setEditing] = useState(
+        autoFocus && !isMobile && isConnected && !disabled
+    );
     const inputRef = useRef<HTMLInputElement>(null);
 
     // Auto focus on mount or when focusKey changes if autoFocus is true
