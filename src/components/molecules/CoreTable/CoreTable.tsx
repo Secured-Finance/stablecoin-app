@@ -273,7 +273,7 @@ export const CoreTable = ({
     const { sfStablecoin } = useSfStablecoin();
 
     return (
-        <div className='w-full overflow-hidden rounded-xl border border-gray-200 bg-white'>
+        <div className='w-full overflow-x-auto rounded-xl border border-gray-200 bg-white'>
             <table className='min-w-full table-fixed'>
                 <thead className='shadow sticky top-0 z-10 border-b border-black-10 bg-white'>
                     <tr className='text-left text-xs text-neutral-450 tablet:text-sm'>
