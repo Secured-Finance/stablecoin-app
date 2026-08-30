@@ -1,8 +1,8 @@
 import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { ArrowDown } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, ButtonSizes, ButtonVariants } from 'src/components/atoms';
-import { useBreakpoint } from 'src/hooks';
+import { useBreakpoint, useNumericInput } from 'src/hooks';
 
 interface TokenBoxProps {
     inputLabel: string;
@@ -44,58 +44,33 @@ export const TokenBox = ({
     autoFocusInput,
 }: TokenBoxProps) => {
     const isMobile = useBreakpoint('tablet');
-    const [inputEditing, setInputEditing] = useState(
-        (autoFocusInput && isConnected && !isMobile) || false
-    );
-    const [outputEditing, setOutputEditing] = useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const outputRef = useRef<HTMLInputElement>(null);
 
-    // Auto focus input on mount if autoFocusInput is true
+    const { inputRef, inputProps } = useNumericInput({
+        value: inputValue,
+        onChange: onInputChange,
+        onBlur: onInputBlur,
+    });
+
+    const { inputProps: outputProps } = useNumericInput({
+        value: outputValue,
+        onChange: onOutputChange ?? (() => undefined),
+        onBlur: onOutputBlur,
+    });
+
+    // Auto focus input on mount, never on mobile.
     useEffect(() => {
         if (autoFocusInput && isConnected && !isMobile) {
-            // Small delay to ensure DOM is ready
-            setTimeout(() => setInputEditing(true), 0);
+            inputRef.current?.focus();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoFocusInput, isConnected, isMobile]);
 
-    // Focus input when inputEditing becomes true
-    useEffect(() => {
-        if (inputEditing && inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, [inputEditing]);
-
-    // Focus output when outputEditing becomes true
-    useEffect(() => {
-        if (outputEditing && outputRef.current) {
-            outputRef.current.focus();
-        }
-    }, [outputEditing]);
-
-    // Parse strings to Decimals for display
-    const cleanInputValue = inputValue?.replace(/,/g, '') || '';
-    const inputDecimal =
-        cleanInputValue && cleanInputValue !== '' && cleanInputValue !== '.'
-            ? Decimal.from(cleanInputValue) || Decimal.ZERO
-            : Decimal.ZERO;
-
-    const cleanOutputValue = outputValue?.replace(/,/g, '') || '';
-    const outputDecimal =
-        cleanOutputValue && cleanOutputValue !== '' && cleanOutputValue !== '.'
-            ? Decimal.from(cleanOutputValue) || Decimal.ZERO
-            : Decimal.ZERO;
-
-    // Get clean values for editing (removing commas and keeping raw numbers)
-    const getCleanInputValue = () => {
-        const clean = inputValue?.replace(/,/g, '') || '';
-        return clean === '' || clean === '0' || clean === '0.00' ? '' : clean;
-    };
-
-    const getCleanOutputValue = () => {
-        const clean = outputValue?.replace(/,/g, '') || '';
-        return clean === '' || clean === '0' ? '' : clean;
-    };
+    // Parse strings to Decimals for the read only output display
+    const cleanOutputValue =
+        outputValue?.replace(/,/g, '').replace(/\.$/, '') ?? '';
+    const outputDecimal = cleanOutputValue
+        ? Decimal.from(cleanOutputValue)
+        : Decimal.ZERO;
 
     return (
         <div className='w-full'>
@@ -105,70 +80,16 @@ export const TokenBox = ({
                         <label className='mb-1 block font-primary text-base font-medium text-neutral-900'>
                             {inputLabel}
                         </label>
-                        {inputEditing ? (
-                            <input
-                                ref={inputRef}
-                                type='text'
-                                step='any'
-                                className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
-                                    isConnected
-                                        ? 'text-neutral-900'
-                                        : 'text-neutral-400'
-                                }`}
-                                defaultValue={getCleanInputValue()}
-                                onKeyDown={e => {
-                                    if (
-                                        !/[0-9.]/.test(e.key) &&
-                                        ![
-                                            'Backspace',
-                                            'Delete',
-                                            'ArrowLeft',
-                                            'ArrowRight',
-                                            'Tab',
-                                        ].includes(e.key)
-                                    ) {
-                                        e.preventDefault();
-                                    }
-                                }}
-                                onChange={e => {
-                                    const value = e.target.value;
-                                    if (/^[0-9]*\.?[0-9]*$/.test(value)) {
-                                        onInputChange(value);
-                                    }
-                                }}
-                                onBlur={() => {
-                                    setInputEditing(false);
-                                    onInputBlur?.();
-                                }}
-                                placeholder='0.00'
-                                disabled={!isConnected}
-                                inputMode='decimal'
-                            />
-                        ) : (
-                            <div
-                                className={`flex h-[48px] w-full items-center overflow-hidden font-primary text-8 font-medium leading-none ${
-                                    isConnected
-                                        ? 'cursor-text text-neutral-900'
-                                        : 'text-neutral-400'
-                                }`}
-                                onClick={() =>
-                                    isConnected && setInputEditing(true)
-                                }
-                                onKeyDown={e => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        isConnected && setInputEditing(true);
-                                    }
-                                }}
-                                role='button'
-                                tabIndex={isConnected ? 0 : -1}
-                            >
-                                <span className='truncate'>
-                                    {inputDecimal.isZero
-                                        ? '0.00'
-                                        : inputDecimal.prettify(2)}
-                                </span>
-                            </div>
-                        )}
+                        <input
+                            {...inputProps}
+                            className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
+                                isConnected
+                                    ? 'text-neutral-900'
+                                    : 'text-neutral-400'
+                            }`}
+                            placeholder='0.00'
+                            disabled={!isConnected}
+                        />
 
                         {inputSubLabel && (
                             <p className='font-primary text-base font-normal leading-none text-neutral-350'>
@@ -211,75 +132,16 @@ export const TokenBox = ({
                             {outputLabel}
                         </label>
                         {onOutputChange ? (
-                            outputEditing ? (
-                                <input
-                                    ref={outputRef}
-                                    type='text'
-                                    step='any'
-                                    className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
-                                        isConnected
-                                            ? 'text-neutral-900'
-                                            : 'text-neutral-400'
-                                    }`}
-                                    defaultValue={getCleanOutputValue()}
-                                    onKeyDown={e => {
-                                        if (
-                                            !/[0-9.]/.test(e.key) &&
-                                            ![
-                                                'Backspace',
-                                                'Delete',
-                                                'ArrowLeft',
-                                                'ArrowRight',
-                                                'Tab',
-                                            ].includes(e.key)
-                                        ) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                    onChange={e => {
-                                        const value = e.target.value;
-                                        // Only allow numbers and decimal point
-                                        if (/^[0-9]*\.?[0-9]*$/.test(value)) {
-                                            onOutputChange(value);
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        setOutputEditing(false);
-                                        onOutputBlur?.();
-                                    }}
-                                    placeholder='0.00'
-                                    disabled={!isConnected}
-                                    inputMode='decimal'
-                                />
-                            ) : (
-                                <div
-                                    className={`flex h-[48px] w-full items-center overflow-hidden font-primary text-8 font-medium leading-none ${
-                                        isConnected
-                                            ? 'cursor-text text-neutral-900'
-                                            : 'text-neutral-400'
-                                    }`}
-                                    onClick={() =>
-                                        isConnected && setOutputEditing(true)
-                                    }
-                                    onKeyDown={e => {
-                                        if (
-                                            e.key === 'Enter' ||
-                                            e.key === ' '
-                                        ) {
-                                            isConnected &&
-                                                setOutputEditing(true);
-                                        }
-                                    }}
-                                    role='button'
-                                    tabIndex={isConnected ? 0 : -1}
-                                >
-                                    <span className='truncate'>
-                                        {outputDecimal.isZero
-                                            ? '0.00'
-                                            : outputDecimal.prettify(2)}
-                                    </span>
-                                </div>
-                            )
+                            <input
+                                {...outputProps}
+                                className={`h-[48px] w-full bg-transparent font-primary text-8 font-medium leading-none outline-none placeholder:text-neutral-400 ${
+                                    isConnected
+                                        ? 'text-neutral-900'
+                                        : 'text-neutral-400'
+                                }`}
+                                placeholder='0.00'
+                                disabled={!isConnected}
+                            />
                         ) : (
                             <div
                                 className={`flex h-[48px] items-center overflow-hidden font-primary text-8 font-medium leading-none ${

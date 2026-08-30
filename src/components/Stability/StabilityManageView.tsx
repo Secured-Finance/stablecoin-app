@@ -33,7 +33,10 @@ export const StabilityManageView = () => {
     const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>(
         'deposit'
     );
+    // Both tabs keep the raw string the user typed. Deriving the displayed value
+    // from the reducer instead would re-format mid-keystroke and drop decimals.
     const [withdrawAmountInput, setWithdrawAmountInput] = useState('');
+    const [depositAmountInput, setDepositAmountInput] = useState('');
 
     const [{ originalDeposit, editedDebtToken }, dispatch] =
         useSfStablecoinReducer(reduce, init);
@@ -47,53 +50,63 @@ export const StabilityManageView = () => {
         validationContext
     );
 
-    const getDisplayAmount = () => {
-        if (activeTab === 'withdraw') {
-            return withdrawAmountInput;
-        }
+    const displayAmount =
+        activeTab === 'withdraw' ? withdrawAmountInput : depositAmountInput;
 
-        // For deposit tab, always start with empty regardless of existing deposit
-        const depositAmount = editedDebtToken.gt(
-            originalDeposit.currentDebtToken
-        )
-            ? editedDebtToken.sub(originalDeposit.currentDebtToken)
-            : Decimal.ZERO;
-        return depositAmount.isZero ? '' : depositAmount.prettify(2);
-    };
-
-    const displayAmount = getDisplayAmount();
     const setDepositAmount = (val: string) => {
         dispatch({ type: 'setDeposit', newValue: val });
     };
 
+    // "" and a mid-edit "12." are both valid input states but not valid Decimals.
+    const parseAmount = (val: string) => {
+        const cleaned = val.replace(/,/g, '').replace(/\.$/, '');
+        if (cleaned === '') {
+            return Decimal.ZERO;
+        }
+        try {
+            return Decimal.from(cleaned);
+        } catch {
+            return Decimal.ZERO;
+        }
+    };
+
     const handleInputChange = (val: string) => {
         if (activeTab === 'withdraw') {
-            const currentDeposit = originalDeposit.currentDebtToken;
-            const withdrawAmount =
-                val === '' ? Decimal.ZERO : Decimal.from(val);
+            setWithdrawAmountInput(val);
 
-            // Cap the withdrawal amount to the maximum available deposit
+            const currentDeposit = originalDeposit.currentDebtToken;
+            const withdrawAmount = parseAmount(val);
+
+            // The value is left exactly as typed; only the derived total is
+            // clamped here, with the input itself capped on blur.
             const cappedWithdrawAmount = withdrawAmount.gt(currentDeposit)
                 ? currentDeposit
                 : withdrawAmount;
 
-            // Update the input to show the capped amount
-            const cappedInputValue = cappedWithdrawAmount.isZero
-                ? ''
-                : cappedWithdrawAmount.prettify(2);
-
-            setWithdrawAmountInput(cappedInputValue);
-
-            // Calculate the new total deposit after withdrawal
-            const newTotal = currentDeposit.sub(cappedWithdrawAmount);
-            setDepositAmount(newTotal.toString());
+            setDepositAmount(
+                currentDeposit.sub(cappedWithdrawAmount).toString()
+            );
         } else {
-            // For deposit tab, add the new deposit amount to existing deposit
-            const newDepositAmount =
-                val === '' ? Decimal.ZERO : Decimal.from(val);
-            const totalDeposit =
-                originalDeposit.currentDebtToken.add(newDepositAmount);
+            setDepositAmountInput(val);
+
+            const totalDeposit = originalDeposit.currentDebtToken.add(
+                parseAmount(val)
+            );
             setDepositAmount(totalDeposit.toString());
+        }
+    };
+
+    // Clamp an over-large withdrawal once the user leaves the field, rather than
+    // rewriting what they are actively typing.
+    const handleInputBlur = () => {
+        if (activeTab !== 'withdraw') {
+            return;
+        }
+
+        const currentDeposit = originalDeposit.currentDebtToken;
+        if (parseAmount(withdrawAmountInput).gt(currentDeposit)) {
+            setWithdrawAmountInput(currentDeposit.toString());
+            setDepositAmount('0');
         }
     };
 
@@ -116,6 +129,7 @@ export const StabilityManageView = () => {
             dispatch({ type: 'finishChange' });
             // Reset fields after successful transaction
             setWithdrawAmountInput('');
+            setDepositAmountInput('');
             dispatch({ type: 'revert' });
         }
     }, [myTransactionState.type, dispatch, dispatchEvent]);
@@ -123,12 +137,14 @@ export const StabilityManageView = () => {
     useEffect(() => {
         dispatch({ type: 'revert' });
         setWithdrawAmountInput('');
+        setDepositAmountInput('');
     }, [activeTab, dispatch]);
 
     // Clear input fields when the deposit amount changes
     const currentDepositAmount = originalDeposit.currentDebtToken.toString();
     useEffect(() => {
         setWithdrawAmountInput('');
+        setDepositAmountInput('');
         dispatch({ type: 'revert' });
     }, [currentDepositAmount, dispatch]);
 
@@ -245,6 +261,7 @@ export const StabilityManageView = () => {
                 }
                 displayAmount={displayAmount}
                 handleInputChange={handleInputChange}
+                onInputBlur={handleInputBlur}
                 maxAmount={
                     activeTab === 'withdraw'
                         ? originalDeposit.currentDebtToken
@@ -252,22 +269,6 @@ export const StabilityManageView = () => {
                 }
                 disabled={isDisabled}
                 focusKey={activeTab}
-                onMaxClick={() => {
-                    if (activeTab === 'withdraw') {
-                        const maxWithdraw = originalDeposit.currentDebtToken;
-                        setWithdrawAmountInput(maxWithdraw.prettify(2));
-                        setDepositAmount('0');
-                    } else {
-                        const maxTotalDeposit =
-                            originalDeposit.currentDebtToken.add(
-                                debtTokenBalance
-                            );
-                        dispatch({
-                            type: 'setDeposit',
-                            newValue: maxTotalDeposit.toString(),
-                        });
-                    }
-                }}
             />
 
             {originalDeposit.isEmpty ? (
