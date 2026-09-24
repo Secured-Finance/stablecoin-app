@@ -42,13 +42,12 @@ jobs:
           path: .deploy/build
 
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@v3
         id: deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: .deploy/build
-          command: pages deploy . --project-name=stablecoin --branch=${{ github.event.pull_request.head.ref || github.ref_name }}
+          command: pages deploy .deploy/build --project-name=secured-finance-app --branch="${{ github.event.pull_request.head.ref || github.ref_name }}"
 
       - name: Get the output url
         run: echo "Deploy url is ${{ steps.deploy.outputs.deployment-url }}"
