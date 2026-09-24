@@ -52,8 +52,11 @@ export const NETWORK_SWITCH_LINKS = {
     testnet: 'https://stg.usdfc.net/#',
 };
 
-export const PYTH_ORACLE_LINK =
-    'https://www.pyth.network/price-feeds/crypto-fil-usd';
+export const REDSTONE_ORACLE_LINKS = {
+    mainnet: 'https://app.redstone.finance/push-feeds/FIL/filecoinMultiFeed',
+    testnet:
+        'https://app.redstone.finance/push-feeds/FIL/filecoinCalibrationTestnetMultiFeed',
+};
 
 export const TELLOR_ORACLE_LINKS = {
     mainnet:

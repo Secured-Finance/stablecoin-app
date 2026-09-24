@@ -12,7 +12,7 @@ import {
 import { Transaction } from 'src/components/Transaction';
 import {
     BLOCKCHAIN_EXPLORER_LINKS,
-    PYTH_ORACLE_LINK,
+    REDSTONE_ORACLE_LINKS,
     TELLOR_ORACLE_LINKS,
 } from 'src/constants';
 import { useSfStablecoin } from 'src/hooks';
@@ -79,7 +79,13 @@ export const ProtocolOverview = ({
     );
 
     const priceSources = [
-        { name: 'Pyth', href: PYTH_ORACLE_LINK },
+        {
+            name: 'RedStone',
+            href:
+                contextData.chainId === filecoin.id
+                    ? REDSTONE_ORACLE_LINKS.mainnet
+                    : REDSTONE_ORACLE_LINKS.testnet,
+        },
         {
             name: 'Tellor',
             href:

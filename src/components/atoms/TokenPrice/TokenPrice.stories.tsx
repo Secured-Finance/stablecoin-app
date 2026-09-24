@@ -1,9 +1,9 @@
 import type { Meta, StoryFn } from '@storybook/react';
+import { REDSTONE_ORACLE_LINKS, TELLOR_ORACLE_LINKS } from 'src/constants';
 import { TokenPrice } from './TokenPrice';
-import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
 
 const filPriceSources = [
-    { name: 'Pyth', href: PYTH_ORACLE_LINK },
+    { name: 'RedStone', href: REDSTONE_ORACLE_LINKS.testnet },
     { name: 'Tellor', href: TELLOR_ORACLE_LINKS.testnet },
 ];
 
