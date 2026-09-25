@@ -17,17 +17,14 @@ export const HEADER_LINKS = [
     // },
 ];
 
-export const DOCUMENTATION_LINK =
-    'https://docs.secured.finance/stablecoin-protocol-guide';
-
-const USDFC_DOCS_BASE = 'https://docs.secured.finance/usdfc-stablecoin';
+export const USDFC_DOCS_BASE = 'https://docs.secured.finance/usdfc-stablecoin';
 
 const ankerApiKey = process.env.NEXT_PUBLIC_ANKER_API_KEY ?? '';
 
 export const DOCUMENTATION_LINKS = {
-    liquidation: `${DOCUMENTATION_LINK}/key-features/stability-pool-and-liquidation#what-are-liquidations`,
-    redemption: `${DOCUMENTATION_LINK}/key-features/redemption`,
-    recoveryMode: `${DOCUMENTATION_LINK}/key-features/recovery-mode`,
+    liquidation: `${USDFC_DOCS_BASE}/core-mechanics/liquidation#what-are-liquidations`,
+    redemption: `${USDFC_DOCS_BASE}/core-mechanics/redemption`,
+    recoveryMode: `${USDFC_DOCS_BASE}/core-mechanics/recovery-mode`,
     troveSystem: `${USDFC_DOCS_BASE}/core-mechanics/the-trove-system`,
     stabilityPool: `${USDFC_DOCS_BASE}/getting-started/using-the-stability-pool`,
     collateralRatio: `${USDFC_DOCS_BASE}/getting-started/monitoring-your-position#collateral-ratio`,

@@ -1,5 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
-import { DOCUMENTATION_LINK } from 'src/constants';
+import { USDFC_DOCS_BASE } from 'src/constants';
 import { getFixedIncomeMarketLink, getLegacyUSDFCLink } from './strings';
 
 type MoreLink = {
@@ -33,7 +33,7 @@ export const getLinkList = (): MoreLink[] => [
     },
     {
         text: 'Docs',
-        href: DOCUMENTATION_LINK,
+        href: USDFC_DOCS_BASE,
         icon: <ArrowUpRight className='h-5 w-5' />,
         isExternal: true,
     },
