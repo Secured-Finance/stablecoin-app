@@ -6,13 +6,13 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import TrendingUpIcon from 'src/assets/icons/trending-up.svg';
 import { CardComponent } from 'src/components/templates';
-import { PYTH_ORACLE_LINK, TELLOR_ORACLE_LINKS } from 'src/constants';
+import { REDSTONE_ORACLE_LINKS, TELLOR_ORACLE_LINKS } from 'src/constants';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 import { getSetPriceEnabled } from 'src/utils';
+import { filecoin } from 'viem/chains';
 import { useAccount } from 'wagmi';
 import { Transaction } from './Transaction';
-import { filecoin } from 'viem/chains';
 
 const selectPrice = ({ price }: SfStablecoinStoreState) => price;
 
@@ -91,12 +91,16 @@ export const PriceManager: React.FC = () => {
                         <span>Source:</span>
                         <Link
                             className='mx-1 font-semibold text-primary-500'
-                            href={PYTH_ORACLE_LINK}
+                            href={
+                                chainId === filecoin.id
+                                    ? REDSTONE_ORACLE_LINKS.mainnet
+                                    : REDSTONE_ORACLE_LINKS.testnet
+                            }
                             target='_blank'
                             rel='noopener noreferrer'
-                            aria-label='Pyth'
+                            aria-label='RedStone'
                         >
-                            Pyth
+                            RedStone
                         </Link>
                         |
                         <Link
