@@ -127,7 +127,7 @@ export const ActiveDeposit: React.FC = () => {
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the SCR rewards accrue
+                                            Although the SFC rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore

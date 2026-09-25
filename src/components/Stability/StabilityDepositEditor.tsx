@@ -153,7 +153,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the {GT} rewards accrue
+                                            Although the SFC rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore
