@@ -4,8 +4,8 @@ import {
     UserTrove,
 } from '@secured-finance/stablecoin-lib-base';
 import { useCallback, useEffect, useState } from 'react';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CoreTable } from 'src/components/molecules';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
 
 type TroveWithDebtInFront = UserTrove & { debtInFront: Decimal };
@@ -135,9 +135,10 @@ export const RiskyTrovesPage = () => {
                     <p className='mb-4 text-center font-primary text-base font-normal text-neutral-450 tablet:text-base'>
                         Track and liquidate risky Troves to maintain protocol
                         stability and earn rewards. Troves with a collateral
-                        ratio below 110% (or 150% in Recovery Mode) are at risk,
-                        meaning their {CURRENCY} collateral may not fully cover
-                        their debt.
+                        ratio below 110% (or below the system&apos;s Total
+                        Collateral Ratio in Recovery Mode) are at risk, meaning
+                        their {CURRENCY} collateral may not fully cover their
+                        debt.
                     </p>
                 </div>
                 <div className='w-full tablet:px-0'>
