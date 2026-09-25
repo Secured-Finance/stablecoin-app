@@ -1,3 +1,6 @@
+import { DOCUMENTATION_LINKS } from 'src/constants';
+import { LearnMoreLink } from '../../Tooltip';
+
 interface RecoveryModeProps {
     isActive: boolean;
 }
@@ -26,9 +29,15 @@ export const RecoveryMode = ({ isActive }: RecoveryModeProps) => {
                     Recovery Mode
                 </h3>
                 <p className='font-primary text-sm font-normal leading-[140%] text-neutral-450'>
-                    Activated when the system&apos;s collateral ratio falls
-                    below 150%, restricting borrowing and requiring repayments
-                    to restore stability.
+                    Activated when the Total Collateral Ratio (TCR) falls below
+                    150%. While active, your Trove can be liquidated if its
+                    ratio is below the TCR, with the collateral loss capped at
+                    110% of your debt. Operations are also restricted that would
+                    negatively impact the TCR. Learn more in the{' '}
+                    <LearnMoreLink link={DOCUMENTATION_LINKS.recoveryMode}>
+                        Secured Finance Docs
+                    </LearnMoreLink>
+                    .
                 </p>
             </div>
             <div

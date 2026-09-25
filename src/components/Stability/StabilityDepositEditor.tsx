@@ -8,7 +8,7 @@ import {
 import React, { useState } from 'react';
 import { CardComponent } from 'src/components/templates';
 import { useSfStablecoinSelector } from 'src/hooks';
-import { COIN, CURRENCY } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { Icon } from '../Icon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { EditableRow, StaticRow } from '../Trove/Editor';
@@ -86,7 +86,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
             <div className='flex flex-col gap-3'>
                 <EditableRow
                     label='Deposit'
-                    inputId='deposit-scr'
+                    inputId={`deposit-${GT}`}
                     amount={editedDebtToken.prettify()}
                     maxAmount={maxAmount.toString()}
                     maxedOut={maxedOut}
@@ -153,7 +153,7 @@ export const StabilityDepositEditor: React.FC<StabilityDepositEditorProps> = ({
                                             variant='tooltip'
                                             sx={{ width: '240px' }}
                                         >
-                                            Although the SCR rewards accrue
+                                            Although the SFC rewards accrue
                                             every minute, the value on the UI
                                             only updates when a user transacts
                                             with the Stability Pool. Therefore
