@@ -1,6 +1,7 @@
 import { SfStablecoinStoreState } from '@secured-finance/stablecoin-lib-base';
 import React from 'react';
 import { useSfStablecoinSelector } from 'src/hooks';
+import { GT } from 'src/strings';
 
 const selector = ({
     remainingStabilityPoolProtocolTokenReward,
@@ -14,7 +15,7 @@ export const RemainingProtocolToken: React.FC = () => {
 
     return (
         <span className='typography-desktop-body-5 font-semibold text-neutral-900'>
-            {remainingStabilityPoolProtocolTokenReward.prettify(0)} SCR
+            {remainingStabilityPoolProtocolTokenReward.prettify(0)} {GT}
             remaining
         </span>
     );

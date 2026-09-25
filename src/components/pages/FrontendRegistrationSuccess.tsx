@@ -1,4 +1,5 @@
 import { Icon } from 'src/components/Icon';
+import { GT } from 'src/strings';
 import { Box, Button, Flex, Heading, Paragraph } from 'theme-ui';
 
 type FrontendRegistrationSuccessProps = {
@@ -36,7 +37,7 @@ export const FrontendRegistrationSuccess: React.FC<
             </Flex>
 
             <Paragraph sx={{ fontSize: 2 }}>
-                Your frontend is now ready to receive SCR rewards.
+                Your frontend is now ready to receive {GT} rewards.
             </Paragraph>
         </Box>
 
