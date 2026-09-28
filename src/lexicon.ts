@@ -1,4 +1,4 @@
-import { COIN, CURRENCY } from './strings';
+import { COIN, CURRENCY, GT } from './strings';
 
 export type Lexicon = {
     term: string;
@@ -17,9 +17,8 @@ export const TVL: Lexicon = {
 };
 
 export const STAKED_PROTOCOL_TOKEN: Lexicon = {
-    term: 'Staked SCR',
-    description:
-        'The total amount of SCR that is staked for earning fee revenue.',
+    term: `Staked ${GT}`,
+    description: `The total amount of ${GT} that is staked for earning fee revenue.`,
 };
 
 export const TCR: Lexicon = {
@@ -40,8 +39,7 @@ export const STABILITY_POOL_DEBT_TOKEN: Lexicon = {
 
 export const KICKBACK_RATE: Lexicon = {
     term: 'Kickback Rate',
-    description:
-        'A rate between 0 and 100% set by the Frontend Operator that determines the fraction of SCR that will be paid out as a kickback to the Stability Providers using the frontend.',
+    description: `A rate between 0 and 100% set by the Frontend Operator that determines the fraction of ${GT} that will be paid out as a kickback to the Stability Providers using the frontend.`,
 };
 
 export const FIL: Lexicon = {
@@ -53,7 +51,7 @@ export const DEBT_TOKEN: Lexicon = {
 };
 
 export const PROTOCOL_TOKEN: Lexicon = {
-    term: 'SCR',
+    term: GT,
 };
 
 export const TROVES: Lexicon = {

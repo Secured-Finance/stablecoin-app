@@ -48,7 +48,7 @@ export const ReadOnlyStake: React.FC = () => {
             <div className='flex flex-col gap-3'>
                 <DisabledEditableRow
                     label='Stake'
-                    inputId='stake-scr'
+                    inputId={`stake-${GT}`}
                     amount={protocolTokenStake.stakedProtocolToken.prettify()}
                     unit={GT}
                 />

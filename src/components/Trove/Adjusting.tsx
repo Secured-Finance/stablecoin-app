@@ -376,7 +376,7 @@ export const Adjusting: React.FC = () => {
                     <div className='mb-6 space-y-4'>
                         <StatCard
                             title='Collateral Ratio'
-                            description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or 150% in Recovery Mode), liquidation may occur.`}
+                            description={`The ratio of deposited ${CURRENCY} to borrowed USDFC. If it falls below 110% (or below the system's Total Collateral Ratio in Recovery Mode), liquidation may occur.`}
                             value={
                                 <p className='text-right font-bold'>
                                     {!isConnected
@@ -390,7 +390,7 @@ export const Adjusting: React.FC = () => {
                             }
                             tooltip={{
                                 title: 'Collateral Ratio',
-                                description: `The ratio of deposited ${CURRENCY} to borrowed USDFC. It must stay above 110% to avoid liquidation, or 150% if Recovery Mode is triggered.`,
+                                description: `The ratio of deposited ${CURRENCY} to borrowed USDFC. It must stay above 110% to avoid liquidation — or above the system's Total Collateral Ratio while Recovery Mode is active.`,
                                 onButtonClick: () =>
                                     openDocumentation('collateralRatio'),
                             }}
@@ -398,7 +398,7 @@ export const Adjusting: React.FC = () => {
 
                         <StatCard
                             title='Liquidation Risk'
-                            description={`The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`}
+                            description={`The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions, or below the system's Total Collateral Ratio in Recovery Mode.`}
                             value={
                                 !isConnected ? (
                                     <p className='text-right font-medium'>
@@ -433,7 +433,7 @@ export const Adjusting: React.FC = () => {
                             }
                             tooltip={{
                                 title: 'Liquidation Risk',
-                                description: `The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions or 150% in Recovery Mode.`,
+                                description: `The risk of losing your ${CURRENCY} collateral if your Collateral Ratio drops below 110% under normal conditions, or below the system's Total Collateral Ratio in Recovery Mode.`,
                                 onButtonClick: () =>
                                     openDocumentation('liquidationMechanics'),
                             }}

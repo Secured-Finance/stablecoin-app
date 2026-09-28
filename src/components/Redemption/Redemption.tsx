@@ -9,7 +9,7 @@ import { CardComponent } from 'src/components/templates';
 import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
 import { Card, Spinner } from 'theme-ui';
 import { useAccount } from 'wagmi';
-import { COIN, CURRENCY } from '../../strings';
+import { COIN, CURRENCY, GT } from '../../strings';
 import { InfoIcon } from '../InfoIcon';
 import { LoadingOverlay } from '../LoadingOverlay';
 import { useMyTransactionState, useTransactionFunction } from '../Transaction';
@@ -109,7 +109,7 @@ export const Redemption: React.FC = ({}) => {
                 {isConnected ? (
                     <EditableRow
                         label='Redeem'
-                        inputId='redeem-scr'
+                        inputId={`redeem-${GT}`}
                         amount={debtToken.prettify()}
                         maxAmount={maxAmount.toString()}
                         maxedOut={maxedOut}
@@ -123,7 +123,7 @@ export const Redemption: React.FC = ({}) => {
                 ) : (
                     <DisabledEditableRow
                         label='Redeem'
-                        inputId='redeem-scr'
+                        inputId={`redeem-${GT}`}
                         amount={debtToken.prettify()}
                         unit={COIN}
                     />
