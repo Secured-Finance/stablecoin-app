@@ -88,7 +88,7 @@ export const StakingEditor: React.FC<StakingEditorProps> = ({
             <div className='flex flex-col gap-3'>
                 <EditableRow
                     label='Stake'
-                    inputId='stake-scr'
+                    inputId={`stake-${GT}`}
                     amount={editedProtocolToken.prettify()}
                     maxAmount={maxAmount.toString()}
                     maxedOut={maxedOut}

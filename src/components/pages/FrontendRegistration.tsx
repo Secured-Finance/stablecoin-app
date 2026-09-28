@@ -2,6 +2,7 @@ import { Decimal } from '@secured-finance/stablecoin-lib-base';
 import { useState } from 'react';
 import { Transaction, useMyTransactionState } from 'src/components/Transaction';
 import { useSfStablecoin } from 'src/hooks';
+import { GT } from 'src/strings';
 import { AddressUtils } from 'src/utils';
 import { Button, Input, Label, Spinner } from 'theme-ui';
 import { Alert } from '../atoms';
@@ -90,8 +91,8 @@ export const FrontendRegistration: React.FC = () => {
                         <p>
                             You are about to register{' '}
                             <b>{AddressUtils.format(account, 6)}</b> to receive{' '}
-                            <b>{cut.mul(100).toString()}%</b> of the SCR rewards
-                            earned through this frontend.
+                            <b>{cut.mul(100).toString()}%</b> of the {GT}{' '}
+                            rewards earned through this frontend.
                         </p>
                         <p>
                             You will not be able to change the kickback rate for
