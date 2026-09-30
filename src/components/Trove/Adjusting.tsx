@@ -18,7 +18,11 @@ import { StatCard } from 'src/components/molecules/StatCard';
 import { openDocumentation } from 'src/constants';
 import { useBreakpoint, useSfStablecoinSelector } from 'src/hooks';
 import { CURRENCY } from 'src/strings';
-import { COLLATERAL_PRECISION, DEBT_TOKEN_PRECISION } from 'src/utils';
+import {
+    COLLATERAL_PRECISION,
+    DEBT_TOKEN_PRECISION,
+    truncateDecimal,
+} from 'src/utils';
 import { useAccount } from 'wagmi';
 import { useStableTroveChange } from '../../hooks/useStableTroveChange';
 import { USDFCIcon, USDFCIconLarge } from '../SecuredFinanceLogo';
@@ -109,10 +113,10 @@ export const Adjusting: React.FC = () => {
     const [collateral, setCollateral] = useState<Decimal>(trove.collateral);
     const [netDebt, setNetDebt] = useState<Decimal>(trove.netDebt);
     const [collateralInput, setCollateralInput] = useState<string>(
-        trove.collateral.prettify(COLLATERAL_PRECISION)
+        truncateDecimal(trove.collateral, COLLATERAL_PRECISION).toString()
     );
     const [netDebtInput, setNetDebtInput] = useState<string>(
-        trove.netDebt.prettify(DEBT_TOKEN_PRECISION)
+        truncateDecimal(trove.netDebt, DEBT_TOKEN_PRECISION).toString()
     );
     const [editingField, setEditingField] = useState<
         'collateral' | 'netDebt' | undefined
@@ -139,9 +143,17 @@ export const Adjusting: React.FC = () => {
                 setCollateral(trove.collateral);
                 setNetDebt(trove.netDebt);
                 setCollateralInput(
-                    trove.collateral.prettify(COLLATERAL_PRECISION)
+                    truncateDecimal(
+                        trove.collateral,
+                        COLLATERAL_PRECISION
+                    ).toString()
                 );
-                setNetDebtInput(trove.netDebt.prettify(DEBT_TOKEN_PRECISION));
+                setNetDebtInput(
+                    truncateDecimal(
+                        trove.netDebt,
+                        DEBT_TOKEN_PRECISION
+                    ).toString()
+                );
                 setEditingField(undefined);
             }
         }
@@ -160,7 +172,10 @@ export const Adjusting: React.FC = () => {
             setCollateral(nextCollateral);
             if (editingField !== 'collateral') {
                 setCollateralInput(
-                    nextCollateral.prettify(COLLATERAL_PRECISION)
+                    truncateDecimal(
+                        nextCollateral,
+                        COLLATERAL_PRECISION
+                    ).toString()
                 );
             }
         }
@@ -175,7 +190,12 @@ export const Adjusting: React.FC = () => {
             );
             setNetDebt(nextNetDebt);
             if (editingField !== 'netDebt') {
-                setNetDebtInput(nextNetDebt.prettify(DEBT_TOKEN_PRECISION));
+                setNetDebtInput(
+                    truncateDecimal(
+                        nextNetDebt,
+                        DEBT_TOKEN_PRECISION
+                    ).toString()
+                );
             }
         }
         previousTrove.current = trove;
@@ -270,8 +290,12 @@ export const Adjusting: React.FC = () => {
         // Reset inputs to current trove state when switching tabs
         setCollateral(trove.collateral);
         setNetDebt(trove.netDebt);
-        setCollateralInput(trove.collateral.prettify(COLLATERAL_PRECISION));
-        setNetDebtInput(trove.netDebt.prettify(DEBT_TOKEN_PRECISION));
+        setCollateralInput(
+            truncateDecimal(trove.collateral, COLLATERAL_PRECISION).toString()
+        );
+        setNetDebtInput(
+            truncateDecimal(trove.netDebt, DEBT_TOKEN_PRECISION).toString()
+        );
         setEditingField(undefined);
     };
 
@@ -302,7 +326,6 @@ export const Adjusting: React.FC = () => {
                     <div className='mb-6'>
                         <InputBox
                             label='Collateral'
-                            type='text'
                             value={collateralInput}
                             onFocus={() => setEditingField('collateral')}
                             onBlur={() => setEditingField(undefined)}
@@ -333,9 +356,9 @@ export const Adjusting: React.FC = () => {
                             maxToken={CURRENCY}
                             onMaxClick={() => {
                                 setCollateral(maxCollateral);
-                                setCollateralInput(
-                                    maxCollateral.prettify(COLLATERAL_PRECISION)
-                                );
+                                // Full precision so the whole balance can be
+                                // deposited without leaving dust behind.
+                                setCollateralInput(maxCollateral.toString());
                             }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus={!isMobile}
@@ -343,7 +366,6 @@ export const Adjusting: React.FC = () => {
 
                         <InputBox
                             label='Borrowed Amount'
-                            type='text'
                             value={netDebtInput}
                             onFocus={() => setEditingField('netDebt')}
                             onBlur={() => setEditingField(undefined)}
@@ -561,7 +583,6 @@ export const Adjusting: React.FC = () => {
                                 DEBT_TOKEN_PRECISION
                             )}`}
                             readOnly={true}
-                            type='text'
                         />
 
                         <InputBox
@@ -581,7 +602,6 @@ export const Adjusting: React.FC = () => {
                                 .sub(fee)
                                 .prettify(COLLATERAL_PRECISION)}`}
                             readOnly={true}
-                            type='text'
                         />
                     </div>
 

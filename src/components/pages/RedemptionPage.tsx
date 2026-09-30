@@ -37,7 +37,7 @@ export const RedemptionPage = () => {
     const { sfStablecoin } = useSfStablecoin();
     const myTransactionState = useMyTransactionState('redeem');
 
-    const [redeemAmount, setRedeemAmount] = useState('0.00');
+    const [redeemAmount, setRedeemAmount] = useState('');
     const [redeemAmountDecimal, setRedeemAmountDecimal] = useState(
         Decimal.from(0)
     );
@@ -98,7 +98,7 @@ export const RedemptionPage = () => {
         } else {
             setChangePending(false);
             if (myTransactionState.type === 'confirmed') {
-                setRedeemAmount('0.00');
+                setRedeemAmount('');
                 setRedeemAmountDecimal(Decimal.from(0));
             }
         }
@@ -164,7 +164,20 @@ export const RedemptionPage = () => {
                         autoFocusInput={true}
                         onInputChange={value => {
                             setRedeemAmount(value);
-                            setRedeemAmountDecimal(Decimal.from(value || '0'));
+                            // "" and a mid-edit "12." are valid input states but
+                            // would throw when handed straight to Decimal.
+                            const cleaned = value
+                                .replace(/,/g, '')
+                                .replace(/\.$/, '');
+                            try {
+                                setRedeemAmountDecimal(
+                                    cleaned
+                                        ? Decimal.from(cleaned)
+                                        : Decimal.ZERO
+                                );
+                            } catch {
+                                setRedeemAmountDecimal(Decimal.ZERO);
+                            }
                         }}
                         inputTokenIcon={
                             <>
@@ -188,7 +201,9 @@ export const RedemptionPage = () => {
                         }
                         maxValue={debtTokenBalance.prettify()}
                         onMaxClick={() => {
-                            setRedeemAmount(debtTokenBalance.prettify(2));
+                            // prettify(2) rounds up, so it could display (and
+                            // previously submit) more than the actual balance.
+                            setRedeemAmount(debtTokenBalance.toString());
                             setRedeemAmountDecimal(debtTokenBalance);
                         }}
                         isConnected={isConnected}

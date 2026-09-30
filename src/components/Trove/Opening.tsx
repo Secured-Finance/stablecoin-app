@@ -54,32 +54,23 @@ export const Opening: React.FC = () => {
         useSfStablecoinSelector(selector);
     const borrowingRate = fees.borrowingRate();
 
-    const [collateralInput, setCollateralInput] = useState('0.00');
+    const [collateralInput, setCollateralInput] = useState('');
     const [borrowAmountInput, setBorrowAmountInput] = useState('');
     const [borrowEditedManually, setBorrowEditedManually] = useState(false);
 
     // Parse inputs to decimals safely
-    const collateral = (() => {
+    // A mid-edit "12." is a valid input state but not a valid Decimal.
+    const parseAmount = (val: string) => {
         try {
-            const cleanValue = collateralInput?.replace(/,/g, '') || '0';
-            return cleanValue && cleanValue !== ''
-                ? Decimal.from(cleanValue)
-                : Decimal.ZERO;
+            const cleanValue = val?.replace(/,/g, '').replace(/\.$/, '') || '0';
+            return Decimal.from(cleanValue || '0');
         } catch {
             return Decimal.ZERO;
         }
-    })();
+    };
 
-    const borrowAmount = (() => {
-        try {
-            const cleanValue = borrowAmountInput?.replace(/,/g, '') || '0';
-            return cleanValue && cleanValue !== ''
-                ? Decimal.from(cleanValue)
-                : Decimal.ZERO;
-        } catch {
-            return Decimal.ZERO;
-        }
-    })();
+    const collateral = parseAmount(collateralInput);
+    const borrowAmount = parseAmount(borrowAmountInput);
 
     const maxBorrowingRate = borrowingRate.add(0.005);
 
@@ -205,7 +196,10 @@ export const Opening: React.FC = () => {
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
                             setBorrowAmountInput(
-                                finalDebt.prettify(DEBT_TOKEN_PRECISION)
+                                truncateDecimal(
+                                    finalDebt,
+                                    DEBT_TOKEN_PRECISION
+                                ).toString()
                             );
                         }
                     }
@@ -247,9 +241,8 @@ export const Opening: React.FC = () => {
                 isConnected={isConnected}
                 maxValue={maxCollateral.prettify(COLLATERAL_PRECISION)}
                 onMaxClick={() => {
-                    setCollateralInput(
-                        maxCollateral.prettify(COLLATERAL_PRECISION)
-                    );
+                    // Already floored to COLLATERAL_PRECISION by truncateDecimal.
+                    setCollateralInput(maxCollateral.toString());
                     // On explicit Max, recompute recommended borrow amount only if user hasn't edited manually
                     if (!borrowEditedManually) {
                         if (!maxCollateral.isZero) {
@@ -267,7 +260,10 @@ export const Opening: React.FC = () => {
                                 ? allowedDebt
                                 : MINIMUM_NET_DEBT;
                             setBorrowAmountInput(
-                                finalDebt.prettify(DEBT_TOKEN_PRECISION)
+                                truncateDecimal(
+                                    finalDebt,
+                                    DEBT_TOKEN_PRECISION
+                                ).toString()
                             );
                         }
                     }

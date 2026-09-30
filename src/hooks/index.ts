@@ -4,6 +4,7 @@ export * from './SfStablecoinContext';
 export * from './useAddToken';
 export * from './useBreakpoint';
 export * from './useContract';
+export * from './useNumericInput';
 export * from './usePrevious';
 export * from './useSfStablecoinReducer';
 export * from './useSfStablecoinSelector';
