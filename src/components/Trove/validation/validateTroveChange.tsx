@@ -16,6 +16,7 @@ import { Alert } from 'src/components/atoms';
 import { COIN, CURRENCY } from 'src/strings';
 import { DEBT_TOKEN_PRECISION } from 'src/utils';
 import { ActionDescription, Amount } from '../../ActionDescription';
+import { getTrovePriceRestriction } from '../oracleRestrictions';
 
 const mcrPercent = new Percent(MINIMUM_COLLATERAL_RATIO).toString(0);
 const ccrPercent = new Percent(CRITICAL_COLLATERAL_RATIO).toString(0);
@@ -111,12 +112,16 @@ export const selectForTroveChangeValidation = ({
     accountBalance,
     debtTokenBalance,
     numberOfTroves,
+    priceSource,
+    isPriceStale,
 }: SfStablecoinStoreState) => ({
     price,
     total,
     accountBalance,
     debtTokenBalance,
     numberOfTroves,
+    priceSource,
+    isPriceStale,
 });
 
 type TroveChangeValidationSelectedState = ReturnType<
@@ -145,7 +150,7 @@ export const validateTroveChange = (
         | undefined,
     description: JSX.Element | undefined
 ] => {
-    const { total, price } = selectedState;
+    const { total, price, priceSource, isPriceStale } = selectedState;
     const change = originalTrove.whatChanged(adjustedTrove, borrowingRate);
 
     if (!change) {
@@ -195,6 +200,33 @@ export const validateTroveChange = (
                     {MINIMUM_DEBT.toString()} {COIN}
                 </Amount>
                 .
+            </Alert>,
+        ];
+    }
+
+    const priceRestriction = getTrovePriceRestriction(
+        change,
+        priceSource,
+        isPriceStale
+    );
+
+    if (priceRestriction === 'priceUnavailable') {
+        return [
+            undefined,
+            <Alert key={0}>
+                This action is temporarily unavailable because the market price
+                data is out of date. Please try again later.
+            </Alert>,
+        ];
+    }
+
+    if (priceRestriction === 'primaryPriceRequired') {
+        return [
+            undefined,
+            <Alert color='warning' key={0}>
+                This action is temporarily unavailable because the latest market
+                price cannot be fully verified. You can still add collateral,
+                repay debt, or close your Trove.
             </Alert>,
         ];
     }
