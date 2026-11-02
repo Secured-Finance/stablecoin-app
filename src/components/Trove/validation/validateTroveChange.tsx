@@ -214,8 +214,11 @@ export const validateTroveChange = (
         return [
             undefined,
             <Alert key={0}>
-                This action is temporarily unavailable because the market price
-                data is out of date. Please try again later.
+                This action is temporarily unavailable because{' '}
+                {isPriceStale
+                    ? 'the market price data is out of date'
+                    : "we're unable to verify the current market price"}
+                . Please try again later.
             </Alert>,
         ];
     }
