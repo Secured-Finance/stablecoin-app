@@ -4,26 +4,31 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CustomTooltip } from 'src/components/atoms/CustomTooltip';
 import { StatusModal } from 'src/components/atoms/StatusModal/StatusModal';
 import { Trove } from 'src/components/organisms/Trove/Trove';
-import { Adjusting } from 'src/components/Trove/Adjusting';
-import { Opening } from 'src/components/Trove/Opening';
-import { openDocumentation } from 'src/constants';
-import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
-import { CURRENCY } from 'src/strings';
-import { useAccount } from 'wagmi';
-import { useTroveView } from 'src/components/Trove/context/TroveViewContext';
 import {
     useMyTransactionState,
     useTransactionFunction,
 } from 'src/components/Transaction';
+import { Adjusting } from 'src/components/Trove/Adjusting';
+import { useTroveView } from 'src/components/Trove/context/TroveViewContext';
+import { Opening } from 'src/components/Trove/Opening';
+import { PriceSourceWarning } from 'src/components/Trove/PriceSourceWarning';
+import { openDocumentation } from 'src/constants';
+import { useSfStablecoin, useSfStablecoinSelector } from 'src/hooks';
+import { CURRENCY } from 'src/strings';
+import { useAccount } from 'wagmi';
 
 const select = ({
     trove,
     collateralSurplusBalance,
+    priceSource,
+    isPriceStale,
 }: SfStablecoinStoreState) => ({
     trove,
     troveStatus: trove.status,
     hasSurplusCollateral: !collateralSurplusBalance.isZero,
     collateralSurplusBalance,
+    priceSource,
+    isPriceStale,
 });
 
 const STORAGE_KEYS = {
@@ -207,6 +212,16 @@ export const TrovePage = () => {
                                 with 0% interest, while maintaining exposure to{' '}
                                 {CURRENCY}.
                             </p>
+                        </div>
+                    )}
+
+                    {(store.isPriceStale ||
+                        store.priceSource !== 'primaryOracle') && (
+                        <div className='mb-6'>
+                            <PriceSourceWarning
+                                priceSource={store.priceSource}
+                                isPriceStale={store.isPriceStale}
+                            />
                         </div>
                     )}
 

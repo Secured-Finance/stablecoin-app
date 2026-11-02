@@ -114,6 +114,22 @@ const hasMessage = (error: unknown): error is { message: string } =>
     'message' in error &&
     typeof (error as { message: unknown }).message === 'string';
 
+const getOracleRestrictionMessage = (message: string): string | undefined => {
+    if (
+        message.includes(
+            'BorrowerOps: Risk-increasing operation requires primary price'
+        )
+    ) {
+        return 'Market conditions changed before this transaction could be submitted. This action is temporarily unavailable. You can still add collateral, repay debt, or close your Trove.';
+    }
+
+    if (message.includes('PriceFeed: lastGoodPrice is too old')) {
+        return 'Market price data was not updated in time to process this transaction safely. Please try again later.';
+    }
+
+    return undefined;
+};
+
 type ButtonlikeProps = {
     disabled?: boolean;
     variant?: string;
@@ -168,10 +184,17 @@ export const useTransactionFunction = (
             } else {
                 console.error(error);
 
+                const oracleRestrictionMessage = hasMessage(error)
+                    ? getOracleRestrictionMessage(error.message)
+                    : undefined;
+
                 setTransactionState({
                     type: 'failed',
                     id,
-                    error: new Error('Failed to send transaction (try again)'),
+                    error: new Error(
+                        oracleRestrictionMessage ??
+                            'Failed to send transaction (try again)'
+                    ),
                 });
             }
         }
@@ -397,7 +420,10 @@ export const TransactionMonitor: React.FC = () => {
                             type: 'failed',
                             id,
                             error: new Error(
-                                reason ? `Reverted: ${reason}` : 'Failed'
+                                reason
+                                    ? getOracleRestrictionMessage(reason) ??
+                                      `Reverted: ${reason}`
+                                    : 'Failed'
                             ),
                         });
                     }
